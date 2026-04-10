@@ -1,0 +1,2249 @@
+{
+  "template_id": "1dGUSccxgAZUlHf-DnVfhsYWuV6Vy0-prcFVFN_rzB0g",
+  "template_url": "https://docs.google.com/spreadsheets/d/1dGUSccxgAZUlHf-DnVfhsYWuV6Vy0-prcFVFN_rzB0g/edit",
+  "source_id": "1Y6xWOvDSRbBilUT8OFUsCx9VY5efYgkkPRuOeQaLhT0",
+  "sheets": {
+    "3-Statement Summary": [
+      {
+        "row": 2,
+        "type": "MIXED",
+        "label": "$m",
+        "linked": false
+      },
+      {
+        "row": 4,
+        "type": "MIXED",
+        "label": "Revenue",
+        "linked": true
+      },
+      {
+        "row": 6,
+        "type": "MIXED",
+        "label": "COGS",
+        "linked": true
+      },
+      {
+        "row": 7,
+        "type": "FORMULA",
+        "label": "Gross profit",
+        "linked": false
+      },
+      {
+        "row": 9,
+        "type": "MIXED",
+        "label": "R&D",
+        "linked": true
+      },
+      {
+        "row": 10,
+        "type": "MIXED",
+        "label": "S&M",
+        "linked": true
+      },
+      {
+        "row": 11,
+        "type": "MIXED",
+        "label": "G&A",
+        "linked": true
+      },
+      {
+        "row": 12,
+        "type": "MIXED",
+        "label": "Other costs (1)",
+        "linked": true
+      },
+      {
+        "row": 13,
+        "type": "FORMULA",
+        "label": "Operating expenses",
+        "linked": false
+      },
+      {
+        "row": 15,
+        "type": "FORMULA",
+        "label": "Operating income",
+        "linked": false
+      },
+      {
+        "row": 17,
+        "type": "MIXED",
+        "label": "Other income (expense), net",
+        "linked": true
+      },
+      {
+        "row": 18,
+        "type": "FORMULA",
+        "label": "EBT",
+        "linked": false
+      },
+      {
+        "row": 20,
+        "type": "MIXED",
+        "label": "Provision for income taxes",
+        "linked": true
+      },
+      {
+        "row": 21,
+        "type": "FORMULA",
+        "label": "Net income",
+        "linked": false
+      },
+      {
+        "row": 23,
+        "type": "LABEL",
+        "label": "Metrics",
+        "linked": false
+      },
+      {
+        "row": 24,
+        "type": "FORMULA",
+        "label": "YoY % revenue growth",
+        "linked": false
+      },
+      {
+        "row": 25,
+        "type": "FORMULA",
+        "label": "COGS as % of revenue",
+        "linked": false
+      },
+      {
+        "row": 26,
+        "type": "FORMULA",
+        "label": "Gross profit as % of revenue",
+        "linked": false
+      },
+      {
+        "row": 27,
+        "type": "FORMULA",
+        "label": "R&D as % of revenue",
+        "linked": false
+      },
+      {
+        "row": 28,
+        "type": "FORMULA",
+        "label": "S&M as % of revenue",
+        "linked": false
+      },
+      {
+        "row": 29,
+        "type": "FORMULA",
+        "label": "G&A as % of revenue",
+        "linked": false
+      },
+      {
+        "row": 30,
+        "type": "FORMULA",
+        "label": "Operating income as % of revenue",
+        "linked": false
+      },
+      {
+        "row": 31,
+        "type": "FORMULA",
+        "label": "Net income as % of revenue",
+        "linked": false
+      },
+      {
+        "row": 33,
+        "type": "LABEL",
+        "label": "Notes",
+        "linked": false
+      },
+      {
+        "row": 34,
+        "type": "LABEL",
+        "label": "Other costs include European commission fines",
+        "linked": false
+      },
+      {
+        "row": 36,
+        "type": "MIXED",
+        "label": "$m",
+        "linked": false
+      },
+      {
+        "row": 38,
+        "type": "MIXED",
+        "label": "Cash and cash equivalents",
+        "linked": true
+      },
+      {
+        "row": 39,
+        "type": "MIXED",
+        "label": "Marketable securities",
+        "linked": true
+      },
+      {
+        "row": 40,
+        "type": "MIXED",
+        "label": "Non-marketable investments",
+        "linked": true
+      },
+      {
+        "row": 41,
+        "type": "FORMULA",
+        "label": "Total investable securities",
+        "linked": false
+      },
+      {
+        "row": 43,
+        "type": "MIXED",
+        "label": "Accounts receivable, net of allowance",
+        "linked": true
+      },
+      {
+        "row": 44,
+        "type": "MIXED",
+        "label": "Inventory",
+        "linked": true
+      },
+      {
+        "row": 45,
+        "type": "MIXED",
+        "label": "Other current and non-current assets",
+        "linked": true
+      },
+      {
+        "row": 46,
+        "type": "MIXED",
+        "label": "Income taxes receivable, net",
+        "linked": true
+      },
+      {
+        "row": 47,
+        "type": "MIXED",
+        "label": "Deferred income taxes",
+        "linked": true
+      },
+      {
+        "row": 48,
+        "type": "MIXED",
+        "label": "Property and equipment, net",
+        "linked": true
+      },
+      {
+        "row": 49,
+        "type": "MIXED",
+        "label": "Operating lease assets",
+        "linked": true
+      },
+      {
+        "row": 50,
+        "type": "MIXED",
+        "label": "Intangible assets & goodwill",
+        "linked": true
+      },
+      {
+        "row": 51,
+        "type": "FORMULA",
+        "label": "Total assets",
+        "linked": false
+      },
+      {
+        "row": 52,
+        "type": "FORMULA",
+        "label": "Check",
+        "linked": true
+      },
+      {
+        "row": 54,
+        "type": "MIXED",
+        "label": "Accounts payable",
+        "linked": true
+      },
+      {
+        "row": 55,
+        "type": "MIXED",
+        "label": "Accrued compensation and benefits",
+        "linked": true
+      },
+      {
+        "row": 56,
+        "type": "MIXED",
+        "label": "Accrued expenses and other current liabilities",
+        "linked": true
+      },
+      {
+        "row": 57,
+        "type": "MIXED",
+        "label": "Accrued revenue share",
+        "linked": true
+      },
+      {
+        "row": 58,
+        "type": "MIXED",
+        "label": "Deferred revenue",
+        "linked": true
+      },
+      {
+        "row": 59,
+        "type": "MIXED",
+        "label": "Income taxes payable, net",
+        "linked": true
+      },
+      {
+        "row": 60,
+        "type": "MIXED",
+        "label": "Long-term debt",
+        "linked": true
+      },
+      {
+        "row": 61,
+        "type": "MIXED",
+        "label": "Deferred revenue, non-current",
+        "linked": true
+      },
+      {
+        "row": 62,
+        "type": "MIXED",
+        "label": "Income taxes payable, non-current",
+        "linked": true
+      },
+      {
+        "row": 63,
+        "type": "MIXED",
+        "label": "Deferred income taxes",
+        "linked": true
+      },
+      {
+        "row": 64,
+        "type": "MIXED",
+        "label": "Operating lease liabilities",
+        "linked": true
+      },
+      {
+        "row": 65,
+        "type": "FORMULA",
+        "label": "Total liabilities",
+        "linked": false
+      },
+      {
+        "row": 66,
+        "type": "FORMULA",
+        "label": "Check",
+        "linked": true
+      },
+      {
+        "row": 68,
+        "type": "MIXED",
+        "label": "Common & capital stock",
+        "linked": true
+      },
+      {
+        "row": 69,
+        "type": "MIXED",
+        "label": "Accumulated other comprehensive loss",
+        "linked": true
+      },
+      {
+        "row": 70,
+        "type": "MIXED",
+        "label": "Retained earnings",
+        "linked": true
+      },
+      {
+        "row": 71,
+        "type": "FORMULA",
+        "label": "Total stockholders' equity",
+        "linked": false
+      },
+      {
+        "row": 73,
+        "type": "FORMULA",
+        "label": "Total liabilities & stockholders' equity",
+        "linked": false
+      },
+      {
+        "row": 74,
+        "type": "FORMULA",
+        "label": "Check",
+        "linked": false
+      },
+      {
+        "row": 76,
+        "type": "LABEL",
+        "label": "Metrics",
+        "linked": false
+      },
+      {
+        "row": 77,
+        "type": "FORMULA",
+        "label": "Total debt to operating income",
+        "linked": false
+      },
+      {
+        "row": 78,
+        "type": "FORMULA",
+        "label": "Total debt to operating income + D&A + SBC",
+        "linked": false
+      },
+      {
+        "row": 81,
+        "type": "MIXED",
+        "label": "$m",
+        "linked": false
+      },
+      {
+        "row": 83,
+        "type": "MIXED",
+        "label": "Net income",
+        "linked": true
+      },
+      {
+        "row": 84,
+        "type": "MIXED",
+        "label": "Depreciation & amortization",
+        "linked": true
+      },
+      {
+        "row": 85,
+        "type": "MIXED",
+        "label": "Stock-based compensation expense",
+        "linked": true
+      },
+      {
+        "row": 86,
+        "type": "MIXED",
+        "label": "Net working capital impact",
+        "linked": true
+      },
+      {
+        "row": 87,
+        "type": "MIXED",
+        "label": "Income tax assets & liabilities",
+        "linked": true
+      },
+      {
+        "row": 88,
+        "type": "MIXED",
+        "label": "Other",
+        "linked": true
+      },
+      {
+        "row": 89,
+        "type": "FORMULA",
+        "label": "Cash provided by operations",
+        "linked": false
+      },
+      {
+        "row": 90,
+        "type": "FORMULA",
+        "label": "Check",
+        "linked": true
+      },
+      {
+        "row": 92,
+        "type": "MIXED",
+        "label": "Purchases of property and equipment",
+        "linked": true
+      },
+      {
+        "row": 93,
+        "type": "MIXED",
+        "label": "Acquisitions and purchases of intangible assets",
+        "linked": true
+      },
+      {
+        "row": 94,
+        "type": "MIXED",
+        "label": "Other investing activities, net",
+        "linked": true
+      },
+      {
+        "row": 95,
+        "type": "FORMULA",
+        "label": "Net cash used in investing activities",
+        "linked": false
+      },
+      {
+        "row": 97,
+        "type": "MIXED",
+        "label": "Net payments related to stock-based award activities",
+        "linked": true
+      },
+      {
+        "row": 98,
+        "type": "MIXED",
+        "label": "Repurchases of capital stock",
+        "linked": true
+      },
+      {
+        "row": 99,
+        "type": "MIXED",
+        "label": "Other financing activities, net",
+        "linked": true
+      },
+      {
+        "row": 100,
+        "type": "FORMULA",
+        "label": "Net cash used in financing activities",
+        "linked": false
+      },
+      {
+        "row": 102,
+        "type": "MIXED",
+        "label": "Effect of exchange rate changes on cash and cash equivalents",
+        "linked": true
+      },
+      {
+        "row": 103,
+        "type": "FORMULA",
+        "label": "Net increase (decrease) in cash and cash equivalents",
+        "linked": false
+      },
+      {
+        "row": 105,
+        "type": "MIXED",
+        "label": "Cash and cash equivalents - beginning",
+        "linked": true
+      },
+      {
+        "row": 106,
+        "type": "MIXED",
+        "label": "Cash and cash equivalents - end",
+        "linked": true
+      },
+      {
+        "row": 107,
+        "type": "FORMULA",
+        "label": "Check",
+        "linked": false
+      },
+      {
+        "row": 109,
+        "type": "LABEL",
+        "label": "Metrics",
+        "linked": false
+      },
+      {
+        "row": 110,
+        "type": "FORMULA",
+        "label": "Return on average equity",
+        "linked": false
+      }
+    ],
+    "P&L": [
+      {
+        "row": 2,
+        "type": "MIXED",
+        "label": "$m",
+        "linked": false
+      },
+      {
+        "row": 4,
+        "type": "MIXED",
+        "label": "Google Search & other",
+        "linked": true
+      },
+      {
+        "row": 5,
+        "type": "MIXED",
+        "label": "YouTube ads",
+        "linked": true
+      },
+      {
+        "row": 6,
+        "type": "FORMULA",
+        "label": "Google properties",
+        "linked": true
+      },
+      {
+        "row": 7,
+        "type": "MIXED",
+        "label": "Google Network Members' properties",
+        "linked": true
+      },
+      {
+        "row": 8,
+        "type": "FORMULA",
+        "label": "Google advertising",
+        "linked": false
+      },
+      {
+        "row": 9,
+        "type": "MIXED",
+        "label": "Google Cloud",
+        "linked": true
+      },
+      {
+        "row": 10,
+        "type": "MIXED",
+        "label": "Google other(1)",
+        "linked": true
+      },
+      {
+        "row": 11,
+        "type": "FORMULA",
+        "label": "Google revenues",
+        "linked": false
+      },
+      {
+        "row": 12,
+        "type": "MIXED",
+        "label": "Other Bets revenues",
+        "linked": true
+      },
+      {
+        "row": 13,
+        "type": "MIXED",
+        "label": "Hedging gains (losses)",
+        "linked": true
+      },
+      {
+        "row": 14,
+        "type": "FORMULA",
+        "label": "Total Revenue",
+        "linked": false
+      },
+      {
+        "row": 15,
+        "type": "FORMULA",
+        "label": "Check",
+        "linked": true
+      },
+      {
+        "row": 17,
+        "type": "LABEL",
+        "label": "Metrics and drivers - YoY % revenue growth",
+        "linked": false
+      },
+      {
+        "row": 18,
+        "type": "MIXED",
+        "label": "Google Search & other",
+        "linked": false
+      },
+      {
+        "row": 19,
+        "type": "MIXED",
+        "label": "YouTube ads(1)",
+        "linked": false
+      },
+      {
+        "row": 20,
+        "type": "FORMULA",
+        "label": "Google properties",
+        "linked": false
+      },
+      {
+        "row": 21,
+        "type": "MIXED",
+        "label": "Google Network Members' properties",
+        "linked": false
+      },
+      {
+        "row": 22,
+        "type": "FORMULA",
+        "label": "Google advertising",
+        "linked": false
+      },
+      {
+        "row": 23,
+        "type": "MIXED",
+        "label": "Google Cloud",
+        "linked": false
+      },
+      {
+        "row": 24,
+        "type": "MIXED",
+        "label": "Google other(1)",
+        "linked": false
+      },
+      {
+        "row": 25,
+        "type": "FORMULA",
+        "label": "Google revenues",
+        "linked": false
+      },
+      {
+        "row": 26,
+        "type": "MIXED",
+        "label": "Other Bets revenues",
+        "linked": false
+      },
+      {
+        "row": 27,
+        "type": "MIXED",
+        "label": "Hedging gains (losses)",
+        "linked": false
+      },
+      {
+        "row": 28,
+        "type": "FORMULA",
+        "label": "Total Revenue",
+        "linked": false
+      },
+      {
+        "row": 31,
+        "type": "MIXED",
+        "label": "$m",
+        "linked": false
+      },
+      {
+        "row": 33,
+        "type": "MIXED",
+        "label": "Traffic acquisition costs (TAC)",
+        "linked": true
+      },
+      {
+        "row": 34,
+        "type": "MIXED",
+        "label": "Other cost of goods",
+        "linked": true
+      },
+      {
+        "row": 35,
+        "type": "FORMULA",
+        "label": "Total cost of goods",
+        "linked": false
+      },
+      {
+        "row": 36,
+        "type": "FORMULA",
+        "label": "Check",
+        "linked": true
+      },
+      {
+        "row": 38,
+        "type": "LABEL",
+        "label": "Metrics and drivers - COGS",
+        "linked": false
+      },
+      {
+        "row": 39,
+        "type": "MIXED",
+        "label": "TAC as % of ad revenue",
+        "linked": false
+      },
+      {
+        "row": 40,
+        "type": "MIXED",
+        "label": "Other cost of goods as % of total revenue",
+        "linked": false
+      },
+      {
+        "row": 41,
+        "type": "FORMULA",
+        "label": "COGS as % of revenue",
+        "linked": false
+      },
+      {
+        "row": 43,
+        "type": "MIXED",
+        "label": "$m",
+        "linked": false
+      },
+      {
+        "row": 45,
+        "type": "MIXED",
+        "label": "R&D",
+        "linked": true
+      },
+      {
+        "row": 46,
+        "type": "MIXED",
+        "label": "S&M",
+        "linked": true
+      },
+      {
+        "row": 47,
+        "type": "MIXED",
+        "label": "G&A",
+        "linked": true
+      },
+      {
+        "row": 48,
+        "type": "MIXED",
+        "label": "Other costs (1)",
+        "linked": true
+      },
+      {
+        "row": 49,
+        "type": "FORMULA",
+        "label": "Operating costs",
+        "linked": false
+      },
+      {
+        "row": 51,
+        "type": "MIXED",
+        "label": "SBC Expense",
+        "linked": true
+      },
+      {
+        "row": 53,
+        "type": "LABEL",
+        "label": "Metrics and drivers - Operating costs",
+        "linked": false
+      },
+      {
+        "row": 54,
+        "type": "MIXED",
+        "label": "R&D as % of revenue",
+        "linked": false
+      },
+      {
+        "row": 55,
+        "type": "MIXED",
+        "label": "S&M as % of revenue",
+        "linked": false
+      },
+      {
+        "row": 56,
+        "type": "MIXED",
+        "label": "G&A as % of revenue",
+        "linked": false
+      },
+      {
+        "row": 57,
+        "type": "MIXED",
+        "label": "Other costs % of revenue",
+        "linked": false
+      },
+      {
+        "row": 58,
+        "type": "MIXED",
+        "label": "SBC as % of R&D, S&M, G&A expenses",
+        "linked": false
+      },
+      {
+        "row": 60,
+        "type": "MIXED",
+        "label": "$m",
+        "linked": false
+      },
+      {
+        "row": 62,
+        "type": "MIXED",
+        "label": "Other Income",
+        "linked": true
+      },
+      {
+        "row": 64,
+        "type": "MIXED",
+        "label": "Cash and cash equivalents",
+        "linked": true
+      },
+      {
+        "row": 65,
+        "type": "MIXED",
+        "label": "Marketable securities",
+        "linked": true
+      },
+      {
+        "row": 66,
+        "type": "MIXED",
+        "label": "Non-marketable investments",
+        "linked": true
+      },
+      {
+        "row": 67,
+        "type": "FORMULA",
+        "label": "Total investable securities",
+        "linked": false
+      },
+      {
+        "row": 69,
+        "type": "MIXED",
+        "label": "Long-term debt",
+        "linked": true
+      },
+      {
+        "row": 70,
+        "type": "FORMULA",
+        "label": "Investable securities, net of long-term debt",
+        "linked": false
+      },
+      {
+        "row": 72,
+        "type": "LABEL",
+        "label": "Metrics",
+        "linked": false
+      },
+      {
+        "row": 73,
+        "type": "MIXED",
+        "label": "Other income % of net investable securities",
+        "linked": false
+      },
+      {
+        "row": 74,
+        "type": "FORMULA",
+        "label": "Other income % of avg. net investable securities",
+        "linked": false
+      }
+    ],
+    "BS": [
+      {
+        "row": 2,
+        "type": "MIXED",
+        "label": "$m",
+        "linked": false
+      },
+      {
+        "row": 4,
+        "type": "MIXED",
+        "label": "Revenue",
+        "linked": true
+      },
+      {
+        "row": 5,
+        "type": "MIXED",
+        "label": "COGS",
+        "linked": true
+      },
+      {
+        "row": 6,
+        "type": "MIXED",
+        "label": "Operating expenses",
+        "linked": true
+      },
+      {
+        "row": 7,
+        "type": "FORMULA",
+        "label": "COGS + Operating expenses",
+        "linked": false
+      },
+      {
+        "row": 9,
+        "type": "MIXED",
+        "label": "Accounts receivable, net of allowance",
+        "linked": true
+      },
+      {
+        "row": 10,
+        "type": "MIXED",
+        "label": "Inventory",
+        "linked": true
+      },
+      {
+        "row": 11,
+        "type": "MIXED",
+        "label": "Other current and non-current assets",
+        "linked": true
+      },
+      {
+        "row": 12,
+        "type": "FORMULA",
+        "label": "Working capital assets",
+        "linked": false
+      },
+      {
+        "row": 14,
+        "type": "MIXED",
+        "label": "Accounts payable",
+        "linked": true
+      },
+      {
+        "row": 15,
+        "type": "MIXED",
+        "label": "Accrued compensation and benefits",
+        "linked": true
+      },
+      {
+        "row": 16,
+        "type": "MIXED",
+        "label": "Accrued expenses and other current and non-current liabiliti",
+        "linked": true
+      },
+      {
+        "row": 17,
+        "type": "MIXED",
+        "label": "Accrued revenue share",
+        "linked": true
+      },
+      {
+        "row": 18,
+        "type": "FORMULA",
+        "label": "Working capital liabilities",
+        "linked": false
+      },
+      {
+        "row": 20,
+        "type": "FORMULA",
+        "label": "Net working capital",
+        "linked": false
+      },
+      {
+        "row": 21,
+        "type": "FORMULA",
+        "label": "Change in net working capital",
+        "linked": false
+      },
+      {
+        "row": 23,
+        "type": "LABEL",
+        "label": "Metrics - days payable & receivable",
+        "linked": false
+      },
+      {
+        "row": 24,
+        "type": "MIXED",
+        "label": "Accounts receivable",
+        "linked": false
+      },
+      {
+        "row": 25,
+        "type": "MIXED",
+        "label": "Inventory",
+        "linked": false
+      },
+      {
+        "row": 26,
+        "type": "MIXED",
+        "label": "Other current and non-current assets",
+        "linked": false
+      },
+      {
+        "row": 27,
+        "type": "MIXED",
+        "label": "Accounts payable",
+        "linked": false
+      },
+      {
+        "row": 28,
+        "type": "MIXED",
+        "label": "Accrued compensation and benefits",
+        "linked": false
+      },
+      {
+        "row": 29,
+        "type": "MIXED",
+        "label": "Accrued expenses and other current liabilities",
+        "linked": false
+      },
+      {
+        "row": 30,
+        "type": "MIXED",
+        "label": "Accrued revenue share",
+        "linked": false
+      },
+      {
+        "row": 33,
+        "type": "MIXED",
+        "label": "$m",
+        "linked": false
+      },
+      {
+        "row": 35,
+        "type": "MIXED",
+        "label": "EBT",
+        "linked": true
+      },
+      {
+        "row": 36,
+        "type": "MIXED",
+        "label": "Provision for income taxes",
+        "linked": true
+      },
+      {
+        "row": 38,
+        "type": "MIXED",
+        "label": "Income taxes receivable, net",
+        "linked": true
+      },
+      {
+        "row": 39,
+        "type": "MIXED",
+        "label": "Deferred income taxes",
+        "linked": true
+      },
+      {
+        "row": 40,
+        "type": "FORMULA",
+        "label": "Income tax assets",
+        "linked": false
+      },
+      {
+        "row": 42,
+        "type": "MIXED",
+        "label": "Income taxes payable, net",
+        "linked": true
+      },
+      {
+        "row": 43,
+        "type": "MIXED",
+        "label": "Income taxes payable, non-current",
+        "linked": true
+      },
+      {
+        "row": 44,
+        "type": "MIXED",
+        "label": "Deferred income taxes",
+        "linked": true
+      },
+      {
+        "row": 45,
+        "type": "FORMULA",
+        "label": "Income tax liabilities",
+        "linked": false
+      },
+      {
+        "row": 47,
+        "type": "FORMULA",
+        "label": "Income tax assets & liabilities, net",
+        "linked": false
+      },
+      {
+        "row": 48,
+        "type": "FORMULA",
+        "label": "Change in income tax assets & liabilities",
+        "linked": false
+      },
+      {
+        "row": 50,
+        "type": "LABEL",
+        "label": "Metrics",
+        "linked": false
+      },
+      {
+        "row": 51,
+        "type": "MIXED",
+        "label": "Provision for income taxes % of EBT",
+        "linked": false
+      },
+      {
+        "row": 54,
+        "type": "MIXED",
+        "label": "$m",
+        "linked": false
+      },
+      {
+        "row": 56,
+        "type": "MIXED",
+        "label": "Property and equipment, net",
+        "linked": true
+      },
+      {
+        "row": 57,
+        "type": "MIXED",
+        "label": "Operating lease assets",
+        "linked": true
+      },
+      {
+        "row": 58,
+        "type": "MIXED",
+        "label": "Operating lease liabilities",
+        "linked": true
+      },
+      {
+        "row": 60,
+        "type": "MIXED",
+        "label": "Purchases of property & equipment",
+        "linked": true
+      },
+      {
+        "row": 61,
+        "type": "MIXED",
+        "label": "Depreciation and impairment of property and equipment",
+        "linked": true
+      },
+      {
+        "row": 62,
+        "type": "FORMULA",
+        "label": "Net increase to PP&E",
+        "linked": false
+      },
+      {
+        "row": 64,
+        "type": "MIXED",
+        "label": "Intangible assets & goodwill",
+        "linked": true
+      },
+      {
+        "row": 66,
+        "type": "FORMULA",
+        "label": "Amortization and impairment of intangible assets",
+        "linked": true
+      },
+      {
+        "row": 67,
+        "type": "MIXED",
+        "label": "Acquisitions and purchases of intangible assets",
+        "linked": true
+      },
+      {
+        "row": 68,
+        "type": "FORMULA",
+        "label": "Disconnect (Other investment)",
+        "linked": false
+      },
+      {
+        "row": 69,
+        "type": "FORMULA",
+        "label": "Net increase in intangible assets & goodwill",
+        "linked": false
+      },
+      {
+        "row": 71,
+        "type": "LABEL",
+        "label": "Metrics",
+        "linked": false
+      },
+      {
+        "row": 72,
+        "type": "FORMULA",
+        "label": "Purchase of PP&E % of avg. revenue",
+        "linked": false
+      },
+      {
+        "row": 73,
+        "type": "FORMULA",
+        "label": "Depreciation as % of beginning PP&E",
+        "linked": false
+      },
+      {
+        "row": 74,
+        "type": "FORMULA",
+        "label": "Implied PP&E straight-line depreciation in years",
+        "linked": false
+      },
+      {
+        "row": 75,
+        "type": "MIXED",
+        "label": "Implied intangibles straight-line depreciation in years",
+        "linked": false
+      },
+      {
+        "row": 77,
+        "type": "LABEL",
+        "label": "Depreciation & impairment waterfall",
+        "linked": false
+      },
+      {
+        "row": 78,
+        "type": "FORMULA",
+        "label": "Existing balance",
+        "linked": false
+      },
+      {
+        "row": 79,
+        "type": "MIXED",
+        "label": "2020 Contribution",
+        "linked": false
+      },
+      {
+        "row": 80,
+        "type": "MIXED",
+        "label": "2021 Contribution",
+        "linked": false
+      },
+      {
+        "row": 81,
+        "type": "FORMULA",
+        "label": "Depreciation and impairment of property and equipment",
+        "linked": false
+      },
+      {
+        "row": 84,
+        "type": "MIXED",
+        "label": "$m",
+        "linked": false
+      },
+      {
+        "row": 86,
+        "type": "MIXED",
+        "label": "Deferred revenue",
+        "linked": true
+      },
+      {
+        "row": 87,
+        "type": "MIXED",
+        "label": "Deferred revenue, non-current",
+        "linked": true
+      },
+      {
+        "row": 88,
+        "type": "FORMULA",
+        "label": "Total deferred revenue",
+        "linked": false
+      },
+      {
+        "row": 90,
+        "type": "MIXED",
+        "label": "Long-term debt",
+        "linked": true
+      },
+      {
+        "row": 92,
+        "type": "MIXED",
+        "label": "Cash and cash equivalents",
+        "linked": true
+      },
+      {
+        "row": 93,
+        "type": "MIXED",
+        "label": "Marketable securities",
+        "linked": true
+      },
+      {
+        "row": 94,
+        "type": "MIXED",
+        "label": "Non-marketable investments",
+        "linked": true
+      },
+      {
+        "row": 95,
+        "type": "FORMULA",
+        "label": "Total investable securities",
+        "linked": false
+      },
+      {
+        "row": 97,
+        "type": "MIXED",
+        "label": "$m",
+        "linked": false
+      },
+      {
+        "row": 99,
+        "type": "FORMULA",
+        "label": "Common & capital stock - beg",
+        "linked": false
+      },
+      {
+        "row": 100,
+        "type": "FORMULA",
+        "label": "(+) Stock based compensation",
+        "linked": true
+      },
+      {
+        "row": 101,
+        "type": "FORMULA",
+        "label": "(+/-) Other impacts",
+        "linked": true
+      },
+      {
+        "row": 102,
+        "type": "MIXED",
+        "label": "Common & capital stock - end",
+        "linked": true
+      },
+      {
+        "row": 104,
+        "type": "MIXED",
+        "label": "Accumulated other comprehensive loss",
+        "linked": true
+      },
+      {
+        "row": 106,
+        "type": "FORMULA",
+        "label": "Retained earnings - beg",
+        "linked": false
+      },
+      {
+        "row": 107,
+        "type": "FORMULA",
+        "label": "(-) Repurchases of capital stock",
+        "linked": true
+      },
+      {
+        "row": 108,
+        "type": "FORMULA",
+        "label": "(+) Net income",
+        "linked": true
+      },
+      {
+        "row": 109,
+        "type": "MIXED",
+        "label": "(+/-) Other impacts",
+        "linked": false
+      },
+      {
+        "row": 110,
+        "type": "MIXED",
+        "label": "Retained earnings - end",
+        "linked": true
+      },
+      {
+        "row": 112,
+        "type": "FORMULA",
+        "label": "Total stockholders' equity",
+        "linked": false
+      },
+      {
+        "row": 113,
+        "type": "FORMULA",
+        "label": "Check",
+        "linked": true
+      }
+    ],
+    "CFS": [
+      {
+        "row": 2,
+        "type": "MIXED",
+        "label": "$m",
+        "linked": false
+      },
+      {
+        "row": 4,
+        "type": "MIXED",
+        "label": "Net income",
+        "linked": true
+      },
+      {
+        "row": 5,
+        "type": "FORMULA",
+        "label": "",
+        "linked": true
+      },
+      {
+        "row": 6,
+        "type": "LABEL",
+        "label": "Operating activities",
+        "linked": false
+      },
+      {
+        "row": 7,
+        "type": "MIXED",
+        "label": "Depreciation and impairment of property and equipment",
+        "linked": true
+      },
+      {
+        "row": 8,
+        "type": "MIXED",
+        "label": "Amortization and impairment of intangible assets",
+        "linked": true
+      },
+      {
+        "row": 9,
+        "type": "MIXED",
+        "label": "Stock-based compensation expense",
+        "linked": true
+      },
+      {
+        "row": 10,
+        "type": "MIXED",
+        "label": "(Gain) loss on debt and equity securities, net",
+        "linked": true
+      },
+      {
+        "row": 11,
+        "type": "MIXED",
+        "label": "Other",
+        "linked": true
+      },
+      {
+        "row": 12,
+        "type": "FORMULA",
+        "label": "Subtotal",
+        "linked": false
+      },
+      {
+        "row": 14,
+        "type": "MIXED",
+        "label": "Accounts receivable",
+        "linked": true
+      },
+      {
+        "row": 15,
+        "type": "MIXED",
+        "label": "Other assets",
+        "linked": true
+      },
+      {
+        "row": 16,
+        "type": "MIXED",
+        "label": "Accounts payable",
+        "linked": true
+      },
+      {
+        "row": 17,
+        "type": "MIXED",
+        "label": "Accrued expenses and other liabilities",
+        "linked": true
+      },
+      {
+        "row": 18,
+        "type": "MIXED",
+        "label": "Accrued revenue share",
+        "linked": true
+      },
+      {
+        "row": 19,
+        "type": "FORMULA",
+        "label": "Change in net working capital accounts",
+        "linked": false
+      },
+      {
+        "row": 21,
+        "type": "MIXED",
+        "label": "Deferred revenue",
+        "linked": true
+      },
+      {
+        "row": 23,
+        "type": "MIXED",
+        "label": "Deferred income taxes",
+        "linked": true
+      },
+      {
+        "row": 24,
+        "type": "MIXED",
+        "label": "Income taxes, net",
+        "linked": true
+      },
+      {
+        "row": 25,
+        "type": "FORMULA",
+        "label": "Income tax assets and liabilities",
+        "linked": true
+      },
+      {
+        "row": 27,
+        "type": "FORMULA",
+        "label": "Net cash provided by operating activities",
+        "linked": false
+      },
+      {
+        "row": 28,
+        "type": "FORMULA",
+        "label": "Check",
+        "linked": true
+      },
+      {
+        "row": 30,
+        "type": "FORMULA",
+        "label": "Investing activities",
+        "linked": true
+      },
+      {
+        "row": 31,
+        "type": "MIXED",
+        "label": "Purchases of property and equipment",
+        "linked": true
+      },
+      {
+        "row": 32,
+        "type": "MIXED",
+        "label": "Acquisitions, net of cash acquired, and purchases of intangi",
+        "linked": true
+      },
+      {
+        "row": 34,
+        "type": "MIXED",
+        "label": "Purchases of marketable securities",
+        "linked": true
+      },
+      {
+        "row": 35,
+        "type": "MIXED",
+        "label": "Maturities and sales of marketable securities",
+        "linked": true
+      },
+      {
+        "row": 36,
+        "type": "MIXED",
+        "label": "Purchases of non-marketable investments",
+        "linked": true
+      },
+      {
+        "row": 37,
+        "type": "MIXED",
+        "label": "Maturities and sales of non-marketable investments",
+        "linked": true
+      },
+      {
+        "row": 38,
+        "type": "MIXED",
+        "label": "Proceeds from collection of notes receivable",
+        "linked": true
+      },
+      {
+        "row": 39,
+        "type": "MIXED",
+        "label": "Other investing activities",
+        "linked": true
+      },
+      {
+        "row": 40,
+        "type": "FORMULA",
+        "label": "Net impact of other investing activities",
+        "linked": false
+      },
+      {
+        "row": 42,
+        "type": "FORMULA",
+        "label": "Net cash used in investing activities",
+        "linked": false
+      },
+      {
+        "row": 43,
+        "type": "FORMULA",
+        "label": "Check",
+        "linked": true
+      },
+      {
+        "row": 45,
+        "type": "FORMULA",
+        "label": "Financing activities",
+        "linked": true
+      },
+      {
+        "row": 46,
+        "type": "MIXED",
+        "label": "Net payments related to stock-based award activities",
+        "linked": true
+      },
+      {
+        "row": 47,
+        "type": "MIXED",
+        "label": "Repurchases of capital stock",
+        "linked": true
+      },
+      {
+        "row": 48,
+        "type": "MIXED",
+        "label": "Proceeds from issuance of debt, net of costs",
+        "linked": true
+      },
+      {
+        "row": 49,
+        "type": "MIXED",
+        "label": "Repayments of debt",
+        "linked": true
+      },
+      {
+        "row": 50,
+        "type": "MIXED",
+        "label": "Proceeds from sale of interest in consolidated entities",
+        "linked": true
+      },
+      {
+        "row": 51,
+        "type": "FORMULA",
+        "label": "Net cash used in financing activities",
+        "linked": false
+      },
+      {
+        "row": 52,
+        "type": "FORMULA",
+        "label": "Check",
+        "linked": true
+      },
+      {
+        "row": 54,
+        "type": "MIXED",
+        "label": "Effect of exchange rate changes on cash and cash equivalents",
+        "linked": true
+      },
+      {
+        "row": 55,
+        "type": "FORMULA",
+        "label": "Net increase (decrease) in cash and cash equivalents",
+        "linked": false
+      },
+      {
+        "row": 56,
+        "type": "MIXED",
+        "label": "Cash and cash equivalents at beginning of period",
+        "linked": true
+      },
+      {
+        "row": 57,
+        "type": "FORMULA",
+        "label": "Cash and cash equivalents at end of period",
+        "linked": true
+      }
+    ],
+    "Annual": [
+      {
+        "row": 3,
+        "type": "LABEL",
+        "label": "Assets",
+        "linked": false
+      },
+      {
+        "row": 4,
+        "type": "LABEL",
+        "label": "Current assets:",
+        "linked": false
+      },
+      {
+        "row": 5,
+        "type": "INPUT",
+        "label": "Cash and cash equivalents",
+        "linked": false
+      },
+      {
+        "row": 6,
+        "type": "INPUT",
+        "label": "Marketable securities",
+        "linked": false
+      },
+      {
+        "row": 7,
+        "type": "INPUT",
+        "label": "Total cash, cash equivalents, and marketable securities",
+        "linked": false
+      },
+      {
+        "row": 8,
+        "type": "INPUT",
+        "label": "Accounts receivable, net of allowance of $729 and $753",
+        "linked": false
+      },
+      {
+        "row": 9,
+        "type": "INPUT",
+        "label": "Income taxes receivable, net",
+        "linked": false
+      },
+      {
+        "row": 10,
+        "type": "INPUT",
+        "label": "Inventory",
+        "linked": false
+      },
+      {
+        "row": 11,
+        "type": "INPUT",
+        "label": "Other current assets",
+        "linked": false
+      },
+      {
+        "row": 12,
+        "type": "INPUT",
+        "label": "Total current assets",
+        "linked": false
+      },
+      {
+        "row": 13,
+        "type": "INPUT",
+        "label": "Non-marketable investments",
+        "linked": false
+      },
+      {
+        "row": 14,
+        "type": "INPUT",
+        "label": "Deferred income taxes",
+        "linked": false
+      },
+      {
+        "row": 15,
+        "type": "INPUT",
+        "label": "Property and equipment, net",
+        "linked": false
+      },
+      {
+        "row": 16,
+        "type": "INPUT",
+        "label": "Operating lease assets",
+        "linked": false
+      },
+      {
+        "row": 17,
+        "type": "INPUT",
+        "label": "Intangible assets, net",
+        "linked": false
+      },
+      {
+        "row": 18,
+        "type": "INPUT",
+        "label": "Goodwill",
+        "linked": false
+      },
+      {
+        "row": 19,
+        "type": "INPUT",
+        "label": "Other non-current assets",
+        "linked": false
+      },
+      {
+        "row": 20,
+        "type": "INPUT",
+        "label": "Total assets",
+        "linked": false
+      },
+      {
+        "row": 21,
+        "type": "LABEL",
+        "label": "Liabilities and Stockholders' Equity",
+        "linked": false
+      },
+      {
+        "row": 22,
+        "type": "LABEL",
+        "label": "Current liabilities:",
+        "linked": false
+      },
+      {
+        "row": 23,
+        "type": "INPUT",
+        "label": "Accounts payable",
+        "linked": false
+      },
+      {
+        "row": 24,
+        "type": "INPUT",
+        "label": "Accrued compensation and benefits",
+        "linked": false
+      },
+      {
+        "row": 25,
+        "type": "INPUT",
+        "label": "Accrued expenses and other current liabilities",
+        "linked": false
+      },
+      {
+        "row": 26,
+        "type": "INPUT",
+        "label": "Accrued revenue share",
+        "linked": false
+      },
+      {
+        "row": 27,
+        "type": "INPUT",
+        "label": "Deferred revenue",
+        "linked": false
+      },
+      {
+        "row": 28,
+        "type": "INPUT",
+        "label": "Income taxes payable, net",
+        "linked": false
+      },
+      {
+        "row": 29,
+        "type": "INPUT",
+        "label": "Total current liabilities",
+        "linked": false
+      },
+      {
+        "row": 30,
+        "type": "INPUT",
+        "label": "Long-term debt",
+        "linked": false
+      },
+      {
+        "row": 31,
+        "type": "INPUT",
+        "label": "Deferred revenue, non-current",
+        "linked": false
+      },
+      {
+        "row": 32,
+        "type": "INPUT",
+        "label": "Income taxes payable, non-current",
+        "linked": false
+      },
+      {
+        "row": 33,
+        "type": "INPUT",
+        "label": "Deferred income taxes",
+        "linked": false
+      },
+      {
+        "row": 34,
+        "type": "INPUT",
+        "label": "Operating lease liabilities",
+        "linked": false
+      },
+      {
+        "row": 35,
+        "type": "INPUT",
+        "label": "Other long-term liabilities",
+        "linked": false
+      },
+      {
+        "row": 36,
+        "type": "INPUT",
+        "label": "Total liabilities",
+        "linked": false
+      },
+      {
+        "row": 37,
+        "type": "LABEL",
+        "label": "Commitments and Contingencies (Note 10)",
+        "linked": false
+      },
+      {
+        "row": 38,
+        "type": "LABEL",
+        "label": "Stockholders' equity:",
+        "linked": false
+      },
+      {
+        "row": 39,
+        "type": "LABEL",
+        "label": "Convertible preferred stock, $0.001 par value per share, 100",
+        "linked": false
+      },
+      {
+        "row": 40,
+        "type": "INPUT",
+        "label": "Class A and Class B common stock, and Class C capital stock ",
+        "linked": false
+      },
+      {
+        "row": 41,
+        "type": "INPUT",
+        "label": "Accumulated other comprehensive loss",
+        "linked": false
+      },
+      {
+        "row": 42,
+        "type": "INPUT",
+        "label": "Retained earnings",
+        "linked": false
+      },
+      {
+        "row": 43,
+        "type": "INPUT",
+        "label": "Total stockholders' equity",
+        "linked": false
+      },
+      {
+        "row": 44,
+        "type": "INPUT",
+        "label": "Total liabilities and stockholders' equity",
+        "linked": false
+      },
+      {
+        "row": 47,
+        "type": "INPUT",
+        "label": "",
+        "linked": false
+      },
+      {
+        "row": 48,
+        "type": "INPUT",
+        "label": "Revenues",
+        "linked": false
+      },
+      {
+        "row": 49,
+        "type": "LABEL",
+        "label": "Costs and expenses:",
+        "linked": false
+      },
+      {
+        "row": 50,
+        "type": "INPUT",
+        "label": "Cost of revenues",
+        "linked": false
+      },
+      {
+        "row": 51,
+        "type": "INPUT",
+        "label": "Research and development",
+        "linked": false
+      },
+      {
+        "row": 52,
+        "type": "INPUT",
+        "label": "Sales and marketing",
+        "linked": false
+      },
+      {
+        "row": 53,
+        "type": "INPUT",
+        "label": "General and administrative",
+        "linked": false
+      },
+      {
+        "row": 54,
+        "type": "INPUT",
+        "label": "European Commission fines",
+        "linked": false
+      },
+      {
+        "row": 55,
+        "type": "INPUT",
+        "label": "Total costs and expenses",
+        "linked": false
+      },
+      {
+        "row": 56,
+        "type": "INPUT",
+        "label": "Income from operations",
+        "linked": false
+      },
+      {
+        "row": 57,
+        "type": "INPUT",
+        "label": "Other income (expense), net",
+        "linked": false
+      },
+      {
+        "row": 58,
+        "type": "INPUT",
+        "label": "Income before income taxes",
+        "linked": false
+      },
+      {
+        "row": 59,
+        "type": "INPUT",
+        "label": "Provision for income taxes",
+        "linked": false
+      },
+      {
+        "row": 60,
+        "type": "INPUT",
+        "label": "Net income",
+        "linked": false
+      },
+      {
+        "row": 62,
+        "type": "INPUT",
+        "label": "Basic net income per share of Class A and B common stock and",
+        "linked": false
+      },
+      {
+        "row": 63,
+        "type": "INPUT",
+        "label": "Diluted net income per share of Class A and B common stock a",
+        "linked": false
+      },
+      {
+        "row": 66,
+        "type": "INPUT",
+        "label": "",
+        "linked": false
+      },
+      {
+        "row": 67,
+        "type": "LABEL",
+        "label": "Operating activities",
+        "linked": false
+      },
+      {
+        "row": 68,
+        "type": "INPUT",
+        "label": "Net income",
+        "linked": false
+      },
+      {
+        "row": 69,
+        "type": "LABEL",
+        "label": "Adjustments:",
+        "linked": false
+      },
+      {
+        "row": 70,
+        "type": "INPUT",
+        "label": "Depreciation and impairment of property and equipment",
+        "linked": false
+      },
+      {
+        "row": 71,
+        "type": "INPUT",
+        "label": "Amortization and impairment of intangible assets",
+        "linked": false
+      },
+      {
+        "row": 72,
+        "type": "INPUT",
+        "label": "Stock-based compensation expense",
+        "linked": false
+      },
+      {
+        "row": 73,
+        "type": "INPUT",
+        "label": "Deferred income taxes",
+        "linked": false
+      },
+      {
+        "row": 74,
+        "type": "INPUT",
+        "label": "(Gain) loss on debt and equity securities, net",
+        "linked": false
+      },
+      {
+        "row": 75,
+        "type": "INPUT",
+        "label": "Other",
+        "linked": false
+      },
+      {
+        "row": 76,
+        "type": "LABEL",
+        "label": "Changes in assets and liabilities, net of effects of acquisi",
+        "linked": false
+      },
+      {
+        "row": 77,
+        "type": "INPUT",
+        "label": "Accounts receivable",
+        "linked": false
+      },
+      {
+        "row": 78,
+        "type": "INPUT",
+        "label": "Income taxes, net",
+        "linked": false
+      },
+      {
+        "row": 79,
+        "type": "INPUT",
+        "label": "Other assets",
+        "linked": false
+      },
+      {
+        "row": 80,
+        "type": "INPUT",
+        "label": "Accounts payable",
+        "linked": false
+      },
+      {
+        "row": 81,
+        "type": "INPUT",
+        "label": "Accrued expenses and other liabilities",
+        "linked": false
+      },
+      {
+        "row": 82,
+        "type": "INPUT",
+        "label": "Accrued revenue share",
+        "linked": false
+      },
+      {
+        "row": 83,
+        "type": "INPUT",
+        "label": "Deferred revenue",
+        "linked": false
+      },
+      {
+        "row": 84,
+        "type": "INPUT",
+        "label": "Net cash provided by operating activities",
+        "linked": false
+      },
+      {
+        "row": 85,
+        "type": "LABEL",
+        "label": "Investing activities",
+        "linked": false
+      },
+      {
+        "row": 86,
+        "type": "INPUT",
+        "label": "Purchases of property and equipment",
+        "linked": false
+      },
+      {
+        "row": 87,
+        "type": "INPUT",
+        "label": "Purchases of marketable securities",
+        "linked": false
+      },
+      {
+        "row": 88,
+        "type": "INPUT",
+        "label": "Maturities and sales of marketable securities",
+        "linked": false
+      },
+      {
+        "row": 89,
+        "type": "INPUT",
+        "label": "Purchases of non-marketable investments",
+        "linked": false
+      },
+      {
+        "row": 90,
+        "type": "INPUT",
+        "label": "Maturities and sales of non-marketable investments",
+        "linked": false
+      },
+      {
+        "row": 91,
+        "type": "INPUT",
+        "label": "Acquisitions, net of cash acquired, and purchases of intangi",
+        "linked": false
+      },
+      {
+        "row": 92,
+        "type": "LABEL",
+        "label": "Proceeds from collection of notes receivable",
+        "linked": false
+      },
+      {
+        "row": 93,
+        "type": "INPUT",
+        "label": "Other investing activities",
+        "linked": false
+      },
+      {
+        "row": 94,
+        "type": "INPUT",
+        "label": "Net cash used in investing activities",
+        "linked": false
+      },
+      {
+        "row": 95,
+        "type": "LABEL",
+        "label": "Financing activities",
+        "linked": false
+      },
+      {
+        "row": 96,
+        "type": "INPUT",
+        "label": "Net payments related to stock-based award activities",
+        "linked": false
+      },
+      {
+        "row": 97,
+        "type": "INPUT",
+        "label": "Repurchases of capital stock",
+        "linked": false
+      },
+      {
+        "row": 98,
+        "type": "INPUT",
+        "label": "Proceeds from issuance of debt, net of costs",
+        "linked": false
+      },
+      {
+        "row": 99,
+        "type": "INPUT",
+        "label": "Repayments of debt",
+        "linked": false
+      },
+      {
+        "row": 100,
+        "type": "INPUT",
+        "label": "Proceeds from sale of interest in consolidated entities",
+        "linked": false
+      },
+      {
+        "row": 101,
+        "type": "INPUT",
+        "label": "Net cash used in financing activities",
+        "linked": false
+      },
+      {
+        "row": 102,
+        "type": "INPUT",
+        "label": "Effect of exchange rate changes on cash and cash equivalents",
+        "linked": false
+      },
+      {
+        "row": 103,
+        "type": "INPUT",
+        "label": "Net increase (decrease) in cash and cash equivalents",
+        "linked": false
+      },
+      {
+        "row": 104,
+        "type": "INPUT",
+        "label": "Cash and cash equivalents at beginning of period",
+        "linked": false
+      },
+      {
+        "row": 105,
+        "type": "INPUT",
+        "label": "Cash and cash equivalents at end of period",
+        "linked": false
+      },
+      {
+        "row": 107,
+        "type": "LABEL",
+        "label": "Supplemental disclosures of cash flow information",
+        "linked": false
+      },
+      {
+        "row": 108,
+        "type": "INPUT",
+        "label": "Cash paid for taxes, net of refunds",
+        "linked": false
+      }
+    ]
+  }
+}
