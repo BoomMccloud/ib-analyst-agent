@@ -4,11 +4,14 @@ SEC EDGAR Fetch Utilities
 Shared rate-limiting and HTTP fetch logic for SEC EDGAR requests.
 """
 
+import os
+import sys
 import time
 import urllib.error
 import urllib.request
 
-HEADERS = {"User-Agent": "SecFilingsAgent admin@example.com"}
+_contact = os.environ.get("SEC_CONTACT_EMAIL", "boommccloud@gmail.com")
+HEADERS = {"User-Agent": f"SecFilingsAgent {_contact}"}
 REQUEST_INTERVAL = 0.15  # seconds between requests (SEC rate limit)
 
 

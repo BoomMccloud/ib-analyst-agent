@@ -7,12 +7,17 @@ Output: JSON to stdout
 
 import argparse
 import json
+import os
 import sys
 import time
 import urllib.request
 import urllib.error
 
-HEADERS = {"User-Agent": "SecFilingsAgent admin@example.com"}
+_contact = os.environ.get("SEC_CONTACT_EMAIL")
+if not _contact:
+    print("Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)", file=sys.stderr)
+    sys.exit(1)
+HEADERS = {"User-Agent": f"SecFilingsAgent {_contact}"}
 TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
 
