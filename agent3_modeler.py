@@ -13,6 +13,7 @@ Requires: ANTHROPIC_API_KEY env var
 
 import argparse
 import json
+import os
 import sys
 
 from anthropic import Anthropic
@@ -264,6 +265,10 @@ def build_model(company: str, financials: dict, mda: dict) -> dict:
 
 
 def main():
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        print("Error: ANTHROPIC_API_KEY environment variable not set", file=sys.stderr)
+        sys.exit(1)
+
     parser = argparse.ArgumentParser(description="Agent 3: Build financial model from structured data")
     parser.add_argument("--sections-dir", help="Directory with extracted sections (from extract_sections.py)")
     parser.add_argument("--structured", help="Structured financials JSON (from structure_financials.py)")

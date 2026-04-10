@@ -17,6 +17,8 @@ Usage:
 
 import argparse
 import json
+import os
+import shutil
 import subprocess
 import sys
 
@@ -1322,7 +1324,7 @@ def build_cf_sheet(sid, is_refs, bs_refs, periods, forecast_periods):
         d = R(cf_code, label)
         for i in range(n):
             c = dcol(i)
-            if i == 0:
+            if i < nh:
                 d.append(sf(i, row_num))
             else:
                 sign = "-" if negate else ""
@@ -1410,9 +1412,13 @@ def build_cf_sheet(sid, is_refs, bs_refs, periods, forecast_periods):
 
     add([])
 
-    d = R("", "FX Effect")
+    fx_row_num = r() + 1
+    d = R("CF_FX", "FX / Reconciliation")
     for i in range(n):
-        d.append(0)
+        if i < nh:
+            d.append(sf(i, fx_row_num))
+        else:
+            d.append(0)
     fx = add(d)
 
     d = R("CF_NETCH", "Net Change in Cash")
@@ -1914,10 +1920,19 @@ def apply_formatting(sid, sheet_ids, is_refs, bs_refs, cf_refs, summary_info, pe
 # ---------------------------------------------------------------------------
 
 def main():
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        print("Error: ANTHROPIC_API_KEY environment variable not set", file=sys.stderr)
+        sys.exit(1)
+    if not shutil.which("gws"):
+        print("Error: 'gws' CLI not found on PATH (required for Google Sheets access)", file=sys.stderr)
+        sys.exit(1)
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--financials", required=True, nargs="+",
                         help="One or more structured financials JSON files (newest first)")
     parser.add_argument("--company", default="Unknown")
+    parser.add_argument("--skip-verify", action="store_true",
+                        help="Skip Python model verification (not recommended)")
     args = parser.parse_args()
 
     financials_list = []
@@ -1928,8 +1943,45 @@ def main():
 
     financials = _merge_financials(financials_list)
 
+    # --- Pre-flight: verify data with Python model ---
+    verified_items = None
+    if not args.skip_verify:
+        from pymodel import load_filing, compute_model, verify_model
+        print("Pre-flight: verifying data with Python model...", file=sys.stderr)
+        filing = load_filing(financials)
+        m = compute_model(filing)
+        errors = verify_model(m)
+        if errors:
+            print(f"\n*** {len(errors)} INVARIANT FAILURES — aborting ***", file=sys.stderr)
+            for name, period, delta in errors:
+                print(f"  {name}: {period} = {delta:,.0f}", file=sys.stderr)
+            print("\nFix data or use --skip-verify to override.", file=sys.stderr)
+            sys.exit(1)
+        print("  All invariants pass — proceeding to sheet build.", file=sys.stderr)
+        # Transfer computed values (CF_FX, reconciled CF_NETCH/ENDC/BEGC) back to items
+        verified_items = filing["items"]
+        all_p = m["all_periods"]
+        for code in ["CF_FX", "CF_NETCH", "CF_ENDC", "CF_BEGC"]:
+            if code in m["model"]:
+                vals = {}
+                for i, p in enumerate(all_p):
+                    v = m["model"][code][i]
+                    if v != 0:
+                        vals[p] = v
+                if vals:
+                    verified_items[code] = {"label": m["labels"].get(code, code), "values": vals}
+
     print("Classifying filing data...", file=sys.stderr)
-    filing_data = classify_filing(financials)
+    if verified_items:
+        # Use the verified items directly — no re-classification needed
+        periods = filing["periods"]
+        rows = []
+        for code, info in verified_items.items():
+            if info["values"]:
+                rows.append({"code": code, "label": info["label"], "values": info["values"]})
+        filing_data = {"periods": periods, "rows": rows}
+    else:
+        filing_data = classify_filing(financials)
     periods = filing_data["periods"]
     codes = [r["code"] for r in filing_data["rows"]]
     print(f"  {len(periods)} periods, {len(codes)} rows: {codes}", file=sys.stderr)
