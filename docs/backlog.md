@@ -6,6 +6,30 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 
 ## P0 — High Impact / Low Effort
 
+### 0. Restructure Pipeline into Decoupled 2-Phase State Machine
+
+**What:** The current pipeline is a monolithic forward-pass that tangles historical extraction and future forecasting. If a forecast assumption breaks the model, the entire run (including expensive historical parsing) crashes.
+
+**Impact:** Decoupling the pipeline into two strict, isolated phases creates a "save point" for historical data, isolates errors to the exact phase that caused them, and allows for instant re-running of forecasts without re-parsing raw SEC HTML.
+
+**What to do:**
+Break the pipeline into two strict phases:
+
+**Phase 1: Establish the "Ground Truth" (Filings → Verified Historical Baseline)**
+- **Strict Data Contracts:** Use Pydantic models and Anthropic Structured Outputs (Tool Use) to force the LLM to extract historical line items into a mathematically rigid schema.
+- **Strict Annual Periods (12-Month Filtering):** The pipeline defaults to 5 years. Force the extraction and Python engine to ignore partial-year or trailing-twelve-month (TTM) columns that often appear in filings, strictly populating the baseline only when full fiscal year data is available.
+- **Dynamic Chart of Accounts:** Treat SEC categories (e.g., Total Current Assets) as immutable parent totals. Allow the LLM to extract dynamic, company-specific child line items.
+- **Python Physics Engine:** Python maps these items, computes mathematical "Catch-Alls" (`Parent Total - Sum(Child Items)`) to tolerate minor LLM omissions, and verifies historical invariants (Assets = L+E).
+- **Historical Reconciliation Loop:** If the historical math breaks, Python identifies the exact period/statement and loops back to the LLM ("Assets are $5B higher than L+E in 2023. Re-examine the text.") until the historical base is perfectly balanced.
+- **Output:** A mathematically perfect `historical_baseline.json`.
+
+**Phase 2: The Forecast Layer (Historical Baseline + MD&A → Future Model)**
+- **Forecast Generation:** A separate process reads `historical_baseline.json` and the MD&A. The LLM acts purely as a forecaster, generating base assumptions (growth rates, unit economics). *The LLM is forbidden from doing arithmetic.*
+- **Sanity Checks & Feedback:** Python applies these drivers to the historical base to project the future. Python then calculates "Sanity Checks" (e.g., Implied Gross Margin, Implied Headcount). If sanity checks deviate wildly, Python triggers a loop back to the forecasting LLM ("Your unit growth assumption implies an impossible 90% gross margin. Revise.")
+- **Output Generation:** Python writes the combined data to Google Sheets, appending new "Rev Build", "Expense Build", and standalone "Sanity Checks" tabs. The generated sheet MUST retain live dynamic formulas and inline invariant checks so end-users can tweak assumptions seamlessly.
+
+---
+
 ### 1. Extract shared utilities into `sec_utils.py` and `llm_utils.py`
 
 **What:** `_throttle()`, `fetch_url()`, `HEADERS`, `REQUEST_INTERVAL` are copy-pasted across `fetch_10k.py`, `fetch_20f.py`, `lookup_company.py`, and `extract_sections.py`. JSON code-fence stripping and truncation recovery logic is duplicated in `structure_financials.py`, `agent3_modeler.py`, and `build_model_sheet.py`. `gws_write()`/`gws_batch_update()` appear in both spreadsheet files. `_flatten_bs()`, `_flatten_cf()`, `BS_CODE_DEFS`, and `CF_CODE_DEFS` are ~150 lines duplicated verbatim between `structure_financials.py` and `build_model_sheet.py`.
@@ -58,27 +82,12 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 **What to do:**
 - Wrap section processing in `concurrent.futures.ThreadPoolExecutor(max_workers=4)`.
 - Each section's `call_llm()` is already stateless — no shared mutable state to worry about.
-- Keep `print(stderr)` calls thread-safe (they already are in CPython due to GIL, but consider using `logging` — see item 12).
+- Keep `print(stderr)` calls thread-safe (they already are in CPython due to GIL, but consider using `logging` — see item 11).
 - Similarly parallelize the classification calls.
 
 ---
 
-### 5. Add inter-stage JSON schema validation
-
-**What:** There is zero validation of JSON contracts between stages. Stage 3 receives structured JSON from Stage 2b and passes it to the LLM as-is. Stage 4 accesses model JSON by key path (e.g., `model.get("revenue_model", {}).get("segments", [])`). If the LLM in Stage 3 outputs `"revenue_segments"` instead of `"revenue_model"`, Stage 4 silently produces an empty spreadsheet with no error.
-
-**Impact:** Silent data loss. The pipeline appears to succeed but the output spreadsheet is missing sections. This is the most dangerous failure mode because it's invisible.
-
-**What to do:**
-- Define expected schemas for each stage boundary (Stage 1 output, Stage 2b output, Stage 3 output).
-- Use `dataclasses` or `pydantic` models with required fields.
-- Validate at each stage's entry point: check required keys exist, types are correct, lists are non-empty where expected.
-- On validation failure, print a clear error listing missing/unexpected keys rather than silently producing partial output.
-- Start simple: even a `_validate_keys(data, required=["revenue_model", "expense_model", ...])` function would catch 90% of issues.
-
----
-
-### 6. Batch `gws` subprocess calls in Stage 4
+### 5. Batch `gws` subprocess calls in Stage 4
 
 **What:** `agent4_spreadsheet.py`'s `populate_annual()` makes one `subprocess.run(["gws", ...])` call per matched row — up to 30+ subprocess invocations per filing. Each spawns a new process, authenticates, and makes one Sheets API call.
 
@@ -91,7 +100,7 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 
 ---
 
-### 7. Deprecate `agent4_spreadsheet.py`
+### 6. Deprecate `agent4_spreadsheet.py`
 
 **What:** Two spreadsheet implementations exist. `agent4_spreadsheet.py` is template-based with hardcoded row numbers (lines 138-167 map to literal integers like `48`, `51`, `55`). `build_model_sheet.py` is code-driven with SUMIF formulas and short codes. The CLAUDE.md already acknowledges `build_model_sheet.py` is "more robust and maintainable."
 
@@ -105,21 +114,21 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 
 ---
 
-### 8. Remove dead code in `agent4_spreadsheet.py`
+### 7. Remove dead code in `agent4_spreadsheet.py`
 
 **What:** `label_to_row` dict (line 103) is built from the template row_map but is never used to resolve any of the three mapping dicts (`is_mapping`, `cf_mapping`, `bs_mapping`). The mappings use hardcoded integers instead.
 
 **Impact:** Misleading code. A developer reading the code would assume `label_to_row` drives the row resolution, when in fact it does nothing. This makes the template approach appear more dynamic than it is.
 
 **What to do:**
-- If deprecating `agent4_spreadsheet.py` (item 7), this is moot.
+- If deprecating `agent4_spreadsheet.py` (item 6), this is moot.
 - If keeping it, either wire `label_to_row` into the mapping resolution (making it actually dynamic) or delete it.
 
 ---
 
 ## P2 — Medium Impact / Medium Effort
 
-### 9. Centralize configuration
+### 8. Centralize configuration
 
 **What:** Model names (`SONNET = "claude-sonnet-4-6"`, `HAIKU = "claude-haiku-4-5-20251001"`), rate limits (`REQUEST_INTERVAL = 1.0 / 8`), truncation limits (`max_chars`, `max_section_chars`), and SEC EDGAR URLs are all hardcoded in source across multiple files. No config file, no environment variable overrides.
 
@@ -132,7 +141,7 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 
 ---
 
-### 10. Add prompt size guard in Stage 3
+### 9. Add prompt size guard in Stage 3
 
 **What:** `agent3_modeler.py` sends the full structured financials JSON (potentially hundreds of KB for multi-year, multi-segment companies) plus MD&A text to Sonnet in a single call with `max_tokens=16384` (line 229). No size check before the call.
 
@@ -146,7 +155,7 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 
 ---
 
-### 11. Validate SEC URLs in `extract_sections.py`
+### 10. Validate SEC URLs in `extract_sections.py`
 
 **What:** `extract_sections.py` takes a raw URL from the command line and passes it directly to `urllib.request.urlopen()` (line 251). No validation that the URL is from `sec.gov`.
 
@@ -158,7 +167,7 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 
 ---
 
-### 12. Add structured logging
+### 11. Add structured logging
 
 **What:** No file imports `logging`. All diagnostics go to `print(..., file=sys.stderr)`. Works for manual CLI usage but limits observability.
 
@@ -172,7 +181,7 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 
 ---
 
-### 13. Normalize cash flow format at the source
+### 12. Normalize cash flow format at the source
 
 **What:** The LLM in Stage 2b sometimes outputs cash flow data in "section-first" format (keys are `operating_activities`, `investing_activities`, etc.) instead of "period-first" format, despite explicit prompting. Both `build_model_sheet.py` (line 414, `_convert_section_first()`) and `structure_financials.py` (line 431, `_detect_cf_periods()`) have conversion functions to handle this ambiguity.
 
@@ -185,7 +194,7 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 
 ---
 
-### 14. Handle `[TRUNCATED]` marker in LLM prompts
+### 13. Handle `[TRUNCATED]` marker in LLM prompts
 
 **What:** `extract_sections.py` appends `"\n\n[TRUNCATED]"` (line 298) to sections exceeding `max_section_chars`. This string is fed to the LLM in Stage 2b without any mention in the prompt.
 
@@ -199,7 +208,7 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 
 ## P3 — Low Impact / Worth Noting
 
-### 15. Cache `company_tickers.json` locally
+### 14. Cache `company_tickers.json` locally
 
 **What:** `lookup_company.py` downloads the full SEC `company_tickers.json` (~1MB, 10K+ entries) on every invocation (line 68). The file changes infrequently (new tickers are rare).
 
@@ -212,7 +221,7 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 
 ---
 
-### 16. Cache filing HTML downloads
+### 15. Cache filing HTML downloads
 
 **What:** `extract_sections.py` downloads the full filing HTML on every run (line 251). A 10-K can be 10-20MB.
 
@@ -225,7 +234,7 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 
 ---
 
-### 17. Fix `_flatten_bs()` inner function scoping
+### 16. Fix `_flatten_bs()` inner function scoping
 
 **What:** In both `structure_financials.py` (line 376) and `build_model_sheet.py` (line 273), the inner `def collect(data, section_path)` is defined inside a `for period in periods:` loop, causing it to be redefined on every iteration.
 
@@ -237,7 +246,7 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 
 ---
 
-### 18. Add recursion depth limit to `_exact_search()`
+### 17. Add recursion depth limit to `_exact_search()`
 
 **What:** `agent4_spreadsheet.py`'s `_exact_search()` (line 196) recurses into nested dicts without a depth limit.
 
@@ -246,11 +255,11 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 **What to do:**
 - Add a `max_depth` parameter (default 10).
 - Return `None` if depth exceeded.
-- Moot if `agent4_spreadsheet.py` is deprecated (item 7).
+- Moot if `agent4_spreadsheet.py` is deprecated (item 6).
 
 ---
 
-### 19. Add unit tests for core parsing logic
+### 18. Add unit tests for core parsing logic
 
 **What:** Zero test files exist. Complex, brittle logic in `_flatten_bs()`, `_flatten_cf()`, `_convert_section_first()`, `html_to_text()`, `extract_toc()`, `match_toc_to_sections()`, `_extract_json()`, and the JSON truncation recovery is entirely untested.
 
@@ -267,19 +276,7 @@ Evaluation performed 2026-04-10. Ordered by priority within each tier.
 
 ---
 
-### 20. Stage 3 retry logic
-
-**What:** `agent3_modeler.py`'s `build_model()` (line 228) makes a single LLM call with no retry. `structure_financials.py`'s `call_llm()` has 2 attempts (line 240).
-
-**Impact:** A transient API error or malformed JSON response in Stage 3 crashes the entire pipeline with no recovery. The user must manually re-run after stages 1-2 already completed.
-
-**What to do:**
-- Add retry logic (2-3 attempts with exponential backoff) to the Stage 3 API call.
-- After extracting `llm_utils.py` (item 1), use the shared `call_llm()` wrapper with built-in retries.
-
----
-
-### 21. Headcount extraction heuristic
+### 19. Headcount extraction heuristic
 
 **What:** `extract_sections.py`'s `extract_headcount()` (line 235) picks `max(results, key=lambda r: r["count"])`, assuming the largest number is total headcount.
 

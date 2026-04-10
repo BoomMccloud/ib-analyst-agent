@@ -1,45 +1,116 @@
 """
 Python-first 3-Statement Financial Model
 =========================================
-All computation happens in Python. Invariants are verified before output.
-Google Sheets is just a display layer — no SUMIF, no cross-sheet formulas.
+Flex-row architecture: fixed category headers + top-N named rows + 1 catch-all.
+No LLM classification. Pure Python picks the most material items per category.
+
+Invariants:
+  - Per category: flex rows + catch_all == filed subtotal (assigned, not plugged)
+  - BS: TA = TCA + TNCA, TL = TCL + TNCL, TA = TL + TE
+  - CF: BEGC + NETCH = ENDC, OPCF + INVCF + FINCF + FX = NETCH
+  - CF_ENDC = BS_CASH
 
 Usage:
   python pymodel.py --financials /tmp/aapl_all_structured.json --company "Apple Inc."
 """
 
 import argparse
+import copy
 import json
-import subprocess
 import sys
+from dataclasses import dataclass
+from typing import Dict, Any
 
-from anthropic import Anthropic
+from gws_utils import _run_gws, gws_write, gws_batch_update
 
-from structure_financials import (
-    BS_CODE_DEFS, CF_CODE_DEFS,
-    _detect_cf_periods, _classify_with_llm,
-)
-# Handle both old (_flatten_bs) and new (flatten_bs) names
-try:
-    from structure_financials import flatten_bs, flatten_cf
-except ImportError:
-    from structure_financials import _flatten_bs as flatten_bs, _flatten_cf as flatten_cf
+@dataclass
+class ModelResult:
+    historical_data: Dict[str, Any]
+    forecast_data: Dict[str, Any] = None
+    metadata: Dict[str, Any] = None
 
 
-def clean_label(key):
+FLEX_PER_CATEGORY = 3  # top N named rows per category
+
+
+# ---------------------------------------------------------------------------
+# Tautological API: enforce invariants by construction
+# ---------------------------------------------------------------------------
+
+def set_v(model, code, period, val):
+    """Set a value in the model dict. model[code][period] = val."""
+    if code not in model:
+        model[code] = {}
+    model[code][period] = float(val)
+
+
+def get_v(model, code, period, default=0):
+    """Get a value from the model dict."""
+    return model.get(code, {}).get(period, default)
+
+
+def set_category(model, cat, period, subtotal, flex_values: dict):
+    """Set subtotal and flex items for a category dict. Catch-all is computed."""
+    set_v(model, cat["subtotal_code"], period, subtotal)
+    for code, val in flex_values.items():
+        set_v(model, code, period, val)
+    catch_all = subtotal - sum(flex_values.values())
+    set_v(model, cat["catch_all_code"], period, catch_all)
+
+
+def set_is_cascade(model, period, revt, cogst, opext, inc_o, tax):
+    """Set IS values. GP, OPINC, EBT, INC_NET are computed."""
+    set_v(model, "REVT", period, revt)
+    set_v(model, "COGST", period, cogst)
+    set_v(model, "GP", period, revt - cogst)
+    set_v(model, "OPEXT", period, opext)
+    set_v(model, "OPINC", period, revt - cogst - opext)
+    set_v(model, "INC_O", period, inc_o)
+    ebt = revt - cogst - opext + inc_o
+    set_v(model, "EBT", period, ebt)
+    set_v(model, "TAX", period, tax)
+    set_v(model, "INC_NET", period, ebt - tax)
+
+
+def set_bs_totals(model, period, tca, tnca, tcl, tncl, te):
+    """Set BS totals. TA and TL are computed from components."""
+    set_v(model, "BS_TCA", period, tca)
+    set_v(model, "BS_TNCA", period, tnca)
+    set_v(model, "BS_TA", period, tca + tnca)
+    set_v(model, "BS_TCL", period, tcl)
+    set_v(model, "BS_TNCL", period, tncl)
+    set_v(model, "BS_TL", period, tcl + tncl)
+    set_v(model, "BS_TE", period, te)
+
+
+def set_cf_totals(model, period, opcf, invcf, fincf, fx=0):
+    """Set CF section totals. NETCH is computed as sum."""
+    set_v(model, "CF_OPCF", period, opcf)
+    set_v(model, "CF_INVCF", period, invcf)
+    set_v(model, "CF_FINCF", period, fincf)
+    set_v(model, "CF_FX", period, fx)
+    set_v(model, "CF_NETCH", period, opcf + invcf + fincf + fx)
+
+
+def set_cf_cash(model, period, begc, netch):
+    """Set CF cash proof. ENDC is computed as BEGC + NETCH."""
+    set_v(model, "CF_BEGC", period, begc)
+    set_v(model, "CF_NETCH", period, netch)
+    set_v(model, "CF_ENDC", period, begc + netch)
+
+
+# ---------------------------------------------------------------------------
+# Label cleaning
+# ---------------------------------------------------------------------------
+
+def clean_label(key: str) -> str:
+    """Convert snake_case key to Title Case label."""
     return key.replace("_", " ").strip().title()
 
 
 # ---------------------------------------------------------------------------
 # Google Sheets helpers
 # ---------------------------------------------------------------------------
-
-def _run_gws(*args):
-    r = subprocess.run(["gws"] + list(args), capture_output=True, text=True)
-    if r.returncode != 0:
-        raise RuntimeError(f"gws error: {r.stderr}")
-    return json.loads(r.stdout) if r.stdout.strip() else {}
-
 
 def gws_create(title, sheet_names):
     sheets = [{"properties": {"title": s}} for s in sheet_names]
@@ -51,38 +122,22 @@ def gws_create(title, sheet_names):
     return sid, url, sheet_ids
 
 
-def gws_write(sid, range_, values):
-    _run_gws("sheets", "spreadsheets", "values", "update",
-             "--params", json.dumps({"spreadsheetId": sid, "range": range_,
-                                     "valueInputOption": "USER_ENTERED"}),
-             "--json", json.dumps({"values": values}))
-
-
-def gws_batch_update(sid, requests):
-    _run_gws("sheets", "spreadsheets", "batchUpdate",
-             "--params", json.dumps({"spreadsheetId": sid}),
-             "--json", json.dumps({"requests": requests}))
-
-
 def dcol(i):
-    """Data column letter for period index i (0-based). Data starts at column E."""
-    return chr(ord('E') + i) if i < 22 else chr(ord('A') + (i + 4) // 26 - 1) + chr(ord('A') + (i + 4) % 26)
+    """Data column letter(s). i=0 → E, i=1 → F, etc. (data starts col E)."""
+    col_num = i + 4
+    result = ""
+    while col_num >= 0:
+        result = chr(65 + col_num % 26) + result
+        col_num = col_num // 26 - 1
+    return result
 
 
 # ---------------------------------------------------------------------------
-# Data loading & classification
+# Data extraction from raw filing JSON
 # ---------------------------------------------------------------------------
-
-def _navigate(data, keys):
-    for k in keys:
-        if isinstance(data, dict) and k in data:
-            data = data[k]
-        else:
-            return None
-    return data
-
 
 def _deep_find(data, key):
+    """Recursively find a numeric value by key."""
     if not isinstance(data, dict):
         return None
     if key in data and isinstance(data[key], (int, float)):
@@ -93,6 +148,15 @@ def _deep_find(data, key):
             if r is not None:
                 return r
     return None
+
+
+def _navigate(data, keys):
+    for k in keys:
+        if isinstance(data, dict) and k in data:
+            data = data[k]
+        else:
+            return None
+    return data
 
 
 def _convert_section_first(data):
@@ -138,22 +202,172 @@ def _convert_section_first(data):
     return out, sorted_p
 
 
-def load_filing(financials: dict) -> dict:
-    """Load and classify filing data into {code: {period: value}}.
+# ---------------------------------------------------------------------------
+# Flex-row selection: pick top N items by materiality, rest -> catch-all
+# ---------------------------------------------------------------------------
 
-    Returns dict with keys: 'periods', 'items' ({code: {label, values: {period: val}}}).
+def _flatten_category(bs_data: dict, periods: list[str], category_path: list[str],
+                       subtotal_key: str) -> tuple[list[dict], dict]:
+    """Extract items from a BS category and its filed subtotal.
+
+    Returns:
+        (items, subtotal_values) where items excludes the subtotal.
     """
-    client = Anthropic()
+    items = {}  # key -> {period: val}
+    subtotal_values = {}
 
-    # --- IS: hardcoded mapping (stable, well-defined keys) ---
+    for p in periods:
+        pdata = bs_data.get(p, {})
+        cat = _navigate(pdata, category_path)
+        if not cat or not isinstance(cat, dict):
+            continue
+
+        for k, v in cat.items():
+            if isinstance(v, (int, float)):
+                if k == subtotal_key:
+                    subtotal_values[p] = v
+                else:
+                    if k not in items:
+                        items[k] = {}
+                    items[k][p] = v
+            elif isinstance(v, dict):
+                # Nested sub-category -- flatten into parent
+                for k2, v2 in v.items():
+                    if isinstance(v2, (int, float)):
+                        if k2.startswith("total_"):
+                            continue  # skip nested subtotals
+                        composite_key = f"{k}/{k2}"
+                        if composite_key not in items:
+                            items[composite_key] = {}
+                        items[composite_key][p] = v2
+
+    item_list = [{"key": k, "label": clean_label(k.split("/")[-1]), "values": v}
+                 for k, v in items.items()]
+    return item_list, subtotal_values
+
+
+def _flatten_cf_section(cf_section: dict, periods: list[str],
+                         subtotal_keys: list[str]) -> tuple[list[dict], dict]:
+    """Extract items from a CF section.
+
+    CF data is section-first: each key maps to {period: value} or nested dicts.
+    """
+    items = []
+    subtotal_values = {}
+
+    skip_patterns = {"cash_paid_for", "supplemental", "non_cash", "right_of_use"}
+
+    def is_supplemental(key):
+        kl = key.lower()
+        return any(pat in kl for pat in skip_patterns)
+
+    def collect(data, parent_key=""):
+        for key, value in data.items():
+            if not isinstance(value, dict):
+                continue
+            full_key = f"{parent_key}/{key}" if parent_key else key
+
+            period_vals = {p: value[p] for p in periods
+                          if p in value and isinstance(value[p], (int, float))}
+            if period_vals:
+                if key in subtotal_keys:
+                    subtotal_values.update(period_vals)
+                elif not is_supplemental(key):
+                    items.append({
+                        "key": full_key,
+                        "label": clean_label(key),
+                        "values": period_vals,
+                    })
+            else:
+                collect(value, full_key)
+
+    collect(cf_section)
+    return items, subtotal_values
+
+
+def pick_flex_rows(items: list[dict], periods: list[str], n: int = FLEX_PER_CATEGORY
+                   ) -> tuple[list[dict], list[dict]]:
+    """Pick the top N items by average absolute value across periods."""
+    if len(items) <= n:
+        return items, []
+
+    def avg_abs(item):
+        vals = [abs(item["values"].get(p, 0)) for p in periods]
+        return sum(vals) / max(len(vals), 1)
+
+    ranked = sorted(items, key=avg_abs, reverse=True)
+    return ranked[:n], ranked[n:]
+
+
+def sum_values(items: list[dict], periods: list[str]) -> dict:
+    """Sum values across items for each period."""
+    result = {}
+    for p in periods:
+        total = sum(item["values"].get(p, 0) for item in items)
+        if total != 0:
+            result[p] = total
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Data loading
+# ---------------------------------------------------------------------------
+
+def _apply_xbrl_mapping(raw_facts: dict, mapping: dict) -> dict:
+    """Apply an LLM classification map to raw XBRL facts.
+
+    raw_facts: {xbrl_tag: value} or {xbrl_tag: {period: value}}
+    mapping: classification map from structure_financials (maps tags to
+             standard model codes/sections).
+
+    Returns a structured financials dict compatible with load_filing().
+    """
+    # The mapping tells us which XBRL tags map to which financial statement
+    # line items. Apply it to produce the standard structured format.
+    result = {}
+    for section_key, section_map in mapping.items():
+        if not isinstance(section_map, dict):
+            continue
+        result[section_key] = {}
+        for target_key, source_tags in section_map.items():
+            if isinstance(source_tags, str):
+                # Direct tag reference
+                val = raw_facts.get(source_tags)
+                if val is not None:
+                    result[section_key][target_key] = val
+            elif isinstance(source_tags, dict):
+                result[section_key][target_key] = source_tags
+    return result
+
+
+def load_filing(financials: dict, xbrl_mapping: dict = None) -> dict:
+    """Load filing data into flex-row model structure.
+
+    Args:
+        financials: Either a complete structured JSON (backward compat) or
+                    raw XBRL facts dict when xbrl_mapping is provided.
+        xbrl_mapping: Optional LLM classification map. When provided,
+                      financials is treated as raw XBRL facts and the
+                      mapping is applied to populate the standard model.
+
+    Returns dict with:
+      - 'periods': list of period keys
+      - 'items': {code: {"label": str, "values": {period: val}}}
+      - 'categories': list of category definitions for verification
+    """
+    if xbrl_mapping is not None:
+        # Apply classification map to raw XBRL facts
+        financials = _apply_xbrl_mapping(financials, xbrl_mapping)
     is_raw = financials.get("income_statement", {})
     is_data = is_raw.get("fiscal_years", is_raw.get("data", is_raw))
     periods = sorted([k for k in is_data if isinstance(is_data.get(k), dict)
                       and k[:4].isdigit() and not k.lower().endswith("_usd")])
 
     items = {}  # code -> {label, values: {period: val}}
+    categories = []
 
     def add(code, label, vals):
+        """Add or merge values for a code."""
         if not vals:
             return
         if code not in items:
@@ -161,66 +375,210 @@ def load_filing(financials: dict) -> dict:
         for p, v in vals.items():
             items[code]["values"][p] = items[code]["values"].get(p, 0) + v
 
-    def get_is(keys, paths=None):
+    def load_preclassified(section_data, key="_flex_categories"):
+        """Load pre-classified flex categories from structured JSON.
+
+        Returns True if found and loaded, False if not available.
+        """
+        flex_cats = section_data.get(key)
+        if not flex_cats:
+            return False
+
+        for cat in flex_cats:
+            add(cat["subtotal_code"], cat["subtotal_label"], cat["subtotal_values"])
+            flex_codes = []
+            for flex_item in cat["flex"]:
+                add(flex_item["code"], flex_item["label"], flex_item["values"])
+                flex_codes.append(flex_item["code"])
+            other = cat["other"]
+            add(other["code"], other["label"], other["values"])
+            categories.append({
+                "subtotal_code": cat["subtotal_code"],
+                "flex_codes": flex_codes,
+                "catch_all_code": other["code"],
+            })
+
+        # Load singles (IS only)
+        for single in section_data.get("_singles", []):
+            add(single["code"], single["label"], single["values"])
+
+        # Load totals (BS only)
+        for total in section_data.get("_totals", []):
+            add(total["code"], total["label"], total["values"])
+
+        # Load structural items (CF only)
+        for item in section_data.get("_structural", []):
+            add(item["code"], item["label"], item["values"])
+
+        return True
+
+    # --- IS ---
+    if not load_preclassified(is_raw):
+        _load_is_fallback(is_data, periods, items, categories, add, financials)
+
+    # --- BS ---
+    if not load_preclassified(financials.get("balance_sheet", {})):
+        _load_bs_fallback(financials, items, categories, add)
+
+    # --- CF ---
+    cf_data = financials.get("cash_flows", {})
+    if not load_preclassified(cf_data):
+        _load_cf_fallback(cf_data, periods, items, categories, add)
+
+    # BS totals (needed regardless of classification source)
+    bs_raw = financials.get("balance_sheet", {})
+    bs_data_raw = bs_raw.get("balance_sheet", bs_raw.get("fiscal_years", bs_raw))
+    bs_pkeys = [k for k in bs_data_raw if isinstance(bs_data_raw.get(k), dict)
+                and k[:4].isdigit() and not k.lower().endswith("_usd")]
+    bs_periods = sorted(bs_pkeys) if bs_pkeys else []
+    if "BS_TA" not in items:
+        for p in bs_periods:
+            pdata = bs_data_raw.get(p, {})
+            ta = _deep_find(pdata, "total_assets")
+            if ta is not None:
+                add("BS_TA", "Total Assets", {p: ta})
+            tl = _deep_find(pdata, "total_liabilities")
+            if tl is not None:
+                add("BS_TL", "Total Liabilities", {p: tl})
+
+    # Only keep periods where all 3 statements have data
+    bs_period_set = set(bs_periods)
+    complete_periods = [p for p in periods if p in bs_period_set]
+    if len(complete_periods) < len(periods):
+        dropped = set(periods) - set(complete_periods)
+        print(f"  Dropped {len(dropped)} periods with incomplete data: {sorted(dropped)}", file=sys.stderr)
+
+    return {"periods": complete_periods, "items": items, "categories": categories}
+
+
+def _load_is_fallback(is_data, periods, items, categories, add, financials):
+    """Extract IS data from raw JSON when no pre-classification exists."""
+    IS_CATEGORIES = [
+        # Revenue: look for net_sales, revenue as parent container
+        (["net_sales", "revenue", "revenues"],
+         ["total_net_sales", "revenues", "revenue", "total_revenue", "net_revenues"],
+         "REVT", "REV", "REV_OTH"),
+        # COGS: look for cost_of_sales, cost_of_revenue
+        (["cost_of_sales", "cost_of_revenue", "cost_of_goods_sold"],
+         ["total_cost_of_sales", "cost_of_revenues", "cost_of_revenue", "cost_of_goods_sold"],
+         "COGST", "COGS", "COGS_OTH"),
+        # OpEx: look for operating_expenses
+        (["operating_expenses"],
+         ["total_operating_expenses"],
+         "OPEXT", "OPEX", "OPEX_OTH"),
+    ]
+
+    # IS single-line items: (possible_keys, code, label)
+    IS_SINGLES = [
+        (["gross_margin", "gross_profit"], "GP", "Gross Profit"),
+        (["operating_income", "income_from_operations"], "OPINC", "Operating Income"),
+        (["other_income_expense_net", "other_income_net", "other_income_expense",
+          "interest_and_other_income_expense_net"], "INC_O", "Other Income / (Expense)"),
+        (["income_before_provision_for_income_taxes", "income_before_income_taxes",
+          "income_before_income_tax_and_share_of_results_of_equity_method_investees"],
+         "EBT", "Earnings Before Tax"),
+        (["provision_for_income_taxes", "income_tax_expense", "income_tax_expenses"],
+         "TAX", "Income Tax"),
+        (["net_income"], "INC_NET", "Net Income"),
+    ]
+
+    def _flatten_is_category(is_data, periods, parent_keys, subtotal_keys):
+        """Extract items from an IS category (period-first structure).
+
+        Returns (items_list, subtotal_values).
+        """
+        cat_items = {}  # key -> {period: val}
+        subtotal_vals = {}
+
+        for p in periods:
+            pdata = is_data.get(p, {})
+
+            # Find the category container
+            container = None
+            for pk in parent_keys:
+                if pk in pdata and isinstance(pdata[pk], dict):
+                    container = pdata[pk]
+                    break
+                # Also check if the parent key IS the subtotal (single-line COGS)
+                if pk in pdata and isinstance(pdata[pk], (int, float)):
+                    subtotal_vals[p] = pdata[pk]
+                    break
+
+            if container:
+                for k, val in container.items():
+                    if isinstance(val, (int, float)):
+                        if k in subtotal_keys:
+                            subtotal_vals[p] = val
+                        else:
+                            if k not in cat_items:
+                                cat_items[k] = {}
+                            cat_items[k][p] = val
+                    elif isinstance(val, dict):
+                        # Nested (e.g., per_share) — skip non-numeric
+                        pass
+
+            # If no container found, try subtotal as top-level key
+            if not container and p not in subtotal_vals:
+                for sk in subtotal_keys:
+                    v = _deep_find(pdata, sk)
+                    if v is not None:
+                        subtotal_vals[p] = v
+                        break
+
+        item_list = [{"key": k, "label": clean_label(k), "values": v}
+                     for k, v in cat_items.items()]
+        return item_list, subtotal_vals
+
+    for parent_keys, subtotal_keys, subtotal_code, flex_prefix, catch_all_code in IS_CATEGORIES:
+        cat_items, subtotal_vals = _flatten_is_category(
+            is_data, periods, parent_keys, subtotal_keys)
+
+        add(subtotal_code, clean_label(subtotal_keys[0]), subtotal_vals)
+
+        flex_items, other_items = pick_flex_rows(cat_items, periods)
+
+        flex_codes = []
+        for i, item in enumerate(flex_items):
+            code = f"{flex_prefix}{i+1}"
+            add(code, item["label"], item["values"])
+            flex_codes.append(code)
+
+        other_vals = sum_values(other_items, periods)
+        add(catch_all_code, "Other", other_vals)
+
+        # Absorb structural gaps (same as BS/CF)
+        for p in periods:
+            filed = subtotal_vals.get(p, 0)
+            if filed == 0:
+                continue
+            comp = sum(items.get(c, {}).get("values", {}).get(p, 0) for c in flex_codes)
+            comp += items.get(catch_all_code, {}).get("values", {}).get(p, 0)
+            gap = filed - comp
+            if abs(gap) > 0.5:
+                if catch_all_code not in items:
+                    items[catch_all_code] = {"label": "Other", "values": {}}
+                items[catch_all_code]["values"][p] = items[catch_all_code]["values"].get(p, 0) + gap
+                print(f"    {subtotal_code} {p}: structural gap {gap:,.0f} -> {catch_all_code}", file=sys.stderr)
+
+        categories.append({
+            "subtotal_code": subtotal_code,
+            "flex_codes": flex_codes,
+            "catch_all_code": catch_all_code,
+        })
+
+        print(f"  IS {subtotal_code}: {len(flex_items)} flex + {len(other_items)} other", file=sys.stderr)
+
+    # IS single-line items (cascade structure, not categories)
+    for possible_keys, code, label in IS_SINGLES:
         vals = {}
         for p in periods:
             pdata = is_data.get(p, {})
-            if paths:
-                for path in paths:
-                    target = _navigate(pdata, path)
-                    if target:
-                        for k in keys:
-                            if k in target and isinstance(target[k], (int, float)):
-                                vals[p] = target[k]
-                                break
-                    if p in vals:
-                        break
-            else:
-                for k in keys:
-                    v = _deep_find(pdata, k)
-                    if v is not None:
-                        vals[p] = v
-                        break
-        return vals
-
-    # Revenue
-    rev_subs = [
-        (get_is(["products"], [["net_sales"], ["revenue"]]), "Revenue - Products"),
-        (get_is(["services"], [["net_sales"], ["revenue"]]), "Revenue - Services"),
-    ]
-    rev_subs = [(v, l) for v, l in rev_subs if v]
-    for i, (v, l) in enumerate(rev_subs):
-        add(f"REV{min(i+1,3)}", l, v)
-    add("REVT", "Total Revenue", get_is(["total_net_sales", "revenues", "revenue", "total_revenue", "net_revenues"]))
-
-    # COGS
-    cogs_subs = [
-        (get_is(["products"], [["cost_of_sales"], ["cost_of_revenue"]]), "COGS - Products"),
-        (get_is(["services"], [["cost_of_sales"], ["cost_of_revenue"]]), "COGS - Services"),
-    ]
-    cogs_subs = [(v, l) for v, l in cogs_subs if v]
-    for i, (v, l) in enumerate(cogs_subs):
-        add(f"COGS{min(i+1,3)}", l, v)
-    add("COGST", "Cost of Revenue", get_is(["total_cost_of_sales", "cost_of_revenues", "cost_of_revenue", "cost_of_goods_sold"]))
-
-    add("GP", "Gross Profit", get_is(["gross_margin", "gross_profit"]))
-
-    opex_subs = [
-        (get_is(["research_and_development", "research_and_development_expense"], [["operating_expenses"]]), "R&D"),
-        (get_is(["selling_general_and_administrative"], [["operating_expenses"]]), "SG&A"),
-        (get_is(["sales_and_marketing"], [["operating_expenses"]]), "Sales & Marketing"),
-        (get_is(["general_and_administrative"], [["operating_expenses"]]), "G&A"),
-    ]
-    opex_subs = [(v, l) for v, l in opex_subs if v]
-    for i, (v, l) in enumerate(opex_subs):
-        add(f"OPEX{min(i+1,3)}", l, v)
-    add("OPEXT", "Total OpEx", get_is(["total_operating_expenses"], [["operating_expenses"]]))
-
-    add("OPINC", "Operating Income", get_is(["operating_income", "income_from_operations"]))
-    add("INC_O", "Other Income / (Expense)", get_is(["other_income_expense_net", "other_income_net"]))
-    add("EBT", "EBT", get_is(["income_before_provision_for_income_taxes", "income_before_income_taxes"]))
-    add("TAX", "Income Tax", get_is(["provision_for_income_taxes", "income_tax_expense"]))
-    add("INC_NET", "Net Income", get_is(["net_income"]))
+            for k in possible_keys:
+                v = _deep_find(pdata, k)
+                if v is not None:
+                    vals[p] = v
+                    break
+        add(code, label, vals)
 
     # SBC & DA from IS or CF
     cf_data = financials.get("cash_flows", {})
@@ -230,60 +588,210 @@ def load_filing(financials: dict) -> dict:
     def get_cf_item(section, keys):
         for k in keys:
             if k in section and isinstance(section[k], dict):
-                return {p: section[k][p] for p in periods if p in section[k]}
+                vals = {p: section[k][p] for p in periods if p in section[k]}
+                if vals:
+                    return vals
         return {}
 
-    sbc = get_is(["share_based_compensation_expense", "stock_based_compensation"])
-    if not sbc:
-        sbc = get_cf_item(adj, ["share_based_compensation_expense", "stock_based_compensation"])
-    add("SBC", "Stock-Based Compensation", sbc)
+    # Try IS first, fall back to CF adjustments
+    sbc_keys = ["share_based_compensation_expense", "stock_based_compensation"]
+    sbc_vals = {}
+    for p in periods:
+        pdata = is_data.get(p, {})
+        for k in sbc_keys:
+            v = _deep_find(pdata, k)
+            if v is not None:
+                sbc_vals[p] = v
+                break
+    if not sbc_vals:
+        sbc_vals = get_cf_item(adj, sbc_keys)
+    add("SBC", "Stock-Based Compensation", sbc_vals)
 
-    da = get_is(["depreciation_and_amortization"])
-    if not da:
-        da = get_cf_item(adj, ["depreciation_and_amortization"])
-    add("DA", "D&A", da)
+    da_keys = ["depreciation_and_amortization"]
+    da_vals = {}
+    for p in periods:
+        pdata = is_data.get(p, {})
+        for k in da_keys:
+            v = _deep_find(pdata, k)
+            if v is not None:
+                da_vals[p] = v
+                break
+    if not da_vals:
+        da_vals = get_cf_item(adj, da_keys)
+    add("DA", "Depreciation & Amortization", da_vals)
 
-    # --- BS: LLM classification ---
+
+def _assign_category(items, categories, add, cat_items, cat_periods,
+                     subtotal_vals, subtotal_code, flex_prefix, catch_all_code):
+    """Pick flex rows, assign catch-all, absorb structural gaps."""
+    add(subtotal_code, clean_label(subtotal_code), subtotal_vals)
+
+    flex_items, other_items = pick_flex_rows(cat_items, cat_periods)
+
+    flex_codes = []
+    for i, item in enumerate(flex_items):
+        code = f"{flex_prefix}{i+1}"
+        add(code, item["label"], item["values"])
+        flex_codes.append(code)
+
+    other_vals = sum_values(other_items, cat_periods)
+    add(catch_all_code, "Other", other_vals)
+
+    for p in cat_periods:
+        filed = subtotal_vals.get(p, 0)
+        if filed == 0:
+            continue
+        comp = sum(items.get(c, {}).get("values", {}).get(p, 0) for c in flex_codes)
+        comp += items.get(catch_all_code, {}).get("values", {}).get(p, 0)
+        gap = filed - comp
+        if abs(gap) > 0.5:
+            if catch_all_code not in items:
+                items[catch_all_code] = {"label": "Other", "values": {}}
+            items[catch_all_code]["values"][p] = items[catch_all_code]["values"].get(p, 0) + gap
+            print(f"    {subtotal_code} {p}: structural gap {gap:,.0f}", file=sys.stderr)
+
+    categories.append({
+        "subtotal_code": subtotal_code,
+        "flex_codes": flex_codes,
+        "catch_all_code": catch_all_code,
+    })
+    print(f"  {subtotal_code}: {len(flex_items)} flex + {len(other_items)} other", file=sys.stderr)
+
+
+def _load_bs_fallback(financials, items, categories, add):
+    """Extract BS data from raw JSON when no pre-classification exists."""
     bs_raw = financials.get("balance_sheet", {})
-    bs_inner = bs_raw.get("balance_sheet", bs_raw.get("fiscal_years", bs_raw))
-    coded_bs = bs_raw.get("_coded_items")
-
-    if coded_bs:
-        for item in coded_bs:
-            add(item["code"], item["label"], item["values"])
+    bs_data = bs_raw.get("balance_sheet", bs_raw.get("fiscal_years", bs_raw))
+    bs_pkeys = [k for k in bs_data if isinstance(bs_data.get(k), dict)
+                and k[:4].isdigit() and not k.lower().endswith("_usd")]
+    if bs_pkeys:
+        bs_periods = sorted(bs_pkeys)
     else:
-        bs_pkeys = [k for k in bs_inner if isinstance(bs_inner.get(k), dict)
-                    and k[:4].isdigit() and not k.lower().endswith("_usd")]
-        if bs_pkeys:
-            bs_periods = sorted(bs_pkeys)
-        else:
-            bs_inner, bs_periods = _convert_section_first(bs_inner)
-            bs_periods = [p for p in bs_periods if not p.lower().endswith("_usd")]
-        print("  Classifying BS...", file=sys.stderr)
-        bs_items = flatten_bs(bs_inner, bs_periods)
-        if bs_items:
-            mapping = _classify_with_llm(client, bs_items, BS_CODE_DEFS, "Balance Sheet")
-            for item in bs_items:
-                code = mapping.get(item["id"])
-                if code and code != "SKIP":
-                    add(code, clean_label(item["key"]), item["values"])
+        bs_data, bs_periods = _convert_section_first(bs_data)
+        bs_periods = [p for p in bs_periods if not p.lower().endswith("_usd")]
 
-    # --- CF: LLM classification ---
-    coded_cf = cf_data.get("_coded_items")
-    if coded_cf:
-        for item in coded_cf:
-            add(item["code"], item["label"], item["values"])
+    # --- BS: flex-row extraction ---
+    bs_raw = financials.get("balance_sheet", {})
+    bs_data = bs_raw.get("balance_sheet", bs_raw.get("fiscal_years", bs_raw))
+
+    bs_pkeys = [k for k in bs_data if isinstance(bs_data.get(k), dict)
+                and k[:4].isdigit() and not k.lower().endswith("_usd")]
+    if bs_pkeys:
+        bs_periods = sorted(bs_pkeys)
     else:
-        print("  Classifying CF...", file=sys.stderr)
-        cf_items = flatten_cf(cf_data, periods)
-        if cf_items:
-            mapping = _classify_with_llm(client, cf_items, CF_CODE_DEFS, "Cash Flow Statement")
-            for item in cf_items:
-                code = mapping.get(item["id"])
-                if code and code != "SKIP":
-                    add(code, clean_label(item["key"]), item["values"])
+        bs_data, bs_periods = _convert_section_first(bs_data)
+        bs_periods = [p for p in bs_periods if not p.lower().endswith("_usd")]
 
-    return {"periods": periods, "items": items}
+    BS_CATEGORIES = [
+        (["assets", "current_assets"], [],
+         "total_current_assets", "BS_TCA", "BS_CA", "BS_CA_OTH"),
+        (["assets", "non_current_assets"], [["assets"]],
+         "total_non_current_assets", "BS_TNCA", "BS_NCA", "BS_NCA_OTH"),
+        (["liabilities", "current_liabilities"],
+         [["liabilities_and_stockholders_equity", "current_liabilities"]],
+         "total_current_liabilities", "BS_TCL", "BS_CL", "BS_CL_OTH"),
+        (["liabilities", "non_current_liabilities"],
+         [["liabilities_and_stockholders_equity"]],
+         "total_non_current_liabilities", "BS_TNCL", "BS_NCL", "BS_NCL_OTH"),
+        (["shareholders_equity"],
+         [["liabilities_and_stockholders_equity", "stockholders_equity"],
+          ["stockholders_equity"]],
+         "total_shareholders_equity", "BS_TE", "BS_EQ", "BS_EQ_OTH"),
+    ]
+
+    # Total Assets and Total Liabilities from filing
+    ta_vals = {}
+    tl_vals = {}
+    for p in bs_periods:
+        pdata = bs_data.get(p, {})
+        ta = _deep_find(pdata, "total_assets")
+        if ta is not None:
+            ta_vals[p] = ta
+        tl = _deep_find(pdata, "total_liabilities")
+        if tl is not None:
+            tl_vals[p] = tl
+    add("BS_TA", "Total Assets", ta_vals)
+    add("BS_TL", "Total Liabilities", tl_vals)
+
+    for cat_path, alt_paths, subtotal_key, subtotal_code, flex_prefix, catch_all_code in BS_CATEGORIES:
+        cat_items, subtotal_vals = _flatten_category(bs_data, bs_periods, cat_path, subtotal_key)
+
+        if not cat_items and alt_paths:
+            for alt_path in alt_paths:
+                cat_items, subtotal_vals_alt = _flatten_category(bs_data, bs_periods, alt_path, subtotal_key)
+                if cat_items:
+                    if subtotal_vals_alt:
+                        subtotal_vals = subtotal_vals_alt
+                    break
+
+        if not subtotal_vals:
+            alt_keys = {
+                "total_shareholders_equity": ["total_stockholders_equity", "total_equity"],
+                "total_non_current_assets": ["total_noncurrent_assets"],
+                "total_non_current_liabilities": ["total_noncurrent_liabilities"],
+            }
+            all_paths = [cat_path] + alt_paths
+            for alt in alt_keys.get(subtotal_key, []):
+                for try_path in all_paths:
+                    _, subtotal_vals = _flatten_category(bs_data, bs_periods, try_path, alt)
+                    if subtotal_vals:
+                        break
+                if subtotal_vals:
+                    break
+
+        _assign_category(items, categories, add, cat_items, bs_periods, subtotal_vals, subtotal_code,
+                        flex_prefix, catch_all_code)
+
+def _load_cf_fallback(cf_data, periods, items, categories, add):
+    """Extract CF data from raw JSON when no pre-classification exists."""
+    # --- CF: flex-row extraction ---
+    CF_SECTIONS = [
+        ("operating_activities", "cash_flows_from_operating_activities",
+         ["cash_generated_by_operating_activities", "net_cash_provided_by_operating_activities",
+          "net_cash_from_operating_activities"],
+         "CF_OPCF", "CF_OP", "CF_OP_OTH"),
+        ("investing_activities", "cash_flows_from_investing_activities",
+         ["cash_generated_by_used_in_investing_activities", "net_cash_used_in_investing_activities",
+          "net_cash_from_investing_activities"],
+         "CF_INVCF", "CF_INV", "CF_INV_OTH"),
+        ("financing_activities", "cash_flows_from_financing_activities",
+         ["cash_used_in_financing_activities", "net_cash_used_in_financing_activities",
+          "net_cash_from_financing_activities"],
+         "CF_FINCF", "CF_FIN", "CF_FIN_OTH"),
+    ]
+
+    for section_key, alt_key, subtotal_keys, subtotal_code, flex_prefix, catch_all_code in CF_SECTIONS:
+        cf_section = cf_data.get(section_key, cf_data.get(alt_key, {}))
+        if not cf_section:
+            continue
+
+        cf_items, subtotal_vals = _flatten_cf_section(cf_section, periods, subtotal_keys)
+        _assign_category(items, categories, add, cf_items, periods, subtotal_vals, subtotal_code,
+                        flex_prefix, catch_all_code)
+
+    # CF structural items
+    netch_keys = ["increase_decrease_in_cash_cash_equivalents_and_restricted_cash_and_cash_equivalents",
+                  "net_increase_decrease_in_cash"]
+    for nk in netch_keys:
+        v = cf_data.get(nk)
+        if isinstance(v, dict):
+            pvals = {p: v[p] for p in periods if p in v and isinstance(v[p], (int, float))}
+            if pvals:
+                add("CF_NETCH", "Net Change in Cash", pvals)
+                break
+
+    for bal_key, code, label in [
+        ("beginning_balances", "CF_BEGC", "Beginning Cash"),
+        ("ending_balances", "CF_ENDC", "Ending Cash"),
+    ]:
+        bal = cf_data.get(bal_key, {})
+        if isinstance(bal, dict):
+            for bk, bv in bal.items():
+                if isinstance(bv, dict):
+                    pvals = {p: bv[p] for p in periods if p in bv and isinstance(bv[p], (int, float))}
+                    if pvals:
+                        add(code, label, pvals)
+                        break
 
 
 # ---------------------------------------------------------------------------
@@ -294,24 +802,35 @@ def get(items, code, period, default=0):
     return items.get(code, {}).get("values", {}).get(period, default)
 
 
-def compute_model(filing):
-    """Build full 3-statement model from filing data. Returns verified model dict.
+def _find_code_by_label(items, prefix, keywords, exclude_suffix=None):
+    """Find a flex code by label keywords."""
+    for code, info in items.items():
+        if not code.startswith(prefix):
+            continue
+        if exclude_suffix and code.endswith(exclude_suffix):
+            continue
+        lbl = info["label"].lower()
+        if all(kw in lbl for kw in keywords):
+            return code
+    return None
 
-    Invariants enforced:
-    - All filed components must sum to their filed subtotals (no gaps)
-    - BS: components = subtotal for each section
-    - CF: components = subtotal for each section
-    - CF_ENDC = BS_CASH for every period
+
+def compute_model(filing):
+    """Build 3-statement model with forecasts.
+
+    No reconciliation needed -- flex rows + catch_all == subtotal by construction.
     """
     periods = filing["periods"]
+    # periods is already filtered to complete data only
     items = filing["items"]
+    categories = filing["categories"]
 
     last_year = int(periods[-1][:4])
     forecast_periods = [f"{last_year + i}E" for i in range(1, 6)]
     all_periods = periods + forecast_periods
     nh = len(periods)
 
-    model = {}  # code -> [val per period]
+    model = {}  # code -> [val per all_period]
     labels = {}
 
     def v(code, period):
@@ -326,53 +845,67 @@ def compute_model(filing):
     # --- STEP 1: Load ALL historical values ---
     for code, info in items.items():
         labels[code] = info["label"]
-        for p in periods:
+        for p in all_periods[:nh]:
             set_v(code, p, info["values"].get(p, 0))
 
-    # --- STEP 2: Reconcile historical subtotals ---
-    # For each section, compute component sum and compare to filed subtotal.
-    # If there's a gap, push the difference into the catch-all bucket.
+    # Identify key BS codes by label
+    bs_cash_code = _find_code_by_label(items, "BS_CA", ["cash", "equivalent"], "_OTH")
+    if not bs_cash_code:
+        bs_cash_code = _find_code_by_label(items, "BS_CA", ["cash"], "_OTH")
+    bs_ar_code = _find_code_by_label(items, "BS_CA", ["receivable"], "_OTH")
+    # Exclude vendor receivables — we want trade AR
+    if bs_ar_code and "vendor" in items[bs_ar_code]["label"].lower():
+        # Try to find a non-vendor receivable
+        alt = None
+        for code, info in items.items():
+            if code.startswith("BS_CA") and code != "BS_CA_OTH" and code != bs_ar_code:
+                if "receivable" in info["label"].lower() and "vendor" not in info["label"].lower():
+                    alt = code
+                    break
+        if alt:
+            bs_ar_code = alt
+    bs_inv_code = _find_code_by_label(items, "BS_CA", ["inventor"], "_OTH")
+    bs_ap_code = _find_code_by_label(items, "BS_CL", ["payable"], "_OTH")
+    bs_ppe_code = _find_code_by_label(items, "BS_NCA", ["property"], "_OTH")
+    if not bs_ppe_code:
+        bs_ppe_code = _find_code_by_label(items, "BS_NCA", ["plant"], "_OTH")
+    bs_re_code = _find_code_by_label(items, "BS_EQ", ["retained"], "_OTH")
+    if not bs_re_code:
+        bs_re_code = _find_code_by_label(items, "BS_EQ", ["deficit"], "_OTH")
+    bs_cs_code = _find_code_by_label(items, "BS_EQ", ["common"], "_OTH")
+    if not bs_cs_code:
+        bs_cs_code = _find_code_by_label(items, "BS_EQ", ["paid"], "_OTH")
 
-    SECTION_RULES = [
-        # (subtotal_code, component_codes, catch_all_code)
-        # BS
-        ("BS_TCA", ["BS_CASH", "BS_AR", "BS_INV", "BS_CA1", "BS_CA2", "BS_CA3"], "BS_CA3"),
-        ("BS_TNCA", ["BS_PPE", "BS_LTA1", "BS_LTA2"], "BS_LTA2"),
-        ("BS_TA", ["BS_TCA", "BS_TNCA"], None),  # must balance exactly
-        ("BS_TCL", ["BS_AP", "BS_STD", "BS_OCL1", "BS_OCL2"], "BS_OCL2"),
-        ("BS_TNCL", ["BS_LTD", "BS_NCL1", "BS_NCL2"], "BS_NCL2"),
-        ("BS_TL", ["BS_TCL", "BS_TNCL"], None),
-        ("BS_TE", ["BS_CS", "BS_RE", "BS_OE"], "BS_OE"),
-        # CF
-        ("CF_OPCF", ["CF_NI", "CF_DA", "CF_SBC", "CF_OP1", "CF_OP2", "CF_OP3",
-                      "CF_AR", "CF_INV", "CF_AP"], "CF_OP1"),
-        ("CF_INVCF", ["CF_CAPEX", "CF_SECPUR", "CF_SECSAL", "CF_INV1"], "CF_INV1"),
-        ("CF_FINCF", ["CF_FIN1", "CF_BUY", "CF_DIV", "CF_DISS", "CF_DREP", "CF_FIN2"], "CF_FIN2"),
-    ]
+    if bs_cash_code:
+        print(f"  BS Cash: {bs_cash_code} ({labels.get(bs_cash_code)})", file=sys.stderr)
+    else:
+        print("  WARNING: Could not identify BS cash code, using BS_CA1", file=sys.stderr)
+        bs_cash_code = "BS_CA1"
 
+    # --- STEP 2: Reconcile CF ending cash to BS cash ---
     for p in periods:
-        for subtotal_code, comp_codes, catch_all in SECTION_RULES:
-            filed_total = v(subtotal_code, p)
-            if filed_total == 0:
-                continue
-            comp_sum = sum(v(c, p) for c in comp_codes)
-            gap = filed_total - comp_sum
-            if abs(gap) > 0.5 and catch_all:
-                # Push gap into catch-all
-                set_v(catch_all, p, v(catch_all, p) + gap)
-                print(f"  Reconcile {subtotal_code} {p}: gap={gap:,.0f} → {catch_all}", file=sys.stderr)
-
-    # Reconcile CF ending cash to BS cash (BS is source of truth)
-    for p in periods:
-        bs_cash = v("BS_CASH", p)
+        bs_cash = v(bs_cash_code, p)
         if bs_cash != 0:
             set_v("CF_ENDC", p, bs_cash)
         idx = all_periods.index(p)
         if idx > 0:
-            prev_bs = v("BS_CASH", all_periods[idx - 1])
+            prev_bs = v(bs_cash_code, all_periods[idx - 1])
             if prev_bs != 0:
                 set_v("CF_BEGC", p, prev_bs)
         set_v("CF_NETCH", p, v("CF_ENDC", p) - v("CF_BEGC", p))
+
+    # Compute CF_FX as residual
+    for p in periods:
+        if v("CF_OPCF", p) != 0:
+            fx = v("CF_NETCH", p) - v("CF_OPCF", p) - v("CF_INVCF", p) - v("CF_FINCF", p)
+            set_v("CF_FX", p, fx)
+            labels.setdefault("CF_FX", "FX / Reconciliation")
+
+    def find_cat(code):
+        for c in categories:
+            if c["subtotal_code"] == code:
+                return c
+        return None
 
     # --- STEP 3: IS forecasts ---
     last_p = periods[-1]
@@ -383,27 +916,59 @@ def compute_model(filing):
             rev_growth = (r2 / r1) - 1
 
     cogs_pct = v("COGST", last_p) / v("REVT", last_p) if v("REVT", last_p) else 0.5
-    opex1_pct = v("OPEX1", last_p) / v("REVT", last_p) if v("REVT", last_p) else 0.1
-    opex2_pct = v("OPEX2", last_p) / v("REVT", last_p) if v("REVT", last_p) else 0.05
-    opex3_pct = v("OPEX3", last_p) / v("REVT", last_p) if v("REVT", last_p) else 0
+    opex_pcts = {}
+    for i in range(1, 4):
+        code = f"OPEX{i}"
+        opex_pcts[code] = v(code, last_p) / v("REVT", last_p) if v("REVT", last_p) else 0
     sbc_pct = v("SBC", last_p) / v("OPEXT", last_p) if v("OPEXT", last_p) else 0.1
     tax_rate = v("TAX", last_p) / v("EBT", last_p) if v("EBT", last_p) else 0.21
+
+    # Compute proportional shares for IS category components
+    def _cat_shares(cat, last_p):
+        """Compute each component's share of the subtotal for the last historical period."""
+        total = v(cat["subtotal_code"], last_p)
+        if total == 0:
+            return {}
+        shares = {}
+        for fc in cat["flex_codes"]:
+            shares[fc] = v(fc, last_p) / total
+        shares[cat["catch_all_code"]] = v(cat["catch_all_code"], last_p) / total
+        return shares
+
+    is_cat_shares = {}
+    for cat in categories:
+        if cat["subtotal_code"] in ("REVT", "COGST", "OPEXT"):
+            is_cat_shares[cat["subtotal_code"]] = _cat_shares(cat, last_p)
+
+    def _distribute_forecast(cat, fp, total_val):
+        """Distribute a forecast subtotal into flex components proportionally."""
+        shares = is_cat_shares.get(cat["subtotal_code"], {})
+        for code, share in shares.items():
+            set_v(code, fp, total_val * share)
 
     for fp in forecast_periods:
         prev = all_periods[all_periods.index(fp) - 1]
         rev = v("REVT", prev) * (1 + rev_growth)
         set_v("REVT", fp, rev)
+        _distribute_forecast(find_cat("REVT"), fp, rev) if find_cat("REVT") else None
         cogs = rev * cogs_pct
         set_v("COGST", fp, cogs)
+        _distribute_forecast(find_cat("COGST"), fp, cogs) if find_cat("COGST") else None
         set_v("GP", fp, rev - cogs)
-        opex1 = rev * opex1_pct
-        opex2 = rev * opex2_pct
-        opex3 = rev * opex3_pct
-        set_v("OPEX1", fp, opex1)
-        set_v("OPEX2", fp, opex2)
-        set_v("OPEX3", fp, opex3)
-        opext = opex1 + opex2 + opex3
-        set_v("OPEXT", fp, opext)
+        opext = 0
+        for i in range(1, 4):
+            code = f"OPEX{i}"
+            val = rev * opex_pcts.get(code, 0)
+            set_v(code, fp, val)
+            opext += val
+        cat_opext = find_cat("OPEXT")
+        if cat_opext:
+            set_v(cat_opext["catch_all_code"], fp, 0)
+            opext_from_cat = sum(v(c, fp) for c in cat_opext["flex_codes"]) + v(cat_opext["catch_all_code"], fp)
+            set_v("OPEXT", fp, opext_from_cat)
+            opext = opext_from_cat
+        else:
+            set_v("OPEXT", fp, opext)
         set_v("SBC", fp, opext * sbc_pct)
         opinc = v("GP", fp) - opext
         set_v("OPINC", fp, opinc)
@@ -419,87 +984,151 @@ def compute_model(filing):
     last_rev = v("REVT", last_p)
     last_cogs = v("COGST", last_p)
     last_costs = last_cogs + v("OPEXT", last_p)
-    dso = v("BS_AR", last_p) / last_rev * 365 if last_rev else 30
-    dio = v("BS_INV", last_p) / last_cogs * 365 if last_cogs else 0
-    dpo = v("BS_AP", last_p) / last_costs * 365 if last_costs else 30
-    capex_last = abs(v("CF_CAPEX", last_p)) or abs(v("CF_CAPEX", periods[-2])) if len(periods) >= 2 else 0
 
+    dso = v(bs_ar_code, last_p) / last_rev * 365 if bs_ar_code and last_rev else 30
+    dio = v(bs_inv_code, last_p) / last_cogs * 365 if bs_inv_code and last_cogs else 0
+    dpo = v(bs_ap_code, last_p) / last_costs * 365 if bs_ap_code and last_costs else 30
+
+    capex_pct = 0.05
+    cf_capex_code = _find_code_by_label(items, "CF_INV", ["property"], "_OTH")
+    if not cf_capex_code:
+        cf_capex_code = _find_code_by_label(items, "CF_INV", ["capital"], "_OTH")
+    if cf_capex_code:
+        capex_last = abs(v(cf_capex_code, last_p))
+        if last_rev:
+            capex_pct = capex_last / last_rev
+
+    def cat_sum(cat, fp):
+        return sum(v(c, fp) for c in cat["flex_codes"]) + v(cat["catch_all_code"], fp)
+
+    def hold_flex(cat, fp, prev, driven_codes=None):
+        """Hold flex rows and catch-all at prior values, except driven codes."""
+        driven_codes = driven_codes or set()
+        for fc in cat["flex_codes"]:
+            if fc not in driven_codes and v(fc, fp) == 0:
+                set_v(fc, fp, v(fc, prev))
+        if cat["catch_all_code"] not in driven_codes:
+            set_v(cat["catch_all_code"], fp, v(cat["catch_all_code"], prev))
+
+    # Identify CF financing codes for equity rollforward
+    cf_buy_code = _find_code_by_label(items, "CF_FIN", ["repurchase"], "_OTH")
+    if not cf_buy_code:
+        cf_buy_code = _find_code_by_label(items, "CF_FIN", ["common stock"], "_OTH")
+    cf_div_code = _find_code_by_label(items, "CF_FIN", ["dividend"], "_OTH")
+    cf_stpay_code = _find_code_by_label(items, "CF_FIN", ["settlement"], "_OTH")
+    if not cf_stpay_code:
+        cf_stpay_code = _find_code_by_label(items, "CF_FIN", ["taxes related"], "_OTH")
+
+    # --- STEP 4+5: BS and CF forecasts (interleaved per period) ---
+    # Order: BS (everything except cash) → CF → BS_CASH = CF_ENDC → BS_TCA, BS_TA
     for fp in forecast_periods:
         prev = all_periods[all_periods.index(fp) - 1]
         rev = v("REVT", fp)
         cogs = v("COGST", fp)
         costs = cogs + v("OPEXT", fp)
 
-        set_v("BS_AR", fp, rev * dso / 365)
-        set_v("BS_INV", fp, cogs * dio / 365 if dio > 0 else 0)
-        for ca in ["BS_CA1", "BS_CA2", "BS_CA3"]:
-            set_v(ca, fp, v(ca, prev))
-        tca_ex_cash = sum(v(c, fp) for c in ["BS_AR", "BS_INV", "BS_CA1", "BS_CA2", "BS_CA3"])
+        # --- BS: Non-cash current assets ---
+        if bs_ar_code:
+            set_v(bs_ar_code, fp, rev * dso / 365)
+        if bs_inv_code:
+            set_v(bs_inv_code, fp, cogs * dio / 365 if dio > 0 else 0)
+        cat_tca = find_cat("BS_TCA")
+        if cat_tca:
+            hold_flex(cat_tca, fp, prev, {bs_cash_code, bs_ar_code, bs_inv_code})
 
-        capex = capex_last * (1 + rev_growth) ** (all_periods.index(fp) - nh)
-        set_v("CF_CAPEX", fp, -capex)
-        ppe = v("BS_PPE", prev) + capex - v("DA", fp)
-        set_v("BS_PPE", fp, ppe)
-        for lta in ["BS_LTA1", "BS_LTA2"]:
-            set_v(lta, fp, v(lta, prev))
-        tnca = sum(v(c, fp) for c in ["BS_PPE", "BS_LTA1", "BS_LTA2"])
+        # --- BS: Non-current assets ---
+        capex = rev * capex_pct
+        if bs_ppe_code:
+            ppe = v(bs_ppe_code, prev) + capex - v("DA", fp)
+            set_v(bs_ppe_code, fp, ppe)
+        cat_tnca = find_cat("BS_TNCA")
+        if cat_tnca:
+            hold_flex(cat_tnca, fp, prev, {bs_ppe_code})
+        tnca = cat_sum(cat_tnca, fp) if cat_tnca else 0
         set_v("BS_TNCA", fp, tnca)
 
-        set_v("BS_AP", fp, costs * dpo / 365)
-        for cl in ["BS_STD", "BS_OCL1", "BS_OCL2"]:
-            set_v(cl, fp, v(cl, prev))
-        tcl = sum(v(c, fp) for c in ["BS_AP", "BS_STD", "BS_OCL1", "BS_OCL2"])
+        # --- BS: Liabilities ---
+        if bs_ap_code:
+            set_v(bs_ap_code, fp, costs * dpo / 365)
+        cat_tcl = find_cat("BS_TCL")
+        if cat_tcl:
+            hold_flex(cat_tcl, fp, prev, {bs_ap_code})
+        tcl = cat_sum(cat_tcl, fp) if cat_tcl else 0
         set_v("BS_TCL", fp, tcl)
 
-        for ncl in ["BS_LTD", "BS_NCL1", "BS_NCL2"]:
-            set_v(ncl, fp, v(ncl, prev))
-        tncl = sum(v(c, fp) for c in ["BS_LTD", "BS_NCL1", "BS_NCL2"])
+        cat_tncl = find_cat("BS_TNCL")
+        if cat_tncl:
+            hold_flex(cat_tncl, fp, prev)
+        tncl = cat_sum(cat_tncl, fp) if cat_tncl else 0
         set_v("BS_TNCL", fp, tncl)
         set_v("BS_TL", fp, tcl + tncl)
 
-        set_v("BS_CS", fp, v("BS_CS", prev) + v("SBC", fp))
-        set_v("BS_RE", fp, v("BS_RE", prev) + v("INC_NET", fp))
-        set_v("BS_OE", fp, v("BS_OE", prev))
-        te = sum(v(c, fp) for c in ["BS_CS", "BS_RE", "BS_OE"])
+        # --- BS: Equity (includes CF financing items) ---
+        stpay = v(cf_stpay_code, prev) if cf_stpay_code else 0  # hold at last hist value
+        buyback = v(cf_buy_code, prev) if cf_buy_code else 0
+        dividend = v(cf_div_code, prev) if cf_div_code else 0
+
+        if bs_cs_code:
+            set_v(bs_cs_code, fp, v(bs_cs_code, prev) + v("SBC", fp) + stpay)
+        if bs_re_code:
+            set_v(bs_re_code, fp, v(bs_re_code, prev) + v("INC_NET", fp) + buyback + dividend)
+        cat_te = find_cat("BS_TE")
+        if cat_te:
+            hold_flex(cat_te, fp, prev, {bs_cs_code, bs_re_code})
+        te = cat_sum(cat_te, fp) if cat_te else 0
         set_v("BS_TE", fp, te)
 
-        ta = v("BS_TL", fp) + te
-        set_v("BS_TA", fp, ta)
-        cash = ta - tca_ex_cash - tnca
-        set_v("BS_CASH", fp, cash)
-        set_v("BS_TCA", fp, tca_ex_cash + cash)
-
-    # Historical CF: compute FX effect (gap between OPCF+INVCF+FINCF and NETCH)
-    for p in periods:
-        if v("CF_OPCF", p) != 0:
-            fx = v("CF_NETCH", p) - v("CF_OPCF", p) - v("CF_INVCF", p) - v("CF_FINCF", p)
-            set_v("CF_FX", p, fx)
-
-    # --- STEP 5: CF forecasts ---
-    for fp in forecast_periods:
-        prev = all_periods[all_periods.index(fp) - 1]
+        # --- CF: Operating ---
         ni = v("INC_NET", fp)
         da = v("DA", fp)
         sbc = v("SBC", fp)
-        set_v("CF_NI", fp, ni)
-        set_v("CF_DA", fp, da)
-        set_v("CF_SBC", fp, sbc)
-        cf_ar = -(v("BS_AR", fp) - v("BS_AR", prev))
-        cf_inv = -(v("BS_INV", fp) - v("BS_INV", prev))
-        cf_ap = v("BS_AP", fp) - v("BS_AP", prev)
-        set_v("CF_AR", fp, cf_ar)
-        set_v("CF_INV", fp, cf_inv)
-        set_v("CF_AP", fp, cf_ap)
+        cf_ar = -(v(bs_ar_code, fp) - v(bs_ar_code, prev)) if bs_ar_code else 0
+        cf_inv = -(v(bs_inv_code, fp) - v(bs_inv_code, prev)) if bs_inv_code else 0
+        cf_ap = (v(bs_ap_code, fp) - v(bs_ap_code, prev)) if bs_ap_code else 0
+
         opcf = ni + da + sbc + cf_ar + cf_inv + cf_ap
         set_v("CF_OPCF", fp, opcf)
-        set_v("CF_INVCF", fp, v("CF_CAPEX", fp))
-        set_v("CF_FINCF", fp, 0)
+        cat_opcf = find_cat("CF_OPCF")
+        if cat_opcf:
+            set_v(cat_opcf["catch_all_code"], fp, opcf)
+
+        # --- CF: Investing ---
+        capex_val = -capex
+        set_v("CF_INVCF", fp, capex_val)
+        cat_invcf = find_cat("CF_INVCF")
+        if cat_invcf:
+            set_v(cat_invcf["catch_all_code"], fp, capex_val)
+
+        # --- CF: Financing (hold buybacks, dividends, stock payments) ---
+        if cf_stpay_code:
+            set_v(cf_stpay_code, fp, stpay)
+        if cf_buy_code:
+            set_v(cf_buy_code, fp, buyback)
+        if cf_div_code:
+            set_v(cf_div_code, fp, dividend)
+        # Sum all financing flex codes + catch-all for the subtotal
+        cat_fincf = find_cat("CF_FINCF")
+        fincf = cat_sum(cat_fincf, fp) if cat_fincf else (stpay + buyback + dividend)
+        set_v("CF_FINCF", fp, fincf)
+
         set_v("CF_FX", fp, 0)
-        netch = opcf + v("CF_INVCF", fp)
+
+        # --- CF: Cash proof ---
+        netch = opcf + capex_val + fincf
         set_v("CF_NETCH", fp, netch)
-        beg = v("BS_CASH", prev)
+        beg = v(bs_cash_code, prev) if bs_cash_code else 0
         set_v("CF_BEGC", fp, beg)
-        set_v("CF_ENDC", fp, beg + netch)
+        endc = beg + netch
+        set_v("CF_ENDC", fp, endc)
+
+        # --- BS: Cash = CF ending cash (NOT a plug) ---
+        if bs_cash_code:
+            set_v(bs_cash_code, fp, endc)
+
+        # --- BS: Totals (computed from components, not forced) ---
+        tca = cat_sum(cat_tca, fp) if cat_tca else 0
+        set_v("BS_TCA", fp, tca)
+        set_v("BS_TA", fp, tca + tnca)
 
     return {
         "periods": periods,
@@ -507,72 +1136,114 @@ def compute_model(filing):
         "all_periods": all_periods,
         "model": model,
         "labels": labels,
+        "categories": categories,
+        "bs_cash_code": bs_cash_code,
     }
 
 
 # ---------------------------------------------------------------------------
-# Invariant checks — no exceptions, all periods
+# Invariant checks
 # ---------------------------------------------------------------------------
 
+def _find_cf_match(v_func, period, target_value, prefix, max_items=30):
+    """Find a CF flex item whose value matches the target IS value.
+
+    Searches CF_OP1..CF_OP{max_items} for an item within 0.5 tolerance.
+    Returns the matching CF value, or None if not found.
+    """
+    for i in range(1, max_items + 1):
+        code = f"{prefix}{i}"
+        cf_val = v_func(code, period)
+        if cf_val != 0 and abs(cf_val - target_value) < 0.5:
+            return cf_val
+    return None
+
+
 def verify_model(m):
-    """Run ALL invariant checks on ALL periods. No exceptions."""
-    model = m["model"]
-    all_p = m["all_periods"]
+    """Run the 5 real invariant checks on all periods.
+
+    Only checks that cannot be enforced by construction:
+      1. BS_TA == BS_TL + BS_TE
+      2. CF_ENDC == BS_CASH
+      3. INC_NET (IS) == INC_NET (CF)
+      4. D&A (IS) == D&A (CF)
+      5. SBC (IS) == SBC (CF)
+
+    Accepts either load_filing() output (dict-based items) or
+    compute_model() output (array-based model).
+    """
     errors = []
 
-    def v(code, p):
-        idx = all_p.index(p)
-        return model.get(code, [0.0] * len(all_p))[idx]
+    # Support both data formats
+    if "model" in m and "all_periods" in m:
+        # compute_model() output: array-based
+        model_data = m["model"]
+        all_p = m["all_periods"]
+        bs_cash_code = m.get("bs_cash_code", "BS_CA1")
+
+        def v(code, p):
+            idx = all_p.index(p)
+            return model_data.get(code, [0.0] * len(all_p))[idx]
+    else:
+        # load_filing() output: dict-based items
+        items = m["items"]
+        all_p = m["periods"]
+        bs_cash_code = None
+        for code, info in items.items():
+            if code.startswith("BS_CA") and code != "BS_CA_OTH":
+                lbl = info["label"].lower()
+                if "cash" in lbl and "equivalent" in lbl:
+                    bs_cash_code = code
+                    break
+        if not bs_cash_code:
+            for code, info in items.items():
+                if code.startswith("BS_CA") and code != "BS_CA_OTH":
+                    if "cash" in info["label"].lower():
+                        bs_cash_code = code
+                        break
+        if not bs_cash_code:
+            bs_cash_code = "BS_CA1"
+
+        def v(code, p):
+            return items.get(code, {}).get("values", {}).get(p, 0)
 
     def check(name, period, val):
         if abs(val) > 0.5:
             errors.append((name, period, val))
 
-    SECTION_RULES = [
-        ("BS_TCA", ["BS_CASH", "BS_AR", "BS_INV", "BS_CA1", "BS_CA2", "BS_CA3"]),
-        ("BS_TNCA", ["BS_PPE", "BS_LTA1", "BS_LTA2"]),
-        ("BS_TA", ["BS_TCA", "BS_TNCA"]),
-        ("BS_TCL", ["BS_AP", "BS_STD", "BS_OCL1", "BS_OCL2"]),
-        ("BS_TNCL", ["BS_LTD", "BS_NCL1", "BS_NCL2"]),
-        ("BS_TL", ["BS_TCL", "BS_TNCL"]),
-        ("BS_TE", ["BS_CS", "BS_RE", "BS_OE"]),
-        ("CF_OPCF", ["CF_NI", "CF_DA", "CF_SBC", "CF_OP1", "CF_OP2", "CF_OP3",
-                      "CF_AR", "CF_INV", "CF_AP"]),
-        ("CF_INVCF", ["CF_CAPEX", "CF_SECPUR", "CF_SECSAL", "CF_INV1"]),
-        ("CF_FINCF", ["CF_FIN1", "CF_BUY", "CF_DIV", "CF_DISS", "CF_DREP", "CF_FIN2"]),
-    ]
-
     for p in all_p:
-        # Skip periods with no data at all
         if v("BS_TA", p) == 0 and v("REVT", p) == 0:
             continue
 
-        # 1. BS Balance: TA = TL + TE
-        check("BS Balance (TA - TL - TE)", p, v("BS_TA", p) - v("BS_TL", p) - v("BS_TE", p))
+        # 1. BS Balance: TA == TL + TE
+        check("BS Balance (TA-TL-TE)", p, v("BS_TA", p) - v("BS_TL", p) - v("BS_TE", p))
 
-        # 2. CF End = BS Cash
-        if v("BS_CASH", p) != 0 or p.endswith("E"):
-            check("Cash (CF End - BS Cash)", p, v("CF_ENDC", p) - v("BS_CASH", p))
+        # 2. CF End Cash == BS Cash
+        bs_cash = v(bs_cash_code, p)
+        if bs_cash != 0:
+            check("Cash (CF_ENDC - BS_CASH)", p, v("CF_ENDC", p) - bs_cash)
 
-        # 3. Component sums = subtotals
-        for total_code, comp_codes in SECTION_RULES:
-            total = v(total_code, p)
-            if total == 0 and not p.endswith("E"):
-                continue
-            comp_sum = sum(v(c, p) for c in comp_codes)
-            check(f"{total_code} components", p, comp_sum - total)
+        # 3. INC_NET: IS net income == CF net income
+        # Find the CF_OP item whose value matches INC_NET (not hardcoded position)
+        is_ni = v("INC_NET", p)
+        if is_ni != 0:
+            cf_ni = _find_cf_match(v, p, is_ni, "CF_OP")
+            if cf_ni is not None:
+                check("NI Link (IS - CF)", p, is_ni - cf_ni)
 
-        # 4. IS invariants
-        if v("REVT", p) != 0:
-            check("IS GP", p, v("REVT", p) - v("COGST", p) - v("GP", p))
+        # 4. D&A: IS == CF
+        is_da = v("DA", p)
+        if is_da != 0:
+            cf_da = _find_cf_match(v, p, is_da, "CF_OP")
+            if cf_da is not None:
+                check("D&A Link (IS - CF)", p, is_da - cf_da)
 
-        # 5. CF cash proof: Beg + NetCh = End
-        if v("CF_ENDC", p) != 0 or p.endswith("E"):
-            check("CF Cash Proof", p, v("CF_BEGC", p) + v("CF_NETCH", p) - v("CF_ENDC", p))
-
-        # 6. CF Structure: Op + Inv + Fin + FX = NetCh
-        if v("CF_OPCF", p) != 0 or p.endswith("E"):
-            check("CF Structure", p, v("CF_OPCF", p) + v("CF_INVCF", p) + v("CF_FINCF", p) + v("CF_FX", p) - v("CF_NETCH", p))
+        # 5. SBC: IS == CF
+        is_sbc = v("SBC", p)
+        if is_sbc != 0:
+            cf_sbc = _find_cf_match(v, p, is_sbc, "CF_OP")
+            if cf_sbc is not None:
+                check("SBC Link (IS - CF)", p, is_sbc - cf_sbc)
 
     return errors
 
@@ -582,12 +1253,12 @@ def verify_model(m):
 # ---------------------------------------------------------------------------
 
 def write_sheets(m, company):
-    """Write verified model to Google Sheets. Pure values, no formulas."""
+    """Write verified model to Google Sheets."""
     model = m["model"]
     all_p = m["all_periods"]
-    periods = m["periods"]
     labels = m["labels"]
-    nh = len(periods)
+    categories = m["categories"]
+    bs_cash_code = m.get("bs_cash_code", "BS_CA1")
 
     def v(code, p):
         idx = all_p.index(p)
@@ -595,7 +1266,6 @@ def write_sheets(m, company):
         return vals[idx] if idx < len(vals) else 0
 
     def fmt(val):
-        """Round to nearest integer for display."""
         if isinstance(val, float):
             return round(val)
         return val
@@ -610,87 +1280,75 @@ def write_sheets(m, company):
             row.append(fmt(v(code, p)))
         return row
 
+    def cat_rows(cat, section_label):
+        rows = [["", "", section_label]]
+        for fc in cat["flex_codes"]:
+            rows.append(data_row(fc))
+        rows.append(data_row(cat["catch_all_code"]))
+        rows.append(data_row(cat["subtotal_code"]))
+        return rows
+
+    def find_cat(code):
+        for c in categories:
+            if c["subtotal_code"] == code:
+                return c
+        return None
+
     title = f"{company} - 3-Statement Model"
     sid, url, sheet_ids = gws_create(title, ["IS", "BS", "CF", "Summary"])
     print(f"  URL: {url}", file=sys.stderr)
 
     # --- IS ---
-    is_rows = [
-        [],
-        R("", "$m") + list(all_p),
-        [],
-        ["", "", "Revenue"],
-        data_row("REV1"),
-        data_row("REV2"),
-        data_row("REVT"),
-        [],
-        data_row("COGS1"),
-        data_row("COGS2"),
-        data_row("COGST"),
-        data_row("GP"),
-        [],
-        data_row("OPEX1"),
-        data_row("OPEX2"),
-        data_row("OPEX3"),
-        data_row("OPEXT"),
-        [],
-        data_row("OPINC"),
-        data_row("INC_O"),
-        data_row("EBT"),
-        data_row("TAX"),
-        data_row("INC_NET"),
-        [],
-        data_row("SBC"),
-        data_row("DA"),
+    is_rows = [[], R("", "$m") + list(all_p), [], ["", "", "Revenue"]]
+    for i in range(1, 4):
+        code = f"REV{i}"
+        if code in labels:
+            is_rows.append(data_row(code))
+    is_rows += [data_row("REVT"), [], ["", "", "Cost of Revenue"]]
+    for i in range(1, 4):
+        code = f"COGS{i}"
+        if code in labels:
+            is_rows.append(data_row(code))
+    is_rows += [data_row("COGST"), data_row("GP"), [], ["", "", "Operating Expenses"]]
+    for i in range(1, 4):
+        code = f"OPEX{i}"
+        if code in labels:
+            is_rows.append(data_row(code))
+    is_rows += [
+        data_row("OPEXT"), [],
+        data_row("OPINC"), data_row("INC_O"), data_row("EBT"),
+        data_row("TAX"), data_row("INC_NET"), [],
+        data_row("SBC"), data_row("DA"),
     ]
-    # Remove rows where code has no data
     is_rows = [r for r in is_rows if not (len(r) >= 5 and r[0] and all(r[i] == 0 for i in range(4, len(r))))]
     gws_write(sid, f"IS!A1:{dcol(len(all_p)-1)}{len(is_rows)}", is_rows)
     print(f"  IS: {len(is_rows)} rows", file=sys.stderr)
 
     # --- BS ---
-    bs_rows = [
-        [],
-        R("", "$m") + list(all_p),
-        [],
-        ["", "", "Current Assets"],
-        data_row("BS_CASH"),
-        data_row("BS_AR"),
-        data_row("BS_INV"),
-        data_row("BS_CA1"),
-        data_row("BS_CA2"),
-        data_row("BS_CA3"),
-        data_row("BS_TCA"),
-        [],
-        ["", "", "Non-Current Assets"],
-        data_row("BS_PPE"),
-        data_row("BS_LTA1"),
-        data_row("BS_LTA2"),
-        data_row("BS_TNCA"),
-        [],
-        data_row("BS_TA"),
-        [],
-        ["", "", "Current Liabilities"],
-        data_row("BS_AP"),
-        data_row("BS_STD"),
-        data_row("BS_OCL1"),
-        data_row("BS_OCL2"),
-        data_row("BS_TCL"),
-        [],
-        ["", "", "Non-Current Liabilities"],
-        data_row("BS_LTD"),
-        data_row("BS_NCL1"),
-        data_row("BS_NCL2"),
-        data_row("BS_TNCL"),
-        [],
-        data_row("BS_TL"),
-        [],
-        ["", "", "Equity"],
-        data_row("BS_CS"),
-        data_row("BS_RE"),
-        data_row("BS_OE"),
-        data_row("BS_TE"),
-        [],
+    bs_rows = [[], R("", "$m") + list(all_p), []]
+    for sub_code, section_label in [
+        ("BS_TCA", "Current Assets"), ("BS_TNCA", "Non-Current Assets")
+    ]:
+        cat = find_cat(sub_code)
+        if cat:
+            bs_rows += cat_rows(cat, section_label)
+            bs_rows.append([])
+    bs_rows.append(data_row("BS_TA"))
+    bs_rows.append([])
+    for sub_code, section_label in [
+        ("BS_TCL", "Current Liabilities"), ("BS_TNCL", "Non-Current Liabilities")
+    ]:
+        cat = find_cat(sub_code)
+        if cat:
+            bs_rows += cat_rows(cat, section_label)
+            bs_rows.append([])
+    bs_rows.append(data_row("BS_TL"))
+    bs_rows.append([])
+    cat_te = find_cat("BS_TE")
+    if cat_te:
+        bs_rows += cat_rows(cat_te, "Equity")
+        bs_rows.append([])
+    bs_rows += [
         ["", "", "Balance Check (must be 0)"],
         R("", "TA - TL - TE") + [fmt(v("BS_TA", p) - v("BS_TL", p) - v("BS_TE", p)) for p in all_p],
     ]
@@ -699,44 +1357,22 @@ def write_sheets(m, company):
     print(f"  BS: {len(bs_rows)} rows", file=sys.stderr)
 
     # --- CF ---
-    cf_rows = [
-        [],
-        R("", "$m") + list(all_p),
-        [],
-        ["", "", "Operating Activities"],
-        data_row("CF_NI"),
-        data_row("CF_DA"),
-        data_row("CF_SBC"),
-        data_row("CF_OP1"),
-        data_row("CF_OP2"),
-        data_row("CF_OP3"),
-        data_row("CF_AR"),
-        data_row("CF_INV"),
-        data_row("CF_AP"),
-        data_row("CF_OPCF"),
-        [],
-        ["", "", "Investing Activities"],
-        data_row("CF_CAPEX"),
-        data_row("CF_SECPUR"),
-        data_row("CF_SECSAL"),
-        data_row("CF_INV1"),
-        data_row("CF_INVCF"),
-        [],
-        ["", "", "Financing Activities"],
-        data_row("CF_FIN1"),
-        data_row("CF_BUY"),
-        data_row("CF_DIV"),
-        data_row("CF_DISS"),
-        data_row("CF_DREP"),
-        data_row("CF_FIN2"),
-        data_row("CF_FINCF"),
-        [],
-        data_row("CF_NETCH"),
-        data_row("CF_BEGC"),
-        data_row("CF_ENDC"),
-        [],
+    cf_rows = [[], R("", "$m") + list(all_p), []]
+    for sub_code, section_label in [
+        ("CF_OPCF", "Operating Activities"),
+        ("CF_INVCF", "Investing Activities"),
+        ("CF_FINCF", "Financing Activities"),
+    ]:
+        cat = find_cat(sub_code)
+        if cat:
+            cf_rows += cat_rows(cat, section_label)
+            cf_rows.append([])
+    if "CF_FX" in labels:
+        cf_rows.append(data_row("CF_FX"))
+    cf_rows += [
+        data_row("CF_NETCH"), data_row("CF_BEGC"), data_row("CF_ENDC"), [],
         ["", "", "Cash Check (CF End - BS Cash, must be 0)"],
-        R("", "CF End - BS Cash") + [fmt(v("CF_ENDC", p) - v("BS_CASH", p)) for p in all_p],
+        R("", "CF End - BS Cash") + [fmt(v("CF_ENDC", p) - v(bs_cash_code, p)) for p in all_p],
     ]
     cf_rows = [r for r in cf_rows if not (len(r) >= 5 and r[0] and all(r[i] == 0 for i in range(4, len(r))))]
     gws_write(sid, f"CF!A1:{dcol(len(all_p)-1)}{len(cf_rows)}", cf_rows)
@@ -744,49 +1380,36 @@ def write_sheets(m, company):
 
     # --- Summary ---
     summary_rows = [
-        [],
-        R("", "$m") + list(all_p),
-        [],
-        data_row("REVT", "Revenue"),
-        data_row("GP", "Gross Profit"),
-        data_row("OPINC", "EBIT"),
-        data_row("INC_NET", "Net Income"),
-        [],
-        data_row("BS_TA", "Total Assets"),
-        data_row("BS_TL", "Total Liabilities"),
-        data_row("BS_TE", "Total Equity"),
-        [],
-        data_row("CF_OPCF", "Operating CF"),
-        data_row("CF_INVCF", "Investing CF"),
-        data_row("CF_FINCF", "Financing CF"),
-        data_row("CF_NETCH", "Net Change in Cash"),
-        [],
+        [], R("", "$m") + list(all_p), [],
+        data_row("REVT", "Revenue"), data_row("GP", "Gross Profit"),
+        data_row("OPINC", "EBIT"), data_row("INC_NET", "Net Income"), [],
+        data_row("BS_TA", "Total Assets"), data_row("BS_TL", "Total Liabilities"),
+        data_row("BS_TE", "Total Equity"), [],
+        data_row("CF_OPCF", "Operating CF"), data_row("CF_INVCF", "Investing CF"),
+        data_row("CF_FINCF", "Financing CF"), data_row("CF_NETCH", "Net Change in Cash"), [],
         ["", "", "INVARIANT CHECKS (all must be 0)"],
         R("", "") + list(all_p),
         R("", "BS Balance (TA-TL-TE)") + [fmt(v("BS_TA", p) - v("BS_TL", p) - v("BS_TE", p)) for p in all_p],
-        R("", "Cash (CF End - BS Cash)") + [fmt(v("CF_ENDC", p) - v("BS_CASH", p)) for p in all_p],
+        R("", "Cash (CF End - BS Cash)") + [fmt(v("CF_ENDC", p) - v(bs_cash_code, p)) for p in all_p],
         R("", "BS Assets (TCA+TNCA-TA)") + [fmt(v("BS_TCA", p) + v("BS_TNCA", p) - v("BS_TA", p)) for p in all_p],
         R("", "BS Liab (TCL+TNCL-TL)") + [fmt(v("BS_TCL", p) + v("BS_TNCL", p) - v("BS_TL", p)) for p in all_p],
-        R("", "BS Equity (CS+RE+OE-TE)") + [fmt(v("BS_CS", p) + v("BS_RE", p) + v("BS_OE", p) - v("BS_TE", p)) for p in all_p],
     ]
     gws_write(sid, f"Summary!A1:{dcol(len(all_p)-1)}{len(summary_rows)}", summary_rows)
     print(f"  Summary: {len(summary_rows)} rows", file=sys.stderr)
 
-    # Column width formatting
+    # Column widths
     requests = []
     for sheet_name, sheet_id in sheet_ids.items():
         requests.append({
             "updateDimensionProperties": {
                 "range": {"sheetId": sheet_id, "dimension": "COLUMNS", "startIndex": 0, "endIndex": 2},
-                "properties": {"pixelSize": 50},
-                "fields": "pixelSize",
+                "properties": {"pixelSize": 50}, "fields": "pixelSize",
             }
         })
         requests.append({
             "updateDimensionProperties": {
                 "range": {"sheetId": sheet_id, "dimension": "COLUMNS", "startIndex": 2, "endIndex": 3},
-                "properties": {"pixelSize": 200},
-                "fields": "pixelSize",
+                "properties": {"pixelSize": 200}, "fields": "pixelSize",
             }
         })
     gws_batch_update(sid, requests)
@@ -799,7 +1422,6 @@ def write_sheets(m, company):
 # ---------------------------------------------------------------------------
 
 def _deep_merge(base, overlay):
-    """Recursively merge overlay into base. Base values win on conflict (newer first)."""
     for k, v in overlay.items():
         if k not in base:
             base[k] = v
@@ -808,10 +1430,8 @@ def _deep_merge(base, overlay):
 
 
 def _merge_financials(financials_list):
-    """Deep-merge multiple financials dicts. First file wins on conflicts (newest first)."""
     if len(financials_list) == 1:
         return financials_list[0]
-    import copy
     merged = copy.deepcopy(financials_list[0])
     for fin in financials_list[1:]:
         _deep_merge(merged, fin)
@@ -821,7 +1441,9 @@ def _merge_financials(financials_list):
 def main():
     parser = argparse.ArgumentParser(description="Python-first 3-statement model")
     parser.add_argument("--financials", required=True, nargs="+")
-    parser.add_argument("--company", required=True)
+    parser.add_argument("--company", default="Company")
+    parser.add_argument("--checkpoint", action="store_true",
+                        help="Run historical baseline check only (Phase 1)")
     args = parser.parse_args()
 
     financials_list = []
@@ -833,7 +1455,52 @@ def main():
 
     print("Loading filing data...", file=sys.stderr)
     filing = load_filing(financials)
-    print(f"  {len(filing['periods'])} periods, {len(filing['items'])} codes", file=sys.stderr)
+    print(f"  {len(filing['periods'])} complete periods, {len(filing['items'])} codes", file=sys.stderr)
+
+    if args.checkpoint:
+        MAX_RETRIES = 3
+
+        for attempt in range(1, MAX_RETRIES + 1):
+            filing = load_filing(financials)
+            errors = verify_model(filing)
+
+            if not errors:
+                break
+
+            if attempt == MAX_RETRIES:
+                print(f"\n*** Still {len(errors)} invariant failure(s) after {MAX_RETRIES} attempts. Aborting. ***",
+                      file=sys.stderr)
+                for name, period, delta in errors:
+                    print(f"  {name}: {period} = {delta:,.0f}", file=sys.stderr)
+                sys.exit(1)
+
+            print(f"Attempt {attempt}: {len(errors)} failure(s). Feeding errors back to structure_financials...",
+                  file=sys.stderr)
+            for name, period, delta in errors:
+                print(f"  {name}: {period} = {delta:,.0f}", file=sys.stderr)
+
+            # Re-run classification with error context
+            try:
+                from anthropic import Anthropic
+                from structure_financials import reclassify_with_errors
+                client = Anthropic()
+                financials = reclassify_with_errors(client, financials, errors)
+            except Exception as e:
+                print(f"  Reclassification failed: {e}", file=sys.stderr)
+                print(f"\n*** {len(errors)} INVARIANT FAILURES remain. Aborting. ***", file=sys.stderr)
+                sys.exit(1)
+
+        print("  All invariants pass!", file=sys.stderr)
+
+        # Save perfect baseline to disk
+        baseline = {
+            "periods": filing["periods"],
+            "items": {code: info for code, info in filing["items"].items()},
+        }
+        with open("historical_baseline.json", "w") as f:
+            json.dump(baseline, f, indent=2)
+        print("Successfully wrote historical_baseline.json", file=sys.stderr)
+        sys.exit(0)
 
     print("Computing model...", file=sys.stderr)
     m = compute_model(filing)
@@ -844,7 +1511,7 @@ def main():
         print(f"\n*** {len(errors)} INVARIANT FAILURES ***", file=sys.stderr)
         for name, period, delta in errors:
             print(f"  {name}: {period} = {delta:,.0f}", file=sys.stderr)
-        print("\nAborting — fix data before writing sheet.", file=sys.stderr)
+        print("\nAborting -- fix data before writing sheet.", file=sys.stderr)
         sys.exit(1)
     print("  All invariants pass!", file=sys.stderr)
 

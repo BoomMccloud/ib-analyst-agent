@@ -1,0 +1,476 @@
+{
+  "income_statement": {
+    "unit": "millions",
+    "fiscal_years": {
+      "2021-09-25": {
+        "net_sales": {
+          "iphone": 191973,
+          "mac": 35190,
+          "ipad": 31862,
+          "wearables_home_and_accessories": 38367,
+          "services": 68425,
+          "total_net_sales": 365817
+        },
+        "cost_of_sales": {
+          "products": 192266,
+          "services": 20715,
+          "total_cost_of_sales": 212981
+        },
+        "gross_margin": 152836,
+        "operating_expenses": {
+          "research_and_development": 21914,
+          "selling_general_and_administrative": 21973,
+          "total_operating_expenses": 43887
+        },
+        "operating_income": 108949,
+        "other_income_expense_net": 258,
+        "income_before_provision_for_income_taxes": 109207,
+        "provision_for_income_taxes": 14527,
+        "net_income": 94680,
+        "share_based_compensation_expense": 7906,
+        "depreciation_and_amortization": 11284
+      },
+      "2022-09-24": {
+        "net_sales": {
+          "iphone": 205489,
+          "mac": 40177,
+          "ipad": 29292,
+          "wearables_home_and_accessories": 41241,
+          "services": 78129,
+          "total_net_sales": 394328
+        },
+        "cost_of_sales": {
+          "products": 201471,
+          "services": 22075,
+          "total_cost_of_sales": 223546
+        },
+        "gross_margin": 170782,
+        "operating_expenses": {
+          "research_and_development": 26251,
+          "selling_general_and_administrative": 25094,
+          "total_operating_expenses": 51345
+        },
+        "operating_income": 119437,
+        "other_income_expense_net": -334,
+        "income_before_provision_for_income_taxes": 119103,
+        "provision_for_income_taxes": 19300,
+        "net_income": 99803,
+        "share_based_compensation_expense": 9038,
+        "depreciation_and_amortization": 11104
+      },
+      "2023-09-30": {
+        "net_sales": {
+          "iphone": 200583,
+          "mac": 29357,
+          "ipad": 28300,
+          "wearables_home_and_accessories": 39845,
+          "services": 85200,
+          "total_net_sales": 383285
+        },
+        "cost_of_sales": {
+          "products": 189282,
+          "services": 24855,
+          "total_cost_of_sales": 214137
+        },
+        "gross_margin": 169148,
+        "operating_expenses": {
+          "research_and_development": 29915,
+          "selling_general_and_administrative": 24932,
+          "total_operating_expenses": 54847
+        },
+        "operating_income": 114301,
+        "other_income_expense_net": -382,
+        "income_before_provision_for_income_taxes": 113919,
+        "provision_for_income_taxes": 16741,
+        "net_income": 97178,
+        "share_based_compensation_expense": 10833,
+        "depreciation_and_amortization": 11519
+      },
+      "2024-09-28": {
+        "net_sales": {
+          "iphone": 201183,
+          "mac": 29984,
+          "ipad": 26694,
+          "wearables_home_and_accessories": 37005,
+          "services": 96169,
+          "total_net_sales": 391035
+        },
+        "cost_of_sales": {
+          "products": 185148,
+          "services": 25306,
+          "total_cost_of_sales": 210454
+        },
+        "gross_margin": 180581,
+        "operating_expenses": {
+          "research_and_development": 31370,
+          "selling_general_and_administrative": 26146,
+          "total_operating_expenses": 57516
+        },
+        "operating_income": 123065,
+        "other_income_expense_net": 269,
+        "income_before_provision_for_income_taxes": 123334,
+        "provision_for_income_taxes": 29749,
+        "net_income": 93585,
+        "share_based_compensation_expense": 11688,
+        "depreciation_and_amortization": 11445
+      }
+    },
+    "_flex_categories": [
+      {
+        "subtotal_code": "REVT",
+        "subtotal_label": "Total Net Sales",
+        "flex": [
+          {"code": "REV1", "label": "iPhone", "values": {"2021-09-25": 191973, "2022-09-24": 205489, "2023-09-30": 200583, "2024-09-28": 201183}},
+          {"code": "REV2", "label": "Services", "values": {"2021-09-25": 68425, "2022-09-24": 78129, "2023-09-30": 85200, "2024-09-28": 96169}},
+          {"code": "REV3", "label": "Mac", "values": {"2021-09-25": 35190, "2022-09-24": 40177, "2023-09-30": 29357, "2024-09-28": 29984}}
+        ],
+        "other": {"code": "REV_OTH", "label": "Other Revenue", "values": {"2021-09-25": 70229, "2022-09-24": 70533, "2023-09-30": 68145, "2024-09-28": 63699}},
+        "subtotal_values": {"2021-09-25": 365817, "2022-09-24": 394328, "2023-09-30": 383285, "2024-09-28": 391035}
+      },
+      {
+        "subtotal_code": "COGST",
+        "subtotal_label": "Total Cost Of Sales",
+        "flex": [
+          {"code": "COGS1", "label": "Products", "values": {"2021-09-25": 192266, "2022-09-24": 201471, "2023-09-30": 189282, "2024-09-28": 185148}},
+          {"code": "COGS2", "label": "Services", "values": {"2021-09-25": 20715, "2022-09-24": 22075, "2023-09-30": 24855, "2024-09-28": 25306}}
+        ],
+        "other": {"code": "COGS_OTH", "label": "Other COGS", "values": {"2021-09-25": 0, "2022-09-24": 0, "2023-09-30": 0, "2024-09-28": 0}},
+        "subtotal_values": {"2021-09-25": 212981, "2022-09-24": 223546, "2023-09-30": 214137, "2024-09-28": 210454}
+      },
+      {
+        "subtotal_code": "OPEXT",
+        "subtotal_label": "Total Operating Expenses",
+        "flex": [
+          {"code": "OPEX1", "label": "Research And Development", "values": {"2021-09-25": 21914, "2022-09-24": 26251, "2023-09-30": 29915, "2024-09-28": 31370}},
+          {"code": "OPEX2", "label": "Selling General And Administrative", "values": {"2021-09-25": 21973, "2022-09-24": 25094, "2023-09-30": 24932, "2024-09-28": 26146}}
+        ],
+        "other": {"code": "OPEX_OTH", "label": "Other OpEx", "values": {"2021-09-25": 0, "2022-09-24": 0, "2023-09-30": 0, "2024-09-28": 0}},
+        "subtotal_values": {"2021-09-25": 43887, "2022-09-24": 51345, "2023-09-30": 54847, "2024-09-28": 57516}
+      }
+    ],
+    "_singles": [
+      {"code": "GP", "label": "Gross Profit", "values": {"2021-09-25": 152836, "2022-09-24": 170782, "2023-09-30": 169148, "2024-09-28": 180581}},
+      {"code": "OPINC", "label": "Operating Income", "values": {"2021-09-25": 108949, "2022-09-24": 119437, "2023-09-30": 114301, "2024-09-28": 123065}},
+      {"code": "INC_O", "label": "Other Income / (Expense)", "values": {"2021-09-25": 258, "2022-09-24": -334, "2023-09-30": -382, "2024-09-28": 269}},
+      {"code": "EBT", "label": "Earnings Before Tax", "values": {"2021-09-25": 109207, "2022-09-24": 119103, "2023-09-30": 113919, "2024-09-28": 123334}},
+      {"code": "TAX", "label": "Income Tax", "values": {"2021-09-25": 14527, "2022-09-24": 19300, "2023-09-30": 16741, "2024-09-28": 29749}},
+      {"code": "INC_NET", "label": "Net Income", "values": {"2021-09-25": 94680, "2022-09-24": 99803, "2023-09-30": 97178, "2024-09-28": 93585}},
+      {"code": "SBC", "label": "Stock-Based Compensation", "values": {"2021-09-25": 7906, "2022-09-24": 9038, "2023-09-30": 10833, "2024-09-28": 11688}},
+      {"code": "DA", "label": "Depreciation & Amortization", "values": {"2021-09-25": 11284, "2022-09-24": 11104, "2023-09-30": 11519, "2024-09-28": 11445}}
+    ]
+  },
+  "balance_sheet": {
+    "unit": "millions",
+    "balance_sheet": {
+      "2021-09-25": {
+        "assets": {
+          "current_assets": {
+            "cash_and_cash_equivalents": 34940,
+            "marketable_securities_current": 27699,
+            "accounts_receivable_net": 26278,
+            "inventories": 6580,
+            "vendor_non_trade_receivables": 25228,
+            "other_current_assets": 14111,
+            "total_current_assets": 134836
+          },
+          "non_current_assets": {
+            "marketable_securities_non_current": 127877,
+            "property_plant_and_equipment_net": 39440,
+            "other_non_current_assets": 48849,
+            "total_non_current_assets": 216166
+          },
+          "total_assets": 351002
+        },
+        "liabilities": {
+          "current_liabilities": {
+            "accounts_payable": 54763,
+            "other_current_liabilities": 47493,
+            "deferred_revenue_current": 7612,
+            "commercial_paper": 6000,
+            "term_debt_current": 9613,
+            "total_current_liabilities": 125481
+          },
+          "non_current_liabilities": {
+            "term_debt_non_current": 109106,
+            "other_non_current_liabilities": 53325,
+            "total_non_current_liabilities": 162431
+          },
+          "total_liabilities": 287912
+        },
+        "shareholders_equity": {
+          "common_stock_and_additional_paid_in_capital": 57365,
+          "retained_earnings": 5562,
+          "accumulated_other_comprehensive_income_loss": 163,
+          "total_shareholders_equity": 63090
+        }
+      },
+      "2022-09-24": {
+        "assets": {
+          "current_assets": {
+            "cash_and_cash_equivalents": 23646,
+            "marketable_securities_current": 24658,
+            "accounts_receivable_net": 28184,
+            "inventories": 4946,
+            "vendor_non_trade_receivables": 32748,
+            "other_current_assets": 21223,
+            "total_current_assets": 135405
+          },
+          "non_current_assets": {
+            "marketable_securities_non_current": 120805,
+            "property_plant_and_equipment_net": 42117,
+            "other_non_current_assets": 54428,
+            "total_non_current_assets": 217350
+          },
+          "total_assets": 352755
+        },
+        "liabilities": {
+          "current_liabilities": {
+            "accounts_payable": 64115,
+            "other_current_liabilities": 60845,
+            "deferred_revenue_current": 7912,
+            "commercial_paper": 9982,
+            "term_debt_current": 11128,
+            "total_current_liabilities": 153982
+          },
+          "non_current_liabilities": {
+            "term_debt_non_current": 98959,
+            "other_non_current_liabilities": 49142,
+            "total_non_current_liabilities": 148101
+          },
+          "total_liabilities": 302083
+        },
+        "shareholders_equity": {
+          "common_stock_and_additional_paid_in_capital": 64849,
+          "retained_earnings": -3068,
+          "accumulated_other_comprehensive_income_loss": -11109,
+          "total_shareholders_equity": 50672
+        }
+      },
+      "2023-09-30": {
+        "assets": {
+          "current_assets": {
+            "cash_and_cash_equivalents": 29965,
+            "marketable_securities_current": 31590,
+            "accounts_receivable_net": 29508,
+            "inventories": 6331,
+            "vendor_non_trade_receivables": 31477,
+            "other_current_assets": 14695,
+            "total_current_assets": 143566
+          },
+          "non_current_assets": {
+            "marketable_securities_non_current": 100544,
+            "property_plant_and_equipment_net": 43715,
+            "other_non_current_assets": 64758,
+            "total_non_current_assets": 209017
+          },
+          "total_assets": 352583
+        },
+        "liabilities": {
+          "current_liabilities": {
+            "accounts_payable": 62611,
+            "other_current_liabilities": 58829,
+            "deferred_revenue_current": 8061,
+            "commercial_paper": 5985,
+            "term_debt_current": 9822,
+            "total_current_liabilities": 145308
+          },
+          "non_current_liabilities": {
+            "term_debt_non_current": 95281,
+            "other_non_current_liabilities": 49848,
+            "total_non_current_liabilities": 145129
+          },
+          "total_liabilities": 290437
+        },
+        "shareholders_equity": {
+          "common_stock_and_additional_paid_in_capital": 73812,
+          "retained_earnings": -214,
+          "accumulated_other_comprehensive_income_loss": -11452,
+          "total_shareholders_equity": 62146
+        }
+      },
+      "2024-09-28": {
+        "assets": {
+          "current_assets": {
+            "cash_and_cash_equivalents": 29943,
+            "marketable_securities_current": 35228,
+            "accounts_receivable_net": 33410,
+            "inventories": 7286,
+            "vendor_non_trade_receivables": 30210,
+            "other_current_assets": 14287,
+            "total_current_assets": 150364
+          },
+          "non_current_assets": {
+            "marketable_securities_non_current": 91637,
+            "property_plant_and_equipment_net": 44856,
+            "other_non_current_assets": 77418,
+            "total_non_current_assets": 213911
+          },
+          "total_assets": 364275
+        },
+        "liabilities": {
+          "current_liabilities": {
+            "accounts_payable": 68960,
+            "other_current_liabilities": 63508,
+            "deferred_revenue_current": 8249,
+            "commercial_paper": 9967,
+            "term_debt_current": 10912,
+            "total_current_liabilities": 161596
+          },
+          "non_current_liabilities": {
+            "term_debt_non_current": 96548,
+            "other_non_current_liabilities": 46309,
+            "total_non_current_liabilities": 142857
+          },
+          "total_liabilities": 304453
+        },
+        "shareholders_equity": {
+          "common_stock_and_additional_paid_in_capital": 83276,
+          "retained_earnings": -19154,
+          "accumulated_other_comprehensive_income_loss": -4300,
+          "total_shareholders_equity": 59822
+        }
+      }
+    },
+    "_flex_categories": [
+      {
+        "subtotal_code": "BS_TCA",
+        "subtotal_label": "Total Current Assets",
+        "flex": [
+          {"code": "BS_CA1", "label": "Cash And Cash Equivalents", "values": {"2021-09-25": 34940, "2022-09-24": 23646, "2023-09-30": 29965, "2024-09-28": 29943}},
+          {"code": "BS_CA2", "label": "Accounts Receivable Net", "values": {"2021-09-25": 26278, "2022-09-24": 28184, "2023-09-30": 29508, "2024-09-28": 33410}},
+          {"code": "BS_CA3", "label": "Inventories", "values": {"2021-09-25": 6580, "2022-09-24": 4946, "2023-09-30": 6331, "2024-09-28": 7286}}
+        ],
+        "other": {"code": "BS_CA_OTH", "label": "Other Current Assets", "values": {"2021-09-25": 67038, "2022-09-24": 78629, "2023-09-30": 77762, "2024-09-28": 79725}},
+        "subtotal_values": {"2021-09-25": 134836, "2022-09-24": 135405, "2023-09-30": 143566, "2024-09-28": 150364}
+      },
+      {
+        "subtotal_code": "BS_TNCA",
+        "subtotal_label": "Total Non-Current Assets",
+        "flex": [
+          {"code": "BS_NCA1", "label": "Marketable Securities Non-Current", "values": {"2021-09-25": 127877, "2022-09-24": 120805, "2023-09-30": 100544, "2024-09-28": 91637}},
+          {"code": "BS_NCA2", "label": "Property Plant And Equipment Net", "values": {"2021-09-25": 39440, "2022-09-24": 42117, "2023-09-30": 43715, "2024-09-28": 44856}},
+          {"code": "BS_NCA3", "label": "Other Non-Current Assets", "values": {"2021-09-25": 48849, "2022-09-24": 54428, "2023-09-30": 64758, "2024-09-28": 77418}}
+        ],
+        "other": {"code": "BS_NCA_OTH", "label": "Other NCA", "values": {"2021-09-25": 0, "2022-09-24": 0, "2023-09-30": 0, "2024-09-28": 0}},
+        "subtotal_values": {"2021-09-25": 216166, "2022-09-24": 217350, "2023-09-30": 209017, "2024-09-28": 213911}
+      },
+      {
+        "subtotal_code": "BS_TCL",
+        "subtotal_label": "Total Current Liabilities",
+        "flex": [
+          {"code": "BS_CL1", "label": "Accounts Payable", "values": {"2021-09-25": 54763, "2022-09-24": 64115, "2023-09-30": 62611, "2024-09-28": 68960}},
+          {"code": "BS_CL2", "label": "Other Current Liabilities", "values": {"2021-09-25": 47493, "2022-09-24": 60845, "2023-09-30": 58829, "2024-09-28": 63508}},
+          {"code": "BS_CL3", "label": "Deferred Revenue Current", "values": {"2021-09-25": 7612, "2022-09-24": 7912, "2023-09-30": 8061, "2024-09-28": 8249}}
+        ],
+        "other": {"code": "BS_CL_OTH", "label": "Other CL", "values": {"2021-09-25": 15613, "2022-09-24": 21110, "2023-09-30": 15807, "2024-09-28": 20879}},
+        "subtotal_values": {"2021-09-25": 125481, "2022-09-24": 153982, "2023-09-30": 145308, "2024-09-28": 161596}
+      },
+      {
+        "subtotal_code": "BS_TNCL",
+        "subtotal_label": "Total Non-Current Liabilities",
+        "flex": [
+          {"code": "BS_NCL1", "label": "Term Debt Non-Current", "values": {"2021-09-25": 109106, "2022-09-24": 98959, "2023-09-30": 95281, "2024-09-28": 96548}},
+          {"code": "BS_NCL2", "label": "Other Non-Current Liabilities", "values": {"2021-09-25": 53325, "2022-09-24": 49142, "2023-09-30": 49848, "2024-09-28": 46309}}
+        ],
+        "other": {"code": "BS_NCL_OTH", "label": "Other NCL", "values": {"2021-09-25": 0, "2022-09-24": 0, "2023-09-30": 0, "2024-09-28": 0}},
+        "subtotal_values": {"2021-09-25": 162431, "2022-09-24": 148101, "2023-09-30": 145129, "2024-09-28": 142857}
+      },
+      {
+        "subtotal_code": "BS_TE",
+        "subtotal_label": "Total Shareholders Equity",
+        "flex": [
+          {"code": "BS_EQ1", "label": "Common Stock And Additional Paid-In Capital", "values": {"2021-09-25": 57365, "2022-09-24": 64849, "2023-09-30": 73812, "2024-09-28": 83276}},
+          {"code": "BS_EQ2", "label": "Retained Earnings", "values": {"2021-09-25": 5562, "2022-09-24": -3068, "2023-09-30": -214, "2024-09-28": -19154}},
+          {"code": "BS_EQ3", "label": "Accumulated Other Comprehensive Income Loss", "values": {"2021-09-25": 163, "2022-09-24": -11109, "2023-09-30": -11452, "2024-09-28": -4300}}
+        ],
+        "other": {"code": "BS_EQ_OTH", "label": "Other Equity", "values": {"2021-09-25": 0, "2022-09-24": 0, "2023-09-30": 0, "2024-09-28": 0}},
+        "subtotal_values": {"2021-09-25": 63090, "2022-09-24": 50672, "2023-09-30": 62146, "2024-09-28": 59822}
+      }
+    ],
+    "_totals": [
+      {"code": "BS_TA", "label": "Total Assets", "values": {"2021-09-25": 351002, "2022-09-24": 352755, "2023-09-30": 352583, "2024-09-28": 364275}},
+      {"code": "BS_TL", "label": "Total Liabilities", "values": {"2021-09-25": 287912, "2022-09-24": 302083, "2023-09-30": 290437, "2024-09-28": 304453}}
+    ]
+  },
+  "cash_flows": {
+    "unit": "millions",
+    "operating_activities": {
+      "net_income": {"2021-09-25": 94680, "2022-09-24": 99803, "2023-09-30": 97178, "2024-09-28": 93585},
+      "adjustments_to_reconcile_net_income": {
+        "depreciation_and_amortization": {"2021-09-25": 11284, "2022-09-24": 11104, "2023-09-30": 11519, "2024-09-28": 11445},
+        "share_based_compensation_expense": {"2021-09-25": 7906, "2022-09-24": 9038, "2023-09-30": 10833, "2024-09-28": 11688},
+        "other_adjustments": {"2021-09-25": 2985, "2022-09-24": 1533, "2023-09-30": -3294, "2024-09-28": -2266}
+      },
+      "changes_in_operating_assets_and_liabilities": {
+        "accounts_receivable": {"2021-09-25": -10125, "2022-09-24": -1823, "2023-09-30": -1688, "2024-09-28": -5144},
+        "inventories": {"2021-09-25": -2642, "2022-09-24": 1484, "2023-09-30": -1618, "2024-09-28": -1046},
+        "accounts_payable": {"2021-09-25": 12326, "2022-09-24": 9448, "2023-09-30": -1889, "2024-09-28": 6020},
+        "other_working_capital_changes": {"2021-09-25": -4831, "2022-09-24": -7044, "2023-09-30": -478, "2024-09-28": 4475}
+      },
+      "net_cash_provided_by_operating_activities": {"2021-09-25": 104038, "2022-09-24": 122151, "2023-09-30": 110543, "2024-09-28": 118254}
+    },
+    "investing_activities": {
+      "purchases_of_marketable_securities": {"2021-09-25": -109558, "2022-09-24": -76923, "2023-09-30": -29513, "2024-09-28": -48656},
+      "proceeds_from_maturities_of_marketable_securities": {"2021-09-25": 59023, "2022-09-24": 29917, "2023-09-30": 39686, "2024-09-28": 50538},
+      "proceeds_from_sales_of_marketable_securities": {"2021-09-25": 47460, "2022-09-24": 37446, "2023-09-30": 5828, "2024-09-28": 14213},
+      "payments_for_acquisition_of_property_plant_and_equipment": {"2021-09-25": -11085, "2022-09-24": -10708, "2023-09-30": -10959, "2024-09-28": -9959},
+      "other_investing": {"2021-09-25": -385, "2022-09-24": -2086, "2023-09-30": -1337, "2024-09-28": -2152},
+      "net_cash_used_in_investing_activities": {"2021-09-25": -14545, "2022-09-24": -22354, "2023-09-30": 3705, "2024-09-28": 3984}
+    },
+    "financing_activities": {
+      "payments_for_taxes_related_to_net_share_settlement": {"2021-09-25": -6556, "2022-09-24": -6223, "2023-09-30": -5431, "2024-09-28": -5765},
+      "payments_for_dividends_and_dividend_equivalents": {"2021-09-25": -14467, "2022-09-24": -14841, "2023-09-30": -15025, "2024-09-28": -15234},
+      "repurchases_of_common_stock": {"2021-09-25": -85502, "2022-09-24": -89402, "2023-09-30": -77550, "2024-09-28": -94949},
+      "proceeds_from_issuance_of_term_debt": {"2021-09-25": 20393, "2022-09-24": 5465, "2023-09-30": 5228, "2024-09-28": 0},
+      "repayments_of_term_debt": {"2021-09-25": -8750, "2022-09-24": -9543, "2023-09-30": -11151, "2024-09-28": -9270},
+      "other_financing": {"2021-09-25": 1022, "2022-09-24": 3037, "2023-09-30": -610, "2024-09-28": -3127},
+      "net_cash_used_in_financing_activities": {"2021-09-25": -93353, "2022-09-24": -110749, "2023-09-30": -108488, "2024-09-28": -121485}
+    },
+    "beginning_balances": {
+      "cash_cash_equivalents_beginning": {"2021-09-25": 38789, "2022-09-24": 34940, "2023-09-30": 23646, "2024-09-28": 29965}
+    },
+    "ending_balances": {
+      "cash_cash_equivalents_ending": {"2021-09-25": 34940, "2022-09-24": 23646, "2023-09-30": 29965, "2024-09-28": 29943}
+    },
+    "_flex_categories": [
+      {
+        "subtotal_code": "CF_OPCF",
+        "subtotal_label": "Net Cash From Operating Activities",
+        "flex": [
+          {"code": "CF_OP1", "label": "Net Income", "values": {"2021-09-25": 94680, "2022-09-24": 99803, "2023-09-30": 97178, "2024-09-28": 93585}},
+          {"code": "CF_OP2", "label": "Depreciation And Amortization", "values": {"2021-09-25": 11284, "2022-09-24": 11104, "2023-09-30": 11519, "2024-09-28": 11445}},
+          {"code": "CF_OP3", "label": "Share Based Compensation Expense", "values": {"2021-09-25": 7906, "2022-09-24": 9038, "2023-09-30": 10833, "2024-09-28": 11688}}
+        ],
+        "other": {"code": "CF_OP_OTH", "label": "Other Operating", "values": {"2021-09-25": -9832, "2022-09-24": 2206, "2023-09-30": -8987, "2024-09-28": 1536}},
+        "subtotal_values": {"2021-09-25": 104038, "2022-09-24": 122151, "2023-09-30": 110543, "2024-09-28": 118254}
+      },
+      {
+        "subtotal_code": "CF_INVCF",
+        "subtotal_label": "Net Cash From Investing Activities",
+        "flex": [
+          {"code": "CF_INV1", "label": "Purchases Of Marketable Securities", "values": {"2021-09-25": -109558, "2022-09-24": -76923, "2023-09-30": -29513, "2024-09-28": -48656}},
+          {"code": "CF_INV2", "label": "Proceeds From Maturities Of Marketable Securities", "values": {"2021-09-25": 59023, "2022-09-24": 29917, "2023-09-30": 39686, "2024-09-28": 50538}},
+          {"code": "CF_INV3", "label": "Proceeds From Sales Of Marketable Securities", "values": {"2021-09-25": 47460, "2022-09-24": 37446, "2023-09-30": 5828, "2024-09-28": 14213}}
+        ],
+        "other": {"code": "CF_INV_OTH", "label": "Other Investing", "values": {"2021-09-25": -11470, "2022-09-24": -12794, "2023-09-30": -12296, "2024-09-28": -12111}},
+        "subtotal_values": {"2021-09-25": -14545, "2022-09-24": -22354, "2023-09-30": 3705, "2024-09-28": 3984}
+      },
+      {
+        "subtotal_code": "CF_FINCF",
+        "subtotal_label": "Net Cash From Financing Activities",
+        "flex": [
+          {"code": "CF_FIN1", "label": "Repurchases Of Common Stock", "values": {"2021-09-25": -85502, "2022-09-24": -89402, "2023-09-30": -77550, "2024-09-28": -94949}},
+          {"code": "CF_FIN2", "label": "Payments For Dividends And Dividend Equivalents", "values": {"2021-09-25": -14467, "2022-09-24": -14841, "2023-09-30": -15025, "2024-09-28": -15234}},
+          {"code": "CF_FIN3", "label": "Payments For Taxes Related To Net Share Settlement", "values": {"2021-09-25": -6556, "2022-09-24": -6223, "2023-09-30": -5431, "2024-09-28": -5765}}
+        ],
+        "other": {"code": "CF_FIN_OTH", "label": "Other Financing", "values": {"2021-09-25": 13172, "2022-09-24": -283, "2023-09-30": -6482, "2024-09-28": -5537}},
+        "subtotal_values": {"2021-09-25": -93353, "2022-09-24": -110749, "2023-09-30": -108488, "2024-09-28": -121485}
+      }
+    ],
+    "_structural": [
+      {"code": "CF_NETCH", "label": "Net Change in Cash", "values": {"2021-09-25": -3849, "2022-09-24": -11294, "2023-09-30": 6319, "2024-09-28": -22}},
+      {"code": "CF_BEGC", "label": "Beginning Cash", "values": {"2021-09-25": 38789, "2022-09-24": 34940, "2023-09-30": 23646, "2024-09-28": 29965}},
+      {"code": "CF_ENDC", "label": "Ending Cash", "values": {"2021-09-25": 34940, "2022-09-24": 23646, "2023-09-30": 29965, "2024-09-28": 29943}}
+    ]
+  }
+}

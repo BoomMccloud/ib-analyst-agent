@@ -22,27 +22,40 @@ TARGET_SECTIONS = [
     {
         "id": "income_statement",
         "label": "Consolidated Income Statement / Statements of Operations",
-        "patterns": [r"Statements of Operations", r"Statements of Income", r"Consolidated Statements of Income"],
+        "patterns": [
+            r"Statements? of Operations",
+            r"Statements? of (?:Consolidated )?Income",
+            r"Consolidated Statements? of (?:Net )?Income",
+            r"Statements? of Earnings",
+            r"Statement of$",  # GE truncates to just "Statement of"
+        ],
     },
     {
         "id": "balance_sheet",
         "label": "Consolidated Balance Sheets",
-        "patterns": [r"Balance Sheets"],
+        "patterns": [
+            r"Balance Sheets?",
+            r"Statements? of Financial Position",
+            r"Statements? of Financial Condition",
+        ],
     },
     {
         "id": "cash_flows",
         "label": "Consolidated Statements of Cash Flows",
-        "patterns": [r"Statements of Cash Flows"],
+        "patterns": [
+            r"Statements? of Cash Flows?",
+            r"Cash Flow Statements?",
+        ],
     },
     {
         "id": "mda",
         "label": "MD&A (Item 7/Item 5)",
-        "patterns": [r"Management's Discussion and Analysis", r"Operating and Financial Review and Prospects"],
+        "patterns": [r"Management.s Discussion and Analysis", r"Operating and Financial Review and Prospects"],
     },
     {
         "id": "notes",
         "label": "Notes to Financial Statements (Item 8)",
-        "patterns": [r"Notes to Consolidated Financial Statements", r"Notes to Financial Statements"],
+        "patterns": [r"Notes to (?:Consolidated )?Financial Statements"],
     },
 ]
 
@@ -134,14 +147,14 @@ def main():
     toc = extract_toc(html_content)
     section_map = find_section_anchors(toc)
     
-    # Save the section map and TOC for debugging
-    with open(os.path.join(out_dir, "manifest.json"), "w") as f:
-        json.dump({"url": args.url, "sections": section_map}, f, indent=2)
-
     # Sort anchors by their position in the HTML to find "next" anchors
-    # We find all anchor locations
+    # Deduplicate: same anchor can appear multiple times in TOC
+    seen_anchors = set()
     anchor_positions = []
     for entry in toc:
+        if entry["anchor"] in seen_anchors:
+            continue
+        seen_anchors.add(entry["anchor"])
         m = re.search(rf'(?:id|name)=["\']{re.escape(entry["anchor"])}["\']', html_content, re.IGNORECASE)
         if m:
             anchor_positions.append((m.start(), entry["anchor"]))
@@ -154,18 +167,40 @@ def main():
                     return anchor_positions[i+1][1]
         return None
 
-    # Extract each target section
+    # Extract each target section and build manifest
+    manifest = {}
     for section_id, start_anchor in section_map.items():
         print(f"Extracting {section_id}...")
         end_anchor = get_next_anchor(start_anchor)
         text = get_section_text(html_content, start_anchor, end_anchor)
-        
+
         if text:
-            with open(os.path.join(out_dir, f"{section_id}.txt"), "w") as f:
+            section_file = os.path.join(out_dir, f"{section_id}.txt")
+            with open(section_file, "w") as f:
                 f.write(text)
+            manifest[section_id] = {
+                "file": section_file,
+                "anchor": start_anchor,
+                "chars": len(text),
+            }
             print(f"  Saved {len(text)} chars to {section_id}.txt")
         else:
             print(f"  Warning: No text found for {section_id}")
+
+    # Save manifest (format expected by structure_financials.py)
+    manifest_path = os.path.join(out_dir, "manifest.json")
+    with open(manifest_path, "w") as f:
+        json.dump(manifest, f, indent=2)
+
+    # Parse iXBRL facts if present
+    if '<ix:nonFraction' in html_content.lower() or '<ix:nonfraction' in html_content.lower():
+        print("Parsing iXBRL tags...")
+        from parse_xbrl_facts import build_xbrl_facts_dict
+        xbrl_facts = build_xbrl_facts_dict(html_content)
+        xbrl_path = os.path.join(out_dir, "xbrl_facts.json")
+        with open(xbrl_path, "w") as f:
+            json.dump(xbrl_facts, f, indent=2)
+        print(f"  Saved {len(xbrl_facts)} XBRL tags to xbrl_facts.json")
 
     print(f"Done. Extracted sections saved to {out_dir}")
 
