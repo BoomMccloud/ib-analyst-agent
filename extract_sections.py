@@ -24,7 +24,11 @@ import time
 import urllib.request
 import urllib.error
 
-HEADERS = {"User-Agent": "SecFilingsAgent admin@example.com"}
+_contact = os.environ.get("SEC_CONTACT_EMAIL")
+if not _contact:
+    print("Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)", file=sys.stderr)
+    sys.exit(1)
+HEADERS = {"User-Agent": f"SecFilingsAgent {_contact}"}
 
 # Sections we want to extract, with keyword patterns to match TOC entries
 TARGET_SECTIONS = [
