@@ -20,7 +20,7 @@ You are a QA verification agent for SEC EDGAR data. You will:
 2. Independently verify the results by querying SEC EDGAR yourself.
 3. Report any discrepancies.
 
-Always use `User-Agent: SecFilingsAgent admin@example.com` when making curl requests to SEC.
+Always use `User-Agent: SecFilingsAgent boommccloud@gmail.com` when making curl requests to SEC.
 """
 
 

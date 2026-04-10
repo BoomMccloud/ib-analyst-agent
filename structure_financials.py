@@ -374,6 +374,10 @@ def classify_model_codes(client, results):
 
 
 def main():
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        print("Error: ANTHROPIC_API_KEY environment variable not set", file=sys.stderr)
+        sys.exit(1)
+
     parser = argparse.ArgumentParser(description="Structure extracted financial sections into JSON")
     parser.add_argument("sections_dir", help="Directory with extracted section .txt files")
     parser.add_argument("--output", "-o", default=None, help="Output JSON file (default: stdout)")

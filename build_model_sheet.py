@@ -17,6 +17,9 @@ Usage:
 
 import argparse
 import json
+import os
+import shutil
+import subprocess
 import sys
 
 from anthropic import Anthropic
@@ -185,8 +188,6 @@ BS_EQUITY = [
     ("BS_OE", "Other Equity (AOCI etc)", "sumif_hold"),
     ("BS_TE", "Total Stockholders' Equity", "sum"),  # INVARIANT: = sum of above
 ]
-# Master invariant: BS_TA = BS_TL + BS_TE
-# If balance check ≠ 0, fix the filing classification — every item must be mapped.
 
 
 # ---------------------------------------------------------------------------
@@ -332,7 +333,6 @@ def _deep_merge(base, overlay):
             base[k] = v
         elif isinstance(base[k], dict) and isinstance(v, dict):
             _deep_merge(base[k], v)
-        # else: base already has this key, keep it (newer data wins)
 
 
 def classify_filing(financials: dict) -> dict:
@@ -357,7 +357,7 @@ def classify_filing(financials: dict) -> dict:
         if vals:
             rows.append({"code": code, "label": label, "values": vals})
 
-    # Revenue: map up to 3 components, bucket extras into REV3
+    # Revenue
     rev_subs = [
         (get_is(["products"], [["net_sales"], ["revenue"]]), "Revenue - Products"),
         (get_is(["services"], [["net_sales"], ["revenue"]]), "Revenue - Services"),
@@ -381,7 +381,7 @@ def classify_filing(financials: dict) -> dict:
 
     add("GP", "Gross Profit", get_is(["gross_margin", "gross_profit"]))
 
-    # OpEx: map up to 3 components
+    # OpEx
     opex_subs = [
         (get_is(["research_and_development", "research_and_development_expense", "product_development_expenses"], [["operating_expenses"]]), "Research & Development"),
         (get_is(["selling_general_and_administrative"], [["operating_expenses"]]), "Selling, General & Admin"),
@@ -428,11 +428,9 @@ def classify_filing(financials: dict) -> dict:
     bs_raw = financials.get("balance_sheet", {})
     coded_bs = bs_raw.get("_coded_items")
     if coded_bs:
-        # Use pre-computed codes from structure_financials
         for item in coded_bs:
             add(item["code"], item["label"], item["values"])
     else:
-        # Fallback: classify at build time
         bs_data = bs_raw.get("balance_sheet", bs_raw.get("fiscal_years", bs_raw))
         bs_pkeys = [k for k in bs_data if isinstance(bs_data.get(k), dict) and k[:4].isdigit() and not k.lower().endswith("_usd")]
         if bs_pkeys:
@@ -452,11 +450,9 @@ def classify_filing(financials: dict) -> dict:
     # --- CF ---
     coded_cf = cf_data.get("_coded_items")
     if coded_cf:
-        # Use pre-computed codes from structure_financials
         for item in coded_cf:
             add(item["code"], item["label"], item["values"])
     else:
-        # Fallback: classify at build time
         print("  Classifying CF items (no pre-computed codes)...", file=sys.stderr)
         cf_items = flatten_cf(cf_data, periods)
         if cf_items:
@@ -469,29 +465,17 @@ def classify_filing(financials: dict) -> dict:
     return {"periods": periods, "rows": rows}
 
 
-# ---------------------------------------------------------------------------
-# Sheet builders
-# ---------------------------------------------------------------------------
-
-
-
 def build_filing_sheet(sid, filing_data, periods, code_map=None):
-    """Filing sheet: raw data with codes linked to IS/BS/CF via formulas.
-    Returns row_sections: list of (row_index_0based, section) for data validation."""
     out = [[], R("", "Filing Data") + ["'" + p for p in periods], []]
-
     section_breaks = {"REVT": "INCOME STATEMENT", "BS_CASH": "BALANCE SHEET", "CF_NI": "CASH FLOWS"}
     seen = set()
-    current_section = "IS"  # first rows before any break are IS
-    row_sections = []  # (0-based row index, "IS"|"BS"|"CF")
-
+    current_section = "IS"
+    row_sections = []
     for item in filing_data["rows"]:
         sec = section_breaks.get(item["code"])
         if sec and sec not in seen:
-            if sec == "BALANCE SHEET":
-                current_section = "BS"
-            elif sec == "CASH FLOWS":
-                current_section = "CF"
+            if sec == "BALANCE SHEET": current_section = "BS"
+            elif sec == "CASH FLOWS": current_section = "CF"
             out.append([])
             out.append(["", "", sec])
             seen.add(sec)
@@ -505,188 +489,95 @@ def build_filing_sheet(sid, filing_data, periods, code_map=None):
             row_data.append(item["values"].get(p, ""))
         row_sections.append((len(out), current_section))
         out.append(row_data)
-
     gws_write(sid, f"Filing!A1:{col_range(len(periods))}{len(out)}", out)
-    print(f"  Filing: {len(out)} rows", file=sys.stderr)
     return row_sections
 
 
 def apply_filing_validation(sid, sheet_ids, row_sections):
-    """Apply range-based dropdown validation to Filing!A cells.
-    Each section block validates against its sheet's Col A (=IS!$A:$A, =BS!$A:$A, =CF!$A:$A)."""
     filing_sheet_id = sheet_ids["Filing"]
-    is_sheet_id = sheet_ids["IS"]
-    bs_sheet_id = sheet_ids["BS"]
-    cf_sheet_id = sheet_ids["CF"]
-
-    source_sheets = {"IS": is_sheet_id, "BS": bs_sheet_id, "CF": cf_sheet_id}
-
-    # Group consecutive rows by section into contiguous ranges
-    if not row_sections:
-        return
-
-    ranges = []  # (start_row_0based, end_row_0based_exclusive, section)
+    source_sheets = {"IS": sheet_ids["IS"], "BS": sheet_ids["BS"], "CF": sheet_ids["CF"]}
+    if not row_sections: return
+    ranges = []
     cur_start, cur_section = row_sections[0]
     cur_end = cur_start + 1
     for row_idx, section in row_sections[1:]:
         if section == cur_section and row_idx <= cur_end + 2:
-            # Allow small gaps (section headers/blanks) within same section
             cur_end = row_idx + 1
         else:
             ranges.append((cur_start, cur_end, cur_section))
             cur_start, cur_section = row_idx, section
             cur_end = row_idx + 1
     ranges.append((cur_start, cur_end, cur_section))
-
     requests = []
     for start, end, section in ranges:
-        src_sheet_id = source_sheets[section]
-        requests.append({
-            "setDataValidation": {
-                "range": {
-                    "sheetId": filing_sheet_id,
-                    "startRowIndex": start,
-                    "endRowIndex": end,
-                    "startColumnIndex": 0,
-                    "endColumnIndex": 1,
-                },
-                "rule": {
-                    "condition": {
-                        "type": "ONE_OF_RANGE",
-                        "values": [{"userEnteredValue": f"={section}!$A:$A"}],
-                    },
-                    "showCustomUi": True,
-                    "strict": True,
-                },
-            }
-        })
-
+        requests.append({"setDataValidation": {"range": {"sheetId": filing_sheet_id, "startRowIndex": start, "endRowIndex": end, "startColumnIndex": 0, "endColumnIndex": 1},
+                "rule": {"condition": {"type": "ONE_OF_RANGE", "values": [{"userEnteredValue": f"={section}!$A:$A"}]}, "showCustomUi": True, "strict": True}}})
     gws_batch_update(sid, requests)
-    print(f"  Filing validation: {len(ranges)} section ranges (IS/BS/CF dropdowns)", file=sys.stderr)
 
 
 def build_is_sheet(sid, periods, forecast_periods):
-    """IS sheet. Fixed structure, SUMIF for historicals, formulas for forecasts."""
     all_p = periods + forecast_periods
     nh = len(periods)
     n = len(all_p)
-    rows = []
-    refs = {}  # code_or_key → row number
-
-    def r():
-        return len(rows)
-
-    def add(data):
-        rows.append(data)
-        return r()
-
-    add([])
-    add(R("", "$m") + all_p)
-    add([])
-
-    # Build each IS row from IS_STRUCTURE
-    # We'll track sum groups: REV1-3→REVT, COGS1-3→COGST, OPEX1-3→OPEXT
-    sum_groups = {}  # total_code → [component row numbers]
-    current_group = None
-
+    rows = [[] , R("", "$m") + all_p, []]
+    refs = {}
+    sum_groups = {}
     for code, default_label, rtype in IS_STRUCTURE:
-        if rtype == "blank":
-            add([])
-            continue
-        if rtype == "label":
-            add(["", "", default_label])
-            continue
-
-        row_num = r() + 1  # the row number this will occupy
-
+        if rtype == "blank": rows.append([]); continue
+        if rtype == "label": rows.append(["", "", default_label]); continue
+        row_num = len(rows) + 1
         if rtype == "sumif":
-            # Component row: SUMIF for historical, forecast depends on parent
             label_cell = label_formula().replace("{row}", str(row_num)) if default_label is None else default_label
             d = R(code, label_cell)
             for i in range(n):
-                if i < nh:
-                    d.append(sumif_formula(code, i).replace("{row}", str(row_num)))
-                else:
-                    d.append("")  # filled in after we know driver rows
-            cur = add(d)
-            refs[code] = cur
-            # Track for sum groups
-            if code.startswith("REV") and code != "REVT":
-                sum_groups.setdefault("REVT", []).append(cur)
-            elif code.startswith("COGS") and code != "COGST":
-                sum_groups.setdefault("COGST", []).append(cur)
-            elif code.startswith("OPEX") and code != "OPEXT":
-                sum_groups.setdefault("OPEXT", []).append(cur)
-
+                d.append(sumif_formula(code, i).replace("{row}", str(row_num)) if i < nh else "")
+            rows.append(d); refs[code] = row_num
+            if code.startswith("REV") and code != "REVT": sum_groups.setdefault("REVT", []).append(row_num)
+            elif code.startswith("COGS") and code != "COGST": sum_groups.setdefault("COGST", []).append(row_num)
+            elif code.startswith("OPEX") and code != "OPEXT": sum_groups.setdefault("OPEXT", []).append(row_num)
         elif rtype == "sum":
-            # Total row: always a SUM of its components
             d = R(code, default_label)
             component_rows = sum_groups.get(code, [])
             for i in range(n):
                 c = dcol(i)
-                if component_rows:
-                    d.append(f"={'+'.join(f'{c}{cr}' for cr in component_rows)}")
-                elif i < nh:
-                    d.append(sumif_formula(code, i).replace("{row}", str(row_num)))
-                else:
-                    d.append("")
-            cur = add(d)
-            refs[code] = cur
-
+                if component_rows: d.append(f"={'+'.join(f'{c}{cr}' for cr in component_rows)}")
+                elif i < nh: d.append(sumif_formula(code, i).replace("{row}", str(row_num)))
+                else: d.append("")
+            rows.append(d); refs[code] = row_num
         elif rtype == "formula":
             d = R(code, default_label)
             for i in range(n):
                 c = dcol(i)
-                if code == "GP":
-                    d.append(f"={c}{refs['REVT']}-{c}{refs['COGST']}")
-                elif code == "OPINC":
-                    d.append(f"={c}{refs['GP']}-{c}{refs['OPEXT']}")
-                elif code == "EBT":
-                    d.append(f"={c}{refs['OPINC']}+{c}{refs['INC_O']}")
-                elif code == "INC_NET":
-                    d.append(f"={c}{refs['EBT']}-{c}{refs['TAX']}")
-            cur = add(d)
-            refs[code] = cur
-
+                if code == "GP": d.append(f"={c}{refs['REVT']}-{c}{refs['COGST']}")
+                elif code == "OPINC": d.append(f"={c}{refs['GP']}-{c}{refs['OPEXT']}")
+                elif code == "EBT": d.append(f"={c}{refs['OPINC']}+{c}{refs['INC_O']}")
+                elif code == "INC_NET": d.append(f"={c}{refs['EBT']}-{c}{refs['TAX']}")
+            rows.append(d); refs[code] = row_num
         elif rtype.startswith("driver_"):
             d = R("", default_label)
             for i in range(n):
                 c = dcol(i)
                 if rtype == "driver_rev_growth":
-                    if i == 0:
-                        d.append("")
-                    elif i < nh:
-                        d.append(f"={c}{refs['REVT']}/{dcol(i-1)}{refs['REVT']}-1")
-                    else:
-                        d.append(0.05)
+                    if i == 0: d.append("")
+                    elif i < nh: d.append(f"={c}{refs['REVT']}/{dcol(i-1)}{refs['REVT']}-1")
+                    else: d.append(0.05)
                 elif rtype == "driver_cogs_pct":
-                    if i < nh:
-                        d.append(f"=IF({c}{refs['REVT']}=0,\"\",{c}{refs['COGST']}/{c}{refs['REVT']})")
-                    else:
-                        d.append(0.45)
+                    if i < nh: d.append(f"=IF({c}{refs['REVT']}=0,\"\",{c}{refs['COGST']}/{c}{refs['REVT']})")
+                    else: d.append(0.45)
                 elif rtype.startswith("driver_opex") and rtype.endswith("_pct"):
                     slot = rtype.replace("driver_opex", "").replace("_pct", "")
                     opex_code = f"OPEX{slot}"
                     if opex_code in refs:
-                        if i < nh:
-                            d.append(f"=IF({c}{refs['REVT']}=0,\"\",{c}{refs[opex_code]}/{c}{refs['REVT']})")
-                        else:
-                            d.append(0.10)
-                    else:
-                        d.append("" if i < nh else 0)
+                        if i < nh: d.append(f"=IF({c}{refs['REVT']}=0,\"\",{c}{refs[opex_code]}/{c}{refs['REVT']})")
+                        else: d.append(0.10)
+                    else: d.append("" if i < nh else 0)
                 elif rtype == "driver_sbc_pct":
-                    if i < nh:
-                        d.append(f"=IF({c}{refs['OPEXT']}=0,\"\",{c}{refs['SBC']}/{c}{refs['OPEXT']})")
-                    else:
-                        d.append(0.20)
+                    if i < nh: d.append(f"=IF({c}{refs['OPEXT']}=0,\"\",{c}{refs['SBC']}/{c}{refs['OPEXT']})")
+                    else: d.append(0.20)
                 elif rtype == "driver_tax_rate":
-                    if i < nh:
-                        d.append(f"=IF({c}{refs['EBT']}=0,\"\",{c}{refs['TAX']}/{c}{refs['EBT']})")
-                    else:
-                        d.append(0.21)
-            cur = add(d)
-            refs[rtype] = cur
-
+                    if i < nh: d.append(f"=IF({c}{refs['EBT']}=0,\"\",{c}{refs['TAX']}/{c}{refs['EBT']})")
+                    else: d.append(0.21)
+            rows.append(d); refs[rtype] = row_num
         elif rtype.startswith("margin_"):
             d = R("", default_label)
             src_map = {"margin_gp": "GP", "margin_ebit": "OPINC", "margin_ni": "INC_NET"}
@@ -694,1155 +585,479 @@ def build_is_sheet(sid, periods, forecast_periods):
             for i in range(n):
                 c = dcol(i)
                 d.append(f"=IF({c}{refs['REVT']}=0,\"\",{c}{src}/{c}{refs['REVT']})" if src else "")
-            refs[rtype] = add(d)
+            rows.append(d); refs[rtype] = len(rows)
 
-    # --- Fix forecast formulas ---
-    # REVT forecast: prior * (1 + growth)
     growth_row = refs["driver_rev_growth"]
     for i in range(nh, n):
         c = dcol(i)
         rows[refs["REVT"] - 1][4 + i] = f"={dcol(i-1)}{refs['REVT']}*(1+{c}{growth_row})"
-
-    # COGST forecast: cogs_pct * revenue (only if no components)
     cogs_pct_row = refs["driver_cogs_pct"]
     if not sum_groups.get("COGST"):
         for i in range(nh, n):
             c = dcol(i)
             rows[refs["COGST"] - 1][4 + i] = f"={c}{cogs_pct_row}*{c}{refs['REVT']}"
-
-    # OPEX component forecasts: opex_pct * revenue
     for slot in [1, 2, 3]:
-        opex_code = f"OPEX{slot}"
-        drv_key = f"driver_opex{slot}_pct"
+        opex_code, drv_key = f"OPEX{slot}", f"driver_opex{slot}_pct"
         if opex_code in refs and drv_key in refs:
             for i in range(nh, n):
                 c = dcol(i)
                 rows[refs[opex_code] - 1][4 + i] = f"={c}{refs[drv_key]}*{c}{refs['REVT']}"
-
-    # SBC forecast: sbc_pct * opex
     sbc_drv = refs.get("driver_sbc_pct")
     if sbc_drv and "SBC" in refs:
         for i in range(nh, n):
             c = dcol(i)
             rows[refs["SBC"] - 1][4 + i] = f"={c}{sbc_drv}*{c}{refs['OPEXT']}"
-
-    # TAX forecast: rate * EBT
     tax_drv = refs.get("driver_tax_rate")
     if tax_drv:
         for i in range(nh, n):
             c = dcol(i)
             rows[refs["TAX"] - 1][4 + i] = f"={c}{tax_drv}*{c}{refs['EBT']}"
-
-    # DA forecast: hold constant
     if "DA" in refs:
         for i in range(nh, n):
             rows[refs["DA"] - 1][4 + i] = f"={dcol(i-1)}{refs['DA']}"
-
     gws_write(sid, f"IS!A1:{col_range(n)}{len(rows)}", rows)
-    print(f"  IS: {len(rows)} rows", file=sys.stderr)
     return refs
 
 
 def build_bs_sheet(sid, is_refs, periods, forecast_periods):
-    """BS sheet with sum invariants enforced."""
     all_p = periods + forecast_periods
-    nh = len(periods)
-    n = len(all_p)
-    rows = []
+    nh, n = len(periods), len(all_p)
+    rows = [[], R("", "$m") + all_p, []]
     refs = {}
+    def add(d): rows.append(d); return len(rows)
+    def sf(col_i, row_num): return sumif_formula("", col_i).replace("{row}", str(row_num))
+    def lf(row_num): return label_formula().replace("{row}", str(row_num))
+    def hold(i, row): return f"={dcol(i-1)}{row}"
 
-    def r():
-        return len(rows)
-    def add(data):
-        rows.append(data)
-        return r()
-
-    def sf(col_i, row_num):
-        """Externalized SUMIF: looks up code from $A of this row."""
-        return sumif_formula("", col_i).replace("{row}", str(row_num))
-
-    def lf(row_num):
-        """Externalized label: INDEX/MATCH from Filing by $A code."""
-        return label_formula().replace("{row}", str(row_num))
-
-    def hold(i, row):
-        return f"={dcol(i-1)}{row}"
-
-    # === SECTION 1: WORKING CAPITAL ===
-    add([])
-    add(R("", "$m") + all_p)
-    add([])
-
-    # IS links for days calculations
     for label, is_key in [("Revenue", "REVT"), ("COGS", "COGST"), ("OpEx", "OPEXT")]:
         d = R("", label)
-        for i in range(n):
-            d.append(f"=IS!{dcol(i)}{is_refs[is_key]}")
+        for i in range(n): d.append(f"=IS!{dcol(i)}{is_refs[is_key]}")
         add(d)
-    bs_rev, bs_cogs, bs_opex = r()-2, r()-1, r()
-
+    bs_rev, bs_cogs, bs_opex = len(rows)-2, len(rows)-1, len(rows)
     d = R("", "COGS + OpEx")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{bs_cogs}+{c}{bs_opex}")
-    bs_costs = add(d)
-    add([])
+    for i in range(n): d.append(f"={dcol(i)}{bs_cogs}+{dcol(i)}{bs_opex}")
+    bs_costs = add(d); add([])
 
-    # Current Assets: BS_CASH, BS_AR, BS_INV, BS_CA1-3, BS_TCA
     ca_components = []
     for code, label, ftype in BS_ASSETS:
-        if code == "BS_TCA":
-            continue  # handle after components
-        row_num = r() + 1
-        dyn_label = lf(row_num) if ftype == "sumif_hold" else label
-        d = R(code, dyn_label)
+        if code == "BS_TCA": continue
+        row_num = len(rows) + 1
+        d = R(code, lf(row_num) if ftype == "sumif_hold" else label)
         for i in range(n):
-            c = dcol(i)
-            if i < nh:
-                d.append(sf(i, row_num))
-            elif ftype == "cash":
-                d.append(f"=CF!{c}{{ending_cash}}")  # placeholder
-            elif ftype == "days_rev":
-                d.append(f"={c}{bs_rev}/(365/{c}{{dso}})")  # placeholder
-            elif ftype == "days_cogs":
-                d.append(f"=IF({c}{{dio}}=0,0,{c}{bs_cogs}/(365/{c}{{dio}}))")
-            else:  # sumif_hold
-                d.append(hold(i, row_num) if i > 0 else "0")
-        cur = add(d)
-        refs[code] = cur
-        ca_components.append(cur)
-
-    # BS_TCA = sum of all current asset components (INVARIANT)
+            if i < nh: d.append(sf(i, row_num))
+            elif ftype == "cash": d.append(f"=CF!{dcol(i)}{{ending_cash}}")
+            elif ftype == "days_rev": d.append(f"={dcol(i)}{bs_rev}/(365/{dcol(i)}{{dso}})")
+            elif ftype == "days_cogs": d.append(f"=IF({dcol(i)}{{dio}}=0,0,{dcol(i)}{bs_cogs}/(365/{dcol(i)}{{dio}}))")
+            else: d.append(hold(i, row_num) if i > 0 else "0")
+        ca_components.append(add(d)); refs[code] = len(rows)
     d = R("BS_TCA", "Total Current Assets")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={'+'.join(f'{c}{cr}' for cr in ca_components)}")
-    refs["BS_TCA"] = add(d)
-    add([])
+    for i in range(n): d.append(f"={'+'.join(f'{dcol(i)}{cr}' for cr in ca_components)}")
+    refs["BS_TCA"] = add(d); add([])
 
-    # Non-Current Assets: BS_PPE, BS_LTA1-2, BS_TNCA
     nca_components = []
     for code, label, ftype in BS_NONCURRENT_ASSETS:
-        if code == "BS_TNCA":
-            continue
-        row_num = r() + 1
-        dyn_label = lf(row_num) if ftype == "sumif_hold" else label
-        d = R(code, dyn_label)
+        if code == "BS_TNCA": continue
+        row_num = len(rows) + 1
+        d = R(code, lf(row_num) if ftype == "sumif_hold" else label)
         for i in range(n):
-            c = dcol(i)
-            if i < nh:
-                d.append(sf(i, row_num))
-            elif ftype == "ppe_rollforward":
-                d.append("")  # filled after capex/da rows exist
-            else:
-                d.append(hold(i, row_num) if i > 0 else "0")
-        cur = add(d)
-        refs[code] = cur
-        nca_components.append(cur)
-
+            if i < nh: d.append(sf(i, row_num))
+            elif ftype == "ppe_rollforward": d.append("")
+            else: d.append(hold(i, row_num) if i > 0 else "0")
+        nca_components.append(add(d)); refs[code] = len(rows)
     d = R("BS_TNCA", "Total Non-Current Assets")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={'+'.join(f'{c}{cr}' for cr in nca_components)}")
-    refs["BS_TNCA"] = add(d)
-    add([])
-
-    # BS_TA = BS_TCA + BS_TNCA (INVARIANT)
+    for i in range(n): d.append(f"={'+'.join(f'{dcol(i)}{cr}' for cr in nca_components)}")
+    refs["BS_TNCA"] = add(d); add([])
     d = R("BS_TA", "Total Assets")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{refs['BS_TCA']}+{c}{refs['BS_TNCA']}")
-    refs["BS_TA"] = add(d)
-    add([])
+    for i in range(n): d.append(f"={dcol(i)}{refs['BS_TCA']}+{dcol(i)}{refs['BS_TNCA']}")
+    refs["BS_TA"] = add(d); add([])
 
-    # WC Drivers
     add(["", "", "Metrics - days"])
-    driver_defs = [
-        ("dso", "Days Receivable (DSO)", "BS_AR", bs_rev, 60),
-        ("dio", "Days Inventory (DIO)", "BS_INV", bs_cogs, 30),
-        ("dpo", "Days Payable (DPO)", "BS_AP", bs_costs, 45),
-    ]
-    for drv_key, label, bs_code, base, default in driver_defs:
-        d = R("", label)
-        item_row = refs.get(bs_code)
-        for i in range(n):
-            c = dcol(i)
-            if i < nh and item_row:
-                d.append(f"=IF({c}{base}=0,\"\",365/({c}{base}/{c}{item_row}))")
-            else:
-                d.append(default)
+    for drv_key, label, bs_code, base, default in [("dso", "Days Receivable (DSO)", "BS_AR", bs_rev, 60), ("dio", "Days Inventory (DIO)", "BS_INV", bs_cogs, 30), ("dpo", "Days Payable (DPO)", "BS_AP", bs_costs, 45)]:
+        d = R("", label); item_row = refs.get(bs_code)
+        for i in range(n): d.append(f"=IF({dcol(i)}{base}=0,\"\",365/({dcol(i)}{base}/{dcol(i)}{item_row}))" if i < nh and item_row else default)
         refs[drv_key] = add(d)
-    add([])
-    add([])
+    add([]); add([])
+    if "BS_AR" in refs:
+        for i in range(nh, n): rows[refs["BS_AR"] - 1][4 + i] = f"={dcol(i)}{bs_rev}/(365/{dcol(i)}{refs['dso']})"
+    if "BS_INV" in refs:
+        for i in range(nh, n): rows[refs["BS_INV"] - 1][4 + i] = f"=IF({dcol(i)}{refs['dio']}=0,0,{dcol(i)}{bs_cogs}/(365/{dcol(i)}{refs['dio']}))"
 
-    # Fix AR/INV forecast formulas
-    if "BS_AR" in refs and "dso" in refs:
-        for i in range(nh, n):
-            c = dcol(i)
-            rows[refs["BS_AR"] - 1][4 + i] = f"={c}{bs_rev}/(365/{c}{refs['dso']})"
-    if "BS_INV" in refs and "dio" in refs:
-        for i in range(nh, n):
-            c = dcol(i)
-            rows[refs["BS_INV"] - 1][4 + i] = f"=IF({c}{refs['dio']}=0,0,{c}{bs_cogs}/(365/{c}{refs['dio']}))"
-
-    # === PP&E DRIVERS ===
-    add(R("", "$m") + all_p)
-    add([])
-
-    capex_row_num = r() + 1
+    add(R("", "$m") + all_p); add([])
+    capex_row_num = len(rows) + 1
     d = R("CF_CAPEX", "CapEx")
     for i in range(n):
-        c = dcol(i)
-        if i < nh:
-            # ABS so it works whether filing stores capex as negative or positive
-            col = dcol(i)
-            d.append(f'=ABS(IFERROR(SUMIF(Filing!$A:$A,$A{capex_row_num},Filing!{col}:{col}),""))')
-        else:
-            d.append(f"={c}{{capex_pct}}*{c}{bs_rev}")
+        if i < nh: d.append(f'=ABS(IFERROR(SUMIF(Filing!$A:$A,$A{capex_row_num},Filing!{dcol(i)}:{dcol(i)}),""))')
+        else: d.append(f"={dcol(i)}{{capex_pct}}*{dcol(i)}{bs_rev}")
     refs["capex"] = add(d)
-
-    da_is = is_refs.get("DA")
-    da_row_num = r() + 1
+    da_is, da_row_num = is_refs.get("DA"), len(rows) + 1
     d = R("DA", "D&A")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"=IS!{c}{da_is}" if da_is else (sf(i, da_row_num) if i < nh else "0"))
+    for i in range(n): d.append(f"=IS!{dcol(i)}{da_is}" if da_is else (sf(i, da_row_num) if i < nh else "0"))
     refs["da"] = add(d)
-
     d = R("", "Net Increase to PP&E")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{refs['capex']}-{c}{refs['da']}")
-    add(d)
-    add([])
-
+    for i in range(n): d.append(f"={dcol(i)}{refs['capex']}-{dcol(i)}{refs['da']}")
+    add(d); add([])
     add(["", "", "Metrics - PP&E"])
     d = R("", "CapEx as % of Revenue")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{refs['capex']}/{c}{bs_rev}" if i < nh else 0.05)
+    for i in range(n): d.append(f"={dcol(i)}{refs['capex']}/{dcol(i)}{bs_rev}" if i < nh else 0.05)
     refs["capex_pct"] = add(d)
-
     d = R("", "D&A as % of beg PP&E")
     for i in range(n):
-        c = dcol(i)
-        if i == 0:
-            d.append("")
-        elif i < nh:
-            d.append(f"=IF({dcol(i-1)}{refs['BS_PPE']}=0,\"\",{c}{refs['da']}/{dcol(i-1)}{refs['BS_PPE']})")
-        else:
-            d.append(0.15)
-    refs["da_pct"] = add(d)
-    add([])
-    add([])
-
-    # Fix PPE forecast: ending = beg + capex - da
+        if i == 0: d.append("")
+        elif i < nh: d.append(f"=IF({dcol(i-1)}{refs['BS_PPE']}=0,\"\",{dcol(i)}{refs['da']}/{dcol(i-1)}{refs['BS_PPE']})")
+        else: d.append(0.15)
+    refs["da_pct"] = add(d); add([]); add([])
     for i in range(nh, n):
-        c = dcol(i)
-        rows[refs["BS_PPE"] - 1][4 + i] = f"={dcol(i-1)}{refs['BS_PPE']}+{c}{refs['capex']}-{c}{refs['da']}"
-        rows[refs["capex"] - 1][4 + i] = f"={c}{refs['capex_pct']}*{c}{bs_rev}"
+        rows[refs["BS_PPE"] - 1][4 + i] = f"={dcol(i-1)}{refs['BS_PPE']}+{dcol(i)}{refs['capex']}-{dcol(i)}{refs['da']}"
+        rows[refs["capex"] - 1][4 + i] = f"={dcol(i)}{refs['capex_pct']}*{dcol(i)}{bs_rev}"
 
-    # === CURRENT LIABILITIES ===
-    add(R("", "$m") + all_p)
-    add([])
-
+    add(R("", "$m") + all_p); add([])
     cl_components = []
     for code, label, ftype in BS_CURRENT_LIABILITIES:
-        if code == "BS_TCL":
-            continue
-        row_num = r() + 1
-        dyn_label = lf(row_num) if ftype == "sumif_hold" else label
-        d = R(code, dyn_label)
+        if code == "BS_TCL": continue
+        row_num = len(rows) + 1
+        d = R(code, lf(row_num) if ftype == "sumif_hold" else label)
         for i in range(n):
-            c = dcol(i)
-            if i < nh:
-                d.append(sf(i, row_num))
-            elif ftype == "days_costs" and "dpo" in refs:
-                d.append(f"={c}{bs_costs}/(365/{c}{refs['dpo']})")
-            else:
-                d.append(hold(i, row_num) if i > 0 else "0")
-        cur = add(d)
-        refs[code] = cur
-        cl_components.append(cur)
-
+            if i < nh: d.append(sf(i, row_num))
+            elif ftype == "days_costs" and "dpo" in refs: d.append(f"={dcol(i)}{bs_costs}/(365/{dcol(i)}{refs['dpo']})")
+            else: d.append(hold(i, row_num) if i > 0 else "0")
+        cl_components.append(add(d)); refs[code] = len(rows)
     d = R("BS_TCL", "Total Current Liabilities")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={'+'.join(f'{c}{cr}' for cr in cl_components)}")
-    refs["BS_TCL"] = add(d)
-    add([])
-
-    # === NON-CURRENT LIABILITIES ===
+    for i in range(n): d.append(f"={'+'.join(f'{dcol(i)}{cr}' for cr in cl_components)}")
+    refs["BS_TCL"] = add(d); add([])
     ncl_components = []
     for code, label, ftype in BS_NONCURRENT_LIABILITIES:
-        if code == "BS_TNCL":
-            continue
-        row_num = r() + 1
-        dyn_label = lf(row_num) if ftype == "sumif_hold" else label
-        d = R(code, dyn_label)
-        for i in range(n):
-            d.append(sf(i, row_num) if i < nh else (hold(i, row_num) if i > 0 else "0"))
-        cur = add(d)
-        refs[code] = cur
-        ncl_components.append(cur)
-
+        if code == "BS_TNCL": continue
+        row_num = len(rows) + 1
+        d = R(code, lf(row_num) if ftype == "sumif_hold" else label)
+        for i in range(n): d.append(sf(i, row_num) if i < nh else (hold(i, row_num) if i > 0 else "0"))
+        ncl_components.append(add(d)); refs[code] = len(rows)
     d = R("BS_TNCL", "Total Non-Current Liabilities")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={'+'.join(f'{c}{cr}' for cr in ncl_components)}")
-    refs["BS_TNCL"] = add(d)
-    add([])
-
-    # BS_TL = BS_TCL + BS_TNCL (INVARIANT)
+    for i in range(n): d.append(f"={'+'.join(f'{dcol(i)}{cr}' for cr in ncl_components)}")
+    refs["BS_TNCL"] = add(d); add([])
     d = R("BS_TL", "Total Liabilities")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{refs['BS_TCL']}+{c}{refs['BS_TNCL']}")
-    refs["BS_TL"] = add(d)
-    add([])
-    add([])
-
-    # === EQUITY ROLL-FORWARD ===
-    add(R("", "$m") + all_p)
-    add([])
-
-    # Common Stock
+    for i in range(n): d.append(f"={dcol(i)}{refs['BS_TCL']}+{dcol(i)}{refs['BS_TNCL']}")
+    refs["BS_TL"] = add(d); add([]); add([])
+    add(R("", "$m") + all_p); add([])
     cs_beg = add(R("", "Common Stock - beg") + [""] * n)
-    d = R("", "(+) SBC")
-    sbc_is = is_refs.get("SBC")
-    for i in range(n):
-        d.append(f"=IS!{dcol(i)}{sbc_is}" if sbc_is else "0")
-    sbc_eq = add(d)
-    stpay_eq = add(R("", "(+/-) Stock Payments") + ["=CF!{c}{stpay}".replace("{c}", dcol(i)).replace("{stpay}", "0") for i in range(n)])  # placeholder
-
-    cs_row_num = r() + 1
+    d = R("", "(+) SBC"); sbc_is = is_refs.get("SBC")
+    for i in range(n): d.append(f"=IS!{dcol(i)}{sbc_is}" if sbc_is else "0")
+    sbc_eq, stpay_eq = add(d), add(R("", "(+/-) Stock Payments") + ["=CF!{c}{stpay}".replace("{c}", dcol(i)).replace("{stpay}", "0") for i in range(n)])
+    cs_row_num = len(rows) + 1
     d = R("BS_CS", "Common Stock & APIC - end")
-    for i in range(n):
-        c = dcol(i)
-        d.append(sf(i, cs_row_num) if i < nh else f"={c}{cs_beg}+{c}{sbc_eq}+{c}{stpay_eq}")
-    cs_end = add(d)
-    refs["BS_CS"] = cs_end
-    for i in range(1, n):
-        rows[cs_beg - 1][4 + i] = f"={dcol(i-1)}{cs_end}"
+    for i in range(n): d.append(sf(i, cs_row_num) if i < nh else f"={dcol(i)}{cs_beg}+{dcol(i)}{sbc_eq}+{dcol(i)}{stpay_eq}")
+    cs_end = add(d); refs["BS_CS"] = cs_end
+    for i in range(1, n): rows[cs_beg - 1][4 + i] = f"={dcol(i-1)}{cs_end}"
     add([])
-
-    # Other Equity (AOCI + other)
-    row_num = r() + 1
+    row_num = len(rows) + 1
     d = R("BS_OE", "Other Equity (AOCI etc)")
-    for i in range(n):
-        d.append(sf(i, row_num) if i < nh else (hold(i, row_num) if i > 0 else "0"))
-    oe_row = add(d)
-    refs["BS_OE"] = oe_row
-    add([])
-
-    # Retained Earnings roll-forward
+    for i in range(n): d.append(sf(i, row_num) if i < nh else (hold(i, row_num) if i > 0 else "0"))
+    oe_row = add(d); refs["BS_OE"] = oe_row; add([])
     re_beg = add(R("", "Retained Earnings - beg") + [""] * n)
     d = R("", "(+) Net Income")
-    for i in range(n):
-        d.append(f"=IS!{dcol(i)}{is_refs['INC_NET']}")
-    re_ni = add(d)
-    re_buy = add(R("", "(-) Share Repurchases") + [0] * n)  # placeholder
-    re_div = add(R("", "(-) Dividends") + [0] * n)  # placeholder
-
-    re_row_num = r() + 1
+    for i in range(n): d.append(f"=IS!{dcol(i)}{is_refs['INC_NET']}")
+    re_ni, re_buy, re_div = add(d), add(R("", "(-) Share Repurchases") + [0] * n), add(R("", "(-) Dividends") + [0] * n)
+    re_row_num = len(rows) + 1
     d = R("BS_RE", "Retained Earnings - end")
-    for i in range(n):
-        c = dcol(i)
-        d.append(sf(i, re_row_num) if i < nh else f"={c}{re_beg}+{c}{re_ni}+{c}{re_buy}+{c}{re_div}")
-    re_end = add(d)
-    refs["BS_RE"] = re_end
-    for i in range(1, n):
-        rows[re_beg - 1][4 + i] = f"={dcol(i-1)}{re_end}"
+    for i in range(n): d.append(sf(i, re_row_num) if i < nh else f"={dcol(i)}{re_beg}+{dcol(i)}{re_ni}+{dcol(i)}{re_buy}+{dcol(i)}{re_div}")
+    re_end = add(d); refs["BS_RE"] = re_end
+    for i in range(1, n): rows[re_beg - 1][4 + i] = f"={dcol(i-1)}{re_end}"
     add([])
-
-    # BS_TE = CS + RE + OE (INVARIANT: sum of equity components)
     eq_components = [cs_end, re_end, oe_row]
     d = R("BS_TE", "Total Stockholders' Equity")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={'+'.join(f'{c}{cr}' for cr in eq_components)}")
-    refs["BS_TE"] = add(d)
-    add([])
-
-    # MASTER INVARIANT: BS_TA = BS_TL + BS_TE
-    # Balance check row
+    for i in range(n): d.append(f"={'+'.join(f'{dcol(i)}{cr}' for cr in eq_components)}")
+    refs["BS_TE"] = add(d); add([])
     d = R("", "BALANCE CHECK: Assets - (Liabilities + Equity)")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{refs['BS_TA']}-{c}{refs['BS_TL']}-{c}{refs['BS_TE']}")
-    add(d)
-
-    # Store extra refs for CF cross-linking
-    refs["stpay_eq"] = stpay_eq
-    refs["re_buy"] = re_buy
-    refs["re_div"] = re_div
-
+    for i in range(n): d.append(f"={dcol(i)}{refs['BS_TA']}-{dcol(i)}{refs['BS_TL']}-{dcol(i)}{refs['BS_TE']}")
+    add(d); refs["stpay_eq"], refs["re_buy"], refs["re_div"] = stpay_eq, re_buy, re_div
     gws_write(sid, f"BS!A1:{col_range(n)}{len(rows)}", rows)
-    print(f"  BS: {len(rows)} rows", file=sys.stderr)
     return refs
 
 
 def build_cf_sheet(sid, is_refs, bs_refs, periods, forecast_periods):
-    """CF sheet fully linked to IS and BS."""
     all_p = periods + forecast_periods
-    nh = len(periods)
-    n = len(all_p)
-    rows = []
+    nh, n = len(periods), len(all_p)
+    rows = [[], R("", "$m") + all_p, []]
     refs = {}
-
-    def r():
-        return len(rows)
-    def add(data):
-        rows.append(data)
-        return r()
-
-    def sf(col_i, row_num):
-        """Externalized SUMIF: looks up code from $A of this row."""
-        return sumif_formula("", col_i).replace("{row}", str(row_num))
-
-    def lf(row_num):
-        """Externalized label: INDEX/MATCH from Filing by $A code."""
-        return label_formula().replace("{row}", str(row_num))
-
+    def add(d): rows.append(d); return len(rows)
+    def sf(col_i, row_num): return sumif_formula("", col_i).replace("{row}", str(row_num))
+    def lf(row_num): return label_formula().replace("{row}", str(row_num))
     def signed_sumif(col_i, row_num, sign):
-        """SUMIF with sign enforcement. sign='-' forces negative, '+'=positive, None=raw."""
-        col = dcol(col_i)
-        base = f'IFERROR(SUMIF(Filing!$A:$A,$A{row_num},Filing!{col}:{col}),"")'
-        if sign == "-":
-            return f"=-ABS({base})"
-        elif sign == "+":
-            return f"=ABS({base})"
-        else:
-            return f"={base}"
+        c = dcol(col_i)
+        base = f'IFERROR(SUMIF(Filing!$A:$A,$A{row_num},Filing!{c}:{c}),"")'
+        if sign == "-": return f"=-ABS({base})"
+        elif sign == "+": return f"=ABS({base})"
+        else: return f"={base}"
 
-    add([])
-    add(R("", "$m") + all_p)
-    add([])
-
-    # Net Income from IS
     d = R("CF_NI", "Net Income")
-    for i in range(n):
-        d.append(f"=IS!{dcol(i)}{is_refs['INC_NET']}")
-    ni = add(d)
-    refs["CF_NI"] = ni
-
-    add([])
-    add(["", "", "Adjustments for non-cash items"])
-
+    for i in range(n): d.append(f"=IS!{dcol(i)}{is_refs['INC_NET']}")
+    ni = add(d); refs["CF_NI"] = ni; add([]); add(["", "", "Adjustments for non-cash items"])
     d = R("CF_DA", "  D&A")
-    for i in range(n):
-        d.append(f"=BS!{dcol(i)}{bs_refs['da']}")
-    da = add(d)
-    refs["CF_DA"] = da
-
-    d = R("CF_SBC", "  SBC")
-    sbc_is = is_refs.get("SBC")
-    for i in range(n):
-        d.append(f"=IS!{dcol(i)}{sbc_is}" if sbc_is else "0")
-    sbc = add(d)
-    refs["CF_SBC"] = sbc
-
-    # Other operating adjustments (CF_OP1, CF_OP2, CF_OP3)
+    for i in range(n): d.append(f"=BS!{dcol(i)}{bs_refs['da']}")
+    da = add(d); refs["CF_DA"] = da
+    d = R("CF_SBC", "  SBC"); sbc_is = is_refs.get("SBC")
+    for i in range(n): d.append(f"=IS!{dcol(i)}{sbc_is}" if sbc_is else "0")
+    sbc = add(d); refs["CF_SBC"] = sbc
     op_other_rows = []
-    for code, label in [("CF_OP1", "  Other Operating 1"),
-                        ("CF_OP2", "  Other Operating 2"),
-                        ("CF_OP3", "  Other Operating 3")]:
-        row_num = r() + 1
-        d = R(code, lf(row_num))
-        for i in range(n):
-            d.append(sf(i, row_num) if i < nh else 0)
-        cur = add(d)
-        op_other_rows.append(cur)
-        refs[code] = cur
-
-    d = R("", "  Subtotal Adjustments")
-    all_adj = [da, sbc] + op_other_rows
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={'+'.join(f'{c}{ar}' for ar in all_adj)}")
-    sub = add(d)
-
-    add([])
-    add(["", "", "Changes in working capital"])
-
-    wc_items = []
-    cf_wc_codes = {"BS_AR": "CF_AR", "BS_INV": "CF_INV", "BS_AP": "CF_AP"}
-    for bs_code, label, negate in [("BS_AR", "  Accounts Receivable", True),
-                                    ("BS_INV", "  Inventories", True),
-                                    ("BS_AP", "  Accounts Payable", False)]:
+    for code, label in [("CF_OP1", "  Other Operating 1"), ("CF_OP2", "  Other Operating 2"), ("CF_OP3", "  Other Operating 3")]:
+        row_num = len(rows) + 1; d = R(code, lf(row_num))
+        for i in range(n): d.append(sf(i, row_num) if i < nh else 0)
+        op_other_rows.append(add(d)); refs[code] = len(rows)
+    d = R("", "  Subtotal Adjustments"); all_adj = [da, sbc] + op_other_rows
+    for i in range(n): d.append(f"={'+'.join(f'{dcol(i)}{ar}' for ar in all_adj)}")
+    sub = add(d); add([]); add(["", "", "Changes in working capital"])
+    wc_items, cf_wc_codes = [], {"BS_AR": "CF_AR", "BS_INV": "CF_INV", "BS_AP": "CF_AP"}
+    for bs_code, label, negate in [("BS_AR", "  Accounts Receivable", True), ("BS_INV", "  Inventories", True), ("BS_AP", "  Accounts Payable", False)]:
         bs_row = bs_refs.get(bs_code)
-        if not bs_row:
-            continue
-        cf_code = cf_wc_codes[bs_code]
-        row_num = r() + 1
-        d = R(cf_code, label)
+        if not bs_row: continue
+        row_num = len(rows) + 1; d = R(cf_wc_codes[bs_code], label)
         for i in range(n):
-            c = dcol(i)
-            if i < nh:
-                d.append(sf(i, row_num))
+            if i < nh: d.append(sf(i, row_num))
             else:
                 sign = "-" if negate else ""
-                d.append(f"={sign}(BS!{c}{bs_row}-BS!{dcol(i-1)}{bs_row})")
-        cur = add(d)
-        wc_items.append(cur)
-        refs[cf_code] = cur
-
+                d.append(f"={sign}(BS!{dcol(i)}{bs_row}-BS!{dcol(i-1)}{bs_row})")
+        wc_items.append(add(d)); refs[cf_wc_codes[bs_code]] = len(rows)
     d = R("", "  Total WC Changes")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={'+'.join(f'{c}{wr}' for wr in wc_items)}" if wc_items else "0")
-    wc_total = add(d)
-
-    add([])
-
-    # Net Operating CF
+    for i in range(n): d.append(f"={'+'.join(f'{dcol(i)}{wr}' for wr in wc_items)}" if wc_items else "0")
+    wc_total = add(d); add([])
     d = R("CF_OPCF", "Net Cash from Operations")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{ni}+{c}{sub}+{c}{wc_total}")
-    op = add(d)
-    refs["CF_OPCF"] = op
-
-    add([])
-    add(["", "", "Investing Activities"])
-
+    for i in range(n): d.append(f"={dcol(i)}{ni}+{dcol(i)}{sub}+{dcol(i)}{wc_total}")
+    op = add(d); refs["CF_OPCF"] = op; add([]); add(["", "", "Investing Activities"])
     d = R("CF_CAPEX", "  Capital Expenditures")
-    for i in range(n):
-        d.append(f"=-BS!{dcol(i)}{bs_refs['capex']}")
-    capex = add(d)
-    refs["CF_CAPEX"] = capex
-
-    # sign: "-" = always outflow, "+" = always inflow, None = keep raw
+    for i in range(n): d.append(f"=-BS!{dcol(i)}{bs_refs['capex']}")
+    capex = add(d); refs["CF_CAPEX"] = capex
     inv_inputs = []
-    for code, label, sign in [("CF_SECPUR", "  Purchases of Securities", "-"),
-                               ("CF_SECSAL", "  Sales/Maturities of Securities", "+"),
-                               ("CF_INV1", "  Other Investing", None)]:
-        row_num = r() + 1
-        d = R(code, lf(row_num))
-        for i in range(n):
-            if i < nh:
-                d.append(signed_sumif(i, row_num, sign))
-            else:
-                d.append(0)
-        cur = add(d)
-        inv_inputs.append(cur)
-        refs[code] = cur
-
-    d = R("CF_INVCF", "Net Cash from Investing")
-    all_inv = [capex] + inv_inputs
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={'+'.join(f'{c}{ir}' for ir in all_inv)}")
-    inv = add(d)
-    refs["CF_INVCF"] = inv
-
-    add([])
-    add(["", "", "Financing Activities"])
-
+    for code, label, sign in [("CF_SECPUR", "  Purchases of Securities", "-"), ("CF_SECSAL", "  Sales/Maturities of Securities", "+"), ("CF_INV1", "  Other Investing", None)]:
+        row_num = len(rows) + 1; d = R(code, lf(row_num))
+        for i in range(n): d.append(signed_sumif(i, row_num, sign) if i < nh else 0)
+        inv_inputs.append(add(d)); refs[code] = len(rows)
+    d = R("CF_INVCF", "Net Cash from Investing"); all_inv = [capex] + inv_inputs
+    for i in range(n): d.append(f"={'+'.join(f'{dcol(i)}{ir}' for ir in all_inv)}")
+    inv = add(d); refs["CF_INVCF"] = inv; add([]); add(["", "", "Financing Activities"])
     fin_items = []
-    for code, label, sign in [("CF_FIN1", "  Stock Payments", "-"),
-                               ("CF_BUY", "  Share Repurchases", "-"),
-                               ("CF_DIV", "  Dividends", "-"),
-                               ("CF_DISS", "  Debt Issuance", "+"),
-                               ("CF_DREP", "  Debt Repayment", "-"),
-                               ("CF_FIN2", "  Other Financing", None)]:
-        row_num = r() + 1
-        d = R(code, lf(row_num))
-        for i in range(n):
-            if i < nh:
-                d.append(signed_sumif(i, row_num, sign))
-            else:
-                d.append(0)
-        cur = add(d)
-        fin_items.append(cur)
-        refs[code] = cur
-
+    for code, label, sign in [("CF_FIN1", "  Stock Payments", "-"), ("CF_BUY", "  Share Repurchases", "-"), ("CF_DIV", "  Dividends", "-"), ("CF_DISS", "  Debt Issuance", "+"), ("CF_DREP", "  Debt Repayment", "-"), ("CF_FIN2", "  Other Financing", None)]:
+        row_num = len(rows) + 1; d = R(code, lf(row_num))
+        for i in range(n): d.append(signed_sumif(i, row_num, sign) if i < nh else 0)
+        fin_items.append(add(d)); refs[code] = len(rows)
     d = R("CF_FINCF", "Net Cash from Financing")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={'+'.join(f'{c}{fr}' for fr in fin_items)}")
-    fin = add(d)
-    refs["CF_FINCF"] = fin
-
-    add([])
-
-    d = R("", "FX Effect")
-    for i in range(n):
-        d.append(0)
-    fx = add(d)
-
+    for i in range(n): d.append(f"={'+'.join(f'{dcol(i)}{fr}' for fr in fin_items)}")
+    fin = add(d); refs["CF_FINCF"] = fin; add([])
+    fx_row_num = len(rows) + 1; d = R("CF_FX", "FX / Reconciliation")
+    for i in range(n): d.append(sf(i, fx_row_num) if i < nh else 0)
+    fx = add(d); refs["CF_FX"] = fx
     d = R("CF_NETCH", "Net Change in Cash")
+    for i in range(n): d.append(f"={dcol(i)}{op}+{dcol(i)}{inv}+{dcol(i)}{fin}+{dcol(i)}{fx}")
+    nch = add(d); refs["CF_NETCH"] = nch
+    d = R("CF_BEGC", "Cash at Beginning"); beg_num = len(rows) + 1
     for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{op}+{c}{inv}+{c}{fin}+{c}{fx}")
-    nch = add(d)
-    refs["CF_NETCH"] = nch
-
-    d = R("CF_BEGC", "Cash at Beginning")
-    beg_num = r() + 1
-    for i in range(n):
-        c = dcol(i)
-        if i < nh:
-            d.append(signed_sumif(i, beg_num, "+"))
-        elif i == nh:
-            d.append(f"=BS!{dcol(i-1)}{bs_refs['BS_CASH']}")
-        else:
-            d.append(f"={dcol(i-1)}{beg_num + 1}")
-    beg = add(d)
-    refs["CF_BEGC"] = beg
-
+        if i < nh: d.append(signed_sumif(i, beg_num, "+"))
+        elif i == nh: d.append(f"=BS!{dcol(i-1)}{bs_refs['BS_CASH']}")
+        else: d.append(f"={dcol(i-1)}{beg_num + 1}")
+    beg = add(d); refs["CF_BEGC"] = beg
     d = R("CF_ENDC", "Cash at End of Period")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{beg}+{c}{nch}")
-    end = add(d)
-    refs["CF_ENDC"] = end
-    refs["ending_cash"] = end
-
-    for i in range(nh + 1, n):
-        rows[beg - 1][4 + i] = f"={dcol(i-1)}{end}"
-
+    for i in range(n): d.append(f"={dcol(i)}{beg}+{dcol(i)}{nch}")
+    end = add(d); refs["CF_ENDC"] = end; refs["ending_cash"] = end
+    for i in range(nh + 1, n): rows[beg - 1][4 + i] = f"={dcol(i-1)}{end}"
     gws_write(sid, f"CF!A1:{col_range(n)}{len(rows)}", rows)
-    print(f"  CF: {len(rows)} rows", file=sys.stderr)
     return refs
 
 
-def fix_cross_refs(sid, bs_refs, cf_refs, periods, forecast_periods):
-    """Fix BS↔CF circular placeholders."""
-    nh = len(periods)
-    n = len(periods) + len(forecast_periods)
-
-    # BS Cash → CF ending cash (forecast only)
-    cash = bs_refs.get("BS_CASH")
-    ec = cf_refs.get("ending_cash")
-    if cash and ec:
-        updates = [f"=CF!{dcol(i)}{ec}" for i in range(nh, n)]
-        if updates:
-            gws_write(sid, f"BS!{dcol(nh)}{cash}:{dcol(n-1)}{cash}", [updates])
-
-    # BS equity: stock payments → CF
-    stpay_cf = cf_refs.get("CF_FIN1")
-    stpay_eq = bs_refs.get("stpay_eq")
-    if stpay_cf and stpay_eq:
-        updates = [f"=CF!{dcol(i)}{stpay_cf}" for i in range(n)]
-        gws_write(sid, f"BS!{dcol(0)}{stpay_eq}:{dcol(n-1)}{stpay_eq}", [updates])
-
-    # BS retained earnings: buybacks, dividends → CF
-    buy_cf = cf_refs.get("CF_BUY")
-    div_cf = cf_refs.get("CF_DIV")
-    re_buy = bs_refs.get("re_buy")
-    re_div = bs_refs.get("re_div")
-    if buy_cf and re_buy:
-        updates = [f"=CF!{dcol(i)}{buy_cf}" for i in range(n)]
-        gws_write(sid, f"BS!{dcol(0)}{re_buy}:{dcol(n-1)}{re_buy}", [updates])
-    if div_cf and re_div:
-        updates = [f"=CF!{dcol(i)}{div_cf}" for i in range(n)]
-        gws_write(sid, f"BS!{dcol(0)}{re_div}:{dcol(n-1)}{re_div}", [updates])
-
-
 def build_summary_sheet(sid, is_refs, bs_refs, cf_refs, periods, forecast_periods):
-    """Summary P&L, BS totals, and comprehensive invariant checks."""
     all_p = periods + forecast_periods
     n = len(all_p)
-    rows = []
-    def r():
-        return len(rows)
-    def add(data):
-        rows.append(data)
-        return r()
-
-    def is_link(key):
-        return [f"=IS!{dcol(i)}{is_refs[key]}" for i in range(n)]
-
-    # ── P&L Summary ──
-    add([])
-    add(R("", "$m") + all_p)
-    add([])
-
-    s_rev = add(R("", "Revenue") + is_link("REVT"))
-    add([])
+    rows = [[], R("", "$m") + all_p, []]
+    def add(d): rows.append(d); return len(rows)
+    def is_link(key): return [f"=IS!{dcol(i)}{is_refs[key]}" for i in range(n)]
+    s_rev = add(R("", "Revenue") + is_link("REVT")); add([])
     s_cogs = add(R("", "COGS") + is_link("COGST"))
     d = R("", "Gross Profit")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{s_rev}-{c}{s_cogs}")
-    s_gp = add(d)
-    add([])
-    s_opex = add(R("", "OpEx") + is_link("OPEXT"))
-    add([])
+    for i in range(n): d.append(f"={dcol(i)}{s_rev}-{dcol(i)}{s_cogs}")
+    s_gp = add(d); add([])
+    s_opex = add(R("", "OpEx") + is_link("OPEXT")); add([])
     d = R("", "EBIT")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{s_gp}-{c}{s_opex}")
-    s_ebit = add(d)
-    add([])
+    for i in range(n): d.append(f"={dcol(i)}{s_gp}-{dcol(i)}{s_opex}")
+    s_ebit = add(d); add([])
     other_row = add(R("", "Other Income") + is_link("INC_O"))
     d = R("", "EBT")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{s_ebit}+{c}{other_row}")
-    s_ebt = add(d)
-    add([])
+    for i in range(n): d.append(f"={dcol(i)}{s_ebit}+{dcol(i)}{other_row}")
+    s_ebt = add(d); add([])
     s_tax = add(R("", "Tax") + is_link("TAX"))
     d = R("", "Net Income")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{s_ebt}-{c}{s_tax}")
-    s_ni = add(d)
-
-    add([])
-    add([])
-
-    # ── BS Summary ──
-    add(R("", "$m") + all_p)
-    add([])
+    for i in range(n): d.append(f"={dcol(i)}{s_ebt}-{dcol(i)}{s_tax}")
+    s_ni = add(d); add([]); add([]); add(R("", "$m") + all_p); add([])
     d = R("", "Total Assets")
-    for i in range(n):
-        d.append(f"=BS!{dcol(i)}{bs_refs['BS_TA']}")
+    for i in range(n): d.append(f"=BS!{dcol(i)}{bs_refs['BS_TA']}")
     s_ta = add(d)
     d = R("", "Total Liabilities")
-    for i in range(n):
-        d.append(f"=BS!{dcol(i)}{bs_refs['BS_TL']}")
+    for i in range(n): d.append(f"=BS!{dcol(i)}{bs_refs['BS_TL']}")
     s_tl = add(d)
     d = R("", "Total Equity")
-    for i in range(n):
-        d.append(f"=BS!{dcol(i)}{bs_refs['BS_TE']}")
+    for i in range(n): d.append(f"=BS!{dcol(i)}{bs_refs['BS_TE']}")
     s_te = add(d)
     d = R("", "Total L+E")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{s_tl}+{c}{s_te}")
-    s_tle = add(d)
-
-    add([])
-    add([])
-
-    # ── CF Summary ──
-    add(R("", "$m") + all_p)
-    add([])
+    for i in range(n): d.append(f"={dcol(i)}{s_tl}+{dcol(i)}{s_te}")
+    s_tle = add(d); add([]); add([]); add(R("", "$m") + all_p); add([])
     d = R("", "Operating CF")
-    for i in range(n):
-        d.append(f"=CF!{dcol(i)}{cf_refs['CF_OPCF']}")
+    for i in range(n): d.append(f"=CF!{dcol(i)}{cf_refs['CF_OPCF']}")
     s_opcf = add(d)
     d = R("", "Investing CF")
-    for i in range(n):
-        d.append(f"=CF!{dcol(i)}{cf_refs['CF_INVCF']}")
+    for i in range(n): d.append(f"=CF!{dcol(i)}{cf_refs['CF_INVCF']}")
     s_invcf = add(d)
     d = R("", "Financing CF")
-    for i in range(n):
-        d.append(f"=CF!{dcol(i)}{cf_refs['CF_FINCF']}")
+    for i in range(n): d.append(f"=CF!{dcol(i)}{cf_refs['CF_FINCF']}")
     s_fincf = add(d)
     d = R("", "Net Change in Cash")
-    for i in range(n):
-        d.append(f"=CF!{dcol(i)}{cf_refs['CF_NETCH']}")
-    s_netch = add(d)
-
-    add([])
-    add([])
-
-    # ══════════════════════════════════════════════════════════════
-    # INVARIANT CHECKS — all must be 0
-    # ══════════════════════════════════════════════════════════════
-    add(["", "", "INVARIANT CHECKS (all must be 0)"])
-    add(R("", "") + all_p)
-    add([])
-
-    # 1. BS Balance: Assets = Liabilities + Equity
+    for i in range(n): d.append(f"=CF!{dcol(i)}{cf_refs['CF_NETCH']}")
+    s_netch = add(d); add([]); add([]); add(["", "", "INVARIANT CHECKS (all must be 0)"]); add(R("", "") + all_p); add([])
     d = R("", "1. BS Balance (TA - TL - TE)")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{s_ta}-{c}{s_tl}-{c}{s_te}")
+    for i in range(n): d.append(f"={dcol(i)}{s_ta}-{dcol(i)}{s_tl}-{dcol(i)}{s_te}")
     add(d)
-
-    # 2. Cash: CF ending cash = BS cash
     ec = cf_refs.get("ending_cash")
     if ec:
         d = R("", "2. Cash (CF End - BS Cash)")
-        for i in range(n):
-            c = dcol(i)
-            d.append(f"=CF!{c}{ec}-BS!{c}{bs_refs['BS_CASH']}")
+        for i in range(n): d.append(f"=IF(BS!{dcol(i)}{bs_refs['BS_CASH']}=0,0,CF!{dcol(i)}{ec}-BS!{dcol(i)}{bs_refs['BS_CASH']})")
         add(d)
-
-    # 3. Net Income: IS = CF (cross-sheet linkage)
     d = R("", "3. Net Income (IS - CF)")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"=IS!{c}{is_refs['INC_NET']}-CF!{c}{cf_refs['CF_NI']}")
+    for i in range(n): d.append(f"=IS!{dcol(i)}{is_refs['INC_NET']}-CF!{dcol(i)}{cf_refs['CF_NI']}")
     add(d)
-
-    # 4. D&A: IS = CF (cross-sheet)
-    da_is = is_refs.get("DA")
-    da_cf = cf_refs.get("CF_DA")
+    da_is, da_cf = is_refs.get("DA"), cf_refs.get("CF_DA")
     if da_is and da_cf:
         d = R("", "4. D&A (IS - CF)")
-        for i in range(n):
-            c = dcol(i)
-            d.append(f"=IS!{c}{da_is}-CF!{c}{da_cf}")
+        for i in range(n): d.append(f"=IS!{dcol(i)}{da_is}-CF!{dcol(i)}{da_cf}")
         add(d)
-
-    # 5. SBC: IS = CF (cross-sheet)
-    sbc_is = is_refs.get("SBC")
-    sbc_cf = cf_refs.get("CF_SBC")
+    sbc_is, sbc_cf = is_refs.get("SBC"), cf_refs.get("CF_SBC")
     if sbc_is and sbc_cf:
         d = R("", "5. SBC (IS - CF)")
-        for i in range(n):
-            c = dcol(i)
-            d.append(f"=IS!{c}{sbc_is}-CF!{c}{sbc_cf}")
+        for i in range(n): d.append(f"=IS!{dcol(i)}{sbc_is}-CF!{dcol(i)}{sbc_cf}")
         add(d)
-
-    # 6. BS Assets: TCA + TNCA = TA
     d = R("", "6. BS Assets (TCA + TNCA - TA)")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"=BS!{c}{bs_refs['BS_TCA']}+BS!{c}{bs_refs['BS_TNCA']}-BS!{c}{bs_refs['BS_TA']}")
+    for i in range(n): d.append(f"=BS!{dcol(i)}{bs_refs['BS_TCA']}+BS!{dcol(i)}{bs_refs['BS_TNCA']}-BS!{dcol(i)}{bs_refs['BS_TA']}")
     add(d)
-
-    # 7. BS Liabilities: TCL + TNCL = TL
     d = R("", "7. BS Liabilities (TCL + TNCL - TL)")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"=BS!{c}{bs_refs['BS_TCL']}+BS!{c}{bs_refs['BS_TNCL']}-BS!{c}{bs_refs['BS_TL']}")
+    for i in range(n): d.append(f"=BS!{dcol(i)}{bs_refs['BS_TCL']}+BS!{dcol(i)}{bs_refs['BS_TNCL']}-BS!{dcol(i)}{bs_refs['BS_TL']}")
     add(d)
-
-    # 8. BS Equity: CS + RE + OE = TE
     d = R("", "8. BS Equity (CS + RE + OE - TE)")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"=BS!{c}{bs_refs['BS_CS']}+BS!{c}{bs_refs['BS_RE']}+BS!{c}{bs_refs['BS_OE']}-BS!{c}{bs_refs['BS_TE']}")
+    for i in range(n): d.append(f"=BS!{dcol(i)}{bs_refs['BS_CS']}+BS!{dcol(i)}{bs_refs['BS_RE']}+BS!{dcol(i)}{bs_refs['BS_OE']}-BS!{dcol(i)}{bs_refs['BS_TE']}")
     add(d)
-
-    # 9. CF Structure: OpCF + InvCF + FinCF + FX = Net Change
-    d = R("", "9. CF Structure (Op+Inv+Fin - NetCh)")
+    cf_fx = cf_refs.get("CF_FX")
+    d = R("", "9. CF Structure (Op+Inv+Fin+FX - NetCh)")
     for i in range(n):
-        c = dcol(i)
-        d.append(f"={c}{s_opcf}+{c}{s_invcf}+{c}{s_fincf}-{c}{s_netch}")
+        fx_term = f"+CF!{dcol(i)}{cf_fx}" if cf_fx else ""
+        d.append(f"={dcol(i)}{s_opcf}+{dcol(i)}{s_invcf}+{dcol(i)}{s_fincf}{fx_term}-{dcol(i)}{s_netch}")
     add(d)
-
-    # 10. CF Cash Proof: Beg + Net Change = End
     beg = cf_refs.get("CF_BEGC")
     if beg and ec:
         d = R("", "10. Cash Proof (Beg + NetCh - End)")
-        for i in range(n):
-            c = dcol(i)
-            d.append(f"=CF!{c}{beg}+CF!{c}{cf_refs['CF_NETCH']}-CF!{c}{ec}")
+        for i in range(n): d.append(f"=CF!{dcol(i)}{beg}+CF!{dcol(i)}{cf_refs['CF_NETCH']}-CF!{dcol(i)}{ec}")
         add(d)
-
-    # 11. IS: GP = Rev - COGS
     d = R("", "11. IS Gross Profit (Rev - COGS - GP)")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"=IS!{c}{is_refs['REVT']}-IS!{c}{is_refs['COGST']}-IS!{c}{is_refs['GP']}")
+    for i in range(n): d.append(f"=IS!{dcol(i)}{is_refs['REVT']}-IS!{dcol(i)}{is_refs['COGST']}-IS!{dcol(i)}{is_refs['GP']}")
     add(d)
-
-    # 12. IS: EBIT = GP - OpEx
     d = R("", "12. IS EBIT (GP - OpEx - OPINC)")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"=IS!{c}{is_refs['GP']}-IS!{c}{is_refs['OPEXT']}-IS!{c}{is_refs['OPINC']}")
+    for i in range(n): d.append(f"=IS!{dcol(i)}{is_refs['GP']}-IS!{dcol(i)}{is_refs['OPEXT']}-IS!{dcol(i)}{is_refs['OPINC']}")
     add(d)
-
-    # 13. IS: NI = EBT - Tax
     d = R("", "13. IS Net Income (EBT - Tax - NI)")
-    for i in range(n):
-        c = dcol(i)
-        d.append(f"=IS!{c}{is_refs['EBT']}-IS!{c}{is_refs['TAX']}-IS!{c}{is_refs['INC_NET']}")
-    add(d)
-
-    add([])
-
-    # Roll-up: count of non-zero checks
-    check_start = None
-    check_end = None
+    for i in range(n): d.append(f"=IS!{dcol(i)}{is_refs['EBT']}-IS!{dcol(i)}{is_refs['TAX']}-IS!{dcol(i)}{is_refs['INC_NET']}")
+    add(d); add([])
+    check_start, check_end = None, None
     for idx, row in enumerate(rows):
         if len(row) > 1 and isinstance(row[1], str):
-            if row[1].startswith("1. BS Balance"):
-                check_start = idx + 1  # 1-based
-            if row[1].startswith("13. IS Net Income"):
-                check_end = idx + 1
+            if row[1].startswith("1. BS Balance"): check_start = idx + 1
+            if row[1].startswith("13. IS Net Income"): check_end = idx + 1
     if check_start and check_end:
         d = R("", "TOTAL ERRORS (must be 0)")
-        for i in range(n):
-            c = dcol(i)
-            d.append(f"=SUMPRODUCT(({c}{check_start}:{c}{check_end}<>0)*1)")
+        for i in range(n): d.append(f"=SUMPRODUCT(({dcol(i)}{check_start}:{dcol(i)}{check_end}<>0)*1)")
         add(d)
-
     gws_write(sid, f"Summary!A1:{col_range(n)}{len(rows)}", rows)
-    print(f"  Summary: {len(rows)} rows", file=sys.stderr)
-    return {
-        "check_start": check_start, "check_end": check_end, "total_rows": len(rows),
-        "dollar_rows": [s_rev, s_cogs, s_gp, s_opex, s_ebit, other_row, s_ebt, s_tax, s_ni,
-                        s_ta, s_tl, s_te, s_tle, s_opcf, s_invcf, s_fincf, s_netch],
-        "bold_rows": [s_rev, s_gp, s_ebit, s_ni, s_ta, s_tle, s_netch],
-    }
+    return {"check_start": check_start, "check_end": check_end, "total_rows": len(rows), "dollar_rows": [s_rev, s_cogs, s_gp, s_opex, s_ebit, other_row, s_ebt, s_tax, s_ni, s_ta, s_tl, s_te, s_tle, s_opcf, s_invcf, s_fincf, s_netch], "bold_rows": [s_rev, s_gp, s_ebit, s_ni, s_ta, s_tle, s_netch]}
 
-
-# ---------------------------------------------------------------------------
-# Formatting
-# ---------------------------------------------------------------------------
 
 def apply_formatting(sid, sheet_ids, is_refs, bs_refs, cf_refs, summary_info, periods, forecast_periods):
-    """Apply formatting: bold totals, blue inputs, percent/number formats, red invariant errors."""
-    nh = len(periods)
-    n = len(periods) + len(forecast_periods)
+    nh, n = len(periods), len(periods) + len(forecast_periods)
     requests = []
-
-    # Helpers
-    def _range(sheet_id, r1, r2, c1, c2):
-        """GridRange dict. r1/r2 are 1-based row numbers, converted to 0-based."""
-        return {"sheetId": sheet_id, "startRowIndex": r1 - 1, "endRowIndex": r2,
-                "startColumnIndex": c1, "endColumnIndex": c2}
-
-    def bold_row(sheet_id, row, max_col=None):
-        mc = max_col or (n + 4)
-        requests.append({"repeatCell": {
-            "range": _range(sheet_id, row, row, 0, mc),
-            "cell": {"userEnteredFormat": {"textFormat": {"bold": True}}},
-            "fields": "userEnteredFormat.textFormat.bold",
-        }})
-
-    def number_fmt(sheet_id, row, pattern, c1=4, c2=None):
-        c2 = c2 or (n + 4)
-        requests.append({"repeatCell": {
-            "range": _range(sheet_id, row, row, c1, c2),
-            "cell": {"userEnteredFormat": {"numberFormat": {"type": "NUMBER", "pattern": pattern}}},
-            "fields": "userEnteredFormat.numberFormat",
-        }})
-
-    def blue_bg(sheet_id, row, c1, c2):
-        requests.append({"repeatCell": {
-            "range": _range(sheet_id, row, row, c1, c2),
-            "cell": {"userEnteredFormat": {"backgroundColor": {"red": 0.85, "green": 0.92, "blue": 1.0}}},
-            "fields": "userEnteredFormat.backgroundColor",
-        }})
-
-    DOLLAR_FMT = "#,##0"
-    PCT_FMT = "0.0%"
-    DAYS_FMT = "#,##0.0"
-
-    is_id = sheet_ids["IS"]
-    bs_id = sheet_ids["BS"]
-    cf_id = sheet_ids["CF"]
-    summ_id = sheet_ids["Summary"]
-    filing_id = sheet_ids["Filing"]
-
-    # Forecast column range (0-based): columns 4+nh through 4+n
-    fc_start = 4 + nh
-    fc_end = 4 + n
-
-    # ── IS Formatting ──
-    # Bold totals and formulas
-    is_bold = ["REVT", "COGST", "GP", "OPEXT", "OPINC", "EBT", "INC_NET"]
-    for key in is_bold:
-        if key in is_refs:
-            bold_row(is_id, is_refs[key])
-
-    # Number format for $ rows
-    is_dollar = ["REV1", "REV2", "REV3", "REVT", "COGS1", "COGS2", "COGS3", "COGST",
-                 "GP", "OPEX1", "OPEX2", "OPEX3", "OPEXT", "SBC", "OPINC", "INC_O",
-                 "EBT", "TAX", "INC_NET", "DA"]
-    for key in is_dollar:
-        if key in is_refs:
-            number_fmt(is_id, is_refs[key], DOLLAR_FMT)
-
-    # Percent format for driver/margin rows
-    is_pct = ["driver_rev_growth", "driver_cogs_pct", "driver_opex1_pct", "driver_opex2_pct",
-              "driver_opex3_pct", "driver_sbc_pct", "driver_tax_rate",
-              "margin_gp", "margin_ebit", "margin_ni"]
-    for key in is_pct:
-        if key in is_refs:
-            number_fmt(is_id, is_refs[key], PCT_FMT)
-
-    # Blue background for INPUT driver cells in forecast columns
-    is_input_drivers = ["driver_rev_growth", "driver_cogs_pct", "driver_opex1_pct",
-                        "driver_opex2_pct", "driver_opex3_pct", "driver_sbc_pct", "driver_tax_rate"]
-    for key in is_input_drivers:
-        if key in is_refs:
-            blue_bg(is_id, is_refs[key], fc_start, fc_end)
-
-    # ── BS Formatting ──
-    # Bold totals
-    bs_bold = ["BS_TCA", "BS_TNCA", "BS_TA", "BS_TCL", "BS_TNCL", "BS_TL", "BS_TE"]
-    for key in bs_bold:
-        if key in bs_refs:
-            bold_row(bs_id, bs_refs[key])
-
-    # Number format for $ rows
-    bs_dollar = ["BS_CASH", "BS_AR", "BS_INV", "BS_CA1", "BS_CA2", "BS_CA3", "BS_TCA",
-                 "BS_PPE", "BS_LTA1", "BS_LTA2", "BS_TNCA", "BS_TA",
-                 "BS_AP", "BS_STD", "BS_OCL1", "BS_OCL2", "BS_TCL",
-                 "BS_LTD", "BS_NCL1", "BS_NCL2", "BS_TNCL", "BS_TL",
-                 "BS_CS", "BS_RE", "BS_OE", "BS_TE",
-                 "capex", "da"]
-    for key in bs_dollar:
-        if key in bs_refs:
-            number_fmt(bs_id, bs_refs[key], DOLLAR_FMT)
-
-    # Percent format for BS drivers
-    bs_pct = ["capex_pct", "da_pct"]
-    for key in bs_pct:
-        if key in bs_refs:
-            number_fmt(bs_id, bs_refs[key], PCT_FMT)
-
-    # Days format
-    bs_days = ["dso", "dio", "dpo"]
-    for key in bs_days:
-        if key in bs_refs:
-            number_fmt(bs_id, bs_refs[key], DAYS_FMT)
-
-    # Blue INPUT cells for BS forecast drivers
-    bs_input_drivers = ["dso", "dio", "dpo", "capex_pct", "da_pct"]
-    for key in bs_input_drivers:
-        if key in bs_refs:
-            blue_bg(bs_id, bs_refs[key], fc_start, fc_end)
-
-    # Blue for hold-constant items in forecast
-    bs_hold = ["BS_CA1", "BS_CA2", "BS_CA3", "BS_LTA1", "BS_LTA2",
-               "BS_STD", "BS_OCL1", "BS_OCL2", "BS_LTD", "BS_NCL1", "BS_NCL2", "BS_OE"]
-    for key in bs_hold:
-        if key in bs_refs:
-            blue_bg(bs_id, bs_refs[key], fc_start, fc_end)
-
-    # ── CF Formatting ──
-    # Bold totals
-    cf_bold = ["CF_OPCF", "CF_INVCF", "CF_FINCF", "CF_NETCH", "CF_ENDC"]
-    for key in cf_bold:
-        if key in cf_refs:
-            bold_row(cf_id, cf_refs[key])
-
-    # Number format for all CF $ rows
-    cf_dollar = ["CF_NI", "CF_DA", "CF_SBC", "CF_OP1", "CF_OP2", "CF_OP3",
-                 "CF_AR", "CF_INV", "CF_AP", "CF_OPCF",
-                 "CF_CAPEX", "CF_SECPUR", "CF_SECSAL", "CF_INV1", "CF_INVCF",
-                 "CF_FIN1", "CF_BUY", "CF_DIV", "CF_DISS", "CF_DREP", "CF_FIN2", "CF_FINCF",
-                 "CF_NETCH", "CF_BEGC", "CF_ENDC"]
-    for key in cf_dollar:
-        if key in cf_refs:
-            number_fmt(cf_id, cf_refs[key], DOLLAR_FMT)
-
-    # Blue for CF forecast input items
-    cf_input = ["CF_OP1", "CF_OP2", "CF_OP3", "CF_SECPUR", "CF_SECSAL", "CF_INV1",
-                "CF_FIN1", "CF_BUY", "CF_DIV", "CF_DISS", "CF_DREP", "CF_FIN2"]
-    for key in cf_input:
-        if key in cf_refs:
-            blue_bg(cf_id, cf_refs[key], fc_start, fc_end)
-
-    # ── Summary Formatting ──
-    # Dollar format for data rows only
-    for row in summary_info.get("dollar_rows", []):
-        number_fmt(summ_id, row, DOLLAR_FMT)
-
-    # Bold for key totals
-    for row in summary_info.get("bold_rows", []):
-        bold_row(summ_id, row)
-
-    # Conditional formatting: red background if invariant check != 0
-    check_start = summary_info.get("check_start")
-    check_end = summary_info.get("check_end")
+    def _range(sheet_id, r1, r2, c1, c2): return {"sheetId": sheet_id, "startRowIndex": r1 - 1, "endRowIndex": r2, "startColumnIndex": c1, "endColumnIndex": c2}
+    def bold_row(sheet_id, row, max_col=None): requests.append({"repeatCell": {"range": _range(sheet_id, row, row, 0, max_col or (n + 4)), "cell": {"userEnteredFormat": {"textFormat": {"bold": True}}}, "fields": "userEnteredFormat.textFormat.bold"}})
+    def number_fmt(sheet_id, row, pattern, c1=4, c2=None): requests.append({"repeatCell": {"range": _range(sheet_id, row, row, c1, c2 or (n + 4)), "cell": {"userEnteredFormat": {"numberFormat": {"type": "NUMBER", "pattern": pattern}}}, "fields": "userEnteredFormat.numberFormat"}})
+    def blue_bg(sheet_id, row, c1, c2): requests.append({"repeatCell": {"range": _range(sheet_id, row, row, c1, c2), "cell": {"userEnteredFormat": {"backgroundColor": {"red": 0.85, "green": 0.92, "blue": 1.0}}}, "fields": "userEnteredFormat.backgroundColor"}})
+    DOLLAR_FMT, PCT_FMT, DAYS_FMT = "#,##0", "0.0%", "#,##0.0"
+    is_id, bs_id, cf_id, summ_id, filing_id = sheet_ids["IS"], sheet_ids["BS"], sheet_ids["CF"], sheet_ids["Summary"], sheet_ids["Filing"]
+    fc_start, fc_end = 4 + nh, 4 + n
+    for key in ["REVT", "COGST", "GP", "OPEXT", "OPINC", "EBT", "INC_NET"]:
+        if key in is_refs: bold_row(is_id, is_refs[key])
+    for key in ["REV1", "REV2", "REV3", "REVT", "COGS1", "COGS2", "COGS3", "COGST", "GP", "OPEX1", "OPEX2", "OPEX3", "OPEXT", "SBC", "OPINC", "INC_O", "EBT", "TAX", "INC_NET", "DA"]:
+        if key in is_refs: number_fmt(is_id, is_refs[key], DOLLAR_FMT)
+    for key in ["driver_rev_growth", "driver_cogs_pct", "driver_opex1_pct", "driver_opex2_pct", "driver_opex3_pct", "driver_sbc_pct", "driver_tax_rate", "margin_gp", "margin_ebit", "margin_ni"]:
+        if key in is_refs: number_fmt(is_id, is_refs[key], PCT_FMT)
+    for key in ["driver_rev_growth", "driver_cogs_pct", "driver_opex1_pct", "driver_opex2_pct", "driver_opex3_pct", "driver_sbc_pct", "driver_tax_rate"]:
+        if key in is_refs: blue_bg(is_id, is_refs[key], fc_start, fc_end)
+    for key in ["BS_TCA", "BS_TNCA", "BS_TA", "BS_TCL", "BS_TNCL", "BS_TL", "BS_TE"]:
+        if key in bs_refs: bold_row(bs_id, bs_refs[key])
+    for key in ["BS_CASH", "BS_AR", "BS_INV", "BS_CA1", "BS_CA2", "BS_CA3", "BS_TCA", "BS_PPE", "BS_LTA1", "BS_LTA2", "BS_TNCA", "BS_TA", "BS_AP", "BS_STD", "BS_OCL1", "BS_OCL2", "BS_TCL", "BS_LTD", "BS_NCL1", "BS_NCL2", "BS_TNCL", "BS_TL", "BS_CS", "BS_RE", "BS_OE", "BS_TE", "capex", "da"]:
+        if key in bs_refs: number_fmt(bs_id, bs_refs[key], DOLLAR_FMT)
+    for key in ["capex_pct", "da_pct"]:
+        if key in bs_refs: number_fmt(bs_id, bs_refs[key], PCT_FMT)
+    for key in ["dso", "dio", "dpo"]:
+        if key in bs_refs: number_fmt(bs_id, bs_refs[key], DAYS_FMT)
+    for key in ["dso", "dio", "dpo", "capex_pct", "da_pct", "BS_CA1", "BS_CA2", "BS_CA3", "BS_LTA1", "BS_LTA2", "BS_STD", "BS_OCL1", "BS_OCL2", "BS_LTD", "BS_NCL1", "BS_NCL2", "BS_OE"]:
+        if key in bs_refs: blue_bg(bs_id, bs_refs[key], fc_start, fc_end)
+    for key in ["CF_OPCF", "CF_INVCF", "CF_FINCF", "CF_NETCH", "CF_ENDC"]:
+        if key in cf_refs: bold_row(cf_id, cf_refs[key])
+    for key in ["CF_NI", "CF_DA", "CF_SBC", "CF_OP1", "CF_OP2", "CF_OP3", "CF_AR", "CF_INV", "CF_AP", "CF_OPCF", "CF_CAPEX", "CF_SECPUR", "CF_SECSAL", "CF_INV1", "CF_INVCF", "CF_FIN1", "CF_BUY", "CF_DIV", "CF_DISS", "CF_DREP", "CF_FIN2", "CF_FINCF", "CF_NETCH", "CF_BEGC", "CF_ENDC"]:
+        if key in cf_refs: number_fmt(cf_id, cf_refs[key], DOLLAR_FMT)
+    for key in ["CF_OP1", "CF_OP2", "CF_OP3", "CF_SECPUR", "CF_SECSAL", "CF_INV1", "CF_FIN1", "CF_BUY", "CF_DIV", "CF_DISS", "CF_DREP", "CF_FIN2"]:
+        if key in cf_refs: blue_bg(cf_id, cf_refs[key], fc_start, fc_end)
+    for row in summary_info.get("dollar_rows", []): number_fmt(summ_id, row, DOLLAR_FMT)
+    for row in summary_info.get("bold_rows", []): bold_row(summ_id, row)
+    check_start, check_end = summary_info.get("check_start"), summary_info.get("check_end")
     if check_start and check_end:
-        for col_i in range(n):
-            c = dcol(col_i)
-            requests.append({"addConditionalFormatRule": {
-                "rule": {
-                    "ranges": [_range(summ_id, check_start, check_end, 4 + col_i, 4 + col_i + 1)],
-                    "booleanRule": {
-                        "condition": {"type": "NUMBER_NOT_EQ", "values": [{"userEnteredValue": "0"}]},
-                        "format": {"backgroundColor": {"red": 1.0, "green": 0.8, "blue": 0.8}},
-                    },
-                },
-                "index": 0,
-            }})
+        for col_i in range(n): requests.append({"addConditionalFormatRule": {"rule": {"ranges": [_range(summ_id, check_start, check_end, 4 + col_i, 4 + col_i + 1)], "booleanRule": {"condition": {"type": "NUMBER_NOT_EQ", "values": [{"userEnteredValue": "0"}]}, "format": {"backgroundColor": {"red": 1.0, "green": 0.8, "blue": 0.8}}}}, "index": 0}})
+    requests.append({"repeatCell": {"range": {"sheetId": filing_id, "startRowIndex": 2, "endRowIndex": 500, "startColumnIndex": 4, "endColumnIndex": 4 + n}, "cell": {"userEnteredFormat": {"numberFormat": {"type": "NUMBER", "pattern": DOLLAR_FMT}}}, "fields": "userEnteredFormat.numberFormat"}})
+    if requests: gws_batch_update(sid, requests)
 
-    # ── Filing: number format for all data columns (skip header rows) ──
-    requests.append({"repeatCell": {
-        "range": {"sheetId": filing_id, "startRowIndex": 2, "endRowIndex": 500,
-                  "startColumnIndex": 4, "endColumnIndex": 4 + n},
-        "cell": {"userEnteredFormat": {"numberFormat": {"type": "NUMBER", "pattern": DOLLAR_FMT}}},
-        "fields": "userEnteredFormat.numberFormat",
-    }})
-
-    if requests:
-        gws_batch_update(sid, requests)
-    print(f"  Formatting: {len(requests)} requests", file=sys.stderr)
-
-
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
 
 def main():
+    if not os.environ.get("ANTHROPIC_API_KEY"): print("Error: ANTHROPIC_API_KEY environment variable not set", file=sys.stderr); sys.exit(1)
+    if not shutil.which("gws"): print("Error: 'gws' CLI not found on PATH (required for Google Sheets access)", file=sys.stderr); sys.exit(1)
     parser = argparse.ArgumentParser()
-    parser.add_argument("--financials", required=True, nargs="+",
-                        help="One or more structured financials JSON files (newest first)")
+    parser.add_argument("--financials", required=True, nargs="+", help="One or more structured financials JSON files (newest first)")
     parser.add_argument("--company", default="Unknown")
+    parser.add_argument("--skip-verify", action="store_true", help="Skip Python model verification (not recommended)")
     args = parser.parse_args()
-
     financials_list = []
     for path in args.financials:
-        with open(path) as f:
-            financials_list.append(json.load(f))
-    print(f"Loaded {len(financials_list)} financials file(s)", file=sys.stderr)
-
+        with open(path) as f: financials_list.append(json.load(f))
     financials = _merge_financials(financials_list)
-
-    print("Classifying filing data...", file=sys.stderr)
-    filing_data = classify_filing(financials)
+    verified_items = None
+    if not args.skip_verify:
+        from pymodel import load_filing, compute_model, verify_model
+        print("Pre-flight: verifying data with Python model...", file=sys.stderr)
+        filing = load_filing(financials); m = compute_model(filing); errors = verify_model(m)
+        if errors:
+            print(f"\n*** {len(errors)} INVARIANT FAILURES — aborting ***", file=sys.stderr)
+            for name, period, delta in errors: print(f"  {name}: {period} = {delta:,.0f}")
+            sys.exit(1)
+        verified_items = filing["items"]; all_p = m["all_periods"]
+        for code in ["CF_FX", "CF_NETCH", "CF_ENDC", "CF_BEGC"]:
+            if code in m["model"]:
+                vals = {p: m["model"][code][i] for i, p in enumerate(all_p) if m["model"][code][i] != 0}
+                if vals: verified_items[code] = {"label": m["labels"].get(code, code), "values": vals}
+    if verified_items:
+        periods = filing["periods"]; rows = [{"code": code, "label": info["label"], "values": info["values"]} for code, info in verified_items.items() if info["values"]]
+        filing_data = {"periods": periods, "rows": rows}
+    else: filing_data = classify_filing(financials)
     periods = filing_data["periods"]
-    codes = [r["code"] for r in filing_data["rows"]]
-    print(f"  {len(periods)} periods, {len(codes)} rows: {codes}", file=sys.stderr)
-
-    last_year = int(periods[-1][:4])
-    forecast_periods = [f"{last_year + i}E" for i in range(1, 6)]
-
-    title = f"{args.company} - 3-Statement Model"
-    print(f"\nCreating: {title}", file=sys.stderr)
-    sid, url, sheet_ids = gws_create(title, ["Filing", "IS", "BS", "CF", "Summary"])
-    print(f"  URL: {url}", file=sys.stderr)
-
-    # Set columns A and B to width 50px on all sheets
+    last_year = int(periods[-1][:4]); forecast_periods = [f"{last_year + i}E" for i in range(1, 6)]
+    sid, url, sheet_ids = gws_create(f"{args.company} - 3-Statement Model", ["Filing", "IS", "BS", "CF", "Summary"])
     col_width_requests = []
-    for sheet_name, sheet_id in sheet_ids.items():
-        col_width_requests.append({
-            "updateDimensionProperties": {
-                "range": {
-                    "sheetId": sheet_id,
-                    "dimension": "COLUMNS",
-                    "startIndex": 0,
-                    "endIndex": 2,
-                },
-                "properties": {"pixelSize": 50},
-                "fields": "pixelSize",
-            }
-        })
+    for s_name, s_id in sheet_ids.items(): col_width_requests.append({"updateDimensionProperties": {"range": {"sheetId": s_id, "dimension": "COLUMNS", "startIndex": 0, "endIndex": 2}, "properties": {"pixelSize": 50}, "fields": "pixelSize"}})
     gws_batch_update(sid, col_width_requests)
-
-    print("\n1. Filing...", file=sys.stderr)
     row_sections = build_filing_sheet(sid, filing_data, periods)
-
-    print("2. IS...", file=sys.stderr)
     is_refs = build_is_sheet(sid, periods, forecast_periods)
-
-    print("3. BS...", file=sys.stderr)
     bs_refs = build_bs_sheet(sid, is_refs, periods, forecast_periods)
-
-    print("4. CF...", file=sys.stderr)
     cf_refs = build_cf_sheet(sid, is_refs, bs_refs, periods, forecast_periods)
-
-    print("5. Cross-refs...", file=sys.stderr)
     fix_cross_refs(sid, bs_refs, cf_refs, periods, forecast_periods)
-
-    print("6. Filing validation...", file=sys.stderr)
     apply_filing_validation(sid, sheet_ids, row_sections)
-
-    print("7. Summary...", file=sys.stderr)
     summary_info = build_summary_sheet(sid, is_refs, bs_refs, cf_refs, periods, forecast_periods)
-
-    print("8. Formatting...", file=sys.stderr)
     apply_formatting(sid, sheet_ids, is_refs, bs_refs, cf_refs, summary_info, periods, forecast_periods)
+    print(json.dumps({"spreadsheet_id": sid, "url": url, "company": args.company, "periods": periods, "forecast_periods": forecast_periods}, indent=2))
 
-    print(f"\nDone! {url}", file=sys.stderr)
-    print(json.dumps({"spreadsheet_id": sid, "url": url, "company": args.company,
-                       "periods": periods, "forecast_periods": forecast_periods}, indent=2))
-
-
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__": main()

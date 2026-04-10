@@ -14,6 +14,7 @@ Usage:
 
 import argparse
 import json
+import shutil
 import sys
 
 from gws_utils import _run_gws, gws_write, gws_batch_update
@@ -652,6 +653,10 @@ def rebuild_pnl(sid: str, financials: dict, model: dict, kpi_total_rev_row: int)
 
 
 def main():
+    if not shutil.which("gws"):
+        print("Error: 'gws' CLI not found on PATH (required for Google Sheets access)", file=sys.stderr)
+        sys.exit(1)
+
     parser = argparse.ArgumentParser(description="Agent 4: Populate template with financial data")
     parser.add_argument("--model", required=True, help="Model JSON from Agent 3")
     parser.add_argument("--financials", required=True, help="Structured financials from Agent 2")
