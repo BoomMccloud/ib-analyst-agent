@@ -54,6 +54,13 @@ This project automates the workflow of an investment banking analyst:
 
 ## Usage
 
+### The Agentic Way (Recommended)
+Run the entire pipeline with a single command. Defaults to 5 years of history and 5 years of forecasts.
+```bash
+python run_pipeline.py AAPL
+```
+
+### The Manual Way (Stage-by-Stage)
 ```bash
 # 1. Fetch filings
 python agent1_fetcher.py AAPL --years 3 > filings.json
