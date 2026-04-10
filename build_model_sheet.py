@@ -1036,10 +1036,9 @@ def main():
             for name, period, delta in errors: print(f"  {name}: {period} = {delta:,.0f}")
             sys.exit(1)
         verified_items = filing["items"]; all_p = m["all_periods"]
-        for code in ["CF_FX", "CF_NETCH", "CF_ENDC", "CF_BEGC"]:
-            if code in m["model"]:
-                vals = {p: m["model"][code][i] for i, p in enumerate(all_p) if m["model"][code][i] != 0}
-                if vals: verified_items[code] = {"label": m["labels"].get(code, code), "values": vals}
+        for code, model_vals in m["model"].items():
+            vals = {p: model_vals[i] for i, p in enumerate(all_p) if i < len(model_vals) and model_vals[i] != 0}
+            if vals: verified_items[code] = {"label": m["labels"].get(code, verified_items.get(code, {}).get("label", code)), "values": vals}
     if verified_items:
         periods = filing["periods"]; rows = [{"code": code, "label": info["label"], "values": info["values"]} for code, info in verified_items.items() if info["values"]]
         filing_data = {"periods": periods, "rows": rows}
