@@ -22,6 +22,15 @@ import sys
 
 from anthropic import Anthropic
 
+from llm_utils import call_llm, parse_json_response
+from financial_utils import (
+    BS_CODE_DEFS,
+    CF_CODE_DEFS,
+    flatten_bs,
+    flatten_cf,
+    clean_label,
+)
+
 SONNET = "claude-sonnet-4-6"
 HAIKU = "claude-haiku-4-5-20251001"
 
@@ -233,52 +242,6 @@ SECTION_CONFIGS = {
 }
 
 
-def call_llm(client: Anthropic, model: str, prompt: str, max_tokens: int = 8192) -> dict:
-    """Call the LLM and parse the JSON response. Retries once on parse failure."""
-    import re
-
-    for attempt in range(2):
-        response = client.messages.create(
-            model=model,
-            max_tokens=max_tokens,
-            messages=[{"role": "user", "content": prompt}],
-        )
-
-        text = response.content[0].text.strip()
-
-        # Strip markdown code fences if present
-        if text.startswith("```"):
-            text = text.split("\n", 1)[1]
-            if text.endswith("```"):
-                text = text[:-3].strip()
-
-        # If response was truncated (hit max_tokens), try to close the JSON
-        if response.stop_reason == "max_tokens":
-            # Count open braces/brackets and close them
-            open_braces = text.count("{") - text.count("}")
-            open_brackets = text.count("[") - text.count("]")
-            text = text.rstrip(", \n")
-            text += "]" * max(0, open_brackets)
-            text += "}" * max(0, open_braces)
-
-        try:
-            return json.loads(text)
-        except json.JSONDecodeError:
-            # Try to find the outermost JSON object
-            match = re.search(r'\{.*\}', text, re.DOTALL)
-            if match:
-                try:
-                    return json.loads(match.group())
-                except json.JSONDecodeError:
-                    pass
-
-            if attempt == 0:
-                print(f"    JSON parse failed, retrying...", file=sys.stderr)
-                continue
-
-            raise ValueError(f"Could not parse JSON from LLM response:\n{text[:500]}")
-
-
 def process_section(client: Anthropic, section_id: str, section_text: str) -> dict:
     """Process a single section through the appropriate LLM."""
     config = SECTION_CONFIGS.get(section_id)
@@ -309,125 +272,6 @@ def process_section(client: Anthropic, section_id: str, section_text: str) -> di
 # Model code classification — assign codes to BS/CF items for the model
 # ---------------------------------------------------------------------------
 
-BS_CODE_DEFS = {
-    "BS_CASH": "Cash & Cash Equivalents",
-    "BS_AR": "Accounts Receivable, net",
-    "BS_INV": "Inventories",
-    "BS_CA1": "Other Current Asset bucket 1 (catch-all: marketable securities, prepaid, deferred tax assets, vendor receivables, etc.)",
-    "BS_CA2": "Other Current Asset bucket 2 (catch-all)",
-    "BS_CA3": "Other Current Asset bucket 3 (catch-all)",
-    "BS_TCA": "Total Current Assets — SUBTOTAL only",
-    "BS_PPE": "Property, Plant & Equipment, net",
-    "BS_LTA1": "Other Long-term Asset bucket 1 (catch-all: goodwill, intangibles, long-term investments, operating lease ROU, etc.)",
-    "BS_LTA2": "Other Long-term Asset bucket 2 (catch-all)",
-    "BS_TNCA": "Total Non-Current Assets — SUBTOTAL only",
-    "BS_TA": "Total Assets — GRAND TOTAL only",
-    "BS_AP": "Accounts Payable",
-    "BS_STD": "Short-term Debt / Current portion of long-term debt / Commercial Paper",
-    "BS_OCL1": "Other Current Liability bucket 1 (catch-all: deferred revenue, accrued expenses, etc.)",
-    "BS_OCL2": "Other Current Liability bucket 2 (catch-all)",
-    "BS_TCL": "Total Current Liabilities — SUBTOTAL only",
-    "BS_LTD": "Long-term Debt (non-current term debt, bonds)",
-    "BS_NCL1": "Other Non-Current Liability bucket 1 (catch-all: deferred tax liabilities, operating lease liabilities, etc.)",
-    "BS_NCL2": "Other Non-Current Liability bucket 2 (catch-all)",
-    "BS_TNCL": "Total Non-Current Liabilities — SUBTOTAL only",
-    "BS_TL": "Total Liabilities — GRAND TOTAL only",
-    "BS_CS": "Common Stock & Additional Paid-In Capital",
-    "BS_RE": "Retained Earnings / Accumulated Deficit",
-    "BS_OE": "Other Equity (AOCI, treasury stock, minority interest, etc.)",
-    "BS_TE": "Total Stockholders' Equity — SUBTOTAL only",
-    "SKIP": "Skip — redundant totals like total_liabilities_and_shareholders_equity",
-}
-
-CF_CODE_DEFS = {
-    "CF_NI": "Net Income",
-    "CF_DA": "Depreciation & Amortization",
-    "CF_SBC": "Stock-Based Compensation",
-    "CF_OP1": "Other non-cash operating adjustment (catch-all: deferred taxes, impairments, amortization of debt discount/securities, gains/losses, etc.)",
-    "CF_OP2": "Other working capital / operating change — assets side (catch-all: other current and non-current asset changes)",
-    "CF_OP3": "Other working capital / operating change — liabilities side (catch-all: other current and non-current liability changes)",
-    "CF_AR": "Change in Accounts Receivable",
-    "CF_INV": "Change in Inventories",
-    "CF_AP": "Change in Accounts Payable",
-    "CF_OPCF": "Net Cash from Operations — SECTION SUBTOTAL only",
-    "CF_CAPEX": "Capital Expenditures (purchases of property, plant, equipment)",
-    "CF_SECPUR": "Purchases of Marketable Securities",
-    "CF_SECSAL": "Proceeds from Sales/Maturities of Marketable Securities",
-    "CF_INV1": "Other Investing (catch-all: acquisitions, divestitures, other investing activities)",
-    "CF_INVCF": "Net Cash from Investing — SECTION SUBTOTAL only",
-    "CF_FIN1": "Stock-related payments (taxes on RSU vesting, net share settlement) and other misc financing",
-    "CF_DIV": "Dividends Paid",
-    "CF_BUY": "Share Repurchases / Stock Buybacks",
-    "CF_DISS": "Debt Issuance / Proceeds from borrowing",
-    "CF_DREP": "Debt Repayment",
-    "CF_FIN2": "Other Financing (catch-all: commercial paper, other financing activities)",
-    "CF_FINCF": "Net Cash from Financing — SECTION SUBTOTAL only",
-    "CF_NETCH": "Net increase/decrease in cash — GRAND TOTAL only",
-    "CF_BEGC": "Cash, cash equivalents (and restricted cash) at BEGINNING of period",
-    "CF_ENDC": "Cash, cash equivalents (and restricted cash) at END of period",
-}
-
-
-def _flatten_bs(bs_data, periods):
-    """Flatten nested per-period BS data into items with unique IDs."""
-    all_items = {}
-    for period in periods:
-        pdata = bs_data.get(period, {})
-        def collect(data, section_path):
-            for key, value in data.items():
-                if isinstance(value, (int, float)):
-                    item_id = f"{section_path}/{key}" if section_path else key
-                    if item_id not in all_items:
-                        all_items[item_id] = {"id": item_id, "key": key, "section": section_path, "values": {}}
-                    all_items[item_id]["values"][period] = value
-                elif isinstance(value, dict):
-                    collect(value, f"{section_path}/{key}" if section_path else key)
-        collect(pdata, "")
-    return list(all_items.values())
-
-
-def _flatten_cf(cf_data, periods):
-    """Flatten nested CF JSON into items with unique IDs."""
-    items = []
-    op_cf = cf_data.get("operating_activities",
-                        cf_data.get("cash_flows_from_operating_activities", {}))
-    inv_cf = cf_data.get("investing_activities",
-                         cf_data.get("cash_flows_from_investing_activities", {}))
-    fin_cf = cf_data.get("financing_activities",
-                         cf_data.get("cash_flows_from_financing_activities", {}))
-    skip_top = {"operating_activities", "cash_flows_from_operating_activities",
-                "investing_activities", "cash_flows_from_investing_activities",
-                "financing_activities", "cash_flows_from_financing_activities",
-                "unit", "currency_note"}
-
-    def collect(section_data, section_name):
-        for key, value in section_data.items():
-            if not isinstance(value, dict):
-                continue
-            period_vals = {p: value[p] for p in periods
-                          if p in value and isinstance(value[p], (int, float))}
-            if period_vals:
-                items.append({"id": f"{section_name}/{key}", "key": key,
-                              "section": section_name, "values": period_vals})
-            else:
-                collect(value, f"{section_name}/{key}")
-
-    collect(op_cf, "operating")
-    collect(inv_cf, "investing")
-    collect(fin_cf, "financing")
-    for top_key, value in cf_data.items():
-        if top_key in skip_top or not isinstance(value, dict):
-            continue
-        period_vals = {p: value[p] for p in periods
-                       if p in value and isinstance(value[p], (int, float))}
-        if period_vals:
-            items.append({"id": f"summary/{top_key}", "key": top_key,
-                          "section": "summary", "values": period_vals})
-        else:
-            collect(value, top_key)
-    return items
-
-
 def _detect_cf_periods(cf_data):
     """Detect period keys from section-first CF data."""
     periods = set()
@@ -443,10 +287,6 @@ def _detect_cf_periods(cf_data):
                     scan(v, depth + 1)
     scan(cf_data)
     return sorted(periods)
-
-
-def _clean_label(key):
-    return key.replace("_", " ").strip().title()
 
 
 def _classify_with_llm(client, items, code_defs, statement_type):
@@ -468,6 +308,7 @@ RULES:
 4. Catch-all buckets absorb items that don't fit a specific code.
 5. Spread items across available catch-all buckets by category.
 6. Use "section" to understand which part of the statement an item belongs to.
+7. SKIP supplemental disclosures — items like "cash paid for income taxes", "cash paid for interest", "non-cash investing/financing activities", and "right-of-use asset" are NOT actual cash flow items. They are informational footnotes already embedded in the numbers above. Assign them "SKIP".
 
 Return ONLY a JSON object mapping each item "id" to its assigned code. No explanation."""
 
@@ -478,13 +319,9 @@ Return ONLY a JSON object mapping each item "id" to its assigned code. No explan
             messages=[{"role": "user", "content": prompt}],
         )
         text = response.content[0].text.strip()
-        if text.startswith("```"):
-            text = text.split("\n", 1)[1]
-            if text.endswith("```"):
-                text = text[:-3].strip()
         try:
-            return json.loads(text)
-        except json.JSONDecodeError:
+            return parse_json_response(text, response.stop_reason)
+        except ValueError:
             if attempt == 0:
                 print(f"    LLM classify retry ({statement_type})...", file=sys.stderr)
     raise ValueError(f"Failed to parse LLM classification for {statement_type}")
@@ -504,7 +341,7 @@ def classify_model_codes(client, results):
                           and len(k) >= 4 and k[:4].isdigit()
                           and not k.lower().endswith("_usd")])
         if periods:
-            bs_items = _flatten_bs(inner, periods)
+            bs_items = flatten_bs(inner, periods)
             if bs_items:
                 print("  Classifying BS items...", file=sys.stderr)
                 mapping = _classify_with_llm(client, bs_items, BS_CODE_DEFS, "Balance Sheet")
@@ -512,7 +349,7 @@ def classify_model_codes(client, results):
                 for item in bs_items:
                     code = mapping.get(item["id"])
                     if code and code != "SKIP":
-                        coded.append({"code": code, "label": _clean_label(item["key"]),
+                        coded.append({"code": code, "label": clean_label(item["key"]),
                                       "values": item["values"]})
                 bs_raw["_coded_items"] = coded
                 print(f"    {len(coded)} items classified", file=sys.stderr)
@@ -522,7 +359,7 @@ def classify_model_codes(client, results):
     if cf_data:
         periods = _detect_cf_periods(cf_data)
         if periods:
-            cf_items = _flatten_cf(cf_data, periods)
+            cf_items = flatten_cf(cf_data, periods)
             if cf_items:
                 print("  Classifying CF items...", file=sys.stderr)
                 mapping = _classify_with_llm(client, cf_items, CF_CODE_DEFS, "Cash Flow Statement")
@@ -530,7 +367,7 @@ def classify_model_codes(client, results):
                 for item in cf_items:
                     code = mapping.get(item["id"])
                     if code and code != "SKIP":
-                        coded.append({"code": code, "label": _clean_label(item["key"]),
+                        coded.append({"code": code, "label": clean_label(item["key"]),
                                       "values": item["values"]})
                 cf_data["_coded_items"] = coded
                 print(f"    {len(coded)} items classified", file=sys.stderr)

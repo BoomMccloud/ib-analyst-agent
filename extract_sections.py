@@ -20,11 +20,8 @@ import json
 import os
 import re
 import sys
-import time
-import urllib.request
-import urllib.error
 
-HEADERS = {"User-Agent": "SecFilingsAgent admin@example.com"}
+from sec_utils import fetch_url  # noqa: F401 — also provides HEADERS, but not needed here
 
 # Sections we want to extract, with keyword patterns to match TOC entries
 TARGET_SECTIONS = [
@@ -87,20 +84,6 @@ TARGET_SECTIONS = [
         ],
     },
 ]
-
-
-def fetch_url(url: str) -> bytes:
-    for attempt in range(3):
-        try:
-            time.sleep(0.15)  # rate limit
-            req = urllib.request.Request(url, headers=HEADERS)
-            with urllib.request.urlopen(req, timeout=60) as resp:
-                return resp.read()
-        except urllib.error.HTTPError as e:
-            if e.code == 429 and attempt < 2:
-                time.sleep(10 * (attempt + 1))
-            else:
-                raise
 
 
 def extract_toc(html_content: str) -> list[dict]:

@@ -17,6 +17,8 @@ import sys
 
 from anthropic import Anthropic
 
+from llm_utils import parse_json_response
+
 MODEL = "claude-sonnet-4-6"
 
 MODELER_PROMPT = """\
@@ -233,33 +235,13 @@ def build_model(company: str, financials: dict, mda: dict) -> dict:
 
     text = response.content[0].text.strip()
 
-    # Strip code fences
-    if text.startswith("```"):
-        text = text.split("\n", 1)[1]
-        if text.endswith("```"):
-            text = text[:-3].strip()
-
-    # Handle truncation
     if response.stop_reason == "max_tokens":
         print("  WARNING: Response truncated, attempting to close JSON...", file=sys.stderr)
-        text = text.rstrip(", \n")
-        open_braces = text.count("{") - text.count("}")
-        open_brackets = text.count("[") - text.count("]")
-        text += "]" * max(0, open_brackets)
-        text += "}" * max(0, open_braces)
 
     try:
-        return json.loads(text)
-    except json.JSONDecodeError as e:
-        import re
-        match = re.search(r'\{.*\}', text, re.DOTALL)
-        if match:
-            try:
-                return json.loads(match.group())
-            except json.JSONDecodeError:
-                pass
-        print(f"  ERROR: Could not parse JSON: {e}", file=sys.stderr)
-        print(f"  First 500 chars: {text[:500]}", file=sys.stderr)
+        return parse_json_response(text, response.stop_reason)
+    except ValueError as e:
+        print(f"  ERROR: {e}", file=sys.stderr)
         raise
 
 

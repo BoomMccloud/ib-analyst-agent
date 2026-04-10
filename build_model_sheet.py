@@ -17,22 +17,23 @@ Usage:
 
 import argparse
 import json
-import subprocess
 import sys
 
 from anthropic import Anthropic
 
+from gws_utils import _run_gws, gws_write, gws_batch_update
+from llm_utils import parse_json_response
+from financial_utils import (
+    BS_CODE_DEFS,
+    CF_CODE_DEFS,
+    flatten_bs,
+    flatten_cf,
+    clean_label,
+)
+
 # ---------------------------------------------------------------------------
 # Google Sheets helpers
 # ---------------------------------------------------------------------------
-
-def _run_gws(*args) -> dict:
-    result = subprocess.run(["gws", *args], capture_output=True, text=True, timeout=30)
-    if result.returncode != 0:
-        print(f"gws error: {result.stderr[:300]}", file=sys.stderr)
-        raise RuntimeError("gws failed")
-    return json.loads(result.stdout) if result.stdout.strip() else {}
-
 
 def gws_create(title, sheet_names):
     sheets = [{"properties": {"title": n, "gridProperties": {"frozenRowCount": 2, "frozenColumnCount": 4, "hideGridlines": True}}} for n in sheet_names]
@@ -41,16 +42,6 @@ def gws_create(title, sheet_names):
     }))
     sheet_ids = {s["properties"]["title"]: s["properties"]["sheetId"] for s in result["sheets"]}
     return result["spreadsheetId"], result["spreadsheetUrl"], sheet_ids
-
-
-def gws_write(sid, range_, values):
-    params = json.dumps({"spreadsheetId": sid, "range": range_, "valueInputOption": "USER_ENTERED"})
-    _run_gws("sheets", "spreadsheets", "values", "update", "--params", params, "--json", json.dumps({"values": values}))
-
-
-def gws_batch_update(sid, requests):
-    params = json.dumps({"spreadsheetId": sid})
-    _run_gws("sheets", "spreadsheets", "batchUpdate", "--params", params, "--json", json.dumps({"requests": requests}))
 
 
 def dcol(i):
@@ -204,138 +195,6 @@ BS_EQUITY = [
 
 HAIKU = "claude-haiku-4-5-20251001"
 
-BS_CODE_DEFS = {
-    "BS_CASH": "Cash & Cash Equivalents",
-    "BS_AR": "Accounts Receivable, net",
-    "BS_INV": "Inventories",
-    "BS_CA1": "Other Current Asset bucket 1 (catch-all: marketable securities, prepaid, deferred tax assets, vendor receivables, etc.)",
-    "BS_CA2": "Other Current Asset bucket 2 (catch-all)",
-    "BS_CA3": "Other Current Asset bucket 3 (catch-all)",
-    "BS_TCA": "Total Current Assets — SUBTOTAL only",
-    "BS_PPE": "Property, Plant & Equipment, net",
-    "BS_LTA1": "Other Long-term Asset bucket 1 (catch-all: goodwill, intangibles, long-term investments, operating lease ROU, etc.)",
-    "BS_LTA2": "Other Long-term Asset bucket 2 (catch-all)",
-    "BS_TNCA": "Total Non-Current Assets — SUBTOTAL only",
-    "BS_TA": "Total Assets — GRAND TOTAL only",
-    "BS_AP": "Accounts Payable",
-    "BS_STD": "Short-term Debt / Current portion of long-term debt / Commercial Paper",
-    "BS_OCL1": "Other Current Liability bucket 1 (catch-all: deferred revenue, accrued expenses, etc.)",
-    "BS_OCL2": "Other Current Liability bucket 2 (catch-all)",
-    "BS_TCL": "Total Current Liabilities — SUBTOTAL only",
-    "BS_LTD": "Long-term Debt (non-current term debt, bonds)",
-    "BS_NCL1": "Other Non-Current Liability bucket 1 (catch-all: deferred tax liabilities, operating lease liabilities, etc.)",
-    "BS_NCL2": "Other Non-Current Liability bucket 2 (catch-all)",
-    "BS_TNCL": "Total Non-Current Liabilities — SUBTOTAL only",
-    "BS_TL": "Total Liabilities — GRAND TOTAL only",
-    "BS_CS": "Common Stock & Additional Paid-In Capital",
-    "BS_RE": "Retained Earnings / Accumulated Deficit",
-    "BS_OE": "Other Equity (AOCI, treasury stock, minority interest, etc.)",
-    "BS_TE": "Total Stockholders' Equity — SUBTOTAL only",
-    "SKIP": "Skip — redundant totals like total_liabilities_and_shareholders_equity",
-}
-
-CF_CODE_DEFS = {
-    "CF_NI": "Net Income",
-    "CF_DA": "Depreciation & Amortization",
-    "CF_SBC": "Stock-Based Compensation",
-    "CF_OP1": "Other non-cash operating adjustment (catch-all: deferred taxes, impairments, amortization of debt discount/securities, gains/losses, etc.)",
-    "CF_OP2": "Other working capital / operating change — assets side (catch-all: other current and non-current asset changes)",
-    "CF_OP3": "Other working capital / operating change — liabilities side (catch-all: other current and non-current liability changes)",
-    "CF_AR": "Change in Accounts Receivable",
-    "CF_INV": "Change in Inventories",
-    "CF_AP": "Change in Accounts Payable",
-    "CF_OPCF": "Net Cash from Operations — SECTION SUBTOTAL only",
-    "CF_CAPEX": "Capital Expenditures (purchases of property, plant, equipment)",
-    "CF_SECPUR": "Purchases of Marketable Securities",
-    "CF_SECSAL": "Proceeds from Sales/Maturities of Marketable Securities",
-    "CF_INV1": "Other Investing (catch-all: acquisitions, divestitures, other investing activities)",
-    "CF_INVCF": "Net Cash from Investing — SECTION SUBTOTAL only",
-    "CF_FIN1": "Stock-related payments (taxes on RSU vesting, net share settlement) and other misc financing",
-    "CF_DIV": "Dividends Paid",
-    "CF_BUY": "Share Repurchases / Stock Buybacks",
-    "CF_DISS": "Debt Issuance / Proceeds from borrowing",
-    "CF_DREP": "Debt Repayment",
-    "CF_FIN2": "Other Financing (catch-all: commercial paper, other financing activities)",
-    "CF_FINCF": "Net Cash from Financing — SECTION SUBTOTAL only",
-    "CF_NETCH": "Net increase/decrease in cash — GRAND TOTAL only",
-    "CF_BEGC": "Cash, cash equivalents (and restricted cash) at BEGINNING of period",
-    "CF_ENDC": "Cash, cash equivalents (and restricted cash) at END of period",
-}
-
-
-def _flatten_bs(bs_data, periods):
-    """Flatten nested per-period BS data into items with values across periods."""
-    all_items = {}  # id -> {id, key, section, values}
-
-    for period in periods:
-        pdata = bs_data.get(period, {})
-
-        def collect(data, section_path):
-            for key, value in data.items():
-                if isinstance(value, (int, float)):
-                    item_id = f"{section_path}/{key}" if section_path else key
-                    if item_id not in all_items:
-                        all_items[item_id] = {"id": item_id, "key": key, "section": section_path, "values": {}}
-                    all_items[item_id]["values"][period] = value
-                elif isinstance(value, dict):
-                    collect(value, f"{section_path}/{key}" if section_path else key)
-
-        collect(pdata, "")
-
-    return list(all_items.values())
-
-
-def _flatten_cf(cf_data, periods):
-    """Flatten nested CF JSON into list of {id, key, section, values}."""
-    items = []
-
-    op_cf = cf_data.get("operating_activities",
-                        cf_data.get("cash_flows_from_operating_activities", {}))
-    inv_cf = cf_data.get("investing_activities",
-                         cf_data.get("cash_flows_from_investing_activities", {}))
-    fin_cf = cf_data.get("financing_activities",
-                         cf_data.get("cash_flows_from_financing_activities", {}))
-
-    skip_top = {"operating_activities", "cash_flows_from_operating_activities",
-                "investing_activities", "cash_flows_from_investing_activities",
-                "financing_activities", "cash_flows_from_financing_activities",
-                "unit", "currency_note"}
-
-    def collect(section_data, section_name):
-        for key, value in section_data.items():
-            if not isinstance(value, dict):
-                continue
-            period_vals = {p: value[p] for p in periods
-                          if p in value and isinstance(value[p], (int, float))}
-            if period_vals:
-                item_id = f"{section_name}/{key}"
-                items.append({"id": item_id, "key": key, "section": section_name, "values": period_vals})
-            else:
-                collect(value, f"{section_name}/{key}")
-
-    collect(op_cf, "operating")
-    collect(inv_cf, "investing")
-    collect(fin_cf, "financing")
-
-    # Top-level items: beginning/ending balances, net change
-    for top_key, value in cf_data.items():
-        if top_key in skip_top or not isinstance(value, dict):
-            continue
-        period_vals = {p: value[p] for p in periods
-                       if p in value and isinstance(value[p], (int, float))}
-        if period_vals:
-            item_id = f"summary/{top_key}"
-            items.append({"id": item_id, "key": top_key, "section": "summary", "values": period_vals})
-        else:
-            collect(value, top_key)
-
-    return items
-
-
-def _clean_label(key):
-    """Convert snake_case key to Title Case label."""
-    return key.replace("_", " ").strip().title()
-
 
 def _llm_classify(items, code_defs, statement_type):
     """Use LLM to assign model codes to financial line items."""
@@ -358,6 +217,7 @@ RULES:
 4. Catch-all buckets absorb items that don't fit a specific code.
 5. Spread items across available catch-all buckets by category (e.g., non-cash adjustments in CF_OP1, asset WC in CF_OP2, liability WC in CF_OP3).
 6. Use "section" to understand which part of the statement an item belongs to.
+7. SKIP supplemental disclosures — items like "cash paid for income taxes", "cash paid for interest", "non-cash investing/financing activities", and "right-of-use asset" are NOT actual cash flow items. They are informational footnotes already embedded in the numbers above. Assign them "SKIP".
 
 Return ONLY a JSON object mapping each item "id" to its assigned code. No explanation."""
 
@@ -368,13 +228,9 @@ Return ONLY a JSON object mapping each item "id" to its assigned code. No explan
             messages=[{"role": "user", "content": prompt}],
         )
         text = response.content[0].text.strip()
-        if text.startswith("```"):
-            text = text.split("\n", 1)[1]
-            if text.endswith("```"):
-                text = text[:-3].strip()
         try:
-            return json.loads(text)
-        except json.JSONDecodeError:
+            return parse_json_response(text, response.stop_reason)
+        except ValueError:
             if attempt == 0:
                 print(f"  LLM classify retry ({statement_type})...", file=sys.stderr)
                 continue
@@ -585,13 +441,13 @@ def classify_filing(financials: dict) -> dict:
             bs_data, bs_periods = _convert_section_first(bs_data)
             bs_periods = [p for p in bs_periods if not p.lower().endswith("_usd")]
         print("  Classifying BS items (no pre-computed codes)...", file=sys.stderr)
-        bs_items = _flatten_bs(bs_data, bs_periods)
+        bs_items = flatten_bs(bs_data, bs_periods)
         if bs_items:
             bs_mapping = _llm_classify(bs_items, BS_CODE_DEFS, "Balance Sheet")
             for item in bs_items:
                 code = bs_mapping.get(item["id"])
                 if code and code != "SKIP":
-                    add(code, _clean_label(item["key"]), item["values"])
+                    add(code, clean_label(item["key"]), item["values"])
 
     # --- CF ---
     coded_cf = cf_data.get("_coded_items")
@@ -602,13 +458,13 @@ def classify_filing(financials: dict) -> dict:
     else:
         # Fallback: classify at build time
         print("  Classifying CF items (no pre-computed codes)...", file=sys.stderr)
-        cf_items = _flatten_cf(cf_data, periods)
+        cf_items = flatten_cf(cf_data, periods)
         if cf_items:
             cf_mapping = _llm_classify(cf_items, CF_CODE_DEFS, "Cash Flow Statement")
             for item in cf_items:
                 code = cf_mapping.get(item["id"])
                 if code and code != "SKIP":
-                    add(code, _clean_label(item["key"]), item["values"])
+                    add(code, clean_label(item["key"]), item["values"])
 
     return {"periods": periods, "rows": rows}
 
@@ -1322,7 +1178,7 @@ def build_cf_sheet(sid, is_refs, bs_refs, periods, forecast_periods):
         d = R(cf_code, label)
         for i in range(n):
             c = dcol(i)
-            if i == 0:
+            if i < nh:
                 d.append(sf(i, row_num))
             else:
                 sign = "-" if negate else ""

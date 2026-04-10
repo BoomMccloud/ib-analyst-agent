@@ -14,36 +14,17 @@ Usage:
 
 import argparse
 import json
-import subprocess
 import sys
+
+from gws_utils import _run_gws, gws_write, gws_batch_update
 
 
 TEMPLATE_ROW_MAP = "template_row_map.json"
 
 
-def _run_gws(*args) -> dict:
-    result = subprocess.run(["gws", *args], capture_output=True, text=True, timeout=30)
-    if result.returncode != 0:
-        print(f"gws error: {result.stderr[:300]}", file=sys.stderr)
-        raise RuntimeError(f"gws failed")
-    return json.loads(result.stdout) if result.stdout.strip() else {}
-
-
 def gws_clear(sid, range_):
     params = json.dumps({"spreadsheetId": sid, "range": range_})
     _run_gws("sheets", "spreadsheets", "values", "clear", "--params", params, "--json", "{}")
-
-
-def gws_write(sid, range_, values):
-    params = json.dumps({"spreadsheetId": sid, "range": range_, "valueInputOption": "USER_ENTERED"})
-    body = json.dumps({"values": values})
-    _run_gws("sheets", "spreadsheets", "values", "update", "--params", params, "--json", body)
-
-
-def gws_batch_update(sid, requests):
-    params = json.dumps({"spreadsheetId": sid})
-    body = json.dumps({"requests": requests})
-    _run_gws("sheets", "spreadsheets", "batchUpdate", "--params", params, "--json", body)
 
 
 def copy_template(template_id: str, title: str) -> tuple[str, str]:
