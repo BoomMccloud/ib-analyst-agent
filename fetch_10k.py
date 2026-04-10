@@ -14,7 +14,7 @@ import urllib.error
 import argparse
 
 
-HEADERS = {"User-Agent": "SecFilingsAgent admin@example.com"}
+HEADERS = {"User-Agent": "SecFilingsAgent boommccloud@gmail.com"}
 TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
 

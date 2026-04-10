@@ -24,7 +24,7 @@ import time
 import urllib.request
 import urllib.error
 
-HEADERS = {"User-Agent": "SecFilingsAgent admin@example.com"}
+HEADERS = {"User-Agent": "SecFilingsAgent boommccloud@gmail.com"}
 
 # Sections we want to extract, with keyword patterns to match TOC entries
 TARGET_SECTIONS = [

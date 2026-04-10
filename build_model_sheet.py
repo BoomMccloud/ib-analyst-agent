@@ -1420,6 +1420,7 @@ def build_cf_sheet(sid, is_refs, bs_refs, periods, forecast_periods):
         else:
             d.append(0)
     fx = add(d)
+    refs["CF_FX"] = fx
 
     d = R("CF_NETCH", "Net Change in Cash")
     for i in range(n):
@@ -1604,13 +1605,13 @@ def build_summary_sheet(sid, is_refs, bs_refs, cf_refs, periods, forecast_period
         d.append(f"={c}{s_ta}-{c}{s_tl}-{c}{s_te}")
     add(d)
 
-    # 2. Cash: CF ending cash = BS cash
+    # 2. Cash: CF ending cash = BS cash (skip periods with no BS data)
     ec = cf_refs.get("ending_cash")
     if ec:
         d = R("", "2. Cash (CF End - BS Cash)")
         for i in range(n):
             c = dcol(i)
-            d.append(f"=CF!{c}{ec}-BS!{c}{bs_refs['BS_CASH']}")
+            d.append(f"=IF(BS!{c}{bs_refs['BS_CASH']}=0,0,CF!{c}{ec}-BS!{c}{bs_refs['BS_CASH']})")
         add(d)
 
     # 3. Net Income: IS = CF (cross-sheet linkage)
@@ -1662,10 +1663,12 @@ def build_summary_sheet(sid, is_refs, bs_refs, cf_refs, periods, forecast_period
     add(d)
 
     # 9. CF Structure: OpCF + InvCF + FinCF + FX = Net Change
-    d = R("", "9. CF Structure (Op+Inv+Fin - NetCh)")
+    cf_fx = cf_refs.get("CF_FX")
+    d = R("", "9. CF Structure (Op+Inv+Fin+FX - NetCh)")
     for i in range(n):
         c = dcol(i)
-        d.append(f"={c}{s_opcf}+{c}{s_invcf}+{c}{s_fincf}-{c}{s_netch}")
+        fx_term = f"+CF!{c}{cf_fx}" if cf_fx else ""
+        d.append(f"={c}{s_opcf}+{c}{s_invcf}+{c}{s_fincf}{fx_term}-{c}{s_netch}")
     add(d)
 
     # 10. CF Cash Proof: Beg + Net Change = End

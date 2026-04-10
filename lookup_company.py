@@ -26,7 +26,7 @@ import time
 import urllib.request
 import urllib.error
 
-HEADERS = {"User-Agent": "SecFilingsAgent admin@example.com"}
+HEADERS = {"User-Agent": "SecFilingsAgent boommccloud@gmail.com"}
 TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
 SEARCH_URL = "https://efts.sec.gov/LATEST/search-index?q=%22{query}%22&forms=10-K,20-F&dateRange=custom&startdt=2020-01-01&enddt=2026-12-31"
