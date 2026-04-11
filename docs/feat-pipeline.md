@@ -378,7 +378,20 @@ To manage complexity, this architecture will be implemented in four distinct, te
     *   `sheet_builder.py` contains zero financial logic (no awareness of GP, Net Income formulas, etc.).
     *   Generated Google Sheet displays correctly with 0 errors in the Invariant check rows.
 
-### Phase 3: Pydantic Guardrails & Forecast Logic
+### Phase 3: Dynamic Sheet Formulas
+**Goal:** Fully migrate the Google Sheet from static numbers to a dynamic, fully linked model.
+
+*   **Work Items:**
+    *   Implement Phase B (Subtotals/totals as SUM formulas).
+    *   Implement Phase C (Forecast line items as driver formulas referencing assumptions).
+    *   Implement Phase D (Historical cells as SUMIF references to raw filing data).
+    *   Add corresponding tests to verify cell structural integrity.
+*   **Deliverables:** A fully dynamic 3-statement model in Google Sheets where users can modify drivers and see flowing changes.
+*   **Exit Criteria:**
+    *   `pytest` correctly asserts that no forecast numbers or totals are hardcoded (they must be `=FORMULA()`).
+    *   Changing a growth rate driver in the generated Google Sheet updates Revenue, Net Income, and Ending Cash correctly.
+
+### Phase 4: Pydantic Guardrails & Forecast Logic
 **Goal:** Implement safe, strictly typed business drivers and compute the forward-looking forecast.
 
 *   **Work Items:**
@@ -391,16 +404,3 @@ To manage complexity, this architecture will be implemented in four distinct, te
 *   **Exit Criteria:**
     *   `pytest tests/test_model_forecast.py` passes perfectly.
     *   The LLM is proven to fail fast via Tool Use validation if it hallucinates drivers outside Pydantic bounds.
-
-### Phase 4: Dynamic Sheet Formulas
-**Goal:** Fully migrate the Google Sheet from static numbers to a dynamic, fully linked model.
-
-*   **Work Items:**
-    *   Implement Phase B (Subtotals/totals as SUM formulas).
-    *   Implement Phase C (Forecast line items as driver formulas referencing assumptions).
-    *   Implement Phase D (Historical cells as SUMIF references to raw filing data).
-    *   Add corresponding tests to verify cell structural integrity.
-*   **Deliverables:** A fully dynamic 3-statement model in Google Sheets where users can modify drivers and see flowing changes.
-*   **Exit Criteria:**
-    *   `pytest` correctly asserts that no forecast numbers or totals are hardcoded (they must be `=FORMULA()`).
-    *   Changing a growth rate driver in the generated Google Sheet updates Revenue, Net Income, and Ending Cash correctly.

@@ -28,19 +28,31 @@ def run_command(cmd, input_data=None, capture_output=True):
         sys.exit(result.returncode)
     return result.stdout
 
+def try_command(cmd, **kwargs):
+    """Run a command, returning (stdout, True) on success or (stderr, False) on failure.
+    Unlike run_command(), does NOT sys.exit on failure.
+    """
+    print(f"Running: {' '.join(cmd)}")
+    result = subprocess.run(cmd, capture_output=True, text=True, **kwargs)
+    if result.returncode != 0:
+        print(f"Command failed: {result.stderr}", file=sys.stderr)
+        return result.stderr, False
+    return result.stdout, True
+
 def main():
-    parser = argparse.ArgumentParser(description="Full Agentic SEC Modeling Pipeline")
+    parser = argparse.ArgumentParser(description="Full SEC Modeling Pipeline")
     parser.add_argument("query", help="Company ticker or name (e.g. AAPL)")
-    parser.add_argument("--years", type=int, default=5, help="Number of years (default: 5)")
-    parser.add_argument("--outdir", default="./pipeline_output", help="Temporary output directory")
+    parser.add_argument("--years", type=int, default=5)
+    parser.add_argument("--outdir", default="./pipeline_output")
     args = parser.parse_args()
 
     out_dir = Path(args.outdir)
     out_dir.mkdir(exist_ok=True)
 
+    # Stage 1: Fetch filings
     print(f"=== STAGE 1: Fetching {args.years} years of filings for {args.query} ===")
-    filings_json = run_command([sys.executable, "agent1_fetcher.py", args.query, "--years", str(args.years)])
-    
+    filings_json = run_command([sys.executable, "agent1_fetcher.py", args.query,
+                                 "--years", str(args.years)])
     try:
         filings_data = json.loads(filings_json)
     except json.JSONDecodeError:
@@ -55,7 +67,8 @@ def main():
     company_name = filings_data.get("company_name", args.query)
     print(f"Processing {len(filings)} filings for {company_name}...")
 
-    structured_files = []
+    # Stage 2: Process each filing
+    tree_files = []        # Phase 2 path outputs
 
     for i, filing in enumerate(filings):
         url = filing.get("url")
@@ -64,29 +77,35 @@ def main():
             continue
 
         print(f"\n=== STAGE 2: Processing filing {i+1}/{len(filings)} ({date}) ===")
-        
-        # 2a: Extract
-        filing_dir = out_dir / f"sections_{date}"
-        run_command([sys.executable, "extract_sections.py", url, "--output-dir", str(filing_dir)])
-        
-        # 2b: Structure
-        struct_file = out_dir / f"structured_{date}.json"
-        run_command([sys.executable, "structure_financials.py", str(filing_dir), "-o", str(struct_file)])
-        structured_files.append(str(struct_file))
 
-    print(f"\n=== STAGE 3 & 4: Building and Verifying Model for {company_name} ===")
-    # Call pymodel.py with all structured files
-    cmd = [sys.executable, "pymodel.py", "--company", company_name, "--financials"] + structured_files
-    final_output = run_command(cmd)
-    
-    try:
-        final_data = json.loads(final_output.splitlines()[-1])
-        print(f"\nSUCCESS!")
-        print(f"Company: {final_data.get('company')}")
-        print(f"Google Sheet URL: {final_data.get('url')}")
-    except Exception:
-        print("\nModel produced, but could not parse final summary JSON.")
-        print(final_output)
+        # Tree path: xbrl_tree.py
+        tree_file = out_dir / f"trees_{date}.json"
+        _, ok = try_command([sys.executable, "xbrl_tree.py", "--url", url,
+                              "-o", str(tree_file)])
+
+        if ok and tree_file.exists():
+            tree_files.append(str(tree_file))
+            print(f"  XBRL tree extraction succeeded for {date}")
+        else:
+            print(f"  XBRL tree extraction failed for {date}")
+
+    # Stage 3+4: Verify + render
+    if tree_files:
+        print(f"\n=== STAGE 3: Verifying model ===")
+        # Checkpoint: verify invariants on each tree file
+        for tf in tree_files:
+            run_command([sys.executable, "pymodel.py", "--trees", tf, "--checkpoint"])
+
+        print(f"\n=== STAGE 4: Writing Google Sheet (Phase 3) ===")
+        # sheet_builder uses the first tree file (most recent filing)
+        run_command([sys.executable, "sheet_builder.py", "--trees", tree_files[0],
+                      "--company", company_name])
+        
+        print(f"\n=== STAGE 5: Forecasting (Phase 4 - Coming Soon) ===")
+        print(f"Forecasting logic to be implemented in Phase 4.")
+    else:
+        print("No filings were successfully processed.", file=sys.stderr)
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()

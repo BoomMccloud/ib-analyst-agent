@@ -1,8 +1,8 @@
 """
-Phase 1 Tests: Historical Baseline Verification
-================================================
-All tests use the AAPL fixture — no network access required.
-Maps directly to the spec's Layer 1 test table.
+Phase 2 Tests: Tree-First Architecture
+=======================================
+Tests reconcile_trees(), verify_model(), and sheet_builder rendering
+using synthetic tree fixtures. No network access required.
 """
 
 import json
@@ -11,211 +11,364 @@ import sys
 
 import pytest
 
-# Add parent dir to path so we can import pymodel
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from pymodel import (
-    set_category, set_is_cascade, set_bs_totals, set_cf_totals, set_cf_cash,
-    verify_model, load_filing, get_v, set_v,
-)
-
-FIXTURE = os.path.join(os.path.dirname(__file__), "fixtures", "aapl_structured.json")
-
-
-def _load_fixture():
-    with open(FIXTURE) as f:
-        return json.load(f)
+from xbrl_tree import TreeNode, reconcile_trees, find_node_by_role
+from pymodel import verify_model
 
 
 # ---------------------------------------------------------------------------
-# Test 1: load_filing returns only complete periods (IS+BS+CF)
+# Fixture helpers
 # ---------------------------------------------------------------------------
 
-def test_load_filing_periods():
-    financials = _load_fixture()
-    filing = load_filing(financials)
-    periods = filing["periods"]
-
-    assert len(periods) >= 2, "Need at least 2 complete periods"
-
-    # All periods should have IS, BS, and CF data
-    items = filing["items"]
-    for p in periods:
-        assert items["REVT"]["values"].get(p) is not None, f"Missing IS data for {p}"
-        assert items["BS_TA"]["values"].get(p) is not None, f"Missing BS data for {p}"
-        assert items["CF_OPCF"]["values"].get(p) is not None, f"Missing CF data for {p}"
-
-    # Periods should be sorted chronologically
-    assert periods == sorted(periods)
+def _make_leaf(concept, weight=1.0, values=None):
+    node = TreeNode(concept, weight)
+    node.values = values or {}
+    return node
 
 
-# ---------------------------------------------------------------------------
-# Test 2: Every category has subtotal_code, flex_codes, catch_all_code
-# ---------------------------------------------------------------------------
-
-def test_load_filing_categories():
-    financials = _load_fixture()
-    filing = load_filing(financials)
-    categories = filing["categories"]
-
-    assert len(categories) > 0, "No categories loaded"
-
-    for cat in categories:
-        assert "subtotal_code" in cat, f"Missing subtotal_code in {cat}"
-        assert "flex_codes" in cat, f"Missing flex_codes in {cat}"
-        assert "catch_all_code" in cat, f"Missing catch_all_code in {cat}"
-        assert isinstance(cat["flex_codes"], list), "flex_codes must be a list"
-        assert len(cat["catch_all_code"]) > 0, "catch_all_code must not be empty"
+def _make_parent(concept, children, weight=1.0, values=None):
+    node = TreeNode(concept, weight)
+    node.values = values or {}
+    for c in children:
+        node.add_child(c)
+    return node
 
 
-# ---------------------------------------------------------------------------
-# Test 3: set_category() computes catch_all = subtotal - sum(flex)
-# ---------------------------------------------------------------------------
+def _build_synthetic_trees():
+    """Build a minimal but realistic 3-statement tree set.
 
-def test_set_category_computes_catchall():
-    model = {}
-    cat = {
-        "subtotal_code": "BS_TCA",
-        "flex_codes": ["BS_CA1", "BS_CA2", "BS_CA3"],
-        "catch_all_code": "BS_CA_OTH",
+    IS: NetIncome (root, -1 weight children)
+        + Revenue (leaf, 1000/1100)
+        - COGS (leaf, -400/-450)
+        + GrossProfit (leaf, 600/650)  -- NI node (matches CF's NI)
+        ... simplified: NI = root's first positive child = 200/220
+
+    Actually, let's build it closer to real XBRL structure:
+    IS root = NetIncomeLoss (value = 200/220)
+      + Revenue (weight=+1, value=1000/1100)
+      - CostOfRevenue (weight=-1, value=400/450)
+      + GrossProfit (weight=+1, value=600/650)  <-- not NI
+      - OperatingExpenses (weight=-1, value=350/380)
+      + OperatingIncome (weight=+1, value=250/270)
+      - IncomeTaxExpense (weight=-1, value=50/50)
+
+    The IS root itself has value=200/220 which equals NI.
+    But structurally, we need a depth-1 child tagged as INC_NET.
+    Real XBRL: root = NI, children contribute to it.
+
+    Let's simplify: IS root = NI with value matching CF's NI.
+    """
+    periods = {"2023-12-31": True, "2022-12-31": True}
+    p1, p2 = "2023-12-31", "2022-12-31"
+
+    # --- Income Statement ---
+    rev = _make_leaf("us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+                     values={p1: 1000, p2: 900})
+    cogs = _make_leaf("us-gaap_CostOfGoodsAndServicesSold", weight=-1.0,
+                      values={p1: 400, p2: 360})
+    opex = _make_leaf("us-gaap_OperatingExpenses", weight=-1.0,
+                      values={p1: 350, p2: 310})
+    tax = _make_leaf("us-gaap_IncomeTaxExpenseBenefit", weight=-1.0,
+                     values={p1: 50, p2: 46})
+    # NI = 1000 - 400 - 350 - 50 = 200
+    is_root = _make_parent("us-gaap_NetIncomeLoss",
+                           [rev, cogs, opex, tax],
+                           values={p1: 200, p2: 184})
+
+    # --- Balance Sheet (Assets) ---
+    cash = _make_leaf("us-gaap_CashAndCashEquivalentsAtCarryingValue",
+                      values={p1: 100, p2: 90})  # Will be overridden by CF_ENDC
+    ar = _make_leaf("us-gaap_AccountsReceivableNet",
+                    values={p1: 150, p2: 130})
+    tca = _make_parent("us-gaap_AssetsCurrent", [cash, ar],
+                       values={p1: 250, p2: 220})
+    ppe = _make_leaf("us-gaap_PropertyPlantAndEquipmentNet",
+                     values={p1: 500, p2: 480})
+    tnca = _make_parent("us-gaap_AssetsNoncurrent", [ppe],
+                        values={p1: 500, p2: 480})
+    bs_assets = _make_parent("us-gaap_Assets", [tca, tnca],
+                             values={p1: 750, p2: 700})
+
+    # --- Balance Sheet (L&E) ---
+    ap = _make_leaf("us-gaap_AccountsPayable",
+                    values={p1: 80, p2: 70})
+    tcl = _make_parent("us-gaap_LiabilitiesCurrent", [ap],
+                       values={p1: 80, p2: 70})
+    ltd = _make_leaf("us-gaap_LongTermDebt",
+                     values={p1: 200, p2: 210})
+    tncl = _make_parent("us-gaap_LiabilitiesNoncurrent", [ltd],
+                        values={p1: 200, p2: 210})
+    tl = _make_parent("us-gaap_Liabilities", [tcl, tncl],
+                      values={p1: 280, p2: 280})
+    re = _make_leaf("us-gaap_RetainedEarningsAccumulatedDeficit",
+                    values={p1: 470, p2: 420})
+    te = _make_parent("us-gaap_StockholdersEquity", [re],
+                      values={p1: 470, p2: 420})
+    bs_le = _make_parent("us-gaap_LiabilitiesAndStockholdersEquity", [tl, te],
+                         values={p1: 750, p2: 700})
+
+    # --- Cash Flow ---
+    cf_ni = _make_leaf("us-gaap_ProfitLoss",
+                       values={p1: 200, p2: 184})
+    da = _make_leaf("us-gaap_DepreciationDepletionAndAmortization",
+                    values={p1: 30, p2: 28})
+    opcf = _make_parent("us-gaap_NetCashProvidedByUsedInOperatingActivities",
+                        [cf_ni, da],
+                        values={p1: 230, p2: 212})
+    capex = _make_leaf("us-gaap_PaymentsToAcquirePropertyPlantAndEquipment",
+                       weight=-1.0, values={p1: -50, p2: -40})
+    invcf = _make_parent("us-gaap_NetCashProvidedByUsedInInvestingActivities",
+                         [capex], values={p1: -50, p2: -40})
+    divs = _make_leaf("us-gaap_PaymentsOfDividends", weight=-1.0,
+                      values={p1: -60, p2: -55})
+    fincf = _make_parent("us-gaap_NetCashProvidedByUsedInFinancingActivities",
+                         [divs], values={p1: -60, p2: -55})
+    # NETCH = 230 - 50 - 60 = 120
+    cf_root = _make_parent("us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
+                           [opcf, invcf, fincf],
+                           values={p1: 120, p2: 117})
+
+    # Facts dict (includes CF_ENDC as instant context)
+    facts = {
+        "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents": {
+            p1: 120, p2: 90,  # Different from BS cash to test override
+        },
     }
-    period = "2024"
-    flex_values = {"BS_CA1": 100, "BS_CA2": 50, "BS_CA3": 30}
-    subtotal = 250
 
-    set_category(model, cat, period, subtotal, flex_values)
-
-    assert get_v(model, "BS_TCA", period) == 250
-    assert get_v(model, "BS_CA1", period) == 100
-    assert get_v(model, "BS_CA2", period) == 50
-    assert get_v(model, "BS_CA3", period) == 30
-    # Catch-all = 250 - (100 + 50 + 30) = 70
-    assert get_v(model, "BS_CA_OTH", period) == 70
+    return {
+        "IS": is_root,
+        "BS": bs_assets,
+        "BS_LE": bs_le,
+        "CF": cf_root,
+        "facts": facts,
+        "periods": [p2, p1],
+    }
 
 
 # ---------------------------------------------------------------------------
-# Test 4: set_is_cascade() computes GP, OPINC, EBT, INC_NET
+# Test 1: reconcile_trees identifies positional roles
 # ---------------------------------------------------------------------------
 
-def test_is_cascade_computes_gp_opinc_ni():
-    model = {}
-    period = "2024"
-    set_is_cascade(model, period, revt=100, cogst=40, opext=30, inc_o=5, tax=10)
+def test_reconcile_identifies_bs_positions():
+    """reconcile_trees tags BS_TA, BS_TL, BS_TE by position."""
+    trees = _build_synthetic_trees()
+    reconcile_trees(trees)
 
-    assert get_v(model, "GP", period) == 60       # 100 - 40
-    assert get_v(model, "OPINC", period) == 30     # 60 - 30
-    assert get_v(model, "EBT", period) == 35       # 30 + 5
-    assert get_v(model, "INC_NET", period) == 25   # 35 - 10
+    assert find_node_by_role(trees["BS"], "BS_TA") is not None
+    assert find_node_by_role(trees["BS"], "BS_TCA") is not None
+    assert find_node_by_role(trees["BS"], "BS_CASH") is not None
+    assert find_node_by_role(trees["BS_LE"], "BS_TL") is not None
+    assert find_node_by_role(trees["BS_LE"], "BS_TE") is not None
 
-
-# ---------------------------------------------------------------------------
-# Test 5: BS Balance: TA == TL + TE for all historical periods
-# ---------------------------------------------------------------------------
-
-def test_bs_balance():
-    financials = _load_fixture()
-    filing = load_filing(financials)
-    items = filing["items"]
-
-    for p in filing["periods"]:
-        ta = items["BS_TA"]["values"].get(p, 0)
-        tl = items["BS_TL"]["values"].get(p, 0)
-        te = items["BS_TE"]["values"].get(p, 0)
-        assert abs(ta - tl - te) < 0.5, \
-            f"BS imbalance in {p}: TA={ta}, TL={tl}, TE={te}, diff={ta - tl - te}"
+    # BS_TA should be the root
+    assert trees["BS"].role == "BS_TA"
 
 
-# ---------------------------------------------------------------------------
-# Test 6: Cash Link: CF_ENDC == BS_CASH for all historical periods
-# ---------------------------------------------------------------------------
+def test_reconcile_identifies_cf_positions():
+    """reconcile_trees tags CF_NETCH, CF_OPCF, CF_INVCF, CF_FINCF, INC_NET_CF."""
+    trees = _build_synthetic_trees()
+    reconcile_trees(trees)
 
-def test_cash_link():
-    financials = _load_fixture()
-    filing = load_filing(financials)
-    items = filing["items"]
+    assert trees["CF"].role == "CF_NETCH"
+    assert find_node_by_role(trees["CF"], "CF_OPCF") is not None
+    assert find_node_by_role(trees["CF"], "CF_INVCF") is not None
+    assert find_node_by_role(trees["CF"], "CF_FINCF") is not None
+    assert find_node_by_role(trees["CF"], "INC_NET_CF") is not None
 
-    # Find BS cash code
-    bs_cash_code = None
-    for code, info in items.items():
-        if code.startswith("BS_CA") and code != "BS_CA_OTH":
-            if "cash" in info["label"].lower():
-                bs_cash_code = code
-                break
-    assert bs_cash_code is not None, "Could not find BS cash code"
 
-    for p in filing["periods"]:
-        cf_endc = items.get("CF_ENDC", {}).get("values", {}).get(p, 0)
-        bs_cash = items.get(bs_cash_code, {}).get("values", {}).get(p, 0)
-        if cf_endc != 0 and bs_cash != 0:
-            # NOTE: CF ending cash may include restricted cash and thus differ
-            # from BS cash. This is a known real-world discrepancy for Apple.
-            # We check within tolerance but log the delta.
-            pass  # Checked via verify_model below
+def test_reconcile_identifies_is_net_income():
+    """reconcile_trees tags INC_NET on the IS tree."""
+    trees = _build_synthetic_trees()
+    reconcile_trees(trees)
+
+    inc_net = find_node_by_role(trees["IS"], "INC_NET")
+    assert inc_net is not None
 
 
 # ---------------------------------------------------------------------------
-# Test 7: NI Link: IS INC_NET == CF net income for all historical periods
+# Test 2: reconcile_trees overrides BS cash with CF_ENDC
 # ---------------------------------------------------------------------------
 
-def test_ni_link():
-    financials = _load_fixture()
-    filing = load_filing(financials)
-    items = filing["items"]
+def test_reconcile_overrides_cash():
+    """BS cash values should be overridden with CF_ENDC values after reconciliation."""
+    trees = _build_synthetic_trees()
+    cf_endc = trees["facts"]["us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"]
 
-    for p in filing["periods"]:
-        is_ni = items.get("INC_NET", {}).get("values", {}).get(p, 0)
-        # CF net income is typically CF_OP1 (first flex in operating)
-        cf_ni = items.get("CF_OP1", {}).get("values", {}).get(p, 0)
-        if is_ni != 0 and cf_ni != 0:
-            assert abs(is_ni - cf_ni) < 0.5, \
-                f"NI mismatch in {p}: IS={is_ni}, CF={cf_ni}"
+    reconcile_trees(trees)
+
+    bs_cash = find_node_by_role(trees["BS"], "BS_CASH")
+    assert bs_cash is not None
+    for period, expected_val in cf_endc.items():
+        assert bs_cash.values[period] == expected_val, \
+            f"BS_CASH not overridden for {period}: got {bs_cash.values[period]}, expected {expected_val}"
+
+
+def test_reconcile_adjusts_tca_after_cash_override():
+    """TCA subtotal should be adjusted when BS cash is overridden."""
+    trees = _build_synthetic_trees()
+    p1 = "2023-12-31"
+
+    # Before reconciliation: cash=100, AR=150, TCA=250
+    # CF_ENDC for p1 = 120 (delta = +20)
+    # After: TCA should be 250 + 20 = 270
+    reconcile_trees(trees)
+
+    tca = find_node_by_role(trees["BS"], "BS_TCA")
+    assert tca.values[p1] == 270, f"TCA not adjusted: got {tca.values[p1]}, expected 270"
 
 
 # ---------------------------------------------------------------------------
-# Test 8: verify_model() returns empty list on a balanced model
+# Test 3: IS NI value-matching against CF's NI
 # ---------------------------------------------------------------------------
 
-def test_verify_model_zero_errors():
-    financials = _load_fixture()
-    filing = load_filing(financials)
-    errors = verify_model(filing)
+def test_is_ni_value_matches_cf_ni():
+    """INC_NET on IS should have the same values as INC_NET_CF on CF."""
+    trees = _build_synthetic_trees()
+    reconcile_trees(trees)
+
+    inc_net_is = find_node_by_role(trees["IS"], "INC_NET")
+    inc_net_cf = find_node_by_role(trees["CF"], "INC_NET_CF")
+
+    assert inc_net_is is not None
+    assert inc_net_cf is not None
+    for p in trees.get("complete_periods", []):
+        assert inc_net_is.values.get(p) == inc_net_cf.values.get(p), \
+            f"NI mismatch in {p}: IS={inc_net_is.values.get(p)}, CF={inc_net_cf.values.get(p)}"
+
+
+def test_is_ni_tags_correct_node_when_multiple_positive_children():
+    """When IS has multiple positive-weight children, tag the one whose values match CF NI."""
+    trees = _build_synthetic_trees()
+    p1, p2 = "2023-12-31", "2022-12-31"
+
+    # Restructure IS: root has two positive-weight children —
+    # ComprehensiveIncome (different values) and NetIncome (matching CF NI).
+    # Value-matching should pick NetIncome, not ComprehensiveIncome.
+    ni_child = _make_leaf("us-gaap_NetIncomeLoss",
+                          values={p1: 200, p2: 184})  # Matches CF NI
+    comp_income = _make_leaf("us-gaap_ComprehensiveIncomeNetOfTax",
+                             values={p1: 210, p2: 190})  # Different
+
+    # Build a new IS root with both children (comp_income first)
+    is_root = _make_parent("us-gaap_ComprehensiveIncome",
+                           [comp_income, ni_child],
+                           values={p1: 210, p2: 190})
+    trees["IS"] = is_root
+
+    reconcile_trees(trees)
+
+    inc_net = find_node_by_role(trees["IS"], "INC_NET")
+    assert inc_net is not None
+    # Should be NetIncomeLoss (200/184 matches CF NI), not ComprehensiveIncome (210/190)
+    assert "NetIncomeLoss" in inc_net.concept, \
+        f"Tagged wrong node: {inc_net.concept} — should be NetIncomeLoss"
+
+
+# ---------------------------------------------------------------------------
+# Test 4: verify_model passes on reconciled trees
+# ---------------------------------------------------------------------------
+
+def test_invariants_pass_on_reconciled_trees():
+    """5 cross-statement checks should pass on properly reconciled trees."""
+    trees = _build_synthetic_trees()
+    reconcile_trees(trees)
+    errors = verify_model(trees)
     assert errors == [], f"Invariant failures: {errors}"
 
 
+def test_verify_model_catches_bs_imbalance():
+    """verify_model should catch BS imbalance when TA != TL + TE."""
+    trees = _build_synthetic_trees()
+    reconcile_trees(trees)
+
+    # Break BS balance by modifying TA
+    bs_ta = find_node_by_role(trees["BS"], "BS_TA")
+    for p in list(bs_ta.values.keys()):
+        bs_ta.values[p] += 999
+
+    errors = verify_model(trees)
+    bs_errors = [e for e in errors if "BS Balance" in e[0]]
+    assert len(bs_errors) > 0, "Should detect BS imbalance"
+
+
+def test_verify_model_catches_ni_mismatch():
+    """verify_model should catch NI mismatch when IS NI != CF NI."""
+    trees = _build_synthetic_trees()
+    reconcile_trees(trees)
+
+    # Break NI link by modifying IS's NI
+    inc_net_is = find_node_by_role(trees["IS"], "INC_NET")
+    for p in list(inc_net_is.values.keys()):
+        inc_net_is.values[p] += 500
+
+    errors = verify_model(trees)
+    ni_errors = [e for e in errors if "NI Link" in e[0]]
+    assert len(ni_errors) > 0, "Should detect NI mismatch"
+
+
 # ---------------------------------------------------------------------------
-# Test 9: Pre-classified path matches fallback path
+# Test 5: complete_periods filtering
 # ---------------------------------------------------------------------------
 
-def test_preclassified_matches_fallback():
-    financials = _load_fixture()
+def test_complete_periods_filters_partial():
+    """Only periods present in ALL statements should be in complete_periods."""
+    trees = _build_synthetic_trees()
+    p_extra = "2021-12-31"
 
-    # Load via pre-classified path (default — has _flex_categories)
-    filing_pre = load_filing(financials)
+    # Add an extra period to IS only
+    trees["IS"].values[p_extra] = 180
 
-    # Load via fallback path (strip _flex_categories)
-    import copy
-    stripped = copy.deepcopy(financials)
-    for section in ["income_statement", "balance_sheet", "cash_flows"]:
-        sec = stripped.get(section, {})
-        for key in list(sec.keys()):
-            if key.startswith("_"):
-                del sec[key]
+    reconcile_trees(trees)
 
-    filing_fallback = load_filing(stripped)
+    complete = trees.get("complete_periods", [])
+    assert p_extra not in complete, \
+        f"Partial period {p_extra} should not be in complete_periods"
+    assert "2023-12-31" in complete
+    assert "2022-12-31" in complete
 
-    # Both should produce the same periods
-    assert filing_pre["periods"] == filing_fallback["periods"], \
-        f"Periods differ: {filing_pre['periods']} vs {filing_fallback['periods']}"
 
-    # Both should produce the same subtotal values for key codes
-    key_codes = ["REVT", "COGST", "OPEXT", "GP", "INC_NET",
-                 "BS_TA", "BS_TL", "BS_TE", "CF_OPCF"]
-    for code in key_codes:
-        pre_vals = filing_pre["items"].get(code, {}).get("values", {})
-        fb_vals = filing_fallback["items"].get(code, {}).get("values", {})
-        for p in filing_pre["periods"]:
-            pre_v = pre_vals.get(p, 0)
-            fb_v = fb_vals.get(p, 0)
-            if pre_v != 0 or fb_v != 0:
-                assert abs(pre_v - fb_v) < 0.5, \
-                    f"{code} differs in {p}: pre={pre_v}, fallback={fb_v}"
+# ---------------------------------------------------------------------------
+# Test 6: TreeNode serialization round-trip
+# ---------------------------------------------------------------------------
+
+def test_tree_roundtrip_preserves_roles():
+    """TreeNode.to_dict() -> from_dict() should preserve roles."""
+    trees = _build_synthetic_trees()
+    reconcile_trees(trees)
+
+    for stmt in ["IS", "BS", "BS_LE", "CF"]:
+        tree = trees[stmt]
+        d = tree.to_dict()
+        restored = TreeNode.from_dict(d)
+
+        # Check that roles survived the round-trip
+        def _collect_roles(node):
+            roles = set()
+            if node.role:
+                roles.add(node.role)
+            for child in node.children:
+                roles |= _collect_roles(child)
+            return roles
+
+        original_roles = _collect_roles(tree)
+        restored_roles = _collect_roles(restored)
+        assert original_roles == restored_roles, \
+            f"{stmt} roles lost in round-trip: {original_roles - restored_roles}"
+
+
+def test_verify_model_works_with_dict_input():
+    """verify_model should handle dict input (from JSON deserialization)."""
+    trees = _build_synthetic_trees()
+    reconcile_trees(trees)
+
+    # Serialize to dict (simulating JSON load)
+    dict_trees = {
+        "complete_periods": trees["complete_periods"],
+        "facts": trees["facts"],
+    }
+    for stmt in ["IS", "BS", "BS_LE", "CF"]:
+        dict_trees[stmt] = trees[stmt].to_dict()
+
+    errors = verify_model(dict_trees)
+    assert errors == [], f"Invariant failures with dict input: {errors}"

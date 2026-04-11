@@ -1,8 +1,6 @@
+import argparse
 import json
 import sys
-from typing import Dict, Any
-from dataclasses import dataclass
-from pymodel import ModelResult
 
 from gws_utils import _run_gws, gws_write, gws_batch_update
 
@@ -24,266 +22,387 @@ def dcol(i):
         col_num = col_num // 26 - 1
     return result
 
-def write_sheets(result: ModelResult, company: str):
-    """Write verified model to Google Sheets."""
-    m = result.historical_data
-    model = m["model"]
-    all_p = m["all_periods"]
-    labels = m["labels"]
-    categories = m["categories"]
-    bs_cash_code = m.get("bs_cash_code", "BS_CA1")
+def _build_weight_formula(col: str, child_rows: list[tuple[int, float]]) -> str:
+    """Build a cell formula from child row numbers and XBRL weights."""
+    if not child_rows:
+        return ""
+    if len(child_rows) == 1:
+        r, w = child_rows[0]
+        return f"={col}{r}" if w == 1.0 else f"=-{col}{r}"
+    all_positive = all(w == 1.0 for _, w in child_rows)
+    if all_positive:
+        row_nums = [r for r, _ in child_rows]
+        if row_nums == list(range(row_nums[0], row_nums[-1] + 1)):
+            return f"=SUM({col}{row_nums[0]}:{col}{row_nums[-1]})"
+        else:
+            return "=" + "+".join(f"{col}{r}" for r, _ in child_rows)
+    parts = []
+    for r, w in child_rows:
+        sign = "+" if w == 1.0 else "-"
+        parts.append(f"{sign}{col}{r}")
+    return "=" + "".join(parts).lstrip("+")
 
-    def v(code, p):
-        idx = all_p.index(p)
-        vals = model.get(code, [0] * len(all_p))
-        return vals[idx] if idx < len(vals) else 0
+def prev_period(p: str, periods: list[str]) -> str | None:
+    idx = periods.index(p)
+    return periods[idx - 1] if idx > 0 else None
 
-    def fmt(val):
-        if isinstance(val, float):
-            return round(val)
-        return val
-
-    def R(code, label):
-        return [code, "", label, ""]
-
-    def data_row(code, label=None):
-        lbl = label or labels.get(code, code)
-        row = R(code, lbl)
-        for p in all_p:
-            row.append(fmt(v(code, p)))
-        return row
-
-    def cat_rows(cat, section_label):
-        rows = [["", "", section_label]]
-        for fc in cat["flex_codes"]:
-            rows.append(data_row(fc))
-        rows.append(data_row(cat["catch_all_code"]))
-        rows.append(data_row(cat["subtotal_code"]))
-        return rows
-
-    def find_cat(code):
-        for c in categories:
-            if c["subtotal_code"] == code:
-                return c
-        return None
-
-    title = f"{company} - 3-Statement Model"
+def _render_sheet_body(tree, periods, start_row, global_role_map, sheet_name):
+    """Render a tree into rows. Leaves get values, parents get formulas."""
+    layout = []
+    def _assign_rows(node, indent=0):
+        row_num = start_row + len(layout)
+        layout.append((row_num, indent, node))
+        for child in node.children:
+            _assign_rows(child, indent + 1)
     
-    # Retry loop for sheet generation (Phase 2 requirement)
-    MAX_RETRIES = 3
-    for attempt in range(1, MAX_RETRIES + 1):
-        try:
-            sid, url, sheet_ids = gws_create(title, ["IS", "BS", "CF", "Summary"])
-            print(f"  URL: {url}", file=sys.stderr)
+    _assign_rows(tree)
+    node_row = {id(entry[2]): entry[0] for entry in layout}
+    
+    rows = []
+    for row_num, indent, node in layout:
+        label = ("  " * indent) + node.name
+        if node.role:
+            global_role_map[node.role] = (sheet_name, row_num)
+            if node.role == "IS_REVENUE":
+                global_role_map["IS_COMPUTED_REVENUE"] = (sheet_name, row_num)
+            elif node.role == "IS_COGS":
+                global_role_map["IS_COMPUTED_COGS"] = (sheet_name, row_num)
+            elif node.role == "BS_TE":
+                global_role_map["BS_COMPUTED_TE"] = (sheet_name, row_num)
+            elif node.role == "CF_OPCF":
+                global_role_map["CF_COMPUTED_OPCF"] = (sheet_name, row_num)
+            elif node.role == "CF_INVCF":
+                global_role_map["CF_COMPUTED_INVCF"] = (sheet_name, row_num)
+            elif node.role == "CF_FINCF":
+                global_role_map["CF_COMPUTED_FINCF"] = (sheet_name, row_num)
+        
+        row = ["", "", label, ""]
+        if not node.children:
+            for p in periods:
+                val = node.values.get(p, 0)
+                row.append(round(val) if val else "")
+        else:
+            child_rows = [(node_row[id(c)], c.weight) for c in node.children]
+            for i in range(len(periods)):
+                col = dcol(i)
+                row.append(_build_weight_formula(col, child_rows))
+        rows.append(row)
+    return rows
 
-            # --- IS ---
-            is_rows = [[], R("", "$m") + list(all_p), [], ["", "", "Revenue"]]
-            for i in range(1, 4):
-                code = f"REV{i}"
-                if code in labels:
-                    is_rows.append(data_row(code))
-            is_rows += [data_row("REVT"), [], ["", "", "Cost of Revenue"]]
-            for i in range(1, 4):
-                code = f"COGS{i}"
-                if code in labels:
-                    is_rows.append(data_row(code))
-            is_rows += [data_row("COGST"), data_row("GP"), [], ["", "", "Operating Expenses"]]
-            for i in range(1, 4):
-                code = f"OPEX{i}"
-                if code in labels:
-                    is_rows.append(data_row(code))
-            is_rows += [
-                data_row("OPEXT"), [],
-                data_row("OPINC"), data_row("INC_O"), data_row("EBT"),
-                data_row("TAX"), data_row("INC_NET"), [],
-                data_row("SBC"), data_row("DA"),
-            ]
-            is_rows = [r for r in is_rows if not (len(r) >= 5 and r[0] and all(r[i] == 0 for i in range(4, len(r))))]
-            gws_write(sid, f"IS!A1:{dcol(len(all_p)-1)}{len(is_rows)}", is_rows)
-            print(f"  IS: {len(is_rows)} rows", file=sys.stderr)
+def _write_sheet_tab(sid, sheet_name, rows, periods, tree, global_role_map):
+    gws_write(sid, f"{sheet_name}!A1:{dcol(len(periods)-1)}{len(rows)}", rows)
 
-            # --- BS ---
-            bs_rows = [[], R("", "$m") + list(all_p), []]
-            for sub_code, section_label in [
-                ("BS_TCA", "Current Assets"), ("BS_TNCA", "Non-Current Assets")
-            ]:
-                cat = find_cat(sub_code)
-                if cat:
-                    bs_rows += cat_rows(cat, section_label)
-                    bs_rows.append([])
-            bs_rows.append(data_row("BS_TA"))
-            bs_ta_row = len(bs_rows)
-            bs_rows.append([])
-            for sub_code, section_label in [
-                ("BS_TCL", "Current Liabilities"), ("BS_TNCL", "Non-Current Liabilities")
-            ]:
-                cat = find_cat(sub_code)
-                if cat:
-                    bs_rows += cat_rows(cat, section_label)
-                    bs_rows.append([])
-            bs_rows.append(data_row("BS_TL"))
-            bs_tl_row = len(bs_rows)
-            bs_rows.append([])
-            cat_te = find_cat("BS_TE")
-            if cat_te:
-                bs_rows += cat_rows(cat_te, "Equity")
-                bs_rows.append([])
-            bs_te_row = len(bs_rows) - 1
-            
-            # Phase A: 1. BS Balance
-            bs_rows += [
-                ["", "", "Balance Check (must be 0)"],
-                R("", "TA - TL - TE") + [f"={dcol(i)}{bs_ta_row} - {dcol(i)}{bs_tl_row} - {dcol(i)}{bs_te_row}" for i in range(len(all_p))]
-            ]
-            bs_rows = [r for r in bs_rows if not (len(r) >= 5 and r[0] and all(r[i] == 0 for i in range(4, len(r))))]
-            gws_write(sid, f"BS!A1:{dcol(len(all_p)-1)}{len(bs_rows)}", bs_rows)
-            print(f"  BS: {len(bs_rows)} rows", file=sys.stderr)
+def _cell_ref(role, col, global_role_map):
+    entry = global_role_map.get(role)
+    if not entry:
+        print(f"WARNING: Role {role} not found in global_role_map", file=sys.stderr)
+        return "0"
+    sheet_name, row_num = entry
+    return f"'{sheet_name}'!{col}{row_num}"
 
-            # --- CF ---
-            cf_rows = [[], R("", "$m") + list(all_p), []]
-            for sub_code, section_label in [
-                ("CF_OPCF", "Operating Activities"),
-                ("CF_INVCF", "Investing Activities"),
-                ("CF_FINCF", "Financing Activities"),
-            ]:
-                cat = find_cat(sub_code)
-                if cat:
-                    cf_rows += cat_rows(cat, section_label)
-                    cf_rows.append([])
-            if "CF_FX" in labels:
-                cf_rows.append(data_row("CF_FX"))
-            cf_rows += [
-                data_row("CF_NETCH"), data_row("CF_BEGC"), data_row("CF_ENDC"), []
-            ]
-            cf_endc_row = len(cf_rows) - 1
-            
-            bs_cash_row = None
-            for idx, r in enumerate(bs_rows):
-                if len(r) > 0 and r[0] == bs_cash_code:
-                    bs_cash_row = idx + 1
-                    break
-            
-            # Phase A: 2. Cash Link
-            cf_rows += [
-                ["", "", "Cash Check (CF End - BS Cash, must be 0)"],
-                R("", "CF End - BS Cash") + [f"={dcol(i)}{cf_endc_row} - 'BS'!{dcol(i)}{bs_cash_row}" if bs_cash_row else 0 for i in range(len(all_p))],
-            ]
-            cf_rows = [r for r in cf_rows if not (len(r) >= 5 and r[0] and all(r[i] == 0 for i in range(4, len(r))))]
-            gws_write(sid, f"CF!A1:{dcol(len(all_p)-1)}{len(cf_rows)}", cf_rows)
-            print(f"  CF: {len(cf_rows)} rows", file=sys.stderr)
+def _add_check_row(rows, periods, formula_fn):
+    row = ["", "", "Check", ""]
+    for i in range(len(periods)):
+        col = dcol(i)
+        f = formula_fn(col)
+        row.append(f if f else "")
+    rows.append(row)
 
-            # --- Summary ---
-            summary_rows = [
-                [], R("", "$m") + list(all_p), [],
-                data_row("REVT", "Revenue"), data_row("GP", "Gross Profit"),
-                data_row("OPINC", "EBIT"), data_row("INC_NET", "Net Income"), [],
-                data_row("BS_TA", "Total Assets"), data_row("BS_TL", "Total Liabilities"),
-                data_row("BS_TE", "Total Equity"), [],
-                data_row("CF_OPCF", "Operating CF"), data_row("CF_INVCF", "Investing CF"),
-                data_row("CF_FINCF", "Financing CF"), data_row("CF_NETCH", "Net Change in Cash"), [],
-                ["", "", "INVARIANT CHECKS (all must be 0)"],
-                R("", "") + list(all_p)
-            ]
-            
-            def get_row_index(code, rows_list):
-                for idx, r in enumerate(rows_list):
-                    if len(r) > 0 and r[0] == code:
-                        return idx + 1
-                return None
-            
-            def ref(sheet, code, r_list):
-                ri = get_row_index(code, r_list)
-                return f"'{sheet}'!{dcol(i)}{ri}" if ri else "0"
+def _write_summary_tab(sid, periods, global_role_map) -> list:
+    rows = [
+        [],
+        ["", "", "3-Statement Summary", ""] + list(periods),
+        [],
+    ]
+    def _add_summary_row(label, role, target_role):
+        row_num = len(rows) + 1
+        row = ["", "", label, ""]
+        for i in range(len(periods)):
+            col = dcol(i)
+            row.append(f"={_cell_ref(target_role, col, global_role_map)}")
+        rows.append(row)
+        global_role_map[role] = ("Summary", row_num)
+    
+    _add_summary_row("Total Assets", "SUMM_TA", "BS_TA")
+    _add_summary_row("Total Liabilities", "SUMM_TL", "BS_TL")
+    _add_summary_row("Total L&E", "SUMM_TLE", "BS_TLE")
+    _add_summary_row("Operating Cash Flow", "SUMM_OPCF", "CF_OPCF")
+    _add_summary_row("Beginning Cash", "SUMM_BEGC", "CF_BEGC")
+    _add_summary_row("Net Change in Cash", "SUMM_NETCH", "CF_NETCH")
+    _add_summary_row("Ending Cash", "SUMM_ENDC", "CF_ENDC")
+    
+    def summ_ta_check(col):
+        r1, r2 = _cell_ref("SUMM_TA", col, global_role_map), _cell_ref("BS_TA", col, global_role_map)
+        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
+    def summ_tl_check(col):
+        r1, r2 = _cell_ref("SUMM_TL", col, global_role_map), _cell_ref("BS_TL", col, global_role_map)
+        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
+    def summ_balance_check(col):
+        tle, ta = _cell_ref("SUMM_TLE", col, global_role_map), _cell_ref("SUMM_TA", col, global_role_map)
+        return f"={tle}-{ta}" if tle != "0" and ta != "0" else None
+    def summ_opcf_check(col):
+        r1, r2 = _cell_ref("SUMM_OPCF", col, global_role_map), _cell_ref("CF_OPCF", col, global_role_map)
+        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
+    def summ_cash_proof(col):
+        begc = _cell_ref("SUMM_BEGC", col, global_role_map)
+        endc = _cell_ref("SUMM_ENDC", col, global_role_map)
+        netch = _cell_ref("SUMM_NETCH", col, global_role_map)
+        if begc != "0" and endc != "0" and netch != "0":
+            return f"={begc}-{endc}+{netch}"
+        return None
+    
+    _add_check_row(rows, periods, summ_ta_check)
+    _add_check_row(rows, periods, summ_tl_check)
+    _add_check_row(rows, periods, summ_balance_check)
+    _add_check_row(rows, periods, summ_opcf_check)
+    _add_check_row(rows, periods, summ_cash_proof)
+    gws_write(sid, f"Summary!A1:{dcol(len(periods)-1)}{len(rows)}", rows)
+    return rows
 
-            s_ta = get_row_index("BS_TA", summary_rows)
-            s_tl = get_row_index("BS_TL", summary_rows)
-            s_te = get_row_index("BS_TE", summary_rows)
-            
-            # Phase A: 13 Invariants in Summary
-            # 1. BS Balance
-            summary_rows.append(R("", "BS Balance (TA-TL-TE)") + [f"={dcol(i)}{s_ta} - {dcol(i)}{s_tl} - {dcol(i)}{s_te}" for i in range(len(all_p))])
-            
-            # 2. Cash Link
-            s_cf_endc = get_row_index("CF_ENDC", cf_rows)
-            summary_rows.append(R("", "Cash (CF End - BS Cash)") + [f"='CF'!{dcol(i)}{s_cf_endc} - 'BS'!{dcol(i)}{bs_cash_row}" if s_cf_endc and bs_cash_row else 0 for i in range(len(all_p))])
-            
-            # 3. Net Income Link
-            summary_rows.append(R("", "Net Income Link") + [f"={ref('IS', 'INC_NET', is_rows)} - {ref('CF', 'CF_OP1', cf_rows)}" for i in range(len(all_p))])
-            
-            # 4. D&A Link
-            summary_rows.append(R("", "D&A Link") + [f"={ref('IS', 'DA', is_rows)} - {ref('CF', 'CF_OP2', cf_rows)}" for i in range(len(all_p))])
-            
-            # 5. SBC Link
-            summary_rows.append(R("", "SBC Link") + [f"={ref('IS', 'SBC', is_rows)} - {ref('CF', 'CF_OP3', cf_rows)}" for i in range(len(all_p))])
-            
-            # 6. Assets Rollup
-            summary_rows.append(R("", "Assets Rollup") + [f"={ref('BS', 'BS_TCA', bs_rows)} + {ref('BS', 'BS_TNCA', bs_rows)} - {ref('BS', 'BS_TA', bs_rows)}" for i in range(len(all_p))])
-            
-            # 7. Liab Rollup
-            summary_rows.append(R("", "Liab Rollup") + [f"={ref('BS', 'BS_TCL', bs_rows)} + {ref('BS', 'BS_TNCL', bs_rows)} - {ref('BS', 'BS_TL', bs_rows)}" for i in range(len(all_p))])
-            
-            # 8. Equity Rollup
-            cat_te = find_cat("BS_TE")
-            if cat_te:
-                summary_rows.append(R("", "Equity Rollup") + [f"={'+'.join([ref('BS', c, bs_rows) for c in cat_te['flex_codes'] + [cat_te['catch_all_code']]])} - {ref('BS', 'BS_TE', bs_rows)}" for i in range(len(all_p))])
+def _build_format_requests(sheet_id, rows, periods):
+    requests = []
+    num_data_cols = len(periods)
+    data_start_col = 4
+    for row_idx, row in enumerate(rows):
+        if len(row) < 3:
+            continue
+        label = row[2].strip() if isinstance(row[2], str) else ""
+        if label == "Check":
+            requests.append({
+                "repeatCell": {
+                    "range": {
+                        "sheetId": sheet_id,
+                        "startRowIndex": row_idx, "endRowIndex": row_idx + 1,
+                        "startColumnIndex": data_start_col, "endColumnIndex": data_start_col + num_data_cols
+                    },
+                    "cell": {"userEnteredFormat": {"numberFormat": {"type": "NUMBER", "pattern": "0.0x;(0.0x);-"}}},
+                    "fields": "userEnteredFormat.numberFormat"
+                }
+            })
+            requests.append({
+                "repeatCell": {
+                    "range": {
+                        "sheetId": sheet_id,
+                        "startRowIndex": row_idx, "endRowIndex": row_idx + 1,
+                        "startColumnIndex": 2, "endColumnIndex": 3
+                    },
+                    "cell": {"userEnteredFormat": {"textFormat": {"italic": True}}},
+                    "fields": "userEnteredFormat.textFormat.italic"
+                }
+            })
+        elif label == "Metrics":
+            requests.append({
+                "repeatCell": {
+                    "range": {
+                        "sheetId": sheet_id,
+                        "startRowIndex": row_idx, "endRowIndex": row_idx + 1,
+                        "startColumnIndex": 2, "endColumnIndex": 3
+                    },
+                    "cell": {"userEnteredFormat": {"textFormat": {"italic": True}}},
+                    "fields": "userEnteredFormat.textFormat.italic"
+                }
+            })
+        elif label and label != "$m" and label != "Check":
+            has_data = any(isinstance(cell, (int, float)) or (isinstance(cell, str) and cell.startswith("=")) for cell in row[4:])
+            if has_data:
+                requests.append({
+                    "repeatCell": {
+                        "range": {
+                            "sheetId": sheet_id,
+                            "startRowIndex": row_idx, "endRowIndex": row_idx + 1,
+                            "startColumnIndex": data_start_col, "endColumnIndex": data_start_col + num_data_cols
+                        },
+                        "cell": {"userEnteredFormat": {"numberFormat": {"type": "NUMBER", "pattern": "#,##0"}}},
+                        "fields": "userEnteredFormat.numberFormat"
+                    }
+                })
+    return requests
+
+def write_sheets(trees: dict, company: str) -> tuple[str, str]:
+    periods = trees.get("complete_periods", [])
+    sid, url, sheet_ids = gws_create(f"{company} — Financial Model", ["IS", "BS", "CF", "Summary"])
+    global_role_map = {}
+    tab_rows = {}
+
+    # Pre-register Summary roles to break circular dependency with check rows
+    global_role_map["SUMM_TA"] = ("Summary", 4)
+    global_role_map["SUMM_TL"] = ("Summary", 5)
+    global_role_map["SUMM_TLE"] = ("Summary", 6)
+    global_role_map["SUMM_OPCF"] = ("Summary", 7)
+    global_role_map["SUMM_BEGC"] = ("Summary", 8)
+    global_role_map["SUMM_NETCH"] = ("Summary", 9)
+    global_role_map["SUMM_ENDC"] = ("Summary", 10)
+
+    def _ref(role, col):        return _cell_ref(role, col, global_role_map)
+
+    # --- 9 check formulas for IS/BS/CF tabs (5 more in _write_summary_tab) ---
+    def is_revenue_check(col):
+        r1, r2 = _ref("IS_COMPUTED_REVENUE", col), _ref("IS_REVENUE", col)
+        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
+    def is_cogs_check(col):
+        r1, r2 = _ref("IS_COMPUTED_COGS", col), _ref("IS_COGS", col)
+        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
+    def bs_ta_check(col):
+        r1, r2 = _ref("SUMM_TA", col), _ref("BS_TA", col)
+        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
+    def bs_tl_check(col):
+        r1, r2 = _ref("SUMM_TL", col), _ref("BS_TL", col)
+        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
+    def bs_balance_check(col):
+        tle, ta = _ref("BS_TLE", col), _ref("BS_TA", col)
+        return f"={tle}-{ta}" if tle != "0" and ta != "0" else None
+    def bs_equity_check(col):
+        r1, r2 = _ref("BS_COMPUTED_TE", col), _ref("BS_TE", col)
+        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
+    def cf_opcf_check(col):
+        r1, r2 = _ref("CF_COMPUTED_OPCF", col), _ref("CF_OPCF", col)
+        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
+    def cf_invcf_check(col):
+        r1, r2 = _ref("CF_COMPUTED_INVCF", col), _ref("CF_INVCF", col)
+        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
+    def cf_fincf_check(col):
+        r1, r2 = _ref("CF_COMPUTED_FINCF", col), _ref("CF_FINCF", col)
+        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
+
+    # --- IS tab ---
+    is_tree = trees.get("IS")
+    if is_tree:
+        header_rows = [[], ["", "", "$m", ""] + list(periods), []]
+        body_rows = _render_sheet_body(is_tree, periods, start_row=len(header_rows)+1, global_role_map=global_role_map, sheet_name="IS")
+        _add_check_row(body_rows, periods, is_revenue_check)
+        _add_check_row(body_rows, periods, is_cogs_check)
+        is_rows = header_rows + body_rows
+        tab_rows["IS"] = is_rows
+        _write_sheet_tab(sid, "IS", is_rows, periods, is_tree, global_role_map)
+
+    # --- BS tab ---
+    bs_tree = trees.get("BS")
+    bs_le_tree = trees.get("BS_LE")
+    if bs_tree or bs_le_tree:
+        header_rows = [[], ["", "", "$m", ""] + list(periods), []]
+        body_rows = []
+        current_row = len(header_rows) + 1
+        if bs_tree:
+            assets_rows = _render_sheet_body(bs_tree, periods, start_row=current_row, global_role_map=global_role_map, sheet_name="BS")
+            body_rows += assets_rows
+            _add_check_row(body_rows, periods, bs_ta_check)
+            current_row += len(assets_rows) + 1
+            body_rows.append([""] * (4 + len(periods)))
+            current_row += 1
+        if bs_le_tree:
+            le_rows = _render_sheet_body(bs_le_tree, periods, start_row=current_row, global_role_map=global_role_map, sheet_name="BS")
+            body_rows += le_rows
+            _add_check_row(body_rows, periods, bs_tl_check)
+            _add_check_row(body_rows, periods, bs_balance_check)
+            _add_check_row(body_rows, periods, bs_equity_check)
+        bs_rows = header_rows + body_rows
+        tab_rows["BS"] = bs_rows
+        _write_sheet_tab(sid, "BS", bs_rows, periods, None, global_role_map)
+
+    # --- CF tab ---
+    cf_tree = trees.get("CF")
+    if cf_tree:
+        header_rows = [[], ["", "", "$m", ""] + list(periods), []]
+        body_rows = _render_sheet_body(cf_tree, periods, start_row=len(header_rows)+1, global_role_map=global_role_map, sheet_name="CF")
+        
+        current_row = len(header_rows) + len(body_rows) + 1
+        body_rows.append([""] * (4 + len(periods)))
+        current_row += 1
+        
+        cf_endc_values = trees.get("cf_endc_values", {})
+        begc_row_num = current_row
+        begc_row = ["", "", "Beginning Cash", ""]
+        for p in periods:
+            prev_p = prev_period(p, periods)
+            begc_row.append(round(cf_endc_values.get(prev_p, 0)) if prev_p else "")
+        body_rows.append(begc_row)
+        global_role_map["CF_BEGC"] = ("CF", begc_row_num)
+        current_row += 1
+        
+        netch_row_num = current_row
+        netch_ref = global_role_map.get("CF_NETCH")
+        netch_row = ["", "", "Net Change in Cash", ""]
+        for i in range(len(periods)):
+            col = dcol(i)
+            if netch_ref:
+                netch_row.append(f"={col}{netch_ref[1]}")
             else:
-                summary_rows.append(R("", "Equity Rollup") + [0 for i in range(len(all_p))])
-            
-            # 9. CF Structure
-            summary_rows.append(R("", "CF Structure") + [f"={ref('CF', 'CF_OPCF', cf_rows)} + {ref('CF', 'CF_INVCF', cf_rows)} + {ref('CF', 'CF_FINCF', cf_rows)} + {ref('CF', 'CF_FX', cf_rows)} - {ref('CF', 'CF_NETCH', cf_rows)}" for i in range(len(all_p))])
-            
-            # 10. Cash Proof
-            summary_rows.append(R("", "Cash Proof") + [f"={ref('CF', 'CF_BEGC', cf_rows)} + {ref('CF', 'CF_NETCH', cf_rows)} - {ref('CF', 'CF_ENDC', cf_rows)}" for i in range(len(all_p))])
-            
-            # 11. IS Gross Profit
-            summary_rows.append(R("", "IS Gross Profit") + [f"={ref('IS', 'REVT', is_rows)} - {ref('IS', 'COGST', is_rows)} - {ref('IS', 'GP', is_rows)}" for i in range(len(all_p))])
-            
-            # 12. IS EBIT
-            summary_rows.append(R("", "IS EBIT") + [f"={ref('IS', 'GP', is_rows)} - {ref('IS', 'OPEXT', is_rows)} - {ref('IS', 'OPINC', is_rows)}" for i in range(len(all_p))])
-            
-            # 13. IS Net Income
-            summary_rows.append(R("", "IS Net Income") + [f"={ref('IS', 'EBT', is_rows)} - {ref('IS', 'TAX', is_rows)} - {ref('IS', 'INC_NET', is_rows)}" for i in range(len(all_p))])
+                netch_row.append("")
+        body_rows.append(netch_row)
+        current_row += 1
+        
+        fx_ref = global_role_map.get("CF_FX")
+        cf_fx_values = trees.get("cf_fx_values")
+        fx_row_num = current_row
+        fx_row = ["", "", "FX Impact", ""]
+        for i in range(len(periods)):
+            col = dcol(i)
+            if fx_ref:
+                fx_row.append(f"={col}{fx_ref[1]}")
+            elif cf_fx_values:
+                fx_row.append(round(cf_fx_values.get(periods[i], 0)))
+            else:
+                fx_row.append(0)
+        body_rows.append(fx_row)
+        global_role_map["CF_FX_PROOF"] = ("CF", fx_row_num)
+        current_row += 1
+        
+        endc_row_num = current_row
+        endc_row = ["", "", "Ending Cash", ""]
+        for i in range(len(periods)):
+            col = dcol(i)
+            endc_row.append(f"={col}{begc_row_num}+{col}{netch_row_num}+{col}{fx_row_num}")
+        body_rows.append(endc_row)
+        global_role_map["CF_ENDC"] = ("CF", endc_row_num)
+        
+        _add_check_row(body_rows, periods, cf_opcf_check)
+        _add_check_row(body_rows, periods, cf_invcf_check)
+        _add_check_row(body_rows, periods, cf_fincf_check)
+        
+        cf_rows = header_rows + body_rows
+        tab_rows["CF"] = cf_rows
+        _write_sheet_tab(sid, "CF", cf_rows, periods, None, global_role_map)
 
-            # TOTAL ERRORS (must be 0)
-            summary_rows.append(["", "", "TOTAL ERRORS (must be 0)"])
-            total_error_row = len(summary_rows) + 1
-            # sum absolute errors or sum errors? The sheet says "must be 0". Let's sum abs if possible, but Google Sheets doesn't have an easy array absolute sum.
-            # We can just sum them directly and hope they don't net out perfectly. 
-            summary_rows.append(R("", "SUM") + [f"=SUM({dcol(i)}{total_error_row-13}:{dcol(i)}{total_error_row-2})" for i in range(len(all_p))])
+    summ_rows = _write_summary_tab(sid, periods, global_role_map)
+    tab_rows["Summary"] = summ_rows
 
-            gws_write(sid, f"Summary!A1:{dcol(len(all_p)-1)}{len(summary_rows)}", summary_rows)
-            print(f"  Summary: {len(summary_rows)} rows", file=sys.stderr)
+    requests = []
+    for sheet_name, sheet_id in sheet_ids.items():
+        requests.extend([
+            {"updateDimensionProperties": {
+                "range": {"sheetId": sheet_id, "dimension": "COLUMNS", "startIndex": 0, "endIndex": 2},
+                "properties": {"pixelSize": 50}, "fields": "pixelSize"}},
+            {"updateDimensionProperties": {
+                "range": {"sheetId": sheet_id, "dimension": "COLUMNS", "startIndex": 2, "endIndex": 3},
+                "properties": {"pixelSize": 200}, "fields": "pixelSize"}},
+        ])
+    for sheet_name, sheet_id in sheet_ids.items():
+        tab_data = tab_rows.get(sheet_name, [])
+        if tab_data:
+            requests.extend(_build_format_requests(sheet_id, tab_data, periods))
+    gws_batch_update(sid, requests)
 
-            # Column widths
-            requests = []
-            for sheet_name, sheet_id in sheet_ids.items():
-                requests.append({
-                    "updateDimensionProperties": {
-                        "range": {"sheetId": sheet_id, "dimension": "COLUMNS", "startIndex": 0, "endIndex": 2},
-                        "properties": {"pixelSize": 50}, "fields": "pixelSize",
-                    }
-                })
-                requests.append({
-                    "updateDimensionProperties": {
-                        "range": {"sheetId": sheet_id, "dimension": "COLUMNS", "startIndex": 2, "endIndex": 3},
-                        "properties": {"pixelSize": 200}, "fields": "pixelSize",
-                    }
-                })
-            gws_batch_update(sid, requests)
+    return sid, url
 
-            return sid, url
-
-        except Exception as e:
-            print(f"Error building sheet (Attempt {attempt}/{MAX_RETRIES}): {e}", file=sys.stderr)
-            if attempt == MAX_RETRIES:
-                raise
+def main():
+    parser = argparse.ArgumentParser(description="Render trees to Google Sheets")
+    parser.add_argument("--trees", required=True, help="Path to trees JSON")
+    parser.add_argument("--company", required=True, help="Company name")
+    args = parser.parse_args()
+    
+    with open(args.trees) as f:
+        raw_trees = json.load(f)
+    
+    from xbrl_tree import TreeNode
+    trees = {}
+    for k, v in raw_trees.items():
+        if k in ("IS", "BS", "BS_LE", "CF") and isinstance(v, dict):
+            trees[k] = TreeNode.from_dict(v)
+        else:
+            trees[k] = v
+    
+    sid, url = write_sheets(trees, args.company)
+    print(json.dumps({"company": args.company, "url": url}))
 
 if __name__ == '__main__':
-    # Add simple test wrapper if needed
-    if len(sys.argv) > 1:
-        path = sys.argv[1]
-        with open(path) as f:
-            data = json.load(f)
-        mr = ModelResult(historical_data=data)
-        sid, url = write_sheets(mr, "Test Company")
-        print(f"Success: {url}")
+    main()

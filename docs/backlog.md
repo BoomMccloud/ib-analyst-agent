@@ -286,3 +286,14 @@ Break the pipeline into two strict phases:
 - Add context-aware filtering: prefer numbers near keywords like "total", "approximately", "as of [fiscal year end]".
 - If multiple candidates are close in magnitude, flag ambiguity in the output.
 - Low priority — headcount is used for model context, not financial calculations.
+
+---
+
+### 20. Remove legacy fallback architecture
+
+**What:** The pipeline retains a fallback to the legacy architecture (`extract_sections.py`, `structure_financials.py`, `legacy_pymodel.py`) when Phase 2 tree extraction fails.
+**Impact:** Maintaining two parallel code paths increases maintenance burden, duplicates logic, and retains ~800 lines of redundant code in the legacy model processing. Since Phase 2 is the primary and more robust path, the fallback is no longer needed.
+**What to do:**
+- Remove the legacy fallback branch in `run_pipeline.py`.
+- Delete `extract_sections.py`, `structure_financials.py`, and `legacy_pymodel.py`.
+- Clean up any remaining references to the legacy path in documentation and tests.

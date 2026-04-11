@@ -205,6 +205,7 @@ class TreeNode:
         self.children: list[TreeNode] = []
         self.values: dict[str, float] = {}  # {period: value}
         self.is_leaf = True
+        self.role: str | None = None    # e.g., "BS_TA", "INC_NET", "CF_ENDC"
 
     def add_child(self, child: 'TreeNode'):
         self.children.append(child)
@@ -233,9 +234,24 @@ class TreeNode:
             "values": self.values,
             "is_leaf": self.is_leaf,
         }
+        if self.role:
+            d["role"] = self.role
         if self.children:
             d["children"] = [c.to_dict() for c in self.children]
         return d
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "TreeNode":
+        """Reconstruct a TreeNode from its to_dict() output."""
+        node = cls(d["concept"], d.get("weight", 1.0))
+        node.name = d.get("name", node.name)
+        node.tag = d.get("tag", node.tag)
+        node.values = d.get("values", {})
+        node.role = d.get("role")
+        node.is_leaf = d.get("is_leaf", True)
+        for child_dict in d.get("children", []):
+            node.add_child(cls.from_dict(child_dict))
+        return node
 
 
 def build_tree(calc_children: dict, facts: dict, root_concept: str) -> TreeNode:
@@ -373,6 +389,428 @@ def print_tree(node: TreeNode, indent: int = 0, periods: list[str] = None):
 # Main
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Reconciliation and Invariants
+# ---------------------------------------------------------------------------
+
+def find_node_by_role(tree: TreeNode, role: str) -> TreeNode | None:
+    """Recursively search the tree for a node with the given role."""
+    if getattr(tree, "role", None) == role:
+        return tree
+    for child in tree.children:
+        result = find_node_by_role(child, role)
+        if result:
+            return result
+    return None
+
+def _tag_bs_positions(assets_tree: TreeNode | None, liab_eq_tree: TreeNode | None):
+    """Tag BS nodes by position in the tree."""
+    if assets_tree and assets_tree.values:
+        # BS_TA = root of Assets tree
+        assets_tree.role = "BS_TA"
+
+        # BS_TCA = first child that has its own children (not a leaf)
+        found_tca = False
+        for child in assets_tree.children:
+            if child.children and not child.is_leaf:
+                child.role = "BS_TCA"
+                # Tag first flex item as BS_CASH (for cash link override later)
+                if child.children:
+                    child.children[0].role = "BS_CASH"
+                found_tca = True
+                break
+        if not found_tca:
+            print("WARNING: Could not identify BS_TCA (Current Assets) in Assets tree",
+                  file=sys.stderr)
+    elif assets_tree:
+        print("WARNING: Assets tree has no values — skipping BS tagging", file=sys.stderr)
+
+    if liab_eq_tree and liab_eq_tree.children:
+        liab_eq_tree.role = "BS_TLE"
+        # Filter out zero-valued children (e.g., "Commitments and Contingencies")
+        branch_children = [
+            c for c in liab_eq_tree.children
+            if c.values and any(v != 0 for v in c.values.values())
+        ]
+
+        if len(branch_children) >= 2:
+            # Equity is ALWAYS the LAST non-zero branch child
+            equity_node = branch_children[-1]
+            equity_node.role = "BS_TE"
+
+            # Everything before equity = liabilities
+            liab_children = branch_children[:-1]
+
+            if len(liab_children) == 1:
+                # Single Liabilities wrapper — use it directly
+                liab_node = liab_children[0]
+            else:
+                # Multiple liabilities components (KO pattern) — synthesize wrapper
+                liab_node = TreeNode("__LIABILITIES_SYNTHETIC", weight=1.0)
+                liab_node.name = "Liabilities"
+                liab_values = {}
+                for child in liab_children:
+                    for p, v in child.values.items():
+                        liab_values[p] = liab_values.get(p, 0) + v
+                    liab_node.add_child(child)
+                liab_node.values = liab_values
+                # Replace L&E tree children so the synthetic node is in the tree
+                liab_eq_tree.children = [liab_node, equity_node]
+
+            liab_node.role = "BS_TL"
+
+            # BS_TCL = first child of liabilities that has sub-children
+            for child in liab_node.children:
+                if child.children and not child.is_leaf:
+                    child.role = "BS_TCL"
+                    break
+
+        elif len(branch_children) == 1:
+            # Single child — liabilities only, equity may be missing
+            branch_children[0].role = "BS_TL"
+            print("WARNING: Could not identify BS_TE (Equity) in L&E tree — "
+                  "only 1 non-zero branch child found", file=sys.stderr)
+        else:
+            print("WARNING: Could not identify BS_TL/BS_TE in L&E tree — "
+                  "no non-zero branch children found", file=sys.stderr)
+
+def _find_leaf_by_keywords(tree: TreeNode, keywords: list[str]) -> TreeNode | None:
+    """Find a leaf node whose name contains all keywords (case-insensitive).
+    
+    Example: _find_leaf_by_keywords(is_tree, ["depreciation"]) finds
+    "Depreciation And Amortization" but not "Accumulated Depreciation" (which is on BS).
+    """
+    name_lower = tree.name.lower()
+    if tree.is_leaf and all(kw in name_lower for kw in keywords):
+        return tree
+    for child in tree.children:
+        result = _find_leaf_by_keywords(child, keywords)
+        if result:
+            return result
+    return None
+
+
+def _find_leaf_by_timeseries(tree: TreeNode, periods: list[str],
+                              target_values: dict[str, float]) -> TreeNode | None:
+    """Find a leaf node whose values match target across ALL periods (within 0.5).
+    
+    Why ALL periods? A single-period match risks collisions — e.g., D&A = $150M in 2024,
+    but "Changes in Inventory" also happens to be $150M in 2024. Matching across ALL
+    5 years eliminates this: a coincidental collision across 5 periods is near impossible.
+    
+    Example: If IS D&A has values {2020: 100, 2021: 110, 2022: 120, 2023: 130, 2024: 150},
+    this finds the CF node with the same 5-year pattern.
+    """
+    if tree.is_leaf and tree.values:
+        matched = 0
+        total = 0
+        for p in periods:
+            target = target_values.get(p, 0)
+            actual = tree.values.get(p, 0)
+            if target != 0:
+                total += 1
+                if abs(actual - target) < 0.5:
+                    matched += 1
+        # ALL non-zero periods must match
+        if total > 0 and matched == total:
+            return tree
+    for child in tree.children:
+        result = _find_leaf_by_timeseries(child, periods, target_values)
+        if result:
+            return result
+    return None
+
+
+def _tag_da_sbc_nodes(is_tree: TreeNode | None, cf_tree: TreeNode | None):
+    """Tag D&A and SBC leaf nodes in IS and CF trees.
+    
+    Strategy:
+    1. Find IS leaf by keyword (e.g., "depreciation" for D&A)
+    2. Find matching CF leaf by full time-series value match (collision-safe)
+    3. Tag both with roles (IS_DA/CF_DA, IS_SBC/CF_SBC)
+    """
+    if not is_tree or not cf_tree:
+        return
+    
+    # We only search inside CF's Operating Cash Flow section for D&A and SBC,
+    # because that's where they appear in the indirect method CF statement.
+    cf_opcf = find_node_by_role(cf_tree, "CF_OPCF")
+    if not cf_opcf:
+        return
+    
+    # Get periods from IS tree (only non-zero periods)
+    periods = [p for p in (is_tree.values.keys() if is_tree.values else [])
+               if is_tree.values.get(p, 0) != 0]
+    if not periods:
+        return
+    
+    # --- D&A ---
+    # Try "depreciation" first, fall back to "amortization"
+    is_da = _find_leaf_by_keywords(is_tree, ["depreciation"])
+    if not is_da:
+        is_da = _find_leaf_by_keywords(is_tree, ["amortization"])
+    
+    if is_da:
+        is_da.role = "IS_DA"
+        # Find the matching CF node by full time-series match
+        cf_da = _find_leaf_by_timeseries(cf_opcf, periods, is_da.values)
+        if cf_da:
+            cf_da.role = "CF_DA"
+        else:
+            print("WARNING: Could not find CF D&A node matching IS D&A values",
+                  file=sys.stderr)
+    
+    # --- SBC ---
+    # Try "stock" + "compensation" first, fall back to "share" + "compensation"
+    is_sbc = _find_leaf_by_keywords(is_tree, ["stock", "compensation"])
+    if not is_sbc:
+        is_sbc = _find_leaf_by_keywords(is_tree, ["share", "compensation"])
+    
+    if is_sbc:
+        is_sbc.role = "IS_SBC"
+        cf_sbc = _find_leaf_by_timeseries(cf_opcf, periods, is_sbc.values)
+        if cf_sbc:
+            cf_sbc.role = "CF_SBC"
+        else:
+            print("WARNING: Could not find CF SBC node matching IS SBC values",
+                  file=sys.stderr)
+
+def _tag_cf_positions(cf_tree: TreeNode | None, facts: dict) -> dict | None:
+    """Tag CF nodes by position. Returns CF_ENDC values dict (from facts, not tree)."""
+    cf_endc_values = None
+
+    # Look up CF_ENDC from XBRL facts (instant context, not in any tree)
+    if facts:
+        endc_tags = [
+            "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+            "us-gaap:CashAndCashEquivalentsAtCarryingValue",
+        ]
+        for tag in endc_tags:
+            if tag in facts:
+                cf_endc_values = facts[tag]
+                break
+
+    if not cf_tree:
+        return cf_endc_values
+
+    # Tag the root as net change in cash
+    cf_tree.role = "CF_NETCH"
+
+    # Map concept name patterns to roles
+    CF_ROLE_MAP = {
+        "NetCashProvidedByUsedInOperatingActivities": "CF_OPCF",
+        "NetCashProvidedByUsedInInvestingActivities": "CF_INVCF",
+        "NetCashProvidedByUsedInFinancingActivities": "CF_FINCF",
+    }
+
+    seen_roles = set()
+
+    def _walk_and_tag(node: TreeNode):
+        """Walk the CF tree depth-first. Tag section nodes by concept pattern."""
+        concept_name = node.concept.split('_', 1)[-1] if '_' in node.concept else node.concept
+
+        for pattern, role in CF_ROLE_MAP.items():
+            if concept_name.startswith(pattern) and role not in seen_roles and node.values:
+                node.role = role
+                seen_roles.add(role)
+                # Don't recurse into children — we already found the section node
+                return
+
+        # Also tag the NI leaf inside CF (ProfitLoss or NetIncomeLoss)
+        if concept_name in ("ProfitLoss", "NetIncomeLoss") and node.values and not node.children:
+            node.role = "INC_NET_CF"
+
+        for child in node.children:
+            _walk_and_tag(child)
+
+    _walk_and_tag(cf_tree)
+
+    # --- Tag FX impact node (if present) ---
+    # Multinational companies have an "Effect of Exchange Rate" node as a sibling
+    # of OPCF/INVCF/FINCF under the CF root. If omitted, the cash proof will show
+    # non-zero errors for companies like AAPL, AMZN, GE.
+    FX_PATTERNS = ["EffectOfExchangeRate", "EffectOfForeignExchangeRate"]
+    for child in cf_tree.children:
+        concept_name = child.concept.split('_', 1)[-1] if '_' in child.concept else child.concept
+        for pat in FX_PATTERNS:
+            if concept_name.startswith(pat) and child.values:
+                child.role = "CF_FX"
+                break
+
+    # NI is typically inside OPCF (which we skip recursing into above).
+    # Search OPCF's children separately for the NI leaf.
+    opcf_node = find_node_by_role(cf_tree, "CF_OPCF")
+    if opcf_node and not find_node_by_role(cf_tree, "INC_NET_CF"):
+        def _find_ni_in_subtree(node: TreeNode):
+            cn = node.concept.split('_', 1)[-1] if '_' in node.concept else node.concept
+            if cn in ("ProfitLoss", "NetIncomeLoss") and node.values and not node.children:
+                node.role = "INC_NET_CF"
+                return True
+            for child in node.children:
+                if _find_ni_in_subtree(child):
+                    return True
+            return False
+        _find_ni_in_subtree(opcf_node)
+
+    expected_roles = {"CF_OPCF", "CF_INVCF", "CF_FINCF"}
+    missing = expected_roles - seen_roles
+    if missing:
+        print(f"WARNING: Could not identify CF roles: {sorted(missing)}", file=sys.stderr)
+
+    # Check if INC_NET_CF was found
+    if not find_node_by_role(cf_tree, "INC_NET_CF"):
+        print("WARNING: Could not identify INC_NET_CF (Net Income) in CF tree",
+              file=sys.stderr)
+
+    return cf_endc_values
+
+def _tag_is_positions(is_tree: TreeNode | None, cf_tree: TreeNode | None):
+    """Tag IS Net Income node using CF's NI as authoritative source.
+
+    Strategy: value-match IS depth-1 children against CF's authoritative NI.
+    Falls back to first positive-weight child only if no value match found.
+    """
+    if not is_tree:
+        return
+
+    # Tag IS_REVENUE and IS_COGS
+    def _find_by_kw(node, kw):
+        if kw in node.name.lower(): return node
+        for c in node.children:
+            res = _find_by_kw(c, kw)
+            if res: return res
+        return None
+
+    rev_node = _find_by_kw(is_tree, "revenue") or _find_by_kw(is_tree, "sales")
+    if rev_node: rev_node.role = "IS_REVENUE"
+    cogs_node = _find_by_kw(is_tree, "cost of revenue") or _find_by_kw(is_tree, "cost of sales") or _find_by_kw(is_tree, "cost of goods")
+    if cogs_node: cogs_node.role = "IS_COGS"
+
+    # Find CF's NI values (the authoritative source)
+    cf_ni_values = None
+    if cf_tree:
+        cf_ni_node = find_node_by_role(cf_tree, "INC_NET_CF")
+        if cf_ni_node:
+            cf_ni_values = cf_ni_node.values
+
+    if cf_ni_values:
+        # Strategy 1: Find the IS depth-1 child whose values match CF's NI
+        best_match = None
+        for child in is_tree.children:
+            if not child.values:
+                continue
+            # Count how many periods match CF's NI within tolerance
+            matches = 0
+            total = 0
+            for p, cf_val in cf_ni_values.items():
+                is_val = child.values.get(p)
+                if is_val is not None:
+                    total += 1
+                    if abs(is_val - cf_val) < 0.5:
+                        matches += 1
+            if total > 0 and matches == total:
+                best_match = child
+                break
+
+        if best_match:
+            best_match.role = "INC_NET"
+            best_match.values = dict(cf_ni_values)
+        else:
+            # Strategy 2: Fall back to first positive-weight child
+            fallback = None
+            for child in is_tree.children:
+                if child.weight > 0 and child.values:
+                    fallback = child
+                    break
+
+            if fallback:
+                print("WARNING: No IS child value-matched CF's NI — "
+                      f"falling back to first positive-weight child: {fallback.name}",
+                      file=sys.stderr)
+                fallback.role = "INC_NET"
+                fallback.values = dict(cf_ni_values)
+            else:
+                print("WARNING: Could not identify INC_NET in IS tree — "
+                      "tagging root as fallback", file=sys.stderr)
+                is_tree.role = "INC_NET"
+                is_tree.values = dict(cf_ni_values)
+    else:
+        # No CF NI available — tag IS root as INC_NET (best guess)
+        print("WARNING: No CF NI values available — tagging IS root as INC_NET",
+              file=sys.stderr)
+        is_tree.role = "INC_NET"
+
+def _override_bs_cash(assets_tree: TreeNode | None, cf_endc_values: dict | None):
+    """Override BS cash node values with CF_ENDC values."""
+    if not assets_tree or not cf_endc_values:
+        return
+
+    cash_node = find_node_by_role(assets_tree, "BS_CASH")
+    tca_node = find_node_by_role(assets_tree, "BS_TCA")
+
+    if not cash_node:
+        return
+
+    for period, new_val in cf_endc_values.items():
+        old_val = cash_node.values.get(period, 0)
+        delta = new_val - old_val
+        cash_node.values[period] = new_val
+
+        # Adjust TCA subtotal to absorb the delta
+        if tca_node and abs(delta) > 0.5:
+            tca_node.values[period] = tca_node.values.get(period, 0) + delta
+
+def _filter_to_complete_periods(trees: dict):
+    """Remove values for periods that aren't present in ALL statements."""
+    is_periods = set(trees["IS"].values.keys()) if trees.get("IS") else set()
+    bs_periods = set(trees["BS"].values.keys()) if trees.get("BS") else set()
+    bs_le_periods = set(trees["BS_LE"].values.keys()) if trees.get("BS_LE") else bs_periods
+    cf_periods = set(trees["CF"].values.keys()) if trees.get("CF") else set()
+
+    complete = is_periods & bs_periods & bs_le_periods & cf_periods
+    trees["complete_periods"] = sorted(complete)
+
+    if not complete:
+        import sys
+        print(f"WARNING: No complete periods. IS={sorted(is_periods)}, "
+              f"BS={sorted(bs_periods)}, CF={sorted(cf_periods)}", file=sys.stderr)
+        return
+
+    # Walk every tree and filter values to complete periods only
+    def _filter_node(node: TreeNode):
+        node.values = {p: v for p, v in node.values.items() if p in complete}
+        for child in node.children:
+            _filter_node(child)
+
+    for stmt in ["IS", "BS", "BS_LE", "CF"]:
+        tree = trees.get(stmt)
+        if tree:
+            _filter_node(tree)
+
+def reconcile_trees(trees: dict) -> dict:
+    """Tag key nodes by position and apply cross-statement value overrides."""
+    facts = trees.get("facts", {})
+
+    # --- Step A: Tag Balance Sheet positions ---
+    _tag_bs_positions(trees.get("BS"), trees.get("BS_LE"))
+
+    # --- Step B: Tag CF structural positions + find CF_ENDC ---
+    cf_endc_values = _tag_cf_positions(trees.get("CF"), facts)
+
+    # --- Step C: Tag IS positions using CF's NI as authoritative ---
+    _tag_is_positions(trees.get("IS"), trees.get("CF"))
+
+    # --- Step D: Apply cross-statement value overrides ---
+    _override_bs_cash(trees.get("BS"), cf_endc_values)
+
+    # --- Step E: Filter to complete periods ---
+    _filter_to_complete_periods(trees)
+
+    # --- Step F: Tag D&A and SBC nodes for sheet formula references ---
+    _tag_da_sbc_nodes(trees.get("IS"), trees.get("CF"))
+
+    return trees
+
 def build_statement_trees(html: str, base_url: str) -> dict:
     """Build IS/BS/CF trees from a filing's HTML and calc linkbase.
 
@@ -426,6 +864,9 @@ def build_statement_trees(html: str, base_url: str) -> dict:
     for tag_vals in facts.values():
         all_periods.update(tag_vals.keys())
     result["periods"] = sorted(all_periods)
+
+    # Reconcile: tag positions + apply cross-statement overrides
+    reconcile_trees(result)
 
     return result
 
@@ -481,6 +922,10 @@ def main():
 
     if args.output:
         out = {}
+        for key in ["complete_periods", "periods"]:
+            if key in result:
+                out[key] = result[key]
+        out["facts"] = result.get("facts", {})
         for stmt in ["IS", "BS", "BS_LE", "CF"]:
             tree = result.get(stmt)
             if tree:
