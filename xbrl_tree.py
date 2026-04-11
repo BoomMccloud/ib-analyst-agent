@@ -864,9 +864,21 @@ def _tag_cf_positions(cf_tree: TreeNode | None, facts: dict) -> dict | None:
     """Tag CF nodes by position. Returns CF_ENDC values dict (from facts, not tree)."""
     cf_endc_values = None
 
-    # Look up CF_ENDC from XBRL facts (instant context, not in any tree)
-    if facts:
+    # Look up CF_ENDC from XBRL facts (instant context, not in any tree).
+    # Strategy: derive from the CF root concept. The root is the "PeriodIncrease
+    # Decrease" version; the ending cash balance is the same base concept without
+    # that suffix. Fall back to common tags if derivation fails.
+    if facts and cf_tree:
+        # Try to derive from CF root concept
+        root_tag = cf_tree.tag  # e.g. "us-gaap:CashCash...PeriodIncreaseDecreaseIncludingExchangeRateEffect"
+        # Strip the PeriodIncrease... suffix to get the balance concept
+        derived = re.sub(r'PeriodIncreaseDecrease.*$', '', root_tag)
+        if derived != root_tag and derived in facts:
+            cf_endc_values = facts[derived]
+
+    if not cf_endc_values and facts:
         endc_tags = [
+            "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
             "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
             "us-gaap:CashAndCashEquivalentsAtCarryingValue",
         ]
