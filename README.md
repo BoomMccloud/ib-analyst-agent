@@ -1,76 +1,74 @@
 # SEC Financial Modeling Pipeline
 
-An automated, 4-stage pipeline that transforms raw SEC EDGAR filings into functional, multi-year financial models in Google Sheets.
+An automated, tree-based pipeline that transforms raw SEC EDGAR iXBRL filings into fully-linked, formula-driven Google Sheets financial models.
 
 ## Overview
 
-This project automates the workflow of an investment banking analyst:
+This project automates the workflow of an investment banking analyst by building deterministic, mathematical trees from XBRL data. It uses a pure Python approach for extraction and modeling, falling back to LLMs only for tasks requiring judgment.
+
 1.  **Discovery**: Finding and downloading the correct SEC filings (10-K, 20-F).
-2.  **Extraction**: Slicing massive HTML filings into manageable sections (Income Statement, Balance Sheet, Cash Flows, MD&A).
-3.  **Structuring**: Using LLMs (Claude) to convert unstructured financial tables into clean, standardized JSON data.
-4.  **Modeling**: Computing forecasts and generating a 3-statement financial model that balances automatically.
+2.  **Tree Construction**: Parsing iXBRL facts and calculation/presentation linkbases into a reconciled parent-child mathematical tree structure.
+3.  **Verification**: Running deterministic cross-statement invariants (e.g., Assets = Liabilities + Equity, Cash Flow Ending Cash = Balance Sheet Cash) against the parsed trees.
+4.  **Sheet Rendering**: Generating a 3-statement Google Sheet with exact formulas and cross-statement references that balance by construction.
+
+## Core Principle: Three-Layer Merge
+
+The sheet rendering is built on a three-layer merge of XBRL linkbases:
+
+1. **Calc layer** (mathematical truth): Parent-child tree with signed weights (+1/-1). Defines `=SUM(children * weight)` formulas.
+2. **Presentation layer** (display order): Sibling ordering matching the 10-K layout (e.g., Revenue first, Net Income last).
+3. **"Other" layer** (gap absorption): For any parent where `SUM(children) != declared_value`, an "Other" row absorbs the residual, guaranteeing every formula equals its declared XBRL value.
 
 ## Pipeline Stages
 
-| Stage | Name | Key Script | Description |
-|---|---|---|---|
-| **1** | **Fetcher** | `agent1_fetcher.py` | Resolves ticker to CIK and retrieves filing metadata/URLs from SEC EDGAR. |
-| **2a** | **Slicer** | `extract_sections.py` | Parses HTML filings and splits them into section-specific text files based on TOC anchors. |
-| **2b** | **Structurer**| `structure_financials.py` | Uses LLMs to structure financials into JSON and classify line items into standard codes. |
-| **3** | **Modeler** | `pymodel.py` | Computes a 5-year forecast and verifies accounting invariants (e.g., Assets = Liabilities + Equity). |
-| **4** | **Exporter** | `build_model_sheet.py` | Exports the verified model to Google Sheets via the `gws` CLI. |
+| Stage | Script | Description |
+|---|---|---|
+| **1. Fetch Filings** | `agent1_fetcher.py` | Resolves ticker to CIK and retrieves filing metadata/URLs from SEC EDGAR using a managed agent. |
+| **2. Build Trees** | `xbrl_tree.py` | Parses iXBRL and `_cal.xml`/`_pre.xml` into reconciled `IS`, `BS`, `BS_LE`, and `CF` trees, reordered by presentation. |
+| **3. Verify Invariants**| `pymodel.py` | Checks 5 cross-statement links: BS Balance, Cash Link, NI Link, D&A Link, and SBC Link. |
+| **4. Write Google Sheet** | `sheet_builder.py` | Renders the trees into a multi-tab Google Sheet using `gws` CLI, generating mathematically connected `=SUM()` and cross-sheet formulas. |
+| **Orchestrator** | `run_pipeline.py` | Runs all stages sequentially. |
 
 ## File Reference
 
-### Core Pipeline
+### Pipeline Scripts
 *   `agent1_fetcher.py`: Entry point for Stage 1. Handles ticker resolution and filing discovery.
-*   `extract_sections.py`: Pure-Python HTML parser that extracts specific sections (e.g., Item 8) from filings.
-*   `structure_financials.py`: The "Michelle" agent. Orchestrates LLM calls to turn text tables into JSON.
-*   `agent3_modeler.py`: Produces a bottom-up financial model specification using LLMs.
-*   `pymodel.py`: The primary modeling engine. Performs all calculations in Python to ensure invariants pass before export.
-*   `build_model_sheet.py`: The recommended Stage 4 exporter. Builds a robust, code-driven Google Sheet.
-*   `agent4_spreadsheet.py`: Alternative Stage 4 exporter that uses a pre-defined template (`template_row_map.json`).
+*   `xbrl_tree.py`: The deterministic extraction engine. Builds structural trees from iXBRL facts and linkbases.
+*   `pymodel.py`: Verifier for cross-statement checks and accounting invariants.
+*   `sheet_builder.py`: Converts trees to 4-tab Google Sheets (IS, BS, CF, Summary) via `gws` CLI.
+*   `run_pipeline.py`: Orchestrates the full pipeline.
 
-### Utilities
-*   `llm_utils.py`: Shared utilities for calling Anthropic models, including defensive JSON repair for truncated responses.
-*   `sec_utils.py`: SEC-compliant fetching logic with mandatory rate-limiting (0.15s intervals).
-*   `financial_utils.py`: Definitions for standardized financial codes (e.g., `BS_CASH`, `REVT`) and data flattening logic.
+### Supporting Utilities
+*   `lookup_company.py`: Maps tickers or company names to SEC Central Index Keys (CIK).
+*   `fetch_10k.py` / `fetch_20f.py`: Targeted scripts for fetching filing metadata from the SEC API.
+*   `parse_xbrl_facts.py`: iXBRL tag extraction from filing HTML.
+*   `sec_utils.py`: SEC-compliant HTTP fetching with rate limiting (0.15s intervals) and caching.
+*   `llm_utils.py`: Shared utilities for calling Anthropic models.
 *   `gws_utils.py`: Helpers for interacting with Google Sheets via the `gws` command-line tool.
-*   `lookup_company.py`: Logic for mapping tickers or company names to SEC Central Index Keys (CIK).
-*   `fetch_10k.py` / `fetch_20f.py`: Targeted scripts for fetching domestic and foreign filing metadata.
-
-### Development & QA
-*   `diagnose_model.py`: Diagnostic utility for inspecting and debugging model outputs.
-*   `run_and_verify.py`: Verification tool that compares local SEC fetch results with Managed Agent outputs.
-*   `create_template.py`: Utility to generate the `template_row_map.json` from an existing spreadsheet.
-*   `sec_filings_agent.py`: A standalone Managed Agent for ad-hoc SEC research and filing lookups.
 
 ## Setup & Requirements
 
 - **Python 3.10+**
-- **Anthropic API Key**: Required for LLM-based structuring and modeling.
+- **Anthropic API Key**: Required for LLM-based filing discovery.
 - **`gws` CLI**: Required for exporting models to Google Sheets.
 - **Podman**: Recommended for containerized execution (project preference over Docker).
 
 ## Usage
 
-### The Agentic Way (Recommended)
-Run the entire pipeline with a single command. Defaults to 5 years of history and 5 years of forecasts.
+### Run the Pipeline
+Run the entire pipeline with a single command to generate a spreadsheet.
 ```bash
 python run_pipeline.py AAPL
 ```
 
-### The Manual Way (Stage-by-Stage)
+### Run the Tests
+Tests are divided into tree parsing logic, verification logic, and end-to-end pipelines.
 ```bash
-# 1. Fetch filings
-python agent1_fetcher.py AAPL --years 3 > filings.json
+# All unit tests
+python -m pytest tests/test_dual_linkbase.py -v
 
-# 2. Extract and Structure (simplified example)
-python extract_sections.py <filing_url> --output-dir ./sections
-python structure_financials.py ./sections -o structured.json
-
-# 3. Build and Export Model
-python pymodel.py --financials structured.json --company "Apple Inc."
+# Three-layer merge tests (synthetic + 10 real companies)
+python test_merge_layers.py
 ```
 
 For more detailed technical constraints and coding standards, see [GEMINI.md](./GEMINI.md).

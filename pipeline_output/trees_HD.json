@@ -1,0 +1,2471 @@
+{
+  "complete_periods": [
+    "2025-02-02",
+    "2026-02-01"
+  ],
+  "periods": [
+    "2023-01-29",
+    "2024-01-28",
+    "2025-02-02",
+    "2025-08-01",
+    "2026-02-01",
+    "2026-03-04"
+  ],
+  "cf_endc_values": {
+    "2025-02-02": 1659.0,
+    "2024-01-28": 3760.0,
+    "2023-01-29": 2757.0,
+    "2026-02-01": 1389.0
+  },
+  "facts": {
+    "dei:EntityPublicFloat": {
+      "2025-08-01": 371.8
+    },
+    "dei:EntityCommonStockSharesOutstanding": {
+      "2026-03-04": 996011466.0
+    },
+    "us-gaap:CashAndCashEquivalentsAtCarryingValue": {
+      "2026-02-01": 1389.0,
+      "2025-02-02": 1659.0
+    },
+    "us-gaap:AccountsReceivableNetCurrent": {
+      "2026-02-01": 5597.0,
+      "2025-02-02": 4903.0
+    },
+    "us-gaap:InventoryNet": {
+      "2026-02-01": 25817.0,
+      "2025-02-02": 23451.0
+    },
+    "us-gaap:OtherAssetsCurrent": {
+      "2026-02-01": 1588.0,
+      "2025-02-02": 1670.0
+    },
+    "us-gaap:AssetsCurrent": {
+      "2026-02-01": 34391.0,
+      "2025-02-02": 31683.0
+    },
+    "us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization": {
+      "2026-02-01": 28021.0,
+      "2025-02-02": 26702.0,
+      "2024-01-28": 26154.0
+    },
+    "us-gaap:OperatingLeaseRightOfUseAsset": {
+      "2026-02-01": 9204.0,
+      "2025-02-02": 8592.0
+    },
+    "us-gaap:Goodwill": {
+      "2026-02-01": 22344.0,
+      "2025-02-02": 19475.0,
+      "2024-01-28": 8455.0
+    },
+    "us-gaap:IntangibleAssetsNetExcludingGoodwill": {
+      "2026-02-01": 10329.0,
+      "2025-02-02": 8983.0
+    },
+    "us-gaap:OtherAssetsNoncurrent": {
+      "2026-02-01": 806.0,
+      "2025-02-02": 684.0
+    },
+    "us-gaap:Assets": {
+      "2026-02-01": 105095.0,
+      "2025-02-02": 96119.0
+    },
+    "us-gaap:CommercialPaper": {
+      "2026-02-01": 4464.0,
+      "2025-02-02": 316.0
+    },
+    "us-gaap:AccountsPayableCurrent": {
+      "2026-02-01": 11491.0,
+      "2025-02-02": 11938.0
+    },
+    "us-gaap:EmployeeRelatedLiabilitiesCurrent": {
+      "2026-02-01": 2529.0,
+      "2025-02-02": 2315.0
+    },
+    "us-gaap:SalesAndExciseTaxPayableCurrent": {
+      "2026-02-01": 508.0,
+      "2025-02-02": 628.0
+    },
+    "us-gaap:DeferredRevenueCurrent": {
+      "2026-02-01": 2575.0,
+      "2025-02-02": 2610.0
+    },
+    "us-gaap:AccruedIncomeTaxesCurrent": {
+      "2026-02-01": 114.0,
+      "2025-02-02": 832.0
+    },
+    "us-gaap:LongTermDebtAndCapitalLeaseObligationsCurrent": {
+      "2026-02-01": 4967.0,
+      "2025-02-02": 4582.0
+    },
+    "us-gaap:OperatingLeaseLiabilityCurrent": {
+      "2026-02-01": 1418.0,
+      "2025-02-02": 1274.0
+    },
+    "us-gaap:OtherAccruedLiabilitiesCurrent": {
+      "2026-02-01": 4358.0,
+      "2025-02-02": 4166.0
+    },
+    "us-gaap:LiabilitiesCurrent": {
+      "2026-02-01": 32424.0,
+      "2025-02-02": 28661.0
+    },
+    "us-gaap:LongTermDebtAndCapitalLeaseObligations": {
+      "2026-02-01": 46341.0,
+      "2025-02-02": 48485.0
+    },
+    "us-gaap:OperatingLeaseLiabilityNoncurrent": {
+      "2026-02-01": 8160.0,
+      "2025-02-02": 7633.0
+    },
+    "us-gaap:DeferredIncomeTaxLiabilitiesNet": {
+      "2026-02-01": 2845.0,
+      "2025-02-02": 1962.0
+    },
+    "us-gaap:OtherLiabilitiesNoncurrent": {
+      "2026-02-01": 2512.0,
+      "2025-02-02": 2738.0
+    },
+    "us-gaap:Liabilities": {
+      "2026-02-01": 92282.0,
+      "2025-02-02": 89479.0
+    },
+    "us-gaap:CommonStockParOrStatedValuePerShare": {
+      "2025-02-02": 0.05
+    },
+    "us-gaap:CommonStockSharesAuthorized": {
+      "2026-02-01": 10000.0
+    },
+    "us-gaap:CommonStockSharesIssued": {
+      "2026-02-01": 1802.0,
+      "2025-02-02": 1800.0,
+      "2024-01-28": 1796.0,
+      "2023-01-29": 1794.0
+    },
+    "us-gaap:CommonStockSharesOutstanding": {
+      "2026-02-01": 996.0,
+      "2025-02-02": 994.0,
+      "2024-01-28": 992.0
+    },
+    "us-gaap:CommonStockValueOutstanding": {
+      "2026-02-01": 90.0,
+      "2025-02-02": 90.0
+    },
+    "us-gaap:AdditionalPaidInCapitalCommonStock": {
+      "2026-02-01": 14809.0,
+      "2025-02-02": 14117.0
+    },
+    "us-gaap:RetainedEarningsAccumulatedDeficit": {
+      "2026-02-01": 94537.0,
+      "2025-02-02": 89533.0
+    },
+    "us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax": {
+      "2026-02-01": -652.0,
+      "2025-02-02": -1129.0
+    },
+    "us-gaap:TreasuryStockCommonShares": {
+      "2025-02-02": 806.0,
+      "2024-01-28": 804.0,
+      "2023-01-29": 778.0,
+      "2026-02-01": 806.0
+    },
+    "us-gaap:TreasuryStockValue": {
+      "2026-02-01": 95971.0,
+      "2025-02-02": 95971.0
+    },
+    "us-gaap:StockholdersEquity": {
+      "2026-02-01": 12813.0,
+      "2025-02-02": 6640.0,
+      "2024-01-28": 1044.0
+    },
+    "us-gaap:LiabilitiesAndStockholdersEquity": {
+      "2026-02-01": 105095.0,
+      "2025-02-02": 96119.0
+    },
+    "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax": {
+      "2026-02-01": 164683.0,
+      "2025-02-02": 159514.0,
+      "2024-01-28": 152669.0
+    },
+    "us-gaap:CostOfRevenue": {
+      "2026-02-01": 109818.0,
+      "2025-02-02": 106206.0,
+      "2024-01-28": 101709.0
+    },
+    "us-gaap:GrossProfit": {
+      "2026-02-01": 54865.0,
+      "2025-02-02": 53308.0,
+      "2024-01-28": 50960.0
+    },
+    "us-gaap:SellingGeneralAndAdministrativeExpense": {
+      "2026-02-01": 30702.0,
+      "2025-02-02": 28748.0,
+      "2024-01-28": 26598.0
+    },
+    "us-gaap:DepreciationAndAmortization": {
+      "2026-02-01": 3273.0,
+      "2025-02-02": 3034.0,
+      "2024-01-28": 2673.0
+    },
+    "us-gaap:OperatingExpenses": {
+      "2026-02-01": 33975.0,
+      "2025-02-02": 31782.0,
+      "2024-01-28": 29271.0
+    },
+    "us-gaap:OperatingIncomeLoss": {
+      "2026-02-01": 20890.0,
+      "2025-02-02": 21526.0,
+      "2024-01-28": 21689.0
+    },
+    "us-gaap:InvestmentIncomeInterestAndDividend": {
+      "2026-02-01": 124.0,
+      "2025-02-02": 201.0,
+      "2024-01-28": 178.0
+    },
+    "us-gaap:InterestExpenseNonoperating": {
+      "2026-02-01": 2412.0,
+      "2025-02-02": 2321.0,
+      "2024-01-28": 1943.0
+    },
+    "us-gaap:NonoperatingIncomeExpense": {
+      "2026-02-01": -2288.0,
+      "2025-02-02": -2120.0,
+      "2024-01-28": -1765.0
+    },
+    "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest": {
+      "2026-02-01": 18602.0,
+      "2025-02-02": 19406.0,
+      "2024-01-28": 19924.0
+    },
+    "us-gaap:IncomeTaxExpenseBenefit": {
+      "2026-02-01": 4446.0,
+      "2025-02-02": 4600.0,
+      "2024-01-28": 4781.0
+    },
+    "us-gaap:NetIncomeLoss": {
+      "2026-02-01": 14156.0,
+      "2025-02-02": 14806.0,
+      "2024-01-28": 15143.0
+    },
+    "us-gaap:WeightedAverageNumberOfSharesOutstandingBasic": {
+      "2026-02-01": 993.0,
+      "2025-02-02": 990.0,
+      "2024-01-28": 999.0
+    },
+    "us-gaap:EarningsPerShareBasic": {
+      "2026-02-01": 14.26,
+      "2025-02-02": 14.96,
+      "2024-01-28": 15.16
+    },
+    "us-gaap:WeightedAverageNumberOfDilutedSharesOutstanding": {
+      "2026-02-01": 995.0,
+      "2025-02-02": 993.0,
+      "2024-01-28": 1002.0
+    },
+    "us-gaap:EarningsPerShareDiluted": {
+      "2026-02-01": 14.23,
+      "2025-02-02": 14.91,
+      "2024-01-28": 15.11
+    },
+    "us-gaap:OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationAdjustmentNetOfTax": {
+      "2026-02-01": 469.0,
+      "2025-02-02": -605.0,
+      "2024-01-28": 232.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTax": {
+      "2026-02-01": 11.0,
+      "2025-02-02": -45.0,
+      "2024-01-28": 8.0
+    },
+    "hd:OtherComprehensiveIncomeLossOtherAfterTax": {
+      "2026-02-01": -3.0,
+      "2025-02-02": -2.0,
+      "2024-01-28": 1.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossNetOfTax": {
+      "2026-02-01": 477.0,
+      "2025-02-02": -652.0,
+      "2024-01-28": 241.0
+    },
+    "us-gaap:ComprehensiveIncomeNetOfTax": {
+      "2026-02-01": 14633.0,
+      "2025-02-02": 14154.0,
+      "2024-01-28": 15384.0
+    },
+    "us-gaap:DepreciationDepletionAndAmortization": {
+      "2026-02-01": 3514.0,
+      "2025-02-02": 3336.0,
+      "2024-01-28": 3061.0
+    },
+    "us-gaap:AmortizationOfIntangibleAssets": {
+      "2026-02-01": 607.0,
+      "2025-02-02": 425.0,
+      "2024-01-28": 186.0
+    },
+    "us-gaap:ShareBasedCompensation": {
+      "2026-02-01": 522.0,
+      "2025-02-02": 442.0,
+      "2024-01-28": 380.0
+    },
+    "us-gaap:IncreaseDecreaseInReceivables": {
+      "2026-02-01": -107.0,
+      "2025-02-02": -174.0,
+      "2024-01-28": -134.0
+    },
+    "us-gaap:IncreaseDecreaseInRetailRelatedInventories": {
+      "2026-02-01": 1498.0,
+      "2025-02-02": 743.0,
+      "2024-01-28": -4137.0
+    },
+    "us-gaap:IncreaseDecreaseInOtherCurrentAssets": {
+      "2026-02-01": -124.0,
+      "2025-02-02": -86.0,
+      "2024-01-28": 184.0
+    },
+    "us-gaap:IncreaseDecreaseInAccountsPayableAndAccruedLiabilities": {
+      "2026-02-01": -1058.0,
+      "2025-02-02": 518.0,
+      "2024-01-28": -1411.0
+    },
+    "us-gaap:IncreaseDecreaseInDeferredRevenue": {
+      "2026-02-01": -61.0,
+      "2025-02-02": -165.0,
+      "2024-01-28": -318.0
+    },
+    "us-gaap:IncreaseDecreaseInAccruedIncomeTaxesPayable": {
+      "2026-02-01": -698.0,
+      "2025-02-02": 809.0,
+      "2024-01-28": -25.0
+    },
+    "us-gaap:IncreaseDecreaseInDeferredIncomeTaxes": {
+      "2026-02-01": -418.0,
+      "2025-02-02": -15.0,
+      "2024-01-28": 245.0
+    },
+    "us-gaap:IncreaseDecreaseInOtherOperatingCapitalNet": {
+      "2026-02-01": -192.0,
+      "2025-02-02": -107.0,
+      "2024-01-28": -314.0
+    },
+    "us-gaap:NetCashProvidedByUsedInOperatingActivities": {
+      "2026-02-01": 16325.0,
+      "2025-02-02": 19810.0,
+      "2024-01-28": 21172.0
+    },
+    "us-gaap:PaymentsToAcquireProductiveAssets": {
+      "2026-02-01": 3679.0,
+      "2025-02-02": 3485.0,
+      "2024-01-28": 3226.0
+    },
+    "us-gaap:PaymentsToAcquireBusinessesNetOfCashAcquired": {
+      "2026-02-01": 5410.0,
+      "2025-02-02": 17644.0,
+      "2024-01-28": 1514.0
+    },
+    "us-gaap:PaymentsForProceedsFromOtherInvestingActivities": {
+      "2026-02-01": -109.0,
+      "2025-02-02": -98.0,
+      "2024-01-28": -11.0
+    },
+    "us-gaap:NetCashProvidedByUsedInInvestingActivities": {
+      "2026-02-01": -8980.0,
+      "2025-02-02": -21031.0,
+      "2024-01-28": -4729.0
+    },
+    "us-gaap:ProceedsFromRepaymentsOfCommercialPaper": {
+      "2026-02-01": 4148.0,
+      "2025-02-02": 316.0
+    },
+    "us-gaap:ProceedsFromIssuanceOfLongTermDebtAndCapitalSecuritiesNet": {
+      "2026-02-01": 2161.0,
+      "2025-02-02": 10010.0,
+      "2024-01-28": 1995.0
+    },
+    "us-gaap:RepaymentsOfLongTermDebtAndCapitalSecurities": {
+      "2026-02-01": 5040.0,
+      "2025-02-02": 1536.0,
+      "2024-01-28": 1271.0
+    },
+    "us-gaap:PaymentsForRepurchaseOfCommonStock": {
+      "2025-02-02": 649.0,
+      "2024-01-28": 7951.0
+    },
+    "us-gaap:ProceedsFromIssuanceOfCommonStock": {
+      "2026-02-01": 314.0,
+      "2025-02-02": 395.0,
+      "2024-01-28": 323.0
+    },
+    "us-gaap:PaymentsOfDividendsCommonStock": {
+      "2026-02-01": 9152.0,
+      "2025-02-02": 8929.0,
+      "2024-01-28": 8383.0
+    },
+    "us-gaap:ProceedsFromPaymentsForOtherFinancingActivities": {
+      "2026-02-01": -145.0,
+      "2025-02-02": -301.0,
+      "2024-01-28": -156.0
+    },
+    "us-gaap:NetCashProvidedByUsedInFinancingActivities": {
+      "2026-02-01": -7714.0,
+      "2025-02-02": -694.0,
+      "2024-01-28": -15443.0
+    },
+    "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect": {
+      "2026-02-01": -369.0,
+      "2025-02-02": -1915.0,
+      "2024-01-28": 1000.0
+    },
+    "us-gaap:EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents": {
+      "2026-02-01": 99.0,
+      "2025-02-02": -186.0,
+      "2024-01-28": 3.0
+    },
+    "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents": {
+      "2025-02-02": 1659.0,
+      "2024-01-28": 3760.0,
+      "2023-01-29": 2757.0,
+      "2026-02-01": 1389.0
+    },
+    "us-gaap:InterestPaidNet": {
+      "2026-02-01": 2405.0,
+      "2025-02-02": 2199.0,
+      "2024-01-28": 1809.0
+    },
+    "us-gaap:CapitalLeaseObligationsIncurred": {
+      "2026-02-01": 272.0,
+      "2025-02-02": 250.0,
+      "2024-01-28": 364.0
+    },
+    "us-gaap:StockIssued1": {
+      "2025-02-02": 321.0
+    },
+    "us-gaap:SupplierFinanceProgramObligation": {
+      "2025-02-02": 598.0,
+      "2024-01-28": 514.0,
+      "2026-02-01": 414.0
+    },
+    "us-gaap:SupplierFinanceProgramObligationIncrease": {
+      "2026-02-01": 4394.0,
+      "2025-02-02": 5140.0
+    },
+    "us-gaap:SupplierFinanceProgramObligationDecreaseSettlement": {
+      "2026-02-01": 4578.0,
+      "2025-02-02": 5056.0
+    },
+    "us-gaap:SelfInsuranceReserve": {
+      "2026-02-01": 1.6,
+      "2025-02-02": 1.5
+    },
+    "us-gaap:ContractWithCustomerLiabilityCurrent": {
+      "2025-02-02": 1.5
+    },
+    "us-gaap:RevenueRemainingPerformanceObligation": {
+      "2025-02-02": 1.1
+    },
+    "us-gaap:AdvertisingExpense": {
+      "2026-02-01": 1.3,
+      "2025-02-02": 1.2,
+      "2024-01-28": 1.1
+    },
+    "hd:RecognizedIncomeTaxPositionsAreMeasuredAtTheLargestAmountExceedingAProbabilityOf": {
+      "2026-02-01": 50.0
+    },
+    "us-gaap:AccumulatedOtherComprehensiveIncomeLossForeignCurrencyTranslationAdjustmentNetOfTax": {
+      "2026-02-01": 501.0,
+      "2025-02-02": 970.0
+    },
+    "us-gaap:CostOfGoodsAndServicesSoldDepreciationAndAmortization": {
+      "2026-02-01": 4059.0,
+      "2025-02-02": 3708.0
+    },
+    "us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization": {
+      "2026-02-01": 59467.0,
+      "2025-02-02": 55783.0
+    },
+    "us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAccumulatedDepreciationAndAmortization": {
+      "2026-02-01": 31446.0,
+      "2025-02-02": 29081.0
+    },
+    "us-gaap:DepreciationNonproduction": {
+      "2026-02-01": 3452.0,
+      "2025-02-02": 3283.0,
+      "2024-01-28": 3020.0
+    },
+    "us-gaap:FinanceLeaseRightOfUseAsset": {
+      "2026-02-01": 2563.0,
+      "2025-02-02": 2638.0
+    },
+    "hd:OperatingLeaseAndFinanceLeaseRightOfUseAssets": {
+      "2026-02-01": 11767.0,
+      "2025-02-02": 11230.0
+    },
+    "us-gaap:FinanceLeaseLiabilityCurrent": {
+      "2026-02-01": 288.0,
+      "2025-02-02": 272.0
+    },
+    "us-gaap:FinanceLeaseLiabilityNoncurrent": {
+      "2026-02-01": 2675.0,
+      "2025-02-02": 2749.0
+    },
+    "hd:OperatingLeaseAndFinanceLeaseLiabilities": {
+      "2026-02-01": 12541.0,
+      "2025-02-02": 11928.0
+    },
+    "us-gaap:FinanceLeaseRightOfUseAssetAccumulatedAmortization": {
+      "2026-02-01": 1.6,
+      "2025-02-02": 1.4
+    },
+    "us-gaap:OperatingLeaseCost": {
+      "2026-02-01": 1846.0,
+      "2025-02-02": 1661.0,
+      "2024-01-28": 1359.0
+    },
+    "us-gaap:FinanceLeaseRightOfUseAssetAmortization": {
+      "2026-02-01": 322.0,
+      "2025-02-02": 328.0,
+      "2024-01-28": 304.0
+    },
+    "us-gaap:FinanceLeaseInterestExpense": {
+      "2026-02-01": 113.0,
+      "2025-02-02": 118.0,
+      "2024-01-28": 126.0
+    },
+    "us-gaap:VariableLeaseCost": {
+      "2026-02-01": 585.0,
+      "2025-02-02": 566.0,
+      "2024-01-28": 486.0
+    },
+    "us-gaap:OperatingLeaseWeightedAverageDiscountRatePercent": {
+      "2026-02-01": 4.2,
+      "2025-02-02": 4.0
+    },
+    "us-gaap:FinanceLeaseWeightedAverageDiscountRatePercent": {
+      "2026-02-01": 3.7,
+      "2025-02-02": 3.7
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueNextTwelveMonths": {
+      "2026-02-01": 1792.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueNextTwelveMonths": {
+      "2026-02-01": 391.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueYearTwo": {
+      "2026-02-01": 1806.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueYearTwo": {
+      "2026-02-01": 386.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueYearThree": {
+      "2026-02-01": 1607.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueYearThree": {
+      "2026-02-01": 346.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueYearFour": {
+      "2026-02-01": 1386.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueYearFour": {
+      "2026-02-01": 318.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueYearFive": {
+      "2026-02-01": 1062.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueYearFive": {
+      "2026-02-01": 294.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueAfterYearFive": {
+      "2026-02-01": 3985.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueAfterYearFive": {
+      "2026-02-01": 1856.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDue": {
+      "2026-02-01": 11638.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDue": {
+      "2026-02-01": 3591.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityUndiscountedExcessAmount": {
+      "2026-02-01": 2060.0
+    },
+    "us-gaap:FinanceLeaseLiabilityUndiscountedExcessAmount": {
+      "2026-02-01": 628.0
+    },
+    "us-gaap:OperatingLeaseLiability": {
+      "2026-02-01": 9578.0
+    },
+    "us-gaap:FinanceLeaseLiability": {
+      "2026-02-01": 2963.0,
+      "2025-02-02": 3021.0
+    },
+    "hd:LesseeLeasesNotYetCommencedUndiscounted": {
+      "2026-02-01": 675.0
+    },
+    "us-gaap:OperatingLeasePayments": {
+      "2026-02-01": 1847.0,
+      "2025-02-02": 1601.0,
+      "2024-01-28": 1328.0
+    },
+    "us-gaap:FinanceLeaseInterestPaymentOnLiability": {
+      "2026-02-01": 113.0,
+      "2025-02-02": 118.0,
+      "2024-01-28": 126.0
+    },
+    "us-gaap:FinanceLeasePrincipalPayments": {
+      "2026-02-01": 327.0,
+      "2025-02-02": 380.0,
+      "2024-01-28": 271.0
+    },
+    "us-gaap:RightOfUseAssetObtainedInExchangeForOperatingLeaseLiability": {
+      "2026-02-01": 1741.0,
+      "2025-02-02": 1384.0,
+      "2024-01-28": 1827.0
+    },
+    "us-gaap:RightOfUseAssetObtainedInExchangeForFinanceLeaseLiability": {
+      "2026-02-01": 263.0,
+      "2025-02-02": 153.0,
+      "2024-01-28": 336.0
+    },
+    "us-gaap:GoodwillAcquiredDuringPeriod": {
+      "2025-02-02": 11048.0,
+      "2026-02-01": 2843.0
+    },
+    "us-gaap:GoodwillOtherIncreaseDecrease": {
+      "2025-02-02": -28.0,
+      "2026-02-01": 26.0
+    },
+    "us-gaap:IntangibleAssetsGrossExcludingGoodwill": {
+      "2026-02-01": 12056.0,
+      "2025-02-02": 10115.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAccumulatedAmortization": {
+      "2026-02-01": 1727.0,
+      "2025-02-02": 1132.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAmortizationExpenseNextTwelveMonths": {
+      "2026-02-01": 683.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAmortizationExpenseYearTwo": {
+      "2026-02-01": 674.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAmortizationExpenseYearThree": {
+      "2026-02-01": 654.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAmortizationExpenseYearFour": {
+      "2026-02-01": 615.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAmortizationExpenseYearFive": {
+      "2026-02-01": 578.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAmortizationExpenseAfterYearFive": {
+      "2026-02-01": 6476.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsNet": {
+      "2026-02-01": 9680.0
+    },
+    "us-gaap:DebtInstrumentFaceAmount": {
+      "2026-02-01": 48800.0
+    },
+    "us-gaap:SeniorNotes": {
+      "2026-02-01": 47748.0,
+      "2025-02-02": 49731.0
+    },
+    "us-gaap:OtherLongTermDebtNoncurrent": {
+      "2026-02-01": 597.0,
+      "2025-02-02": 315.0
+    },
+    "us-gaap:DebtAndCapitalLeaseObligations": {
+      "2026-02-01": 51308.0,
+      "2025-02-02": 53067.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInNextTwelveMonths": {
+      "2026-02-01": 4684.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInYearTwo": {
+      "2026-02-01": 3625.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInYearThree": {
+      "2026-02-01": 3115.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFour": {
+      "2026-02-01": 3852.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFive": {
+      "2026-02-01": 2072.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalAfterYearFive": {
+      "2026-02-01": 32049.0
+    },
+    "us-gaap:LongTermDebt": {
+      "2026-02-01": 49397.0
+    },
+    "us-gaap:DerivativeCollateralObligationToReturnCash": {
+      "2026-02-01": 459.0,
+      "2025-02-02": 668.0
+    },
+    "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic": {
+      "2026-02-01": 17431.0,
+      "2025-02-02": 18119.0,
+      "2024-01-28": 18681.0
+    },
+    "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign": {
+      "2026-02-01": 1171.0,
+      "2025-02-02": 1287.0,
+      "2024-01-28": 1243.0
+    },
+    "us-gaap:CurrentFederalTaxExpenseBenefit": {
+      "2026-02-01": 2812.0,
+      "2025-02-02": 3417.0,
+      "2024-01-28": 3764.0
+    },
+    "us-gaap:CurrentStateAndLocalTaxExpenseBenefit": {
+      "2026-02-01": 725.0,
+      "2025-02-02": 836.0,
+      "2024-01-28": 882.0
+    },
+    "us-gaap:CurrentForeignTaxExpenseBenefit": {
+      "2026-02-01": 414.0,
+      "2025-02-02": 386.0,
+      "2024-01-28": 365.0
+    },
+    "us-gaap:CurrentIncomeTaxExpenseBenefit": {
+      "2026-02-01": 3951.0,
+      "2025-02-02": 4639.0,
+      "2024-01-28": 5011.0
+    },
+    "us-gaap:DeferredFederalIncomeTaxExpenseBenefit": {
+      "2026-02-01": 503.0,
+      "2025-02-02": -67.0,
+      "2024-01-28": -228.0
+    },
+    "us-gaap:DeferredStateAndLocalIncomeTaxExpenseBenefit": {
+      "2026-02-01": 46.0,
+      "2025-02-02": 25.0,
+      "2024-01-28": 12.0
+    },
+    "us-gaap:DeferredForeignIncomeTaxExpenseBenefit": {
+      "2026-02-01": -54.0,
+      "2025-02-02": 3.0,
+      "2024-01-28": -14.0
+    },
+    "us-gaap:DeferredIncomeTaxExpenseBenefit": {
+      "2026-02-01": 495.0,
+      "2025-02-02": -39.0,
+      "2024-01-28": -230.0
+    },
+    "us-gaap:FederalIncomeTaxExpenseBenefitContinuingOperations": {
+      "2026-02-01": 3315.0,
+      "2025-02-02": 3350.0,
+      "2024-01-28": 3536.0
+    },
+    "us-gaap:StateAndLocalIncomeTaxExpenseBenefitContinuingOperations": {
+      "2026-02-01": 771.0,
+      "2025-02-02": 861.0,
+      "2024-01-28": 894.0
+    },
+    "us-gaap:ForeignIncomeTaxExpenseBenefitContinuingOperations": {
+      "2026-02-01": 360.0,
+      "2025-02-02": 389.0,
+      "2024-01-28": 351.0
+    },
+    "us-gaap:EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate": {
+      "2026-02-01": 21.0,
+      "2025-02-02": 21.0,
+      "2024-01-28": 21.0
+    },
+    "us-gaap:IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate": {
+      "2026-02-01": 3906.0,
+      "2025-02-02": 4075.0,
+      "2024-01-28": 4184.0
+    },
+    "us-gaap:IncomeTaxReconciliationStateAndLocalIncomeTaxes": {
+      "2026-02-01": 663.0,
+      "2025-02-02": 701.0,
+      "2024-01-28": 698.0
+    },
+    "us-gaap:EffectiveIncomeTaxRateReconciliationStateAndLocalIncomeTaxes": {
+      "2026-02-01": 3.6,
+      "2025-02-02": 3.6,
+      "2024-01-28": 3.5
+    },
+    "us-gaap:IncomeTaxReconciliationForeignIncomeTaxRateDifferential": {
+      "2026-02-01": 190.0,
+      "2025-02-02": 164.0,
+      "2024-01-28": 133.0
+    },
+    "us-gaap:EffectiveIncomeTaxRateReconciliationForeignIncomeTaxRateDifferential": {
+      "2026-02-01": 1.0,
+      "2025-02-02": 0.8,
+      "2024-01-28": 0.7
+    },
+    "us-gaap:IncomeTaxReconciliationTaxCredits": {
+      "2026-02-01": 142.0,
+      "2025-02-02": 150.0,
+      "2024-01-28": 142.0
+    },
+    "us-gaap:EffectiveIncomeTaxRateReconciliationTaxCredits": {
+      "2026-02-01": 0.8,
+      "2025-02-02": 0.8,
+      "2024-01-28": 0.7
+    },
+    "us-gaap:IncomeTaxReconciliationOtherReconcilingItems": {
+      "2026-02-01": -171.0,
+      "2025-02-02": -190.0,
+      "2024-01-28": -92.0
+    },
+    "us-gaap:EffectiveIncomeTaxRateReconciliationOtherReconcilingItemsPercent": {
+      "2026-02-01": -0.9,
+      "2025-02-02": -1.0,
+      "2024-01-28": -0.5
+    },
+    "us-gaap:EffectiveIncomeTaxRateContinuingOperations": {
+      "2026-02-01": 23.9,
+      "2025-02-02": 23.7,
+      "2024-01-28": 24.0
+    },
+    "us-gaap:IncomeTaxPaidFederalAfterRefundReceived": {
+      "2026-02-01": 3590.0,
+      "2025-02-02": 2475.0,
+      "2024-01-28": 3737.0
+    },
+    "us-gaap:IncomeTaxPaidStateAndLocalAfterRefundReceived": {
+      "2026-02-01": 799.0,
+      "2025-02-02": 792.0,
+      "2024-01-28": 854.0
+    },
+    "us-gaap:IncomeTaxPaidForeignAfterRefundReceived": {
+      "2026-02-01": 459.0,
+      "2025-02-02": 386.0,
+      "2024-01-28": 432.0
+    },
+    "us-gaap:IncomeTaxesPaidNet": {
+      "2026-02-01": 4848.0,
+      "2025-02-02": 3653.0,
+      "2024-01-28": 5023.0
+    },
+    "us-gaap:DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsEmployeeCompensation": {
+      "2026-02-01": 289.0,
+      "2025-02-02": 230.0
+    },
+    "us-gaap:DeferredTaxAssetsTaxDeferredExpenseReservesAndAccrualsSelfInsurance": {
+      "2026-02-01": 262.0,
+      "2025-02-02": 271.0
+    },
+    "us-gaap:DeferredTaxAssetsStateTaxes": {
+      "2026-02-01": 118.0,
+      "2025-02-02": 133.0
+    },
+    "us-gaap:DeferredTaxAssetsTaxDeferredExpenseReservesAndAccrualsOther": {
+      "2026-02-01": 450.0,
+      "2025-02-02": 475.0
+    },
+    "us-gaap:DeferredTaxAssetsOperatingLossCarryforwards": {
+      "2026-02-01": 95.0,
+      "2025-02-02": 92.0
+    },
+    "hd:DeferredTaxAssetsLeaseLiabilities": {
+      "2026-02-01": 2358.0,
+      "2025-02-02": 2255.0
+    },
+    "us-gaap:DeferredTaxAssetsDeferredIncome": {
+      "2026-02-01": 265.0,
+      "2025-02-02": 259.0
+    },
+    "us-gaap:DeferredTaxAssetsOther": {
+      "2026-02-01": 79.0,
+      "2025-02-02": 77.0
+    },
+    "us-gaap:DeferredTaxAssetsGross": {
+      "2026-02-01": 3916.0,
+      "2025-02-02": 3792.0
+    },
+    "us-gaap:DeferredTaxAssetsValuationAllowance": {
+      "2026-02-01": 6.0,
+      "2025-02-02": 4.0
+    },
+    "us-gaap:DeferredTaxAssetsNet": {
+      "2026-02-01": 3910.0,
+      "2025-02-02": 3788.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesDeferredExpenseCapitalizedInventoryCosts": {
+      "2026-02-01": 26.0,
+      "2025-02-02": 12.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesPropertyPlantAndEquipment": {
+      "2026-02-01": 1514.0,
+      "2025-02-02": 854.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesGoodwillAndIntangibleAssets": {
+      "2026-02-01": 2438.0,
+      "2025-02-02": 2200.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesLeasingArrangements": {
+      "2026-02-01": 2276.0,
+      "2025-02-02": 2178.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesUndistributedForeignEarnings": {
+      "2026-02-01": 42.0,
+      "2025-02-02": 54.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesOther": {
+      "2026-02-01": 167.0,
+      "2025-02-02": 183.0
+    },
+    "us-gaap:DeferredIncomeTaxLiabilities": {
+      "2026-02-01": 6463.0,
+      "2025-02-02": 5481.0
+    },
+    "us-gaap:DeferredTaxLiabilities": {
+      "2026-02-01": 2553.0,
+      "2025-02-02": 1693.0
+    },
+    "us-gaap:UnrecognizedTaxBenefits": {
+      "2025-02-02": 627.0,
+      "2024-01-28": 689.0,
+      "2023-01-29": 643.0,
+      "2026-02-01": 559.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsIncreasesResultingFromCurrentPeriodTaxPositions": {
+      "2026-02-01": 67.0,
+      "2025-02-02": 71.0,
+      "2024-01-28": 74.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsIncreasesResultingFromPriorPeriodTaxPositions": {
+      "2026-02-01": 11.0,
+      "2025-02-02": 3.0,
+      "2024-01-28": 13.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsDecreasesResultingFromPriorPeriodTaxPositions": {
+      "2026-02-01": 71.0,
+      "2025-02-02": 42.0,
+      "2024-01-28": 14.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsDecreasesResultingFromSettlementsWithTaxingAuthorities": {
+      "2026-02-01": 33.0,
+      "2025-02-02": 51.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations": {
+      "2026-02-01": 42.0,
+      "2025-02-02": 43.0,
+      "2024-01-28": 27.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsThatWouldImpactEffectiveTaxRate": {
+      "2026-02-01": 464.0,
+      "2025-02-02": 509.0,
+      "2024-01-28": 568.0
+    },
+    "us-gaap:StockIssuedDuringPeriodSharesShareBasedCompensation": {
+      "2026-02-01": 2.0,
+      "2025-02-02": 4.0,
+      "2024-01-28": 2.0
+    },
+    "us-gaap:StockRepurchasedDuringPeriodShares": {
+      "2025-02-02": 2.0,
+      "2024-01-28": 26.0
+    },
+    "us-gaap:CommonStockDividendsPerShareCashPaid": {
+      "2026-02-01": 9.2,
+      "2025-02-02": 9.0,
+      "2024-01-28": 8.36
+    },
+    "us-gaap:TreasuryStockSharesAcquired": {
+      "2025-02-02": 2.0,
+      "2024-01-28": 26.0
+    },
+    "us-gaap:TreasuryStockValueAcquiredCostMethod": {
+      "2025-02-02": 599.0,
+      "2024-01-28": 8074.0
+    },
+    "us-gaap:AllocatedShareBasedCompensationExpense": {
+      "2026-02-01": 524.0,
+      "2025-02-02": 444.0,
+      "2024-01-28": 382.0
+    },
+    "us-gaap:EmployeeServiceShareBasedCompensationTaxBenefitFromCompensationExpense": {
+      "2026-02-01": 108.0,
+      "2025-02-02": 92.0,
+      "2024-01-28": 79.0
+    },
+    "us-gaap:AllocatedShareBasedCompensationExpenseNetOfTax": {
+      "2026-02-01": 416.0,
+      "2025-02-02": 352.0,
+      "2024-01-28": 303.0
+    },
+    "us-gaap:EmployeeServiceShareBasedCompensationNonvestedAwardsTotalCompensationCostNotYetRecognized": {
+      "2026-02-01": 755.0
+    },
+    "hd:PercentageThePurchasePriceOfSharesUnderTheESPPsIsEqualToTheStocksFairMarketValue": {
+      "2026-02-01": 85.0
+    },
+    "us-gaap:StockIssuedDuringPeriodSharesEmployeeStockPurchasePlans": {
+      "2026-02-01": 1.0
+    },
+    "hd:EmployeeStockPurchasePlanESPPWeightedAveragePurchasePriceOfSharesPurchased": {
+      "2026-02-01": 302.5
+    },
+    "hd:EmployeeStockPurchasePlanESPPCashContributionsToESPP": {
+      "2026-02-01": 33.0
+    },
+    "us-gaap:DefinedContributionPlanCostRecognized": {
+      "2026-02-01": 382.0,
+      "2025-02-02": 347.0,
+      "2024-01-28": 293.0
+    },
+    "hd:NumberOfSharesHeldInEmployeeBenefitPlans": {
+      "2026-02-01": 4.4
+    },
+    "us-gaap:IncrementalCommonSharesAttributableToShareBasedPaymentArrangements": {
+      "2026-02-01": 2.0,
+      "2025-02-02": 3.0,
+      "2024-01-28": 3.0
+    },
+    "us-gaap:AntidilutiveSecuritiesExcludedFromComputationOfEarningsPerShareAmount": {
+      "2024-01-28": 1.0
+    },
+    "us-gaap:LettersOfCreditOutstandingAmount": {
+      "2026-02-01": 738.0
+    }
+  },
+  "IS": {
+    "concept": "us-gaap_NetIncomeLoss",
+    "tag": "us-gaap:NetIncomeLoss",
+    "name": "Net Income Loss",
+    "weight": 1.0,
+    "values": {
+      "2026-02-01": 14156.0,
+      "2025-02-02": 14806.0
+    },
+    "is_leaf": false,
+    "role": "INC_NET",
+    "children": [
+      {
+        "concept": "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+        "tag": "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+        "name": "Income Loss From Continuing Operations Before Income Taxes Extraordinary Items Noncontrolling Interest",
+        "weight": 1.0,
+        "values": {
+          "2026-02-01": 18602.0,
+          "2025-02-02": 19406.0
+        },
+        "is_leaf": false,
+        "children": [
+          {
+            "concept": "us-gaap_OperatingIncomeLoss",
+            "tag": "us-gaap:OperatingIncomeLoss",
+            "name": "Operating Income Loss",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 20890.0,
+              "2025-02-02": 21526.0
+            },
+            "is_leaf": false,
+            "children": [
+              {
+                "concept": "us-gaap_GrossProfit",
+                "tag": "us-gaap:GrossProfit",
+                "name": "Gross Profit",
+                "weight": 1.0,
+                "values": {
+                  "2026-02-01": 54865.0,
+                  "2025-02-02": 53308.0
+                },
+                "is_leaf": false,
+                "children": [
+                  {
+                    "concept": "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+                    "tag": "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax",
+                    "name": "Revenue From Contract With Customer Excluding Assessed Tax",
+                    "weight": 1.0,
+                    "values": {
+                      "2026-02-01": 164683.0,
+                      "2025-02-02": 159514.0
+                    },
+                    "is_leaf": true,
+                    "role": "IS_REVENUE"
+                  },
+                  {
+                    "concept": "us-gaap_CostOfRevenue",
+                    "tag": "us-gaap:CostOfRevenue",
+                    "name": "Cost Of Revenue",
+                    "weight": -1.0,
+                    "values": {
+                      "2026-02-01": 109818.0,
+                      "2025-02-02": 106206.0
+                    },
+                    "is_leaf": true,
+                    "role": "IS_COGS"
+                  }
+                ]
+              },
+              {
+                "concept": "us-gaap_OperatingExpenses",
+                "tag": "us-gaap:OperatingExpenses",
+                "name": "Operating Expenses",
+                "weight": -1.0,
+                "values": {
+                  "2026-02-01": 33975.0,
+                  "2025-02-02": 31782.0
+                },
+                "is_leaf": false,
+                "children": [
+                  {
+                    "concept": "us-gaap_SellingGeneralAndAdministrativeExpense",
+                    "tag": "us-gaap:SellingGeneralAndAdministrativeExpense",
+                    "name": "Selling General And Administrative Expense",
+                    "weight": 1.0,
+                    "values": {
+                      "2026-02-01": 30702.0,
+                      "2025-02-02": 28748.0
+                    },
+                    "is_leaf": true
+                  },
+                  {
+                    "concept": "us-gaap_DepreciationAndAmortization",
+                    "tag": "us-gaap:DepreciationAndAmortization",
+                    "name": "Depreciation And Amortization",
+                    "weight": 1.0,
+                    "values": {
+                      "2026-02-01": 3273.0,
+                      "2025-02-02": 3034.0
+                    },
+                    "is_leaf": true,
+                    "role": "IS_DA"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "concept": "us-gaap_NonoperatingIncomeExpense",
+            "tag": "us-gaap:NonoperatingIncomeExpense",
+            "name": "Nonoperating Income Expense",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": -2288.0,
+              "2025-02-02": -2120.0
+            },
+            "is_leaf": false,
+            "children": [
+              {
+                "concept": "us-gaap_InvestmentIncomeInterestAndDividend",
+                "tag": "us-gaap:InvestmentIncomeInterestAndDividend",
+                "name": "Investment Income Interest And Dividend",
+                "weight": 1.0,
+                "values": {
+                  "2026-02-01": 124.0,
+                  "2025-02-02": 201.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_InterestExpenseNonoperating",
+                "tag": "us-gaap:InterestExpenseNonoperating",
+                "name": "Interest Expense Nonoperating",
+                "weight": -1.0,
+                "values": {
+                  "2026-02-01": 2412.0,
+                  "2025-02-02": 2321.0
+                },
+                "is_leaf": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_IncomeTaxExpenseBenefit",
+        "tag": "us-gaap:IncomeTaxExpenseBenefit",
+        "name": "Income Tax Expense Benefit",
+        "weight": -1.0,
+        "values": {
+          "2026-02-01": 4446.0,
+          "2025-02-02": 4600.0
+        },
+        "is_leaf": true
+      }
+    ]
+  },
+  "IS_groupable": [],
+  "BS": {
+    "concept": "us-gaap_Assets",
+    "tag": "us-gaap:Assets",
+    "name": "Assets",
+    "weight": 1.0,
+    "values": {
+      "2026-02-01": 105095.0,
+      "2025-02-02": 96119.0
+    },
+    "is_leaf": false,
+    "role": "BS_TA",
+    "children": [
+      {
+        "concept": "us-gaap_AssetsCurrent",
+        "tag": "us-gaap:AssetsCurrent",
+        "name": "Assets Current",
+        "weight": 1.0,
+        "values": {
+          "2026-02-01": 34391.0,
+          "2025-02-02": 31683.0
+        },
+        "is_leaf": false,
+        "role": "BS_TCA",
+        "children": [
+          {
+            "concept": "us-gaap_CashAndCashEquivalentsAtCarryingValue",
+            "tag": "us-gaap:CashAndCashEquivalentsAtCarryingValue",
+            "name": "Cash And Cash Equivalents At Carrying Value",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 1389.0,
+              "2025-02-02": 1659.0
+            },
+            "is_leaf": true,
+            "role": "BS_CASH"
+          },
+          {
+            "concept": "us-gaap_AccountsReceivableNetCurrent",
+            "tag": "us-gaap:AccountsReceivableNetCurrent",
+            "name": "Accounts Receivable",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 5597.0,
+              "2025-02-02": 4903.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_InventoryNet",
+            "tag": "us-gaap:InventoryNet",
+            "name": "Inventory Net",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 25817.0,
+              "2025-02-02": 23451.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_OtherAssetsCurrent",
+            "tag": "us-gaap:OtherAssetsCurrent",
+            "name": "Other Assets Current",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 1588.0,
+              "2025-02-02": 1670.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
+        "tag": "us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
+        "name": "Property Plant And Equipment And Finance Lease Right Of Use Asset After Accumulated Depreciation And Amortization",
+        "weight": 1.0,
+        "values": {
+          "2026-02-01": 28021.0,
+          "2025-02-02": 26702.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_OperatingLeaseRightOfUseAsset",
+        "tag": "us-gaap:OperatingLeaseRightOfUseAsset",
+        "name": "Operating Lease Right Of Use Asset",
+        "weight": 1.0,
+        "values": {
+          "2026-02-01": 9204.0,
+          "2025-02-02": 8592.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_Goodwill",
+        "tag": "us-gaap:Goodwill",
+        "name": "Goodwill",
+        "weight": 1.0,
+        "values": {
+          "2026-02-01": 22344.0,
+          "2025-02-02": 19475.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_IntangibleAssetsNetExcludingGoodwill",
+        "tag": "us-gaap:IntangibleAssetsNetExcludingGoodwill",
+        "name": "Intangible Assets Net Excluding Goodwill",
+        "weight": 1.0,
+        "values": {
+          "2026-02-01": 10329.0,
+          "2025-02-02": 8983.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_OtherAssetsNoncurrent",
+        "tag": "us-gaap:OtherAssetsNoncurrent",
+        "name": "Other Assets",
+        "weight": 1.0,
+        "values": {
+          "2026-02-01": 806.0,
+          "2025-02-02": 684.0
+        },
+        "is_leaf": true
+      }
+    ]
+  },
+  "BS_groupable": [
+    {
+      "parent": "us-gaap_Assets",
+      "parent_name": "Assets",
+      "parent_total": {
+        "2026-02-01": 105095.0,
+        "2025-02-02": 96119.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
+          "name": "Property Plant And Equipment And Finance Lease Right Of Use Asset After Accumulated Depreciation And Amortization",
+          "tag": "us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 28021.0,
+            "2025-02-02": 26702.0
+          }
+        },
+        {
+          "concept": "us-gaap_Goodwill",
+          "name": "Goodwill",
+          "tag": "us-gaap:Goodwill",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 22344.0,
+            "2025-02-02": 19475.0
+          }
+        },
+        {
+          "concept": "us-gaap_IntangibleAssetsNetExcludingGoodwill",
+          "name": "Intangible Assets Net Excluding Goodwill",
+          "tag": "us-gaap:IntangibleAssetsNetExcludingGoodwill",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 10329.0,
+            "2025-02-02": 8983.0
+          }
+        },
+        {
+          "concept": "us-gaap_OperatingLeaseRightOfUseAsset",
+          "name": "Operating Lease Right Of Use Asset",
+          "tag": "us-gaap:OperatingLeaseRightOfUseAsset",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 9204.0,
+            "2025-02-02": 8592.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherAssetsNoncurrent",
+          "name": "Other Assets",
+          "tag": "us-gaap:OtherAssetsNoncurrent",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 806.0,
+            "2025-02-02": 684.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_AssetsCurrent",
+      "parent_name": "Assets Current",
+      "parent_total": {
+        "2026-02-01": 34391.0,
+        "2025-02-02": 31683.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_InventoryNet",
+          "name": "Inventory Net",
+          "tag": "us-gaap:InventoryNet",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 25817.0,
+            "2025-02-02": 23451.0
+          }
+        },
+        {
+          "concept": "us-gaap_AccountsReceivableNetCurrent",
+          "name": "Accounts Receivable",
+          "tag": "us-gaap:AccountsReceivableNetCurrent",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 5597.0,
+            "2025-02-02": 4903.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherAssetsCurrent",
+          "name": "Other Assets Current",
+          "tag": "us-gaap:OtherAssetsCurrent",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 1588.0,
+            "2025-02-02": 1670.0
+          }
+        },
+        {
+          "concept": "us-gaap_CashAndCashEquivalentsAtCarryingValue",
+          "name": "Cash And Cash Equivalents At Carrying Value",
+          "tag": "us-gaap:CashAndCashEquivalentsAtCarryingValue",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 1389.0,
+            "2025-02-02": 1659.0
+          }
+        }
+      ]
+    }
+  ],
+  "BS_LE": {
+    "concept": "us-gaap_LiabilitiesAndStockholdersEquity",
+    "tag": "us-gaap:LiabilitiesAndStockholdersEquity",
+    "name": "Liabilities And Stockholders Equity",
+    "weight": 1.0,
+    "values": {
+      "2026-02-01": 105095.0,
+      "2025-02-02": 96119.0
+    },
+    "is_leaf": false,
+    "role": "BS_TLE",
+    "children": [
+      {
+        "concept": "us-gaap_Liabilities",
+        "tag": "us-gaap:Liabilities",
+        "name": "Liabilities",
+        "weight": 1.0,
+        "values": {
+          "2026-02-01": 92282.0,
+          "2025-02-02": 89479.0
+        },
+        "is_leaf": false,
+        "role": "BS_TL",
+        "children": [
+          {
+            "concept": "us-gaap_LiabilitiesCurrent",
+            "tag": "us-gaap:LiabilitiesCurrent",
+            "name": "Liabilities Current",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 32424.0,
+              "2025-02-02": 28661.0
+            },
+            "is_leaf": false,
+            "role": "BS_TCL",
+            "children": [
+              {
+                "concept": "us-gaap_CommercialPaper",
+                "tag": "us-gaap:CommercialPaper",
+                "name": "Commercial Paper",
+                "weight": 1.0,
+                "values": {
+                  "2026-02-01": 4464.0,
+                  "2025-02-02": 316.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_AccountsPayableCurrent",
+                "tag": "us-gaap:AccountsPayableCurrent",
+                "name": "Accounts Payable Current",
+                "weight": 1.0,
+                "values": {
+                  "2026-02-01": 11491.0,
+                  "2025-02-02": 11938.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_EmployeeRelatedLiabilitiesCurrent",
+                "tag": "us-gaap:EmployeeRelatedLiabilitiesCurrent",
+                "name": "Employee Related Liabilities Current",
+                "weight": 1.0,
+                "values": {
+                  "2026-02-01": 2529.0,
+                  "2025-02-02": 2315.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_SalesAndExciseTaxPayableCurrent",
+                "tag": "us-gaap:SalesAndExciseTaxPayableCurrent",
+                "name": "Sales And Excise Tax Payable Current",
+                "weight": 1.0,
+                "values": {
+                  "2026-02-01": 508.0,
+                  "2025-02-02": 628.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_DeferredRevenueCurrent",
+                "tag": "us-gaap:DeferredRevenueCurrent",
+                "name": "Deferred Revenue Current",
+                "weight": 1.0,
+                "values": {
+                  "2026-02-01": 2575.0,
+                  "2025-02-02": 2610.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_AccruedIncomeTaxesCurrent",
+                "tag": "us-gaap:AccruedIncomeTaxesCurrent",
+                "name": "Accrued Income Taxes Current",
+                "weight": 1.0,
+                "values": {
+                  "2026-02-01": 114.0,
+                  "2025-02-02": 832.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_LongTermDebtAndCapitalLeaseObligationsCurrent",
+                "tag": "us-gaap:LongTermDebtAndCapitalLeaseObligationsCurrent",
+                "name": "Long Term Debt And Capital Lease Obligations Current",
+                "weight": 1.0,
+                "values": {
+                  "2026-02-01": 4967.0,
+                  "2025-02-02": 4582.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_OperatingLeaseLiabilityCurrent",
+                "tag": "us-gaap:OperatingLeaseLiabilityCurrent",
+                "name": "Operating Lease Liability Current",
+                "weight": 1.0,
+                "values": {
+                  "2026-02-01": 1418.0,
+                  "2025-02-02": 1274.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_OtherAccruedLiabilitiesCurrent",
+                "tag": "us-gaap:OtherAccruedLiabilitiesCurrent",
+                "name": "Other Accrued Liabilities Current",
+                "weight": 1.0,
+                "values": {
+                  "2026-02-01": 4358.0,
+                  "2025-02-02": 4166.0
+                },
+                "is_leaf": true
+              }
+            ]
+          },
+          {
+            "concept": "us-gaap_LongTermDebtAndCapitalLeaseObligations",
+            "tag": "us-gaap:LongTermDebtAndCapitalLeaseObligations",
+            "name": "Long Term Debt And Capital Lease Obligations",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 46341.0,
+              "2025-02-02": 48485.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_OperatingLeaseLiabilityNoncurrent",
+            "tag": "us-gaap:OperatingLeaseLiabilityNoncurrent",
+            "name": "Operating Lease Liability",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 8160.0,
+              "2025-02-02": 7633.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_DeferredIncomeTaxLiabilitiesNet",
+            "tag": "us-gaap:DeferredIncomeTaxLiabilitiesNet",
+            "name": "Deferred Income Tax Liabilities Net",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 2845.0,
+              "2025-02-02": 1962.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_OtherLiabilitiesNoncurrent",
+            "tag": "us-gaap:OtherLiabilitiesNoncurrent",
+            "name": "Other Liabilities",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 2512.0,
+              "2025-02-02": 2738.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_StockholdersEquity",
+        "tag": "us-gaap:StockholdersEquity",
+        "name": "Stockholders Equity",
+        "weight": 1.0,
+        "values": {
+          "2026-02-01": 12813.0,
+          "2025-02-02": 6640.0
+        },
+        "is_leaf": false,
+        "role": "BS_TE",
+        "children": [
+          {
+            "concept": "us-gaap_CommitmentsAndContingencies",
+            "tag": "us-gaap:CommitmentsAndContingencies",
+            "name": "Commitments And Contingencies",
+            "weight": 1.0,
+            "values": {},
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_CommonStockValueOutstanding",
+            "tag": "us-gaap:CommonStockValueOutstanding",
+            "name": "Common Stock Value Outstanding",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 90.0,
+              "2025-02-02": 90.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_AdditionalPaidInCapitalCommonStock",
+            "tag": "us-gaap:AdditionalPaidInCapitalCommonStock",
+            "name": "Additional Paid In Capital Common Stock",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 14809.0,
+              "2025-02-02": 14117.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_RetainedEarningsAccumulatedDeficit",
+            "tag": "us-gaap:RetainedEarningsAccumulatedDeficit",
+            "name": "Retained Earnings Accumulated Deficit",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 94537.0,
+              "2025-02-02": 89533.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+            "tag": "us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+            "name": "Accumulated Other Comprehensive Income Loss Net Of Tax",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": -652.0,
+              "2025-02-02": -1129.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_TreasuryStockValue",
+            "tag": "us-gaap:TreasuryStockValue",
+            "name": "Treasury Stock Value",
+            "weight": -1.0,
+            "values": {
+              "2026-02-01": 95971.0,
+              "2025-02-02": 95971.0
+            },
+            "is_leaf": true
+          }
+        ]
+      }
+    ]
+  },
+  "BS_LE_groupable": [
+    {
+      "parent": "us-gaap_Liabilities",
+      "parent_name": "Liabilities",
+      "parent_total": {
+        "2026-02-01": 92282.0,
+        "2025-02-02": 89479.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_LongTermDebtAndCapitalLeaseObligations",
+          "name": "Long Term Debt And Capital Lease Obligations",
+          "tag": "us-gaap:LongTermDebtAndCapitalLeaseObligations",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 46341.0,
+            "2025-02-02": 48485.0
+          }
+        },
+        {
+          "concept": "us-gaap_OperatingLeaseLiabilityNoncurrent",
+          "name": "Operating Lease Liability",
+          "tag": "us-gaap:OperatingLeaseLiabilityNoncurrent",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 8160.0,
+            "2025-02-02": 7633.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherLiabilitiesNoncurrent",
+          "name": "Other Liabilities",
+          "tag": "us-gaap:OtherLiabilitiesNoncurrent",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 2512.0,
+            "2025-02-02": 2738.0
+          }
+        },
+        {
+          "concept": "us-gaap_DeferredIncomeTaxLiabilitiesNet",
+          "name": "Deferred Income Tax Liabilities Net",
+          "tag": "us-gaap:DeferredIncomeTaxLiabilitiesNet",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 2845.0,
+            "2025-02-02": 1962.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_LiabilitiesCurrent",
+      "parent_name": "Liabilities Current",
+      "parent_total": {
+        "2026-02-01": 32424.0,
+        "2025-02-02": 28661.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_AccountsPayableCurrent",
+          "name": "Accounts Payable Current",
+          "tag": "us-gaap:AccountsPayableCurrent",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 11491.0,
+            "2025-02-02": 11938.0
+          }
+        },
+        {
+          "concept": "us-gaap_LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "name": "Long Term Debt And Capital Lease Obligations Current",
+          "tag": "us-gaap:LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 4967.0,
+            "2025-02-02": 4582.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherAccruedLiabilitiesCurrent",
+          "name": "Other Accrued Liabilities Current",
+          "tag": "us-gaap:OtherAccruedLiabilitiesCurrent",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 4358.0,
+            "2025-02-02": 4166.0
+          }
+        },
+        {
+          "concept": "us-gaap_DeferredRevenueCurrent",
+          "name": "Deferred Revenue Current",
+          "tag": "us-gaap:DeferredRevenueCurrent",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 2575.0,
+            "2025-02-02": 2610.0
+          }
+        },
+        {
+          "concept": "us-gaap_EmployeeRelatedLiabilitiesCurrent",
+          "name": "Employee Related Liabilities Current",
+          "tag": "us-gaap:EmployeeRelatedLiabilitiesCurrent",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 2529.0,
+            "2025-02-02": 2315.0
+          }
+        },
+        {
+          "concept": "us-gaap_CommercialPaper",
+          "name": "Commercial Paper",
+          "tag": "us-gaap:CommercialPaper",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 4464.0,
+            "2025-02-02": 316.0
+          }
+        },
+        {
+          "concept": "us-gaap_OperatingLeaseLiabilityCurrent",
+          "name": "Operating Lease Liability Current",
+          "tag": "us-gaap:OperatingLeaseLiabilityCurrent",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 1418.0,
+            "2025-02-02": 1274.0
+          }
+        },
+        {
+          "concept": "us-gaap_SalesAndExciseTaxPayableCurrent",
+          "name": "Sales And Excise Tax Payable Current",
+          "tag": "us-gaap:SalesAndExciseTaxPayableCurrent",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 508.0,
+            "2025-02-02": 628.0
+          }
+        },
+        {
+          "concept": "us-gaap_AccruedIncomeTaxesCurrent",
+          "name": "Accrued Income Taxes Current",
+          "tag": "us-gaap:AccruedIncomeTaxesCurrent",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 114.0,
+            "2025-02-02": 832.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_StockholdersEquity",
+      "parent_name": "Stockholders Equity",
+      "parent_total": {
+        "2026-02-01": 12813.0,
+        "2025-02-02": 6640.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_TreasuryStockValue",
+          "name": "Treasury Stock Value",
+          "tag": "us-gaap:TreasuryStockValue",
+          "weight": -1.0,
+          "values": {
+            "2026-02-01": 95971.0,
+            "2025-02-02": 95971.0
+          }
+        },
+        {
+          "concept": "us-gaap_RetainedEarningsAccumulatedDeficit",
+          "name": "Retained Earnings Accumulated Deficit",
+          "tag": "us-gaap:RetainedEarningsAccumulatedDeficit",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 94537.0,
+            "2025-02-02": 89533.0
+          }
+        },
+        {
+          "concept": "us-gaap_AdditionalPaidInCapitalCommonStock",
+          "name": "Additional Paid In Capital Common Stock",
+          "tag": "us-gaap:AdditionalPaidInCapitalCommonStock",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 14809.0,
+            "2025-02-02": 14117.0
+          }
+        },
+        {
+          "concept": "us-gaap_AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+          "name": "Accumulated Other Comprehensive Income Loss Net Of Tax",
+          "tag": "us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": -652.0,
+            "2025-02-02": -1129.0
+          }
+        },
+        {
+          "concept": "us-gaap_CommonStockValueOutstanding",
+          "name": "Common Stock Value Outstanding",
+          "tag": "us-gaap:CommonStockValueOutstanding",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 90.0,
+            "2025-02-02": 90.0
+          }
+        },
+        {
+          "concept": "us-gaap_CommitmentsAndContingencies",
+          "name": "Commitments And Contingencies",
+          "tag": "us-gaap:CommitmentsAndContingencies",
+          "weight": 1.0,
+          "values": {}
+        }
+      ]
+    }
+  ],
+  "CF": {
+    "concept": "us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect",
+    "tag": "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect",
+    "name": "Cash Cash Equivalents Restricted Cash And Restricted Cash Equivalents Period Increase Decrease Excluding Exchange Rate Effect",
+    "weight": 1.0,
+    "values": {
+      "2026-02-01": -270.0,
+      "2025-02-02": -2101.0
+    },
+    "is_leaf": false,
+    "role": "CF_NETCH",
+    "children": [
+      {
+        "concept": "us-gaap_NetCashProvidedByUsedInOperatingActivities",
+        "tag": "us-gaap:NetCashProvidedByUsedInOperatingActivities",
+        "name": "Net Cash Provided By Used In Operating Activities",
+        "weight": 1.0,
+        "values": {
+          "2026-02-01": 16325.0,
+          "2025-02-02": 19810.0
+        },
+        "is_leaf": false,
+        "role": "CF_OPCF",
+        "children": [
+          {
+            "concept": "us-gaap_NetIncomeLoss",
+            "tag": "us-gaap:NetIncomeLoss",
+            "name": "Net Income Loss",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 14156.0,
+              "2025-02-02": 14806.0
+            },
+            "is_leaf": true,
+            "role": "INC_NET_CF"
+          },
+          {
+            "concept": "us-gaap_DepreciationDepletionAndAmortization",
+            "tag": "us-gaap:DepreciationDepletionAndAmortization",
+            "name": "Depreciation Depletion And Amortization",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 3514.0,
+              "2025-02-02": 3336.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_AmortizationOfIntangibleAssets",
+            "tag": "us-gaap:AmortizationOfIntangibleAssets",
+            "name": "Amortization Of Intangible Assets",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 607.0,
+              "2025-02-02": 425.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ShareBasedCompensation",
+            "tag": "us-gaap:ShareBasedCompensation",
+            "name": "Share Based Compensation",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 522.0,
+              "2025-02-02": 442.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInReceivables",
+            "tag": "us-gaap:IncreaseDecreaseInReceivables",
+            "name": "Increase Decrease In Receivables",
+            "weight": -1.0,
+            "values": {
+              "2026-02-01": -107.0,
+              "2025-02-02": -174.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInRetailRelatedInventories",
+            "tag": "us-gaap:IncreaseDecreaseInRetailRelatedInventories",
+            "name": "Increase Decrease In Retail Related Inventories",
+            "weight": -1.0,
+            "values": {
+              "2026-02-01": 1498.0,
+              "2025-02-02": 743.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInOtherCurrentAssets",
+            "tag": "us-gaap:IncreaseDecreaseInOtherCurrentAssets",
+            "name": "Increase Decrease In Other Current Assets",
+            "weight": -1.0,
+            "values": {
+              "2026-02-01": -124.0,
+              "2025-02-02": -86.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInAccountsPayableAndAccruedLiabilities",
+            "tag": "us-gaap:IncreaseDecreaseInAccountsPayableAndAccruedLiabilities",
+            "name": "Increase Decrease In Accounts Payable And Accrued Liabilities",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": -1058.0,
+              "2025-02-02": 518.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInDeferredRevenue",
+            "tag": "us-gaap:IncreaseDecreaseInDeferredRevenue",
+            "name": "Increase Decrease In Deferred Revenue",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": -61.0,
+              "2025-02-02": -165.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInAccruedIncomeTaxesPayable",
+            "tag": "us-gaap:IncreaseDecreaseInAccruedIncomeTaxesPayable",
+            "name": "Increase Decrease In Accrued Income Taxes Payable",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": -698.0,
+              "2025-02-02": 809.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInDeferredIncomeTaxes",
+            "tag": "us-gaap:IncreaseDecreaseInDeferredIncomeTaxes",
+            "name": "Increase Decrease In Deferred Income Taxes",
+            "weight": -1.0,
+            "values": {
+              "2026-02-01": -418.0,
+              "2025-02-02": -15.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInOtherOperatingCapitalNet",
+            "tag": "us-gaap:IncreaseDecreaseInOtherOperatingCapitalNet",
+            "name": "Increase Decrease In Other Operating Capital Net",
+            "weight": -1.0,
+            "values": {
+              "2026-02-01": -192.0,
+              "2025-02-02": -107.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+        "tag": "us-gaap:NetCashProvidedByUsedInInvestingActivities",
+        "name": "Net Cash Provided By Used In Investing Activities",
+        "weight": 1.0,
+        "values": {
+          "2026-02-01": -8980.0,
+          "2025-02-02": -21031.0
+        },
+        "is_leaf": false,
+        "role": "CF_INVCF",
+        "children": [
+          {
+            "concept": "us-gaap_PaymentsToAcquireProductiveAssets",
+            "tag": "us-gaap:PaymentsToAcquireProductiveAssets",
+            "name": "Payments To Acquire Productive Assets",
+            "weight": -1.0,
+            "values": {
+              "2026-02-01": 3679.0,
+              "2025-02-02": 3485.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsToAcquireBusinessesNetOfCashAcquired",
+            "tag": "us-gaap:PaymentsToAcquireBusinessesNetOfCashAcquired",
+            "name": "Payments To Acquire Businesses Net Of Cash Acquired",
+            "weight": -1.0,
+            "values": {
+              "2026-02-01": 5410.0,
+              "2025-02-02": 17644.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
+            "tag": "us-gaap:PaymentsForProceedsFromOtherInvestingActivities",
+            "name": "Payments For Proceeds From Other Investing Activities",
+            "weight": -1.0,
+            "values": {
+              "2026-02-01": -109.0,
+              "2025-02-02": -98.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+        "tag": "us-gaap:NetCashProvidedByUsedInFinancingActivities",
+        "name": "Net Cash Provided By Used In Financing Activities",
+        "weight": 1.0,
+        "values": {
+          "2026-02-01": -7714.0,
+          "2025-02-02": -694.0
+        },
+        "is_leaf": false,
+        "role": "CF_FINCF",
+        "children": [
+          {
+            "concept": "us-gaap_ProceedsFromRepaymentsOfCommercialPaper",
+            "tag": "us-gaap:ProceedsFromRepaymentsOfCommercialPaper",
+            "name": "Proceeds From Repayments Of Commercial Paper",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 4148.0,
+              "2025-02-02": 316.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ProceedsFromIssuanceOfLongTermDebtAndCapitalSecuritiesNet",
+            "tag": "us-gaap:ProceedsFromIssuanceOfLongTermDebtAndCapitalSecuritiesNet",
+            "name": "Proceeds From Issuance Of Long Term Debt And Capital Securities Net",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 2161.0,
+              "2025-02-02": 10010.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_RepaymentsOfLongTermDebtAndCapitalSecurities",
+            "tag": "us-gaap:RepaymentsOfLongTermDebtAndCapitalSecurities",
+            "name": "Repayments Of Long Term Debt And Capital Securities",
+            "weight": -1.0,
+            "values": {
+              "2026-02-01": 5040.0,
+              "2025-02-02": 1536.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsForRepurchaseOfCommonStock",
+            "tag": "us-gaap:PaymentsForRepurchaseOfCommonStock",
+            "name": "Payments For Repurchase Of Common Stock",
+            "weight": -1.0,
+            "values": {
+              "2025-02-02": 649.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ProceedsFromIssuanceOfCommonStock",
+            "tag": "us-gaap:ProceedsFromIssuanceOfCommonStock",
+            "name": "Proceeds From Issuance Of Common Stock",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": 314.0,
+              "2025-02-02": 395.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsOfDividendsCommonStock",
+            "tag": "us-gaap:PaymentsOfDividendsCommonStock",
+            "name": "Payments Of Dividends Common Stock",
+            "weight": -1.0,
+            "values": {
+              "2026-02-01": 9152.0,
+              "2025-02-02": 8929.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
+            "tag": "us-gaap:ProceedsFromPaymentsForOtherFinancingActivities",
+            "name": "Proceeds From Payments For Other Financing Activities",
+            "weight": 1.0,
+            "values": {
+              "2026-02-01": -145.0,
+              "2025-02-02": -301.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+        "tag": "us-gaap:EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+        "name": "us-gaap:Effect Of Exchange Rate On Cash Cash Equivalents Restricted Cash And Restricted Cash Equivalents",
+        "weight": 1.0,
+        "values": {
+          "2026-02-01": 99.0,
+          "2025-02-02": -186.0
+        },
+        "is_leaf": true,
+        "role": "CF_FX"
+      }
+    ]
+  },
+  "CF_groupable": [
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInOperatingActivities",
+      "parent_name": "Net Cash Provided By Used In Operating Activities",
+      "parent_total": {
+        "2026-02-01": 16325.0,
+        "2025-02-02": 19810.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_NetIncomeLoss",
+          "name": "Net Income Loss",
+          "tag": "us-gaap:NetIncomeLoss",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 14156.0,
+            "2025-02-02": 14806.0
+          }
+        },
+        {
+          "concept": "us-gaap_DepreciationDepletionAndAmortization",
+          "name": "Depreciation Depletion And Amortization",
+          "tag": "us-gaap:DepreciationDepletionAndAmortization",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 3514.0,
+            "2025-02-02": 3336.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInRetailRelatedInventories",
+          "name": "Increase Decrease In Retail Related Inventories",
+          "tag": "us-gaap:IncreaseDecreaseInRetailRelatedInventories",
+          "weight": -1.0,
+          "values": {
+            "2026-02-01": 1498.0,
+            "2025-02-02": 743.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInAccountsPayableAndAccruedLiabilities",
+          "name": "Increase Decrease In Accounts Payable And Accrued Liabilities",
+          "tag": "us-gaap:IncreaseDecreaseInAccountsPayableAndAccruedLiabilities",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": -1058.0,
+            "2025-02-02": 518.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInAccruedIncomeTaxesPayable",
+          "name": "Increase Decrease In Accrued Income Taxes Payable",
+          "tag": "us-gaap:IncreaseDecreaseInAccruedIncomeTaxesPayable",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": -698.0,
+            "2025-02-02": 809.0
+          }
+        },
+        {
+          "concept": "us-gaap_AmortizationOfIntangibleAssets",
+          "name": "Amortization Of Intangible Assets",
+          "tag": "us-gaap:AmortizationOfIntangibleAssets",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 607.0,
+            "2025-02-02": 425.0
+          }
+        },
+        {
+          "concept": "us-gaap_ShareBasedCompensation",
+          "name": "Share Based Compensation",
+          "tag": "us-gaap:ShareBasedCompensation",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 522.0,
+            "2025-02-02": 442.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInDeferredIncomeTaxes",
+          "name": "Increase Decrease In Deferred Income Taxes",
+          "tag": "us-gaap:IncreaseDecreaseInDeferredIncomeTaxes",
+          "weight": -1.0,
+          "values": {
+            "2026-02-01": -418.0,
+            "2025-02-02": -15.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInOtherOperatingCapitalNet",
+          "name": "Increase Decrease In Other Operating Capital Net",
+          "tag": "us-gaap:IncreaseDecreaseInOtherOperatingCapitalNet",
+          "weight": -1.0,
+          "values": {
+            "2026-02-01": -192.0,
+            "2025-02-02": -107.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInReceivables",
+          "name": "Increase Decrease In Receivables",
+          "tag": "us-gaap:IncreaseDecreaseInReceivables",
+          "weight": -1.0,
+          "values": {
+            "2026-02-01": -107.0,
+            "2025-02-02": -174.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInDeferredRevenue",
+          "name": "Increase Decrease In Deferred Revenue",
+          "tag": "us-gaap:IncreaseDecreaseInDeferredRevenue",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": -61.0,
+            "2025-02-02": -165.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInOtherCurrentAssets",
+          "name": "Increase Decrease In Other Current Assets",
+          "tag": "us-gaap:IncreaseDecreaseInOtherCurrentAssets",
+          "weight": -1.0,
+          "values": {
+            "2026-02-01": -124.0,
+            "2025-02-02": -86.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+      "parent_name": "Net Cash Provided By Used In Investing Activities",
+      "parent_total": {
+        "2026-02-01": -8980.0,
+        "2025-02-02": -21031.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_PaymentsToAcquireBusinessesNetOfCashAcquired",
+          "name": "Payments To Acquire Businesses Net Of Cash Acquired",
+          "tag": "us-gaap:PaymentsToAcquireBusinessesNetOfCashAcquired",
+          "weight": -1.0,
+          "values": {
+            "2026-02-01": 5410.0,
+            "2025-02-02": 17644.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsToAcquireProductiveAssets",
+          "name": "Payments To Acquire Productive Assets",
+          "tag": "us-gaap:PaymentsToAcquireProductiveAssets",
+          "weight": -1.0,
+          "values": {
+            "2026-02-01": 3679.0,
+            "2025-02-02": 3485.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
+          "name": "Payments For Proceeds From Other Investing Activities",
+          "tag": "us-gaap:PaymentsForProceedsFromOtherInvestingActivities",
+          "weight": -1.0,
+          "values": {
+            "2026-02-01": -109.0,
+            "2025-02-02": -98.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+      "parent_name": "Net Cash Provided By Used In Financing Activities",
+      "parent_total": {
+        "2026-02-01": -7714.0,
+        "2025-02-02": -694.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_PaymentsOfDividendsCommonStock",
+          "name": "Payments Of Dividends Common Stock",
+          "tag": "us-gaap:PaymentsOfDividendsCommonStock",
+          "weight": -1.0,
+          "values": {
+            "2026-02-01": 9152.0,
+            "2025-02-02": 8929.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromIssuanceOfLongTermDebtAndCapitalSecuritiesNet",
+          "name": "Proceeds From Issuance Of Long Term Debt And Capital Securities Net",
+          "tag": "us-gaap:ProceedsFromIssuanceOfLongTermDebtAndCapitalSecuritiesNet",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 2161.0,
+            "2025-02-02": 10010.0
+          }
+        },
+        {
+          "concept": "us-gaap_RepaymentsOfLongTermDebtAndCapitalSecurities",
+          "name": "Repayments Of Long Term Debt And Capital Securities",
+          "tag": "us-gaap:RepaymentsOfLongTermDebtAndCapitalSecurities",
+          "weight": -1.0,
+          "values": {
+            "2026-02-01": 5040.0,
+            "2025-02-02": 1536.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromRepaymentsOfCommercialPaper",
+          "name": "Proceeds From Repayments Of Commercial Paper",
+          "tag": "us-gaap:ProceedsFromRepaymentsOfCommercialPaper",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 4148.0,
+            "2025-02-02": 316.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsForRepurchaseOfCommonStock",
+          "name": "Payments For Repurchase Of Common Stock",
+          "tag": "us-gaap:PaymentsForRepurchaseOfCommonStock",
+          "weight": -1.0,
+          "values": {
+            "2025-02-02": 649.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromIssuanceOfCommonStock",
+          "name": "Proceeds From Issuance Of Common Stock",
+          "tag": "us-gaap:ProceedsFromIssuanceOfCommonStock",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": 314.0,
+            "2025-02-02": 395.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
+          "name": "Proceeds From Payments For Other Financing Activities",
+          "tag": "us-gaap:ProceedsFromPaymentsForOtherFinancingActivities",
+          "weight": 1.0,
+          "values": {
+            "2026-02-01": -145.0,
+            "2025-02-02": -301.0
+          }
+        }
+      ]
+    }
+  ]
+}

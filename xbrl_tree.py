@@ -927,11 +927,36 @@ def _tag_cf_positions(cf_tree: TreeNode | None, facts: dict) -> dict | None:
     # of OPCF/INVCF/FINCF under the CF root. If omitted, the cash proof will show
     # non-zero errors for companies like AAPL, AMZN, GE.
     FX_PATTERNS = ["EffectOfExchangeRate", "EffectOfForeignExchangeRate"]
+    fx_found = False
     for child in cf_tree.children:
         concept_name = child.concept.split('_', 1)[-1] if '_' in child.concept else child.concept
         for pat in FX_PATTERNS:
             if concept_name.startswith(pat) and child.values:
                 child.role = "CF_FX"
+                fx_found = True
+                break
+
+    # If the CF root is the "ExcludingExchangeRateEffect" variant, FX lives
+    # outside the calc linkbase tree.  Look it up in facts and inject a
+    # synthetic child so NETCH = OPCF + INVCF + FINCF + FX holds.
+    if not fx_found and facts and "Excluding" in (cf_tree.tag or ""):
+        FX_FACT_TAGS = [
+            "us-gaap:EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+            "us-gaap:EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
+            "us-gaap:EffectOfExchangeRateOnCashAndCashEquivalents",
+        ]
+        for tag in FX_FACT_TAGS:
+            if tag in facts and facts[tag]:
+                fx_node = TreeNode(tag)
+                fx_node.concept = tag.replace(":", "_")
+                fx_node.tag = tag
+                fx_node.values = dict(facts[tag])
+                fx_node.role = "CF_FX"
+                cf_tree.add_child(fx_node)
+                # Update the CF root values to include FX (Excluding → true NETCH)
+                for period, fx_val in facts[tag].items():
+                    cf_tree.values[period] = cf_tree.values.get(period, 0) + fx_val
+                fx_found = True
                 break
 
     # NI is typically inside OPCF (which we skip recursing into above).

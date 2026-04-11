@@ -38,16 +38,19 @@ def verify_model(trees: dict) -> list[tuple]:
             return 0
         return node.values.get(period, 0)
 
-    # Helper: find CF_ENDC from facts (instant context, not a tree node)
-    facts = trees.get("facts", {})
-    cf_endc_values = {}
-    for tag in [
-        "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
-        "us-gaap:CashAndCashEquivalentsAtCarryingValue",
-    ]:
-        if tag in facts:
-            cf_endc_values = facts[tag]
-            break
+    # Use CF_ENDC values computed by xbrl_tree.py (single source of truth).
+    # Falls back to facts lookup if cf_endc_values not stored.
+    cf_endc_values = trees.get("cf_endc_values", {})
+    if not cf_endc_values:
+        facts = trees.get("facts", {})
+        for tag in [
+            "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
+            "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+            "us-gaap:CashAndCashEquivalentsAtCarryingValue",
+        ]:
+            if tag in facts:
+                cf_endc_values = facts[tag]
+                break
 
     def check(name, period, val):
         if abs(val) > 0.5:

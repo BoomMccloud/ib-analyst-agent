@@ -112,10 +112,16 @@ def extract_xbrl_facts(html: str) -> list[dict]:
         # unit (typically millions). scale="6" just tells processors how to
         # convert back to raw dollars — we want the human-readable value.
 
+        # Extract decimals attribute for precision ranking when duplicates exist.
+        dec_pat = re.compile(r'decimals="([^"]+)"')
+        dec_m = dec_pat.search(attrs)
+        decimals = int(dec_m.group(1)) if dec_m and dec_m.group(1).lstrip("-").isdigit() else 0
+
         facts.append({
             "tag": name_m.group(1),
             "context": ctx_m.group(1),
             "value": value,
+            "decimals": decimals,
         })
 
     return facts
@@ -130,6 +136,7 @@ def build_xbrl_facts_dict(html: str) -> dict:
     raw_facts = extract_xbrl_facts(html)
 
     facts = {}  # tag -> {period: value}
+    precision = {}  # tag -> {period: decimals} — track precision for dedup
     for fact in raw_facts:
         ctx = contexts.get(fact["context"])
         if not ctx:
@@ -139,11 +146,16 @@ def build_xbrl_facts_dict(html: str) -> dict:
             continue
         tag = fact["tag"]
         period = ctx["period"]
+        dec = fact.get("decimals", 0)
         if tag not in facts:
             facts[tag] = {}
-        # Some tags appear multiple times for same period (e.g. restated);
-        # keep the last occurrence
-        facts[tag][period] = fact["value"]
+            precision[tag] = {}
+        # When duplicate tags exist for the same period (e.g. PFE reports
+        # Assets at both scale="6"/decimals="-6" and scale="9"/decimals="-9"),
+        # keep the higher-precision value (higher decimals = more precise).
+        if period not in facts[tag] or dec > precision[tag].get(period, -999):
+            facts[tag][period] = fact["value"]
+            precision[tag][period] = dec
 
     return facts
 

@@ -55,15 +55,8 @@ The pipeline has been decoupled. `pymodel.py --checkpoint` now validates the tre
 ## P1 — High Impact / Medium Effort
 
 ### 4. Parallelize Stage 2b LLM calls
-
-**What:** Processing sections sequentially in a `for` loop.
-
-**Impact:** Stage 2b is the slowest stage in the pipeline. Each LLM call takes 5-30 seconds.
-
-**What to do:**
-- Wrap section processing in `concurrent.futures.ThreadPoolExecutor(max_workers=4)`.
-- Each section's `call_llm()` is already stateless — no shared mutable state to worry about.
-- Keep `print(stderr)` calls thread-safe (they already are in CPython due to GIL, but consider using `logging` — see item 11).
+**[OBSOLETE]**
+Stage 2b and all its LLM calls have been replaced by the tree-based parsing logic.
 
 ---
 
@@ -208,3 +201,27 @@ Old LLM-based text extraction logic deleted.
 ### 20. Remove legacy fallback architecture
 **[COMPLETE]**
 The pipeline has successfully transitioned fully to tree-based extraction (`xbrl_tree.py`). `extract_sections.py`, `structure_financials.py`, and `legacy_pymodel.py` have been deleted.
+
+### 21. Add formatting for our model
+
+**What:** The generated Google Sheet models lack styling.
+**Impact:** It's hard for users to read the raw numbers without proper formatting (bolding headers, number formats, borders, etc).
+**What to do:**
+- Update `sheet_builder.py` to use `gws_batch_update()` for styling.
+- Add bold text for subtotals, proper accounting formatting for numbers.
+
+### 22. Add forecasting sections
+
+**What:** The model only has historical data.
+**Impact:** Analysts need a 5-year forecast to do valuation modeling.
+**What to do:**
+- Add LLM logic to parse MD&A and output forecast drivers.
+- Update `pymodel.py` to calculate forecasted periods using drivers.
+- Render forecasted columns in the Google Sheet.
+
+### 23. Support XBRL 1.1
+
+**What:** Current pipeline only parses `_cal.xml` but companies like Microsoft use XBRL Calculation 1.1.
+**Impact:** Cannot build models for MSFT and other modern filers.
+**What to do:**
+- Update `xbrl_tree.py` to parse `calculation-1.1.xsd` files in addition to `_cal.xml`.-1.1.xsd` files in addition to `_cal.xml`.to `_cal.xml`.xbrl_tree.py` to parse `calculation-1.1.xsd` files in addition to `_cal.xml`.
