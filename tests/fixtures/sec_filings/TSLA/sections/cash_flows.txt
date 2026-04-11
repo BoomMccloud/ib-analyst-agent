@@ -1,0 +1,65 @@
+id="i39f9a11fdbe840828cbaefa2e098ffa8_214">
+
+Tesla, Inc.
+Consolidated Statements of Cash Flows
+(in millions)
+
+ Year Ended December 31,
+ 2025 2024 2023
+ Cash Flows from Operating Activities 
+ Net income $ 3,855 $ 7,153 $ 14,974 
+
+Adjustments to reconcile net income to net cash provided by operating activities: 
+ Depreciation, amortization and impairment 6,148 5,368 4,667 
+ Stock-based compensation 2,825 1,999 1,812 
+ Inventory and purchase commitments write-downs 362 335 463 
+ Foreign currency transaction net unrealized loss (gain) 452 (73) (144) 
+ Deferred income taxes 123 477 (6,349) 
+ Non-cash interest and other operating activities 272 172 81 
+ Digital assets loss (gain), net 68 (589) — 
+ Changes in operating assets and liabilities: 
+ Accounts receivable (261) (1,083) (586) 
+ Inventory (630) 937 (1,195) 
+ Operating lease vehicles (25) (590) (1,952) 
+ Prepaid expenses and other assets (3,181) (3,273) (2,652) 
+ Accounts payable, accrued and other liabilities 4,376 3,588 2,605 
+ Deferred revenue 363 502 1,532 
+
+Net cash provided by operating activities 14,747 14,923 13,256 
+ Cash Flows from Investing Activities 
+ Purchases of property and equipment excluding finance leases, net of sales (8,527) (11,342) (8,899) 
+
+ Purchases of investments (37,109) (35,955) (19,112) 
+ Proceeds from maturities of investments 30,158 28,310 12,353 
+ Proceeds from sales of investments — 200 138 
+
+ Business combinations, net of cash acquired — — (64) 
+
+Net cash used in investing activities (15,478) (18,787) (15,584) 
+ Cash Flows from Financing Activities 
+ Proceeds from issuances of debt 5,586 5,744 3,931 
+ Repayments of debt (5,546) (2,500) (1,351) 
+
+ Proceeds from exercises of stock options and other stock issuances, net of issuance costs 1,186 1,241 700 
+ Principal payments on finance leases (104) (381) (464) 
+ Proceeds received from directors in shareholder settlement 277 — — 
+ Payment of legal fees associated with shareholder settlement (176) — — 
+ Debt issuance costs (6) (14) (29) 
+
+ Distributions paid to noncontrolling interests in subsidiaries (78) (104) (144) 
+ Payments for buy-outs of noncontrolling interests in subsidiaries — (133) (54) 
+
+Net cash provided by financing activities 1,139 3,853 2,589 
+ Effect of exchange rate changes on cash and cash equivalents and restricted cash 171 (141) 4 
+
+Net increase (decrease) in cash and cash equivalents and restricted cash 579 (152) 265 
+ Cash and cash equivalents and restricted cash, beginning of period 17,037 17,189 16,924 
+ Cash and cash equivalents and restricted cash, end of period $ 17,616 $ 17,037 $ 17,189 
+ Supplemental Non-Cash Investing and Financing Activities 
+ Acquisitions of property and equipment included in liabilities $ 1,913 $ 1,410 $ 2,272 
+ Supplemental Disclosures 
+ Cash paid during the period for interest $ 292 $ 277 $ 126 
+
+The accompanying notes are an integral part of these consolidated financial statements.
+
+53<div

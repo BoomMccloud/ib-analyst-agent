@@ -1,0 +1,1074 @@
+id="i39f9a11fdbe840828cbaefa2e098ffa8_217">
+
+Tesla, Inc. 
+Notes to Consolidated Financial Statements
+
+Note 1 – Overview
+Tesla, Inc. (“Tesla”, the “Company”, “we”, “us” or “our”) was incorporated in the State of Delaware on July 1, 2003 and converted to a Texas corporation on June 13, 2024. We are focused on bringing artificial intelligence (“AI”) into the real world, through products and services like Full Self-Driving (“FSD”) (Supervised) and Robotaxi, as well as working to develop and commercialize AI robots (“Bots”) (including Optimus). We intend to leverage our current operations, in which we design, develop, manufacture, sell and lease high-performance fully electric vehicles and energy generation and storage systems that increasingly deliver AI-related and enhanced software and services to our customers, to achieve that objective.
+
+Note 2 – Summary of Significant Accounting Policies
+Principles of Consolidation
+The accompanying consolidated financial statements have been prepared in conformity with GAAP and reflect our accounts and operations and those of our subsidiaries in which we have a controlling financial interest. In accordance with the provisions of ASC 810, Consolidation (“ASC 810”), we consolidate any variable interest entity (“VIE”) of which we are the primary beneficiary. We have formed VIEs with financing fund investors in the ordinary course of business in order to facilitate the funding and monetization of certain attributes associated with energy generation systems and leases under our direct vehicle leasing programs. The typical condition for a controlling financial interest ownership is holding a majority of the voting interests of an entity; however, a controlling financial interest may also exist in entities, such as VIEs, through arrangements that do not involve controlling voting interests. ASC 810 requires a variable interest holder to consolidate a VIE if that party has the power to direct the activities of the VIE that most significantly impact the VIE’s economic performance and the obligation to absorb losses of the VIE that could potentially be significant to the VIE or the right to receive benefits from the VIE that could potentially be significant to the VIE. We do not consolidate a VIE in which we have a majority ownership interest when we are not considered the primary beneficiary. We have determined that we are the primary beneficiary of all the VIEs (see Note 14, Variable Interest Entity Arrangements). We evaluate our relationships with all the VIEs on an ongoing basis to ensure that we continue to be the primary beneficiary. All intercompany transactions and balances have been eliminated upon consolidation.
+Use of Estimates
+The preparation of financial statements in conformity with GAAP requires management to make estimates and assumptions that affect the reported amounts of assets, liabilities, revenues, costs and expenses and related disclosures in the accompanying notes. The estimates used for, but not limited to, determining significant economic incentive for resale value guarantee arrangements, sales return reserves, resale value guarantee liabilities, income taxes, the collectability of accounts and finance receivables, fair value and probability assessments of stock-based awards, inventory valuation, warranties, fair value of long-lived assets, fair value of financial instruments, fair value and residual value of operating lease vehicles and energy generation and storage systems subject to leases could be impacted. We have assessed the impact and are not aware of any specific events or circumstances that required an update to our estimates and assumptions or materially affected the carrying value of our assets or liabilities as of the date of issuance of this Annual Report on Form 10-K. These estimates may change as new events occur and additional information is obtained. Actual results could differ materially from these estimates under different assumptions or conditions.
+Reclassifications
+Certain prior period balances have been reclassified to conform to the current period presentation in the consolidated financial statements and the accompanying notes.
+
+54
+
+Revenue Recognition
+Revenue by source
+The following table disaggregates our revenue by major source (in millions):
+
+ Year Ended December 31,
+ 2025 2024 2023
+ Automotive sales $ 65,821 $ 72,480 $ 78,509 
+ Automotive regulatory credits 1,993 2,763 1,790 
+ Energy generation and storage sales 12,270 9,564 5,515 
+ Services and other 12,530 10,534 8,319 
+ Total revenues from sales and services 92,614 95,341 94,133 
+ Automotive leasing 1,712 1,827 2,120 
+ Energy generation and storage leasing 501 522 520 
+ Total revenues $ 94,827 $ 97,690 $ 96,773 
+Automotive Segment
+Automotive Sales
+Automotive sales revenue includes revenues related to cash and financing deliveries of new vehicles, and specific other features and services that meet the definition of a performance obligation under ASC 606, Revenue from Contracts with Customers (“ASC 606”), including internet connectivity, access to our FSD (Supervised) features and their ongoing maintenance, free Supercharging programs and over-the-air software updates. We recognize revenue on automotive sales, net of any discounts or financial subsidies, upon delivery to the customer, which is when the control of a vehicle transfers. Payments are typically received at the point control transfers or in accordance with payment terms customary to the business, except sales we finance for which payments are collected over the contractual loan term. We also recognize a sales return reserve based on historical experience plus consideration for expected future market values when we offer resale value guarantees or similar buyback terms. Other features and services such as access to our internet connectivity, unlimited free Supercharging and over-the-air software updates are provisioned upon transfer of control of a vehicle and recognized over time on a straight-line basis as we have a stand-ready obligation to deliver such services to the customer. Other limited free Supercharging incentives are recognized based on actual usage or expiration, whichever is earlier. We recognize revenue related to these other features and services over the performance period, which is generally the expected ownership life of the vehicle. Revenue related to FSD (Supervised) features is recognized when functionality is delivered to the customer and their ongoing maintenance is recognized over time. For our obligations related to automotive sales, we estimate standalone selling price by considering costs used to develop and deliver the service, third-party pricing of similar options and other information that may be available. Customers may purchase subscriptions, including FSD (Supervised) and premium connectivity, after taking delivery of their vehicles. Revenue from subscriptions is recognized either over time or point in time depending on the nature of contractual terms.
+Any fees or financial subsidies that are paid or payable by us to a customer’s lender when we arrange the financing are recognized upfront as an offset against automotive sales revenue. As our contract costs related to automotive sales are typically fulfilled within one year, the costs to obtain a contract are expensed as incurred. Amounts billed to customers related to shipping and handling are classified as automotive sales revenue, and we have elected to recognize the cost for freight and shipping when control over vehicles, parts or accessories have transferred to the customer as an expense in cost of automotive sales revenue. Our policy is to exclude taxes collected from a customer from the transaction price of automotive contracts.
+We offer resale value guarantees to our commercial banking partners in connection with certain vehicle leasing programs. Under these programs, we originate the lease with our end customer and immediately transfer the lease and the underlying vehicle to our commercial banking partner, with the transaction being accounted for as a sale under ASC 606.
+
+55
+
+We receive upfront payment for the vehicle, do not bear casualty and credit risks during the lease term, and we provide a guarantee capped to a limit if they are unable to sell the vehicle at or above the vehicle’s contractual or determined residual value at the end of the lease term. We estimate a guarantee liability in accordance with ASC 460, Guarantees and record it within other liabilities on our consolidated balance sheets. On a quarterly basis, we assess the estimated market value of vehicles sold under these programs to determine whether there have been changes to the amount of expected resale value guarantee liabilities. As we accumulate more data related to the resale values of our vehicles or as market conditions change, there may be material changes to their estimated values. The total recorded guarantee liabilities on vehicles sold under these programs were immaterial as of December 31, 2025 and 2024. Our maximum exposure on the guarantees we provide if they are unable to sell the vehicle at or above the vehicle’s contractual residual value at the end of the lease term was $3.45 billion and $1.45 billion as of December 31, 2025 and 2024, respectively.
+Deferred revenue related to internet connectivity, access to our FSD (Supervised) features and their ongoing maintenance, free Supercharging programs and over-the-air software updates primarily on automotive sales consisted of the following (in millions):
+
+ Year Ended December 31,
+ 2025 2024
+ Deferred revenue — beginning of period $ 3,599 $ 3,536 
+ Additions 1,083 1,343 
+ Net changes in liability for pre-existing contracts, 
+ including foreign exchange impact 141 (92) 
+ Revenue recognized (956) (1,188) 
+ Deferred revenue — end of period $ 3,867 $ 3,599 
+Deferred revenue is equivalent to the total transaction price allocated to the performance obligations that are unsatisfied, or partially unsatisfied, as of the balance sheet date. Revenue recognized from the deferred revenue balances as of December 31, 2024 and 2023 was $815 million and $872 million for the years ended December 31, 2025 and 2024, respectively. Of the total deferred revenue balance as of December 31, 2025, we expect to recognize $904 million of revenue in the next 12 months. The remaining balance will be recognized at the time of transfer of control of the product or over the performance period as discussed above in Automotive Sales.
+We have financing receivables on our consolidated balance sheets related to loans we provide for financing our automotive deliveries. As of December 31, 2025 and 2024, we had current net financing receivables of $247 million and $247 million, respectively, in Accounts receivable, net, and $554 million and $821 million, respectively, in Other non-current assets for the long-term portion.
+Automotive Regulatory Credits
+We earn tradable credits in the operation of our automotive business under various regulations. We sell these credits globally to other regulated entities who can use the credits to comply with emission standards and other regulatory requirements.
+Payments for automotive regulatory credits are typically received at the point control transfers to the customer, or in accordance with payment terms customary to the business. We recognize revenue on the sale of automotive regulatory credits, which have negligible incremental costs associated with them, at the time control of the regulatory credits is transferred to the purchasing party. Deferred revenue related to sales of automotive regulatory credits was immaterial as of December 31, 2025 and 2024. Revenue recognized from the deferred revenue balance as of December 31, 2024 and 2023 was immaterial for the years ended December 31, 2025 and 2024. We have elected the practical expedient to omit disclosure of the amount of the transaction price allocated to remaining performance obligations for contracts with an original expected contract length of one year or less. As of December 31, 2025, total transaction price allocated to performance obligations that were unsatisfied or partially unsatisfied for contracts with an original expected length of more than one year was $841 million. Of this amount, we expect to recognize $738 million in the next 12 months and the rest over the remaining performance obligation period. Changes in regulations on automotive regulatory credits may significantly impact our remaining performance obligations and revenue to be recognized under these contracts. In 2025, governmental and regulatory actions, such as OBBBA, have restricted certain regulatory credit programs tied to our products, contributing to the $3.84 billion decrease in our remaining performance obligations as of December 31, 2025 compared to December 31, 2024.
+
+56
+
+Automotive Leasing Revenue
+Direct Vehicle Operating Leasing Program
+We have outstanding leases under our direct vehicle operating leasing programs in the U.S., Canada and in certain countries in Europe. Qualifying customers are permitted to lease a vehicle directly from Tesla for up to 48 months. At the end of the lease term, customers may opt to return the vehicles to us or purchase the vehicles when contractually permitted. We account for these leasing transactions as operating leases. We record leasing revenues to automotive leasing revenue on a straight-line basis over the contractual term, and we record the depreciation of these vehicles to cost of automotive leasing revenue. For the years ended December 31, 2025, 2024 and 2023, we recognized $1.68 billion, $1.78 billion and $1.86 billion of direct vehicle leasing revenue, respectively. As of December 31, 2025 and 2024, we had deferred $282 million and $394 million, respectively, of lease-related upfront payments, which will be recognized on a straight-line basis over the contractual terms of the individual leases.
+Our policy is to exclude taxes collected from a customer from the transaction price of automotive contracts.
+Direct Sales-Type Leasing Program
+We have outstanding direct leases and vehicles financed by us under loan arrangements accounted for as sales-type leases under ASC 842, Leases (“ASC 842”), in certain countries in Asia and Europe. Our arrangements under these programs can have terms for up to 72 months. We recognize all revenue and costs associated with the sales-type lease as automotive leasing revenue and automotive leasing cost of revenue, respectively, upon delivery of the vehicle to the customer. Interest income based on the implicit rate in the lease is recorded to automotive leasing revenue over time as customers are invoiced on a monthly basis. For the years ended December 31, 2025, 2024 and 2023, we recognized $10 million, $12 million and $215 million, respectively, of sales-type leasing revenue and $5 million, $7 million and $164 million, respectively, of sales-type leasing cost of revenue.
+Services and Other Revenue
+Services and other revenue consists of sales of used vehicles, non-warranty maintenance services and collision, paid Supercharging sessions, insurance services revenue, part sales and retail merchandise sales.
+Revenues related to repair, maintenance and vehicle insurance services are recognized over time as services are provided and extended service plans are recognized over the performance period of the service contract as the obligation represents a stand-ready obligation to the customer. We sell used vehicles, services, service plans, vehicle components and merchandise separately and thus use standalone selling prices as the basis for revenue allocation to the extent that these items are sold in transactions with other performance obligations. Payment for used vehicles, services, vehicle components, and merchandise are typically received at the point when control transfers to the customer or in accordance with payment terms customary to the business. Payments received for prepaid plans are refundable upon customer cancellation of the related contracts and are included within Accrued liabilities and other on the consolidated balance sheets. We record in Deferred revenue any non-refundable prepayment amounts that are collected from customers and unearned insurance premiums, which is recognized as revenue ratably over the respective customer contract term. Deferred revenue excluding unearned insurance premiums was not material as of December 31, 2025 and 2024.
+Energy Generation and Storage Segment
+Energy Generation and Storage Sales
+Energy generation and storage sales revenue consists of the sale of energy generation and storage systems to residential, small commercial, large commercial and utility grade customers. Sales of energy generation and storage systems to residential and small-scale commercial customers consist of the engineering, design and installation of the system. Residential and small-scale commercial customers pay the full purchase price of the system upfront. Revenue for the design and installation obligation is recognized when control transfers, which is when we install a system and the system passes inspection by the utility or the authority having jurisdiction. 
+We also sell storage systems to channel partners. These sales are recognized when the product has been delivered. Payment for such storage systems is made upon invoice or in accordance with payment terms customary to the business. 
+
+57
+
+For large commercial and utility grade energy storage system sales, customers make milestone payments that are consistent with contract-specific phases of a project. Revenue from the sale of such systems is recognized when control transfers, which is when the product has been delivered. For certain sales contracts which consist of the engineering, design and installation of the system, revenue related to those services is recognized over time based on their estimated standalone selling price and applying the percentage of completion method using cost incurred as a percentage of total estimated service costs. 
+In instances where there are multiple performance obligations in a single contract, we allocate the consideration to the various obligations in the contract based on the relative standalone selling price method. Standalone selling prices are estimated based on estimated costs plus margin or by using market data for comparable products. Costs to obtain a contract relate mainly to commissions paid to our sales personnel related to the sale of energy storage systems. As our contract costs related to energy storage system sales are typically fulfilled within one year, the costs to obtain a contract are expensed as incurred.
+As part of certain energy storage system contracts, we may provide the customer with performance guarantees that warrant that the underlying system will meet or exceed the minimum energy performance requirements specified in the contract. If an energy storage system does not meet the performance guarantee requirements, we may be required to pay liquidated damages. Other forms of variable consideration related to our large commercial and utility grade energy storage system contracts include variable customer payments that will be made based on our energy market participation activities. Such guarantees and variable customer payments represent a form of variable consideration and are estimated at contract inception at their most likely amount and updated at the end of each reporting period as additional performance data becomes available. Such estimates are included in the transaction price only to the extent that it is probable a significant reversal of revenue will not occur.
+We record as deferred revenue any non-refundable amounts that are primarily related to prepayments from customers, which is recognized as revenue as or when the performance obligations are satisfied. As of December 31, 2025 and 2024, deferred revenue related to such customer payments amounted to $2.04 billion and $1.77 billion, respectively, mainly due to contractual payment terms. Revenue recognized from the deferred revenue balance as of December 31, 2024 and 2023 was $1.45 billion and $1.27 billion for the years ended December 31, 2025 and 2024, respectively. We have elected the practical expedient to omit disclosure of the amount of the transaction price allocated to remaining performance obligations for contracts with an original expected contract length of one year or less and the amount that we have the right to invoice when that amount corresponds directly with the value of the performance to date. As of December 31, 2025, total transaction price allocated to performance obligations that were unsatisfied or partially unsatisfied for contracts with an original expected length of more than one year was $10.42 billion. Of this amount, we expect to recognize $4.96 billion in the next 12 months and the rest over the remaining performance obligation period. Changes in government and economic incentives or tariffs may impact the transaction price or our ability to execute these existing contracts.
+We have financing receivables on our consolidated balance sheets related to loans we provide for financing our energy products. As of December 31, 2025 and 2024, we had current net financing receivables of $38 million and $34 million, respectively, in Accounts receivable, net, and $731 million and $658 million, respectively, in Other non-current assets for the long-term portion.
+Energy Generation and Storage Leasing
+For the arrangements where we are the lessor for energy generation and storage systems, we have determined that these agreements should be accounted for as operating leases. We record lease revenue from minimum lease payments, assuming all other revenue recognition criteria have been met. The difference between the payments received and the revenue recognized is recorded as deferred revenue or deferred asset on the consolidated balance sheets.
+For energy generation and storage systems where customers purchase electricity from us under PPAs, we have determined that these agreements should be accounted for as operating leases. Revenue is recognized based on the amount of electricity delivered at rates specified under the contracts, assuming all other revenue recognition criteria are met.
+We record as deferred revenue any amounts that are collected from customers, including lease prepayments, in excess of revenue recognized, which is recognized as revenue ratably over the respective customer contract term. As of December 31, 2025 and 2024, deferred revenue related to such customer payments amounted to $151 million and $164 million, respectively. Deferred revenue also includes the portion of rebates and incentives received from utility companies and various local and state government agencies, which is recognized as revenue over the lease term. As of December 31, 2025 and 2024, deferred revenue from rebates and incentives was immaterial.
+
+58
+
+We capitalize initial direct costs from the execution of lease and PPA agreements for energy generation and storage systems, which include the referral fees and sales commissions, as an element of energy generation and storage systems, net, and subsequently amortize these costs over the term of the related agreements.
+Cost of Revenues
+Automotive Segment
+Automotive Sales
+Cost of automotive sales revenue includes direct and indirect materials, labor costs, manufacturing overhead, including depreciation costs of tooling and machinery, shipping and logistic costs, tariffs, vehicle connectivity costs, FSD (Supervised) ongoing maintenance costs, electricity costs for our free Supercharging programs and reserves for estimated warranty expenses. Cost of automotive sales revenues also includes adjustments to warranty expense and charges to write down the carrying value of our inventory when it exceeds its estimated net realizable value and to provide for obsolete and on-hand inventory in excess of forecasted demand. Additionally, cost of automotive sales revenue benefits from manufacturing credits earned, amounting to $565 million, $625 million and $359 million for the years ended December 31, 2025, 2024 and 2023, respectively.
+Automotive Leasing
+Cost of automotive leasing revenue includes the depreciation of operating lease vehicles, cost of goods sold associated with direct sales-type leases and servicing of leased vehicles.
+Services and Other
+Costs of services and other revenue includes cost of used vehicles including refurbishment costs, labor and material costs associated with providing non-warranty maintenance services and collision, operating costs of paid Supercharging sessions, claim costs associated with providing automotive insurance, and costs associated with our part sales and retail merchandise sales.
+Energy Generation and Storage Segment
+Energy Generation and Storage
+Cost of energy generation and storage revenue includes direct and indirect material, tariffs, labor costs, manufacturing overhead, including depreciation costs of tooling and machinery, shipping and logistic costs, warranty expense, and cost of servicing. Cost of energy generation and storage revenue also includes charges to write down the carrying value of our inventory when it exceeds its estimated net realizable value and to provide for obsolete and on-hand inventory in excess of forecasted demand. Additionally, cost of energy generation and storage revenue benefits from manufacturing credits earned, amounting to $1.12 billion, $756 million and $115 million for the years ended December 31, 2025, 2024 and 2023, respectively. In lease agreements and PPAs for energy generation and storage systems where we are the lessor, the cost of revenue is primarily comprised of depreciation of the cost of leased energy generation and storage systems, maintenance costs associated with those systems and amortization of any initial direct costs.
+Research and Development Costs
+Research and development costs are expensed as incurred.
+Income Taxes
+We are subject to income taxes in the U.S. and in many foreign jurisdictions. Income taxes are computed using the asset and liability method, under which deferred tax assets and liabilities are determined based on the difference between the financial statement and tax bases of assets and liabilities using enacted tax rates in effect for the year in which the differences are expected to affect taxable income. Valuation allowances are established when necessary to reduce deferred tax assets to the amount expected to be realized.
+
+59
+
+Significant judgment is required in determining our provision for income taxes, our deferred tax assets and liabilities and any valuation allowance recorded against our net deferred tax assets that are not more likely than not to be realized. We monitor the realizability of our deferred tax assets taking into account all relevant factors at each reporting period. In completing our assessment of realizability of our deferred tax assets, we consider our history of income (loss) measured at pre-tax income (loss) adjusted for permanent book-tax differences on a jurisdictional basis, volatility in actual earnings, excess tax benefits related to stock-based compensation in recent prior years and impacts of the timing of reversal of existing temporary differences. We also rely on our assessment of the Company’s projected future results of business operations, including uncertainty in future operating results relative to historical results, volatility in the market price of our common stock and its performance over time, variable macroeconomic conditions impacting our ability to forecast future taxable income, and changes in business that may affect the existence and magnitude of future taxable income. Our valuation allowance assessment is based on our best estimate of future results considering all available information.
+We record liabilities related to uncertain tax positions when, despite our belief that our tax return positions are supportable, we believe that it is more likely than not that those positions may not be fully sustained upon review by tax authorities. Accrued interest and penalties related to unrecognized tax benefits are classified as income tax expense.
+The Tax Cuts and Jobs Act subjects a U.S. shareholder to tax on global intangible low-taxed income (“GILTI”) earned by certain foreign subsidiaries. The OBBBA renamed GILTI to NCTI for taxable years beginning after December 31, 2025. Under GAAP, we can make an accounting policy election to either treat taxes due on the GILTI or NCTI inclusion as a current period expense or factor such amounts into our measurement of deferred taxes. We elected the deferred method, under which we recorded the corresponding deferred tax assets and liabilities in our consolidated balance sheets.
+Comprehensive Income
+Comprehensive income is comprised of net income and other comprehensive income (loss). Other comprehensive income (loss) consists of foreign currency translation adjustments and unrealized net gains and losses on investments that have been excluded from the determination of net income.
+Stock-Based Compensation
+We use the fair value method of accounting for our restricted stock, stock options and RSUs granted to employees and for our ESPP to measure the cost of employee services received in exchange for the stock-based awards. Stock-based compensation expense for equity awards is a non-cash expense and is recorded in Cost of revenues, Research and development expense and Selling, general and administrative expense in the consolidated statements of operations based on the function of the employee.
+Equity awards with service and/or performance conditions
+The fair value of stock option awards with service and/or performance conditions and the ESPP is estimated on the grant or offering date using the Black-Scholes option-pricing model. The Black-Scholes option-pricing model requires inputs such as the risk-free interest rate, expected award term and expected share price volatility. The fair value of RSUs with service and/or performance conditions is measured on the grant date based on the closing fair market value of our common stock. The resulting stock-based compensation expense for stock options, RSUs and the ESPP is recognized over the period during which an employee is required to provide service in exchange for the awards, usually the vesting period, which is generally four years for stock options and RSUs and six months for the ESPP. 
+ The fair value of restricted stock granted to our CEO with service and/or performance conditions is measured on the grant date based on the closing fair market value of our common stock, adjusted to take into account the illiquidity discount due to any applicable required holding requirement that is in effect post-vesting, less any purchase price or offset amount. The illiquidity discount is determined using a valuation model that requires inputs such as expected share price volatility and the employee’s expected tax rate. The inputs used in the valuation models, which are subjective and generally require significant judgment, are unique to each award based on the best available information at the valuation date. 
+Stock-based compensation expense for equity awards with performance conditions is recognized over the requisite service period when the vesting of the award becomes probable. Stock-based compensation expense is recognized on a straight-line basis for equity awards with only a service condition and on a graded vesting basis for equity awards with a performance condition, net of actual forfeitures in the period. 
+
+60
+
+Equity awards with market, service and performance conditions
+The fair value and derived service period of performance-based awards granted to our CEO with market, service and performance conditions are estimated on the grant date using a Monte Carlo simulation model. A Monte Carlo simulation model requires inputs such as the risk-free interest rate, expected award term, expected share dilution and expected share price volatility. For awards with a holding requirement that is in effect post-vesting, the fair value is adjusted to take into account an illiquidity discount, which is determined using a valuation model that requires inputs such as expected share price volatility and the employee’s expected tax rate. These inputs, which are subjective and generally require significant judgment, are unique to each award based on the best available information at the valuation date. 
+ For such awards, stock-based compensation expense is recognized on a straight-line basis over the expected performance achievement period of individual performance milestones when the achievement of each individual performance milestone becomes probable. As applicable, stock-based compensation expense for such awards is recognized over the longer of (i) the expected service period, (ii) the expected achievement period for the operational milestone (performance condition) and (iii) the expected achievement period for the related market capitalization milestone determined on the grant date, with recognition beginning at the point in time that the relevant operational milestone is considered probable of achievement. If such operational milestone becomes probable any time after the grant date or the expected achievement period changes, we will recognize a cumulative expense adjustment from the grant date to that point in time. Stock-based compensation expense will continue to be recognized over the expected achievement period for the operational milestone (if applicable) regardless of whether the market capitalization milestone is achieved earlier than its expected achievement period or achieved at all, as long as the service condition continues to be satisfied. If an operational milestone is subsequently determined to be improbable of achievement, stock-based compensation expense previously recognized would be reversed in the period the condition is deemed improbable. 
+Noncontrolling Interests and Redeemable Noncontrolling Interests
+Noncontrolling interests and redeemable noncontrolling interests represent third-party interests in the net assets under certain funding arrangements, or funds, that we have entered into to finance the costs of energy generation systems. We have determined that the contractual provisions of the funds represent substantive profit-sharing arrangements. We have further determined that the methodology for calculating the noncontrolling interest and redeemable noncontrolling interest balances that reflects the substantive profit-sharing arrangements is a balance sheet approach using the hypothetical liquidation at book value (“HLBV”) method. We, therefore, determine the amount of the noncontrolling interests and redeemable noncontrolling interests in the net assets of the funds at each balance sheet date using the HLBV method, which is presented on the consolidated balance sheets as noncontrolling interests in subsidiaries and redeemable noncontrolling interests in subsidiaries. Under the HLBV method, the amounts reported as noncontrolling interests and redeemable noncontrolling interests in the consolidated balance sheets represent the amounts the third parties would hypothetically receive at each balance sheet date under the liquidation provisions of the funds, assuming the net assets of the funds were liquidated at their recorded amounts determined in accordance with GAAP and with tax laws effective at the balance sheet date and distributed to the third parties. The third parties’ interests in the results of operations of the funds are determined as the difference in the noncontrolling interest and redeemable noncontrolling interest balances in the consolidated balance sheets between the start and end of each reporting period, after taking into account any capital transactions between the funds and the third parties. However, the redeemable noncontrolling interest balance is at least equal to the redemption amount. The redeemable noncontrolling interest balance is presented as temporary equity in the mezzanine section of the consolidated balance sheets since these third parties have the right to redeem their interests in the funds for cash or other assets.
+Net Income per Share of Common Stock Attributable to Common Stockholders
+Basic net income per share of common stock attributable to common stockholders is calculated by dividing net income attributable to common stockholders by the weighted-average shares of common stock outstanding for the period. Potentially dilutive shares, which are based on the weighted-average shares of common stock underlying outstanding stock-based awards, warrants and convertible senior notes using the treasury stock method or the if-converted method, as applicable, are included when calculating diluted net income per share of common stock attributable to common stockholders when their effect is dilutive. Equity awards classified as RSAs are treated as issued shares when granted and approved; however, these shares are not included in the computation of basic weighted average shares outstanding until vested.
+
+61
+
+The following table presents the reconciliation of net income attributable to common stockholders to net income used in computing basic and diluted net income per share of common stock (in millions):
+
+ Year Ended December 31,
+ 2025 2024 2023
+ Net income attributable to common stockholders $ 3,794 $ 7,091 $ 14,997 
+ Less: Buy-outs of noncontrolling interests — (39) (2) 
+ Net income used in computing basic and diluted net income per share of common stock $ 3,794 $ 7,130 $ 14,999 
+RSAs will be excluded from the computation of diluted weighted average shares until the shares have been deemed to be earned. The following table presents the reconciliation of basic to diluted weighted average shares used in computing net income per share of common stock attributable to common stockholders (in millions):
+
+ Year Ended December 31,
+ 2025 2024 2023
+ Weighted average shares used in computing net income per share of common stock, basic 3,225 3,197 3,174
+ Add: 
+ Stock-based awards 303 292 298
+ Convertible senior notes — 1 2
+ Warrants — 8 11
+ Weighted average shares used in computing net income per share of common stock, diluted 3,528 3,498 3,485
+The following table presents the potentially dilutive shares that were excluded from the computation of diluted net income per share of common stock attributable to common stockholders, because their effect was anti-dilutive (in millions):
+
+ Year Ended December 31,
+ 2025 2024 2023
+ Stock-based awards 4 15 12
+Cash and Cash Equivalents
+All highly liquid investments with an original maturity of three months or less at the date of purchase are considered cash equivalents. 
+Restricted Cash
+We maintain certain cash balances restricted as to withdrawal or use. Our restricted cash is comprised primarily of cash held as collateral for sales to lease partners with a resale value guarantee, cash held to service certain payments under various secured debt facilities, and deposits held for our insurance services. We record restricted cash as other assets in the consolidated balance sheets and determine current or non-current classification based on the expected remaining duration of the restriction.
+
+62
+
+Our total cash and cash equivalents and restricted cash, as presented in the consolidated statements of cash flows, was as follows (in millions):
+
+ December 31,
+2025 December 31,
+2024 December 31,
+2023
+ Cash and cash equivalents $ 16,513 $ 16,139 $ 16,398 
+ Restricted cash included in prepaid expenses and other current assets 389 494 543 
+ Restricted cash included in other non-current assets 714 404 248 
+ Total as presented in the consolidated statements of cash flows $ 17,616 $ 17,037 $ 17,189 
+Investments
+Our investments are all designated as available-for-sale and reported at estimated fair value, with unrealized gains and losses recorded in accumulated other comprehensive income (loss) which is included within stockholders’ equity. Available-for-sale marketable securities with maturities greater than three months at the date of purchase are included in short-term investments in our consolidated balance sheets. Interest, dividends, amortization and accretion of purchase premiums and discounts on these investments are included within Interest income in our consolidated statements of operations. Interest income on our short-term investments for the years ended December 31, 2025, 2024 and 2023 was $879 million, $763 million and $388 million, respectively. 
+The cost of available-for-sale investments sold is based on the specific identification method. Realized gains and losses on the sale of available-for-sale investments are recorded in Other (expense) income, net.
+We regularly review all of our investments for declines in fair value. The review includes but is not limited to (i) the consideration of the cause of the decline, (ii) any currently recorded expected credit losses and (iii) the creditworthiness of the respective security issuers. The amortized cost basis of our investments approximates its fair value.
+Accounts Receivable and Allowance for Doubtful Accounts
+Accounts receivable primarily include amounts related to receivables from sales of energy generation and storage products, financial institutions and leasing companies offering various financing products to our customers, sales of regulatory credits to other automotive manufacturers, and government rebates already passed through to customers. We provide an allowance against accounts receivable for the amount we expect to be uncollectible. We write-off accounts receivable against the allowance when they are deemed uncollectible.
+Depending on the day of the week on which the end of a fiscal quarter falls, our accounts receivable balance may fluctuate as we are waiting for certain customer payments to clear through our banking institutions and receipts of payments from our financing partners, which can take up to approximately two weeks based on the contractual payment terms with such partners. Our accounts receivable balances associated with sales of energy storage products are dependent on billing milestones and payment terms negotiated for each contract, and our accounts receivable balances associated with our sales of regulatory credits are dependent on contractual payment terms. These various factors may have a significant impact on our accounts receivable balance from period to period. As of December 31, 2025 and 2024, government rebates receivable was $108 million and $315 million, respectively, in Accounts receivable, net.
+Financing Receivables
+We provide financing options to our customers for our automotive and energy products. Financing receivables are carried at amortized cost, net of allowance for loan losses. Provisions for loan losses are charged to operations in amounts sufficient to maintain the allowance for loan losses at levels considered adequate to cover expected credit losses on the financing receivables. In determining expected credit losses, we consider our historical level of credit losses, current economic trends, and reasonable and supportable forecasts that affect the collectability of the future cash flows. Interest income on financing receivables is recognized over the loan term as revenue in the consolidated statements of operations.
+When originating consumer receivables, we review the credit application, the proposed contract terms, credit bureau information (e.g., FICO score) and other information. Our evaluation emphasizes the applicant’s ability to pay and creditworthiness focusing on payment, affordability, and applicant credit history as key considerations. Generally, all customers in this portfolio have strong creditworthiness at loan origination.
+
+63
+
+After origination, we review the credit quality of retail financing based on customer payment activity and aging analysis. For all financing receivables, we define “past due” as any payment, including principal and interest, which is at least 31 days past the contractual due date. As of December 31, 2025 and 2024, the vast majority of our financing receivables were at current status with an immaterial balance being past due. As of December 31, 2025, the majority of our financing receivables, excluding MyPower notes receivable, were originated in the past four years. As of December 31, 2024, the majority of these receivables were originated in 2023 and 2022.
+We have customer notes receivable under the legacy MyPower loan program, which provided residential customers with the option to finance the purchase of an energy generation system through a 30-year loan and were all originated prior to year 2018. The outstanding balances, net of any allowance for expected credit losses, are presented on the consolidated balance sheets as a component of Prepaid expenses and other current assets for the current portion and as Other non-current assets for the long-term portion. As of December 31, 2025 and 2024, the total outstanding balance of MyPower customer notes receivable, net of allowance for expected credit losses, was $241 million and $248 million, respectively, of which immaterial amounts were due in the next 12 months as of December 31, 2025 and 2024. As of December 31, 2025 and 2024, the allowance for expected credit losses was $26 million and $33 million, respectively. 
+Concentration of Risk
+Credit Risk
+Financial instruments that potentially subject us to a concentration of credit risk consist of cash, cash equivalents, investments, restricted cash, accounts receivable and other finance receivables. Our cash and investments balances are primarily on deposit at high credit quality financial institutions or invested in highly rated, investment-grade securities. These deposits are typically in excess of insured limits. As of December 31, 2025 and 2024, no entity represented 10% or more of our total receivables balance.
+Supply Risk
+We are dependent on our suppliers, including single source suppliers, and the inability of these suppliers to deliver necessary components of our products in a timely manner at prices, quality levels and volumes acceptable to us, or our inability to efficiently manage these components from these suppliers, could have a material adverse effect on our business, prospects, financial condition and operating results.
+Inventory Valuation
+Inventories are stated at the lower of cost or net realizable value. Cost is computed using standard cost for vehicles and energy products, which approximates actual cost on a first-in, first-out basis. We record inventory write-downs for excess or obsolete inventories based upon assumptions about current and future demand forecasts. If our inventory on-hand is in excess of our future demand forecast, the excess amounts are written-off.
+We also review our inventory to determine whether its carrying value exceeds the net amount realizable upon the ultimate sale of the inventory. This requires us to determine the estimated selling price of our products less the estimated cost to convert the inventory on-hand into a finished product. Once inventory is written-down, a new, lower cost basis for that inventory is established and subsequent changes in facts and circumstances do not result in the restoration or increase in that newly established cost basis.
+Should our estimates of future selling prices or production costs change, additional and potentially material write-downs may be required. A small change in our estimates may result in a material charge to our reported financial results.
+Operating Lease Vehicles
+Vehicles that are leased as part of our direct vehicle leasing program are classified as operating lease vehicles at cost less accumulated depreciation. We generally depreciate their cost, less residual value, using the straight-line-method to cost of automotive leasing revenue over the contractual period. The gross cost of operating lease vehicles as of December 31, 2025 and 2024 was $6.12 billion and $7.03 billion, respectively. Operating lease vehicles on the consolidated balance sheets are presented net of accumulated depreciation of $1.21 billion and $1.45 billion as of December 31, 2025 and 2024, respectively.
+
+64
+
+Digital Assets
+We account for all digital assets held as crypto assets, a subset of indefinite-lived intangible assets in accordance with ASC 350-60, Intangibles - Goodwill and Other - Crypto Assets. We have ownership of and control over our digital assets and we may use third-party custodial services to secure it. The digital assets are initially recorded at cost and are subsequently remeasured on the consolidated balance sheets at fair value. 
+We determine and record the fair value of our digital assets in accordance with ASC 820, Fair Value Measurement (“ASC 820”), based on quoted prices on the active exchange(s) that we have determined is the principal market for such assets (Level I inputs). We determine the cost basis of our digital assets using the specific identification of each unit received. Realized and unrealized gains and losses are recorded to Other (expense) income, net in our consolidated statement of operations.
+See Note 3, Digital Assets, for further information regarding digital assets.
+Energy generation and storage systems, net
+We are the lessor of energy generation and storage systems, which are stated at cost less accumulated depreciation. Depreciation of energy generation and storage systems is calculated using the straight-line method over the estimated useful lives of 15 to 35 years. The gross cost of energy generation and storage systems as of December 31, 2025 and 2024 was $6.66 billion and $6.79 billion, respectively. Energy generation and storage systems on the consolidated balance sheets are presented net of accumulated depreciation of $2.06 billion and $1.86 billion as of December 31, 2025 and 2024, respectively.
+Property, Plant and Equipment, Net
+Property, plant and equipment, net, including leasehold improvements, are recognized at cost less accumulated depreciation. Depreciation is generally computed using the straight-line method over the estimated useful lives of the respective assets, as follows:
+
+ Machinery, equipment, vehicles and office furniture 
+3 to 15 years
+ Tooling 
+4 to 7 years
+ Building and building improvements 
+15 to 30 years
+ Computer equipment and software 
+3 to 6 years
+ AI infrastructure 
+5 to 30 years
+Leasehold improvements are depreciated on a straight-line basis over their estimated useful lives. AI infrastructure includes our owned data centers.
+Upon the retirement or sale of our property, plant and equipment, the cost and associated accumulated depreciation are removed from the consolidated balance sheets, and the resulting gain or loss is reflected on the consolidated statement of operations. Maintenance and repair expenditures are expensed as incurred while major improvements that increase the functionality, output or expected life of an asset are capitalized and depreciated ratably over the identified useful life.
+Long-Lived Assets Including Acquired Intangible Assets
+We review our property, plant and equipment, energy generation and storage systems, long-term prepayments and intangible assets for impairment whenever events or changes in circumstances indicate that the carrying amount of an asset (or asset group) may not be recoverable. We measure recoverability by comparing the carrying amount to the future undiscounted cash flows that the asset is expected to generate. If the asset is not recoverable, its carrying amount would be adjusted down to its fair value. For the years ended December 31, 2025, 2024 and 2023, we have recognized no material impairments of our long-lived assets.
+Intangible assets with definite lives are amortized on a straight-line basis over their estimated useful lives, which range from three to thirty years. The net carrying value of our intangible assets decreased from $150 million as of December 31, 2024 to $124 million as of December 31, 2025 mainly from amortization. Intangible assets are included in Other non-current assets on the consolidated balance sheets.
+
+65
+
+Goodwill
+Goodwill increased $13 million within the automotive segment from $244 million as of December 31, 2024 to $257 million as of December 31, 2025. Goodwill is included in Other non-current assets on the consolidated balance sheets.
+We assess goodwill for impairment annually in the fourth quarter, or more frequently if events or changes in circumstances indicate that it might be impaired, by comparing its carrying value to the reporting unit’s fair value. For the years ended December 31, 2025, 2024, and 2023, we did not recognize any impairment of goodwill. There were no accumulated impairment losses as of December 31, 2025 and 2024. 
+Capitalization of Software Costs
+We capitalize costs incurred in the development of internal use software, during the application development stage to Property, plant and equipment, net on the consolidated balance sheets. Costs related to preliminary project activities and post-implementation activities are expensed as incurred. Such costs are amortized on a straight-line basis over their estimated useful life of three to five years.
+Software development costs incurred in development of software to be sold, leased, or otherwise marketed, incurred subsequent to the establishment of technological feasibility and prior to the general availability of the software are capitalized when they are expected to become significant. Such costs are amortized over the estimated useful life of the applicable software once it is made generally available to our customers.
+We evaluate the useful lives of these assets on an annual basis, and we test for impairment whenever events or changes in circumstances occur that could impact the recoverability of these assets. For the years ended December 31, 2025, 2024 and 2023, we have recognized no impairments of capitalized software costs.
+Foreign Currency
+We determine the functional and reporting currency of each of our international subsidiaries and their operating divisions based on the primary currency in which they operate. In cases where the functional currency is not the U.S. dollar, we recognize a cumulative translation adjustment created by the different rates we apply to current period income or loss and the balance sheet. For each subsidiary, we apply the monthly average functional exchange rate to its monthly income or loss and the month-end functional currency rate to translate the balance sheet.
+Foreign currency transaction gains and losses are a result of the effect of exchange rate changes on transactions denominated in currencies other than the functional currency of the respective subsidiary. Transaction gains and losses are recognized in Other (expense) income, net, in the consolidated statements of operations. For the years ended December 31, 2025, 2024 and 2023, we recorded a net foreign currency transaction loss of $407 million, gain of $57 million and gain of $122 million, respectively.
+Warranties
+We provide a manufacturer’s warranty on all new and used vehicles and a warranty on the installation and components of the energy generation and storage systems we sell for periods typically between 1 to 25 years. We accrue a warranty reserve for the products sold by us, which includes our best estimate of the projected costs to repair or replace items under warranties and recalls if identified. These estimates are based on actual claims incurred to date and an estimate of the nature, frequency and costs of future claims. These estimates are inherently uncertain and changes to our historical or projected warranty experience may cause material changes to the warranty reserve in the future. The warranty reserve does not include projected service costs associated with our vehicles subject to operating lease accounting and our energy generation and storage systems under lease contracts or PPAs, as these service costs are expensed as incurred. The portion of the warranty reserve expected to be incurred within the next 12 months is included within Accrued liabilities and other, while the remaining balance is included within Other long-term liabilities on the consolidated balance sheets. For liabilities that we are entitled to receive indemnification from our suppliers, we record receivables for the contractually obligated amounts on the consolidated balance sheets as a component of Prepaid expenses and other current assets for the current portion and as Other non-current assets for the long-term portion. Warranty expense is recorded as a component of Cost of revenues in the consolidated statements of operations. Due to the magnitude of our automotive business, our accrued warranty balance is primarily related to our automotive segment. Accrued warranty activity consisted of the following (in millions): 
+
+66
+
+ Year Ended December 31,
+ 2025 2024 2023
+ Accrued warranty—beginning of period $ 6,716 $ 5,152 $ 3,505 
+ Warranty costs incurred (1,723) (1,453) (1,225) 
+ Net changes in liability for pre-existing warranties, including expirations and foreign exchange impact 1,127 287 539 
+ Provision for warranty 2,487 2,730 2,333 
+ Accrued warranty—end of period $ 8,607 $ 6,716 $ 5,152 
+Customer Deposits
+Customer deposits primarily consist of refundable cash payments from customers at the time they place an order or reservation for a vehicle or an energy product and any additional payments up to the point of delivery or the completion of installation. Customer deposits also include prepayments on contracts that can be cancelled without significant penalties, such as vehicle maintenance plans. Customer deposits are included in Accrued liabilities and other on the consolidated balance sheets until refunded, forfeited or applied towards the customer’s purchase balance.
+Government Assistance Programs and Incentives
+Globally, the operation of our business is impacted by various government programs, incentives, and other arrangements. Government incentives are recorded in our consolidated financial statements in accordance with their purpose as a reduction of expense, or an offset to the related capital asset. The benefit is generally recorded when all conditions attached to the incentive have been met or are expected to be met and there is reasonable assurance of their receipt.
+The IRA Incentives Modified by the OBBBA
+On August 16, 2022, the IRA was enacted into law and is effective for taxable years beginning after December 31, 2022. The IRA includes multiple incentives to promote clean energy, electric vehicles, battery and energy storage manufacture or purchase. The IRA incentives were subsequently modified by the OBBBA enacted on July 4, 2025, which imposes more stringent eligibility requirements, accelerated phase-outs, and the termination of certain provisions. Some of these measures are expected to materially affect our consolidated financial statements. For the years ended December 31, 2025, 2024 and 2023, the impact from our IRA incentive was primarily a reduction of our costs of revenue in our consolidated statements of operations as discussed above in Cost of Revenues.
+Nevada Tax Incentives
+In connection with the construction of Gigafactory Nevada, we entered into agreements in 2014 with the State of Nevada and Storey County in Nevada that provide abatements for specified taxes, discounts to the base tariff energy rates and transferable tax credits of up to $195 million in consideration of capital investment and hiring targets that were met at Gigafactory Nevada.
+Gigafactory Texas Tax Incentives
+In connection with the construction of Gigafactory Texas, we entered into a 20-year agreement in 2020 with Travis County in Texas pursuant to which we would receive grant funding equal to 70-80% of property taxes paid by us to Travis County and a separate 10-year agreement in 2020 with the Del Valle Independent School District in Texas pursuant to which a portion of the taxable value of our property would be capped at a specified amount, in each case subject to our meeting certain minimum economic development metrics through our construction and operations at Gigafactory Texas. This incentive is recorded as a reduction of the related expenses within the Cost of automotive revenues and operating expense line items of our consolidated statements of operations. For the years ended December 31, 2025, 2024 and 2023, the grant funding related to property taxes paid were immaterial.
+
+67
+
+Defined Contribution Plan
+We have a 401(k) savings plan in the U.S. that is intended to qualify as a deferred salary arrangement under Section 401(k) of the Internal Revenue Code and a number of savings plans internationally. Under the 401(k) savings plan, participating employees may elect to contribute up to 90% of their eligible compensation, subject to certain limitations. Beginning in January 2022, we began to match 50% of each employee’s contributions up to a maximum of 6% (capped at $3,000) of the employee’s eligible compensation, vested upon one year of service. During the years ended December 31, 2025, 2024 and 2023, we recognized $103 million, $107 million and $99 million, respectively, of expenses related to employer contributions for the 401(k) savings plan.
+Recent Accounting Pronouncements
+Recently issued accounting pronouncements not yet adopted
+In November 2024, the FASB issued ASU No. 2024-03, Disaggregation of Income Statement Expenses (Subtopic 220-40). The ASU requires the disaggregated disclosure of specific expense categories, including purchases of inventory, employee compensation, depreciation, and amortization, within relevant income statement captions. This ASU also requires disclosure of the total amount of selling expenses along with the definition of selling expenses. The ASU is effective for annual periods beginning after December 15, 2026, and interim periods within fiscal years beginning after December 15, 2027. Adoption of this ASU can either be applied prospectively to consolidated financial statements issued for reporting periods after the effective date of this ASU or retrospectively to any or all prior periods presented in the consolidated financial statements. Early adoption is also permitted. This ASU will likely result in the required additional disclosures being included in our consolidated financial statements, once adopted. We are currently evaluating the provisions of this ASU.
+In July 2025, the FASB issued ASU No. 2025-05, Financial Instruments—Credit Losses (Topic 326): Measurement of Credit Losses for Accounts Receivable and Contract Assets. The amendments in this update provide a practical expedient permitting an entity to assume that conditions at the balance sheet date remain unchanged over the life of the asset when estimating expected credit losses for current classified accounts receivable and contract assets. This update is effective for annual periods beginning after December 15, 2025, including interim periods within those fiscal years. Adoption of this ASU can be applied prospectively for reporting periods after its effective date. Early adoption is permitted. We are currently evaluating the provisions of this ASU and do not expect this ASU to have a material impact on our consolidated financial statements.
+In September 2025, the FASB issued ASU No. 2025-06, Intangibles—Goodwill and Other—Internal-Use Software (Subtopic 350-40): Targeted Improvements to the Accounting for Internal-Use Software. The ASU simplifies the capitalization guidance by removing all references to prescriptive and sequential software development stages (referred to as “project stages”) throughout ASC 350-40. The ASU is effective for annual periods beginning after December 15, 2027, and interim periods within those fiscal years. Adoption of this ASU can be applied prospectively for reporting periods after its effective date; or follow a modified transition approach that is based on the status of the respective projects and whether software costs were capitalized before the date of adoption; or retrospectively to any or all prior periods presented in the consolidated financial statements. Early adoption is permitted. We are currently evaluating the provisions of this ASU and do not expect this ASU to have a material impact on our consolidated financial statements.
+In December 2025, the FASB issued ASU No. 2025-10, Government Grants (Topic 832): Accounting for Government Grants Received by Business Entities. The ASU establishes authoritative guidance in GAAP about accounting for government grants received by business entities, clarifies the appropriate accounting, in an effort to reduce diversity in practice, and increase consistency of application across business entities. The ASU is effective for annual reporting periods beginning after December 15, 2028, and interim reporting periods within those annual reporting periods. Adoption of this ASU can be applied a modified prospective approach, a modified retrospective approach, or a retrospective approach. Early adoption is permitted. We are currently evaluating the provisions of this ASU and do not expect this ASU to have a material impact on our consolidated financial statements.
+In December 2025, the FASB issued ASU No. 2025-11, Interim Reporting (Topic 270): Narrow-Scope Improvements. The ASU clarifies interim disclosure requirements and the applicability of Topic 270. The objective of the amendments is to provide further clarity about the current interim disclosure requirements. The ASU is effective for interim reporting periods within annual reporting periods beginning after December 15, 2027. Adoption of this ASU can be applied either a prospective or a retrospective approach. Early adoption is permitted. We are currently evaluating the provisions of this ASU and do not expect this ASU to have a material impact on our consolidated financial statements.
+
+68
+
+In December 2025, the FASB issued ASU No. 2025-12, Codification Improvements. The ASU addresses thirty-three items, representing the changes to the Codification that (1) clarify, (2) correct errors, or (3) make minor improvements. Generally, the amendments in this Update are not intended to result in significant changes for most entities. The ASU is effective for interim reporting periods within annual reporting periods beginning after December 15, 2026. The adoption method of this ASU may vary, on an issue-by-issue basis. Early adoption is permitted. We are currently evaluating the provisions of this ASU and do not expect this ASU to have a material impact on our consolidated financial statements.
+Recently adopted accounting pronouncements
+ASU 2023-08
+In December 2023, the FASB issued ASU No. 2023-08, Accounting for and Disclosure of Crypto Assets (Subtopic 350-60) (“new crypto assets standard”). The new crypto assets standard requires certain crypto assets to be measured at fair value separately on the balance sheet with changes reported in the statement of operations each reporting period. The new crypto assets standard also enhances the other intangible asset disclosure requirements by requiring the name, cost basis, fair value, and number of units for each significant crypto asset holding. We adopted the new crypto assets standard on a modified retrospective approach effective January 1, 2024. The cumulative effect of the changes made on our January 1, 2024 consolidated balance sheet for the adoption of the new crypto assets standard was as follows (in millions):
+
+ Balances at
+ December 31, 2023 Adjustments from Adoption of the New Crypto Assets Standard Balances at
+ January 1, 2024
+ Assets 
+ Digital assets, net $ 184 $ 303 $ 487 
+ Deferred tax assets 6,733 (67) 6,666 
+ Stockholders' equity 
+ Retained earnings 27,882 236 28,118 
+
+ASU 2023-09
+In December 2023, the Financial Accounting Standards Board (“FASB”) issued Accounting Standards Update (“ASU”) No. 2023-09, Improvements to Income Tax Disclosures (Topic 740). The ASU requires disaggregated information about a reporting entity’s effective tax rate reconciliation as well as additional information on income taxes paid. We adopted this ASU on a prospective basis effective January 1, 2025. Refer to Note 12, Income Taxes for the inclusion of new disclosures required.
+On July 4, 2025, the U.S. H.R.1, an act to provide for reconciliation pursuant to title II of H. Con. Res. 14. (the “OBBBA”) was enacted. The OBBBA introduces multiple tax law and other legislative changes, including modifications to income tax provisions such as domestic research and development expenses, capital expenditures, and U.S. taxation of international earnings; the repeal or acceleration of the sunset of certain tax credits under the 2022 Inflation Reduction Act and elimination of certain penalties for violations of certain regulatory credit programs. We have recognized the effects of the OBBBA provisions in our financial results to the extent they are applicable to the year ended December 31, 2025. We will continue to evaluate the impact of these provisions on our 2026 and subsequent consolidated financial statements, including loss of certain regulatory credit sales tied to our products and changes to the costs of our products.
+
+Note 3 – Digital Assets
+During the years ended December 31, 2025 and 2024, we purchased and/or received immaterial amounts of digital assets. During the year ended December 31, 2023, we recorded an immaterial amount of impairment losses on digital assets. Refer to Note 2, Summary of Significant Accounting Policies for additional information regarding the Company’s adoption of the new crypto assets standard.
+
+69
+
+The table below summarizes the amounts shown on our consolidated balance sheets as of December 31, 2025 and 2024 (in millions except units of digital assets).
+
+ December 31, 2025 December 31, 2024
+ Units Cost Basis Fair Value Units Cost Basis Fair Value
+ Digital assets held: 
+ Bitcoin 11,509 $ 386 $ 1,007 11,509 $ 386 $ 1,074 
+ Other 1 1 1 2 
+ Total $ 387 $ 1,008 $ 387 $ 1,076 
+The following table provides details of the activities related to our digital assets for the years ended December 31, 2025 and 2024 (in millions):
+
+ Year Ended December 31,
+ 2025 2024
+ Beginning balance at fair value $ 1,076 $ 487 
+ Unrealized (loss) gain, net (68) 589
+ Ending balance at fair value $ 1,008 $ 1,076 
+
+Note 4 – Fair Value of Financial Instruments
+ASC 820, Fair Value Measurement, states that fair value is an exit price, representing the amount that would be received to sell an asset or paid to transfer a liability in an orderly transaction between market participants. As such, fair value is a market-based measurement that should be determined based on assumptions that market participants would use in pricing an asset or a liability. The three-tiered fair value hierarchy, which prioritizes which inputs should be used in measuring fair value, is comprised of: (Level I) observable inputs such as quoted prices in active markets; (Level II) inputs other than quoted prices in active markets that are observable either directly or indirectly and (Level III) unobservable inputs for which there is little or no market data. The fair value hierarchy requires the use of observable market data when available in determining fair value. Our assets and liabilities that were measured at fair value on a recurring basis were as follows (in millions):
+
+ December 31, 2025 December 31, 2024
+ Fair Value Level I Level II Level III Fair Value Level I Level II Level III
+ Certificates of deposit and time deposits $ 14,600 $ — $ 14,600 $ — $ 12,767 $ — $ 12,767 $ — 
+ Commercial paper 5,617 — 5,617 — 3,919 — 3,919 — 
+ U.S. government securities 7,321 — 7,321 — 3,620 — 3,620 — 
+ Corporate debt securities 8 — 8 — 118 — 118 — 
+ Money market funds 1,890 1,890 — — 1,753 1,753 — — 
+ Digital assets 1,008 1,008 — — 1,076 1,076 — — 
+ Total $ 30,444 $ 2,898 $ 27,546 $ — $ 23,253 $ 2,829 $ 20,424 $ — 
+Our assets classified within Level I of the fair value hierarchy were valued using quoted prices in active markets and our assets classified within Level II of the fair value hierarchy utilized the market approach to determine fair value of the investments.
+
+70
+
+Our cash, cash equivalents and investments classified by security type as of December 31, 2025 and 2024 consisted of the following (in millions):
+
+ December 31, 2025
+ Adjusted Cost Gross Unrealized Gains Gross Unrealized Losses Fair Value Cash and Cash Equivalents Short-Term Investments
+ Cash $ 14,623 $ — $ — $ 14,623 $ 14,623 $ — 
+ Certificates of deposit and time deposits 14,598 2 — 14,600 — 14,600 
+ Commercial paper 5,619 — (2) 5,617 — 5,617 
+ U.S. government securities 7,318 5 (2) 7,321 — 7,321 
+ Corporate debt securities 8 — — 8 — 8 
+ Money market funds 1,890 — — 1,890 1,890 — 
+ Total cash, cash equivalents and short-term investments $ 44,056 $ 7 $ (4) $ 44,059 $ 16,513 $ 27,546 
+
+ December 31, 2024
+ Adjusted Cost Gross Unrealized Gains Gross Unrealized Losses Fair Value Cash and Cash Equivalents Short-Term Investments
+ Cash $ 14,386 $ — $ — $ 14,386 $ 14,386 $ — 
+ Certificates of deposit and time deposits 12,767 — — 12,767 — 12,767 
+ Commercial paper 3,908 11 — 3,919 — 3,919 
+ U.S. government securities 3,618 3 (1) 3,620 — 3,620 
+ Corporate debt securities 117 1 — 118 — 118 
+ Money market funds 1,753 — — 1,753 1,753 — 
+ Total cash, cash equivalents and short-term investments $ 36,549 $ 15 $ (1) $ 36,563 $ 16,139 $ 20,424 
+As of December 31, 2025 and 2024, investments held and restricted for our insurance business were $254 million and $286 million, respectively.
+As of December 31, 2025, the majority of our short-term investments had contractual maturity dates within one year.
+Disclosure of Fair Values
+Our financial instruments that are not re-measured at fair value include accounts receivable, financing receivables, other receivables, accounts payable, accrued liabilities, customer deposits and debt. The carrying values of these financial instruments materially approximate their fair values.
+
+Note 5 – Inventory
+Our inventory consisted of the following (in millions):
+
+ December 31,
+2025 December 31,
+2024
+ Raw materials $ 4,522 $ 5,242 
+ Work in process 1,725 1,532 
+ Finished goods (1) 4,849 3,940 
+ Service parts 1,296 1,303 
+ Total $ 12,392 $ 12,017 
+(1)Finished goods inventory includes products-in-transit to fulfill customer orders, new vehicles, used vehicles and energy products available for sale.
+
+71
+
+We write-down inventory for any excess or obsolete inventory or when we believe that the net realizable value of inventory is less than the carrying value. During the years ended December 31, 2025, 2024 and 2023, we recorded write-downs of $310 million, $190 million and $233 million, respectively, in Cost of revenues in the consolidated statements of operations.
+
+Note 6 – Property, Plant and Equipment, Net
+Our property, plant and equipment, net, consisted of the following (in millions):
+
+ December 31,
+2025 December 31,
+2024
+ Machinery, equipment, vehicles and office furniture $ 20,864 $ 18,339 
+ Land and buildings 11,837 10,677 
+ AI infrastructure 6,816 5,152 
+ Tooling 4,868 3,883 
+ Leasehold improvements 4,439 3,688 
+ Computer equipment, hardware and software 3,206 2,902 
+ Construction in progress 8,786 6,783 
+ Property, plant and equipment 60,816 51,424 
+ Less: Accumulated depreciation (20,173) (15,588) 
+ Property, plant and equipment, net $ 40,643 $ 35,836 
+Construction in progress is primarily comprised of ongoing construction and expansion of our facilities, equipment and tooling related to the manufacturing of our products as well as AI-related assets which have not yet been placed in service. Completed assets are transferred to their respective asset classes and depreciation begins when an asset is ready for its intended use.
+Depreciation expense during the years ended December 31, 2025, 2024 and 2023 was $5.03 billion, $4.12 billion and $3.33 billion, respectively. 
+
+Note 7 – Accrued Liabilities and Other
+ Our accrued liabilities and other current liabilities consisted of the following (in millions):
+
+ December 31,
+2025 December 31,
+2024
+ Accrued purchases (1) $ 2,577 $ 2,253 
+ Accrued warranty reserve, current portion 2,475 1,917 
+ Payroll and related costs 1,907 1,532 
+ Taxes payable (2) 1,594 1,367 
+ Customer deposits 1,311 993 
+ Operating lease liabilities, current portion 954 807 
+ Sales return reserve, current portion 529 305 
+ Other current liabilities 1,932 1,549 
+ Total $ 13,279 $ 10,723 
+(1)Accrued purchases primarily reflects receipts of goods and services for which we had not yet been invoiced. As we are invoiced for these goods and services, this balance will reduce and accounts payable will increase.
+(2)Taxes payable primarily includes value added tax, income tax, sales tax, property tax and use tax payables.
+
+72
+
+Note 8 – Other Long-Term Liabilities
+ Our other long-term liabilities consisted of the following (in millions):
+
+ December 31,
+2025 December 31,
+2024
+ Accrued warranty reserve $ 6,132 $ 4,799 
+ Operating lease liabilities 5,389 4,603 
+ Other non-current liabilities 1,339 1,093 
+ Total other long-term liabilities $ 12,860 $ 10,495 
+
+Note 9 – Debt
+The following is a summary of our debt and finance leases as of December 31, 2025 (in millions):
+
+ Net Carrying Value Unpaid
+Principal
+Balance Unused
+Committed
+Amount (1) Contractual
+Interest Rates Contractual
+Maturity Date
+ Current Long-Term 
+ Recourse debt: 
+ RCF Credit Agreement — — — 5,000 Not applicable January 2028
+ Other 1 2 3 — 
+4.70-5.75% 
+January 2026-January 2031
+ Total recourse debt 1 2 3 5,000 
+ Non-recourse debt: 
+ Automotive Asset-backed Notes 1,492 1,745 3,249 — 
+2.47-6.57% 
+October 2026-June 2035
+ China Working Capital Facility — 4,288 4,288 1,429 
+2.01-2.11% 
+March 2026-December 2026 (2)
+ Energy Asset-backed Notes 55 337 397 — 
+5.08-6.25% 
+June 2050
+ Cash Equity Debt 21 212 240 — 
+5.25-5.81% 
+July 2034-January 2035
+ Total non-recourse debt 1,568 6,582 8,174 1,429 
+ Total debt 1,569 6,584 $ 8,177 $ 6,429 
+ Finance leases 71 152 
+ Total debt and finance leases $ 1,640 $ 6,736 
+The following is a summary of our debt and finance leases as of December 31, 2024 (in millions):
+
+ Net Carrying Value Unpaid
+Principal
+Balance Unused
+Committed
+Amount (1) Contractual
+Interest Rates Contractual
+Maturity Date
+ Current Long-Term 
+ Recourse debt: 
+ RCF Credit Agreement — — — 5,000 Not applicable January 2028
+ Other 4 3 7 — 
+4.70-5.75% 
+March 2025-January 2031
+ Total recourse debt 4 3 7 5,000 
+ Non-recourse debt: 
+ Automotive Asset-backed Notes 2,255 2,059 4,329 — 
+3.45-6.57% 
+September 2025-June 2035
+ China Working Capital Facility — 2,740 2,740 — 1.92 % 
+April 2025 (2)
+ Energy Asset-backed Notes 54 434 493 — 
+4.80-6.25% 
+December 2025-June 2050
+ Cash Equity Debt 30 299 338 — 
+5.25-5.81% 
+July 2033-January 2035
+ Total non-recourse debt 2,339 5,532 7,900 — 
+ Total debt 2,343 5,535 $ 7,907 $ 5,000 
+ Finance leases 113 222 
+ Total debt and finance leases $ 2,456 $ 5,757 
+(1)Refer to the respective sections below for restrictions on draw-down or use for general corporate purposes with respect to any available committed funds under our debt facilities, as applicable.
+(2)As we have the intent and ability to refinance the loan on a long-term basis, we recorded it in Debt and finance leases, net of current portion in the consolidated balance sheets.
+Recourse debt refers to debt that is recourse to our general assets. Non-recourse debt refers to debt that is recourse to only assets of our subsidiaries. The differences between the unpaid principal balances and the net carrying values are due to debt discounts or deferred issuance costs. As of December 31, 2025, we were in material compliance with all financial debt covenants.
+
+73
+
+Credit Agreement
+In January 2023, we entered into a 5-year senior unsecured revolving credit facility (the “RCF Credit Agreement”) with a syndicate of banks. The RCF Credit Agreement contains two optional one-year extensions and has a total commitment of up to $5.00 billion, which could be increased up to $7.00 billion under certain circumstances. The underlying borrowings may be used for general corporate purposes. Borrowed funds accrue interest at a variable rate equal to: (i) for dollar-denominated loans, at our election, (a) Term SOFR (the forward-looking secured overnight financing rate) plus 0.10%, or (b) an alternate base rate; (ii) for loans denominated in pounds sterling, SONIA (the sterling overnight index average reference rate); or (iii) for loans denominated in euros, an adjusted EURIBOR (euro interbank offered rate); in each case, plus an applicable margin. The applicable margin will be based on the rating assigned to our senior, unsecured long-term indebtedness (the “Credit Rating”) from time to time. The fee for undrawn amounts is variable based on the Credit Rating and is currently 0.125% per annum. There are no restrictions on draw-down or use for general corporate purposes with respect to any available committed funds under our RCF Credit Agreement, except certain specified conditions prior to draw-down.
+Automotive Asset-backed Notes
+From time to time, we transfer receivables and/or beneficial interests related to certain vehicles (either leased or financed) into special purpose entities (“SPEs”) and issue Automotive Asset-backed Notes, backed by these automotive assets to investors. The SPEs are consolidated in the financial statements. The cash flows generated by these automotive assets are used to service the principal and interest payments on the Automotive Asset-backed Notes and satisfy the SPEs’ expenses, and any remaining cash is distributed to the owners of the SPEs. The SPEs’ assets and cash flows are not available to our other creditors, and the creditors of the SPEs, including the Automotive Asset-backed Note holders, have no recourse to our other assets.
+In 2025, we transferred beneficial interests related to certain leased vehicles and/or financing receivables into SPEs and issued $1.41 billion in aggregate principal amount of Automotive Asset-backed Notes, with terms similar to our other previously issued Automotive Asset-backed Notes.
+Energy Asset-backed Notes
+In 2024, we transferred certain financing receivables into an SPE and issued $499 million in aggregate principal amount of Energy Asset-backed Notes, backed by these financing receivables. The proceeds from issuance, net of debt issuance costs, were $494 million. The SPE is wholly owned by us and is consolidated in the financial statements. The cash flows generated by these financing receivables are used to service the principal and interest payments on the Energy Asset-backed Notes and satisfy the SPE’s expenses, and any remaining cash is distributed to us. The SPE’s assets and cash flows are not available to our other creditors, and the creditors of the SPE, including the Energy Asset-backed Notes holders, have no recourse to our other assets.
+Cash Equity Debt
+In connection with the cash equity financing deals closed in 2016, our subsidiaries issued $502 million in aggregate principal amount of debt that bears interest at fixed rates. This debt is secured by, among other things, our interests in certain financing funds and is non-recourse to our other assets.
+China Working Capital Facility
+In 2024, one of our subsidiaries entered into a loan agreement (the “China Working Capital Facility”) with lenders in China for an unsecured revolving facility of up to RMB 20.00 billion to be used for certain production expenditures as well as repayment of certain finance facilities. 
+In March 2025, the China Working Capital Facility was amended to extend the availability of funds through April 2028. In addition, the maturity date for each borrowing is the earlier of one year from the date the funds are drawn or April 2029.
+In September 2025, the China Working Capital Facility was further amended to increase the aggregate lender commitment by RMB 20.00 billion. Borrowings bear interest at a rate equal to the Loan Prime Rate published by the People’s Bank of China minus 0.89% or 0.99%, as applicable under the terms of the agreement.
+
+74
+
+Pledged Assets
+As of December 31, 2025 and 2024, we had pledged or restricted $3.89 billion and $5.16 billion, respectively, of our assets (consisting principally of operating lease vehicles, financing receivables, restricted cash, and equity interests in certain SPEs) as collateral for our outstanding debt.
+Schedule of Principal Maturities of Debt
+The future scheduled principal maturities of debt as of December 31, 2025 were as follows (in millions):
+
+ Recourse debt Non-recourse debt Total
+ 2026 $ 1 $ 1,575 $ 1,576 
+ 2027 — 1,233 1,233 
+ 2028 — 649 649 
+ 2029 — 4,386 4,386 
+ 2030 2 87 89 
+ Thereafter — 244 244 
+ Total $ 3 $ 8,174 $ 8,177 
+
+Note 10 – Leases
+We have entered into various operating and finance lease agreements for certain of our offices, manufacturing and warehouse facilities, retail and service locations, data centers, equipment, vehicles, and energy generation and storage systems, worldwide. We determine if an arrangement is a lease, or contains a lease, at inception and record the lease in our financial statements upon lease commencement, which is the date when the underlying asset is made available for use by the lessor.
+We have lease agreements with lease and non-lease components, and have elected to utilize the practical expedient to account for lease and non-lease components together as a single combined lease component, from both a lessee and lessor perspective with the exception of direct sales-type leases and production equipment classes embedded in supply agreements. From a lessor perspective, the timing and pattern of transfer are the same for the non-lease components and associated lease component and, the lease component, if accounted for separately, would be classified as an operating lease.
+We have elected not to present short-term leases on the consolidated balance sheets as these leases have a lease term of 12 months or less at lease inception and do not contain purchase options or renewal terms that we are reasonably certain to exercise. All other lease assets and lease liabilities are recognized based on the present value of lease payments over the lease term at commencement date. Because most of our leases do not provide an implicit rate of return, we used our incremental borrowing rate based on the information available at lease commencement date in determining the present value of lease payments.
+Our leases, where we are the lessee, often include options to extend the lease term for up to 10 years. Some of our leases also include options to terminate the lease prior to the end of the agreed upon lease term. For purposes of calculating lease liabilities, lease terms include options to extend or terminate the lease when it is reasonably certain that we will exercise such options. 
+Lease expense for operating leases is recognized on a straight-line basis over the lease term as cost of revenues or operating expenses depending on the nature of the leased asset. Certain operating leases provide for annual increases to lease payments based on an index or rate. We calculate the present value of future lease payments based on the index or rate at the lease commencement date for new leases. Differences between the calculated lease payment and actual payment are expensed as incurred. Amortization of finance lease assets is recognized over the lease term as cost of revenues or operating expenses depending on the nature of the leased asset. Interest expense on finance lease liabilities is recognized over the lease term within Interest expense in the consolidated statements of operations.
+
+75
+
+The balances for the operating and finance leases where we are the lessee are presented as follows (in millions) within our consolidated balance sheets:
+
+ December 31, 2025 December 31, 2024
+ Operating leases: 
+ Operating lease right-of-use assets $ 6,027 $ 5,160 
+
+ Accrued liabilities and other $ 954 $ 807 
+ Other long-term liabilities 5,389 4,603 
+ Total operating lease liabilities $ 6,343 $ 5,410 
+
+ Finance leases: 
+ Energy generation and storage systems, net $ 19 $ 21 
+ Property, plant and equipment, net 229 350 
+ Total finance lease assets $ 248 $ 371 
+
+ Current portion of long-term debt and finance leases $ 71 $ 113 
+ Long-term debt and finance leases, net of current portion 152 222 
+ Total finance lease liabilities $ 223 $ 335 
+The components of lease expense are as follows (in millions) within our consolidated statements of operations:
+
+ Year Ended December 31,
+ 2025 2024 2023
+ Operating lease expense: 
+ Operating lease expense (1) $ 1,766 $ 1,500 $ 1,153 
+
+ Finance lease expense: 
+ Amortization of leased assets $ 118 $ 409 $ 506 
+ Interest on lease liabilities 12 21 45 
+ Total finance lease expense $ 130 $ 430 $ 551 
+
+ Total lease expense $ 1,896 $ 1,930 $ 1,704 
+(1)Includes short-term leases and variable lease costs, which are individually immaterial.
+Other information related to leases where we are the lessee is as follows:
+
+ December 31, 2025 December 31, 2024
+ Weighted-average remaining lease term: 
+ Operating leases 7.7 years 7.9 years
+ Finance leases 4.3 years 4.4 years
+
+ Weighted-average discount rate: 
+ Operating leases 5.0 % 5.3 %
+ Finance leases 4.7 % 4.7 %
+
+76
+
+Supplemental cash flow information related to leases where we are the lessee is as follows (in millions):
+
+ Year Ended December 31,
+ 2025 2024 2023
+ Cash paid for amounts included in the measurement of lease liabilities: 
+ Operating cash outflows from operating leases $ 1,743 $ 1,450 $ 1,084 
+ Operating cash outflows from finance leases (interest payments) $ 12 $ 21 $ 47 
+ Leased assets obtained in exchange for finance lease liabilities $ — $ 144 $ 10 
+ Leased assets obtained in exchange for operating lease liabilities $ 1,643 $ 1,808 $ 2,170 
+As of December 31, 2025, the maturities of our operating and finance lease liabilities (excluding short-term leases) are as follows (in millions):
+
+ Operating
+Leases Finance
+Leases
+ 2026 $ 1,241 $ 80 
+ 2027 1,127 72 
+ 2028 1,012 27 
+ 2029 879 22 
+ 2030 787 22 
+ Thereafter 2,668 23 
+ Total minimum lease payments 7,714 246 
+ Less: Interest 1,371 23 
+ Present value of lease obligations 6,343 223 
+ Less: Current portion 954 71 
+ Long-term portion of lease obligations $ 5,389 $ 152 
+As of December 31, 2025, we have excluded from the table above additional operating leases that have not yet commenced with aggregate rent payments of $849 million. These operating leases will commence between fiscal year 2026 and 2028 with lease terms of 2 years to 20 years.
+In July 2025, we entered into a supply agreement for semiconductor contract manufacturing of our AI chips, which is expected to commence in 2027 or later. If and when product specifications are met and production commences, we expect to account for the chipmaking machinery and equipment as leased assets as the terms of the arrangement convey a finance lease under ASC 842 Leases.
+Operating Lease and Sales-type Lease Receivables
+We are the lessor of certain vehicle and energy generation and storage systems as described in Note 2, Summary of Significant Accounting Policies. As of December 31, 2025, maturities of our operating lease and sales-type lease receivables from customers for each of the next five years and thereafter were as follows (in millions):
+
+ Operating
+Leases Sales-type
+Leases
+ 2026 $ 1,045 $ 144 
+ 2027 709 83 
+ 2028 363 27 
+ 2029 210 5 
+ 2030 203 — 
+ Thereafter 1,077 — 
+ Gross lease receivables $ 3,607 $ 259 
+
+77
+
+The above table does not include vehicle sales to customers or leasing partners with a resale value guarantee as the cash payments were received upfront. For our energy generation PPA arrangements, customers are charged solely based on actual power produced by the installed energy generation system at a predefined rate per kilowatt-hour of power produced. The future payments from such arrangements are not included in the above table as they are a function of the power generated by the related energy generation systems in the future.
+Net Investment in Sales-type Leases
+Net investment in sales-type leases, which is the sum of the present value of the future contractual lease payments, is presented on the consolidated balance sheets as a component of Prepaid expenses and other current assets for the current portion and as Other non-current assets for the long-term portion. Lease receivables relating to sales-type leases are presented on the consolidated balance sheets as follows (in millions):
+
+ December 31, 2025 December 31, 2024
+ Gross lease receivables $ 259 $ 484 
+ Unearned interest income (14) (38) 
+ Allowance for expected credit losses (5) (6) 
+ Net investment in sales-type leases $ 240 $ 440 
+
+ Reported as: 
+ Prepaid expenses and other current assets $ 130 $ 152 
+ Other non-current assets 110 288 
+ Net investment in sales-type leases $ 240 $ 440 
+
+Note 11 – Equity Incentive Plans
+In June 2019, we adopted the 2019 Equity Incentive Plan (the “2019 Plan”). The 2019 Plan provides for the grant of stock options, RSAs, RSUs, stock appreciation rights, performance units and performance shares to our employees, directors and consultants. Stock options granted under the 2019 Plan may be either incentive stock options or nonstatutory stock options. Incentive stock options may only be granted to our employees. Nonstatutory stock options may be granted to our employees, directors and consultants. Generally, our stock options and RSUs vest over four years and our stock options are exercisable over a maximum period of 10 years from their grant dates. Vesting typically terminates when the employment or consulting relationship ends.
+In November 2025, we adopted the Amended and Restated 2019 Equity Incentive Plan (the “A&R 2019 Plan”). The A&R 2019 Plan has similar terms to the 2019 Plan, but increased the general shares reserved and available for issuance by 60.0 million shares and created a new special share reserve for our CEO of approximately 208.0 million shares.
+As of December 31, 2025, 64.7 million shares were reserved and available for general issuance under the A&R 2019 Plan.
+
+78
+
+The following table summarizes our stock option and RSU activity for the year ended December 31, 2025:
+
+ Stock Options RSUs
+
+Number of
+Options
+(in thousands) Weighted-
+Average
+Exercise
+Price Weighted-
+Average
+Remaining
+Contractual
+Life (years) 
+Aggregate
+Intrinsic
+Value
+(in billions) 
+Number
+of RSUs
+(in thousands) Weighted-
+Average
+Grant
+Date Fair
+Value
+ Beginning of period 344,535 $ 40.41 18,661 $ 233.02 
+ Granted 13,128 $ 338.43 8,444 $ 360.99 
+ Exercised or released (7,289) $ 112.43 (7,089) $ 241.62 
+ Cancelled (6,268) $ 187.47 (3,004) $ 254.57 
+ End of period 344,106 $ 47.58 2.68 $ 138.38 17,012 $ 289.15 
+ Vested and expected to vest, December 31, 2025 340,111 $ 43.98 2.60 $ 138.00 16,628 $ 286.47 
+ Exercisable and vested, December 31, 2025 320,430 $ 29.62 2.22 $ 134.61 
+The weighted-average grant date fair value per share of RSUs granted in the years ended December 31, 2025, 2024 and 2023 was $360.99, $223.98 and $228.33, respectively. The aggregate release date fair value of RSUs in the years ended December 31, 2025, 2024 and 2023 was $2.42 billion, $1.75 billion and $2.50 billion, respectively.
+The aggregate intrinsic value of options exercised during the years ended December 31, 2025, 2024 and 2023 was $1.73 billion, $1.77 billion and $1.33 billion, respectively.
+ESPP
+Our employees are eligible to purchase our common stock through payroll deductions of up to 15% of their eligible compensation, subject to any plan limitations. The purchase price would be 85% of the lower of the fair market value on the first and last trading days of each six-month offering period. During the years ended December 31, 2025, 2024 and 2023, under the ESPP we issued 1.9 million, 2.2 million and 2.1 million shares, respectively. As of December 31, 2025, there were 93.6 million shares available for issuance under the ESPP.
+2025 CEO Interim Award
+On August 3, 2025, the Board of Directors granted and issued 96.0 million shares of restricted stock to our CEO (the “2025 CEO Interim Award”), which will vest on the second anniversary of the grant date, assuming his continued employment as either the CEO or as an executive responsible for product development or operations (as approved by disinterested members of the Board of Directors) through the vesting date. Our CEO must pay the Company $23.34 per share (the “Purchase Price”) of restricted stock that vests, which is equal to the exercise price per share of the stock-based compensation plan awarded to Elon Musk in 2018 (the “2018 CEO Performance Award”).
+
+79
+
+Restricted stock under the 2025 CEO Interim Award will be immediately forfeited and returned (an “Early Forfeiture”) to the Company to preclude a “double dip” or windfall if, prior to vesting, there is a final, non-appealable judgment, order or decision of the Delaware courts with respect to the action captioned Tornetta v. Elon Musk et al., C.A. No. 2018-0408-KSJM (Del. Ch.), or any pending or future appeal, including In re Tesla, Inc. Derivative Litigation, Nos. 10, 2025, 11, 2025 (Del.) (a “Tornetta Decision Event”) (see Note 13, Commitments and Contingencies), that results in our CEO becoming able to exercise in full the 2018 CEO Performance Award. If a Tornetta Decision Event results in our CEO becoming able to exercise options covered by the 2018 CEO Performance Award, but does not result in Early Forfeiture, then, if the Tornetta Decision Event occurs before the 2025 CEO Interim Award vests, shares covered by the 2025 CEO Interim Award will be reduced to the extent that (a) the sum of the 2025 CEO Interim Award shares and any amount of options exercisable under the 2018 CEO Performance Award exceeds (b) the total number of options subject to the 2018 CEO Performance Award in full (the “Excess Amount”), and if the Tornetta Decision Event occurs after the 2025 CEO Interim Award vests, then our CEO will return or otherwise repay us for shares issued under the 2025 CEO Interim Award (with us returning or repaying the Purchase Price) or forfeit options underlying the 2018 CEO Performance Award equal to the Excess Amount. The “no double dip” provision means that if our CEO gains the ability to exercise the 2018 CEO Performance Award, there will be no material additional benefit to him because the total number of shares awarded under the 2025 CEO Interim Award together with the 2018 CEO Performance Award cannot exceed the number of shares underlying the 2018 CEO Performance Award. 
+Our CEO must hold shares covered by the 2025 CEO Interim Award for five years from the date of grant, subject to certain exceptions, including to satisfy taxes due in respect of vesting of the 2025 CEO Interim Award and/or to pay the Purchase Price. The 2025 CEO Interim Award will vest on an accelerated basis prior to the second anniversary of the grant date if our CEO is in continued eligible service upon a change in control or his death.
+Stock-based compensation expense associated with the 2025 CEO Interim Award is recognized over the requisite service period, based on the grant date fair value determined on August 15, 2025 (the date the issuance of the shares of restricted stock was no longer subject to conditionality or the “accounting grant date”), but only if and when the vesting of the award becomes probable. Additionally, our CEO stock-based compensation expense represents a non-cash expense and is recorded as a selling, general and administrative operating expense in our consolidated statement of operations. The grant date fair value of the 2025 CEO Interim Award is $26.06 billion. The grant date fair value is based upon the closing market price of our common stock as of the accounting grant date, less the Purchase Price, adjusted to take into account an illiquidity discount due to the required holding period. 
+As of December 31, 2025, no stock-based compensation expense has been recorded related to the 2025 CEO Interim Award as vesting was not deemed probable. Following the Delaware Supreme Court’s recent decision reversing the Court of Chancery’s rescission order and reinstating Mr. Musk’s 2018 compensation package, the Special Committee, consistent with its general purpose, continues to consider, evaluate and determine all aspects of the retention and incentivization of Mr. Musk and any methods, approaches or manners for doing so, including the 2018 CEO Performance Award and the 2025 CEO Interim Award. If the 2025 CEO Interim Award is cancelled before vesting is deemed probable, no expense will be recognized relating to the award.
+2025 CEO Performance Award
+On September 3, 2025 (the “2025 CEO Performance Award Grant Date”), the Board of Directors granted approximately 423.7 million shares of performance-based restricted stock to our CEO (the “2025 CEO Performance Award”), which was approved on November 6, 2025 by our shareholders (the “2025 CEO Performance Award Accounting Grant Date”).
+Until such time as there are no shares under the 2025 CEO Performance Award that are not earned (the “Unearned Shares”), our CEO’s Unearned Shares will vote proportionately to the votes of all other shares of our capital stock that are present and entitled to vote at any annual or special meeting (or similar action) of our shareholders (including our CEO). Generally, each of the 12 tranches of the 2025 CEO Performance Award will become “Earned Shares” upon our CEO remaining in Eligible Service (as defined below) and the certification by disinterested directors that the following have been achieved: (i) the market capitalization milestone for such tranche and (ii) any one of the twelve operational milestones (clauses (i) and (ii), together the “Performance Milestones”). Our CEO will be able to direct the vote of such Earned Shares.
+
+80
+
+ Tranche # Number of Shares Subject to Tranche Market Capitalization Milestones (2) Operational Milestones Achievement Status
+ 1 35,311,992 
+$2.0 trillion Achievement of any 1 of the 12 Operational Milestones -
+ 2 35,311,992 
+$2.5 trillion Achievement of any 2 of the 12 Operational Milestones -
+ 3 35,311,992 
+$3.0 trillion Achievement of any 3 of the 12 Operational Milestones -
+ 4 35,311,992 
+$3.5 trillion Achievement of any 4 of the 12 Operational Milestones -
+ 5 35,311,992 
+$4.0 trillion Achievement of any 5 of the 12 Operational Milestones -
+ 6 35,311,992 
+$4.5 trillion Achievement of any 6 of the 12 Operational Milestones -
+ 7 35,311,992 
+$5.0 trillion Achievement of any 7 of the 12 Operational Milestones -
+ 8 35,311,992 
+$5.5 trillion Achievement of any 8 of the 12 Operational Milestones -
+ 9 35,311,992 
+$6.0 trillion Achievement of any 9 of the 12 Operational Milestones -
+ 10 35,311,992 
+$6.5 trillion Achievement of any 10 of the 12 Operational Milestones -
+ 11 35,311,992 
+$7.5 trillion Achievement of any 11 of the 12 Operational Milestones (1) -
+ 12 35,311,992 
+$8.5 trillion Achievement of any 12 of the 12 Operational Milestones (1) -
+ Total 423,743,904 
+(1)The 11th and 12th tranches are earned upon the later of (i) the date on which the last Performance Milestone applicable to such tranche is completed and (ii) the date on which the CEO succession framework developed by our CEO is approved by the Board of Directors.
+(2)Market capitalization milestones are measured on a trailing average basis over both a six-month period and a 30-day period. Achievement may also be measured over a one-year period in connection with the deemed achievement of certain product goals. 
+The operational milestones generally required for any shares to become Earned Shares are defined as follows:
+
+ Milestone # Operational Milestones (3)
+ 1 
+20 million Tesla vehicles delivered
+ 2 
+10 million active FSD subscriptions
+ 3 
+1 million bots delivered
+ 4 
+1 million Robotaxis in commercial operation
+ 5 
+$50 billion of Adjusted EBITDA
+ 6 
+$80 billion of Adjusted EBITDA
+ 7 
+$130 billion of Adjusted EBITDA
+ 8 
+$210 billion of Adjusted EBITDA
+ 9 
+$300 billion of Adjusted EBITDA
+ 10 
+$400 billion of Adjusted EBITDA (4)
+ 11 
+$400 billion of Adjusted EBITDA (4)
+ 12 
+$400 billion of Adjusted EBITDA (4)
+(3)Adjusted EBITDA is defined as net income (loss) attributable to common stockholders before interest expense, provision (benefit) for income taxes, depreciation, amortization and impairment, stock-based compensation and digital assets gains and losses for the four consecutive quarters that immediately precede such determination date.
+(4)Meeting the last three Adjusted EBITDA operational milestones requires achieving Adjusted EBITDA of $400 billion in three non-overlapping periods, each made up of four consecutive quarters. 
+The vesting date for each tranche of shares depends on when such shares become Earned Shares, which is based on the achievement of Performance Milestones. Generally, shares earned prior to the 5th anniversary of the 2025 CEO Performance Award Grant Date vest on the 7.5th anniversary, and shares that are earned after the 5th anniversary of the 2025 CEO Performance Award Grant Date vest on the 10th anniversary (each such 7.5 and 10-year period, a “Post-Milestone Service Period”), in each case our CEO must maintain continued employment either as our CEO or as an executive officer responsible for product development or operations through the applicable Post-Milestone Service Period (“Eligible Service”). Upon vesting, the vested shares will be reduced by an offset amount of $334.09 per share, unless our CEO elects to pay such amounts in cash.
+
+81
+
+Unearned Shares will be forfeited and returned upon the 10-year anniversary of the 2025 CEO Performance Award Grant Date. Unvested shares (including any Earned Shares that have not vested) will be forfeited upon cessation of Eligible Service. Any stock-based compensation expense related to forfeited shares will be reversed during the period in which such a forfeiture occurs. 
+Our CEO must hold shares for five years after they become Earned Shares (regardless of whether such Earned Shares vest), subject to exceptions on or after vesting for (i) a change in control, (ii) satisfying taxes due in respect of vesting or (iii) transfers for estate planning purposes that involve a mere change of form or as may be permitted by our disinterested directors in their discretion consistent with our internal policies. 
+Stock-based compensation expense recognition commences when an operational milestone is considered probable of achievement regardless of the progress made towards achieving the next market capitalization milestone. The probability of meeting an operational milestone is based on a subjective assessment of the product roadmap, regulatory environment, industry and adoption trends, competitive environment, macroeconomic conditions and risks, and our future financial projections, among other estimates and assumptions. These inputs, which are subjective and generally require significant judgment, are based on historical experience, as appropriate, and on various other assumptions that we believe to be reasonable under the circumstances. Changes in the accounting estimates are reasonably likely to occur from period to period. Accordingly, actual results could differ significantly from the estimates made by our management. As of December 31, 2025, we determined that the operational milestone involving the delivery of 20 million Tesla vehicles, is probable over the term of the award based on our current assumptions.
+Once an operational milestone is considered probable of achievement, stock-based compensation expense associated with the tranche will be recognized over the relevant Post-Milestone Service Period, which is based on the expected achievement date of the operational milestone. By design of this award, the recognition period will be approximately 7.5 or 10 years from the 2025 CEO Performance Award Accounting Grant Date. Stock-based compensation expense associated with this award is recorded as Selling, general and administrative expense on our consolidated statement of operations. 
+As of December 31, 2025, based on our current estimate of the achievement date, we had unrecognized stock-based compensation expense of $10.23 billion for the operational milestone that was considered probable of achievement over the term of the award, which we expect to be recognized over 9.7 years. As of December 31, 2025, we had unrecognized stock-based compensation expense of $105.82 billion to $120.37 billion for the operational milestones that were considered not probable of achievement. From the 2025 CEO Performance Award Accounting Grant Date to December 31, 2025, we recorded stock-based compensation expense of $162 million related to the 2025 CEO Performance Award.
+Fair Value Assumptions
+We use the fair value method in recognizing stock-based compensation expense. Under the fair value method, we estimate the fair value of each stock option award with service or service and performance conditions and the ESPP on the grant date generally using the Black-Scholes option pricing model. The weighted-average assumptions used in the Black-Scholes model for stock options are as follows:
+
+ Year Ended December 31,
+ 2025 2024 2023
+ Risk-free interest rate 3.95 % 3.92 % 3.90 %
+ Expected term (in years) 4.7 4.3 4.5
+ Expected volatility 60 % 59 % 63 %
+ Dividend yield — % — % — %
+ Grant date fair value per share $ 178.36 $ 114.29 $ 121.62 
+The risk-free interest rate is based on the U.S. Treasury yield for zero-coupon U.S. Treasury notes with maturities approximating each grant’s expected life. We use our historical data in estimating the expected award term of our employee grants. The expected share price volatility is based on the average of the implied volatility of publicly traded options for our common stock and the historical volatility of our common stock. 
+
+82
+
+The fair value of restricted stock-based awards that have market, service and performance conditions is estimated on the grant date using a Monte Carlo simulation model. The weighted-average assumptions used in the Monte Carlo simulation model for the purpose of determining the grant date fair value of the 2025 CEO Performance Award is as follows: 
+
+ Expected award term (in years) (1) 9.8
+ Expected share price volatility 60 %
+ Dividend yield — %
+ Risk-free rate of return 4.06 %
+ Dilution adjustment 15 %
+ Illiquidity discount (2) 
+0% - 14%
+ Grant date fair value per share (3) 
+$284.24 - $337.74
+(1)The expected award term is the period from the shareholder approval date to the end of the performance period.
+(2)The illiquidity discount was determined using a valuation model that uses the same expected share price volatility applied in the Monte Carlo simulation model and tax rates utilized are equal to the federal tax rate, plus our best estimate of personal tax rates based on available payroll information.
+(3)The stock-based compensation expense recognized will depend on the date a given tranche vests if at all. The range in grant date fair value per share reflects differences in any applicable holding period that may be in effect post-vesting for each tranche.
+The fair value of RSAs and RSUs with service or service and performance conditions is measured on the grant date based on the closing fair market value of our common stock less any purchase price or offset amount, adjusted to take into account any illiquidity discounts due to applicable required holding periods that are in effect post-vesting.
+Other Performance-Based Grants
+From time to time, the Compensation Committee of our Board of Directors grants certain employees performance-based RSUs and stock options. For the year ended December 31, 2025, we granted 8.4 million shares of other performance awards with grant date fair value, net of forfeitures, of $1.70 billion. For the years ended December 31, 2024 and 2023, the shares granted were not material.
+As of December 31, 2025, we had unrecognized stock-based compensation expense of $1.79 billion under these grants to purchase or receive an aggregate 13.0 million shares of our common stock. For awards probable of achievement, we estimate the unrecognized stock-based compensation expense of $831 million will be recognized over a weighted-average period of 3.3 years.
+For the year ended December 31, 2025, we recorded $323 million of stock-based compensation expense related to these grants, net of forfeitures. For the years ended December 31, 2024 and 2023, stock-based compensation expense related to these grants, net of forfeitures, were immaterial.
+Summary Stock-Based Compensation Information
+The following table summarizes our stock-based compensation expense by line item in the consolidated statements of operations (in millions):
+
+ Year Ended December 31,
+ 2025 2024 2023
+ Cost of revenues $ 870 $ 776 $ 741 
+ Research and development 1,332 832 689 
+ Selling, general and administrative 623 389 382 
+ Restructuring and other — 2 — 
+ Total $ 2,825 $ 1,999 $ 1,812 
+
+83
+
+Income tax benefits recognized from stock-based compensation expense during the years ended December 31, 2025, 2024 and 2023 were $517 million, $371 million and $326 million, respectively. During the years ended December 31, 2025, 2024 and 2023, stock-based compensation expense capitalized to our consolidated balance sheets was $238 million, $198 million and $199 million, respectively. As of December 31, 2025, we had $5.82 billion of total unrecognized stock-based compensation expense related to non-performance awards, which will be recognized over a weighted-average period of 2.6 years.
+
+Note 12 – Income Taxes
+Our income before provision for (benefit from) income taxes for the years ended December 31, 2025, 2024 and 2023 was as follows (in millions):
+
+ Year Ended December 31,
+ 2025 2024 2023
+ Domestic $ 4,766 $ 2,292 $ 3,196 
+ Noncontrolling interest and redeemable noncontrolling interest 61 62 (23) 
+ Foreign 451 6,636 6,800 
+ Income before income taxes $ 5,278 $ 8,990 $ 9,973 
+A provision for (benefit from) income taxes of $1.42 billion, $1.84 billion and $(5.00) billion has been recognized for the years ended December 31, 2025, 2024 and 2023, respectively. The components of the provision for (benefit from) income taxes for the years ended December 31, 2025, 2024 and 2023 consisted of the following (in millions):
+
+ Year Ended December 31,
+ 2025 2024 2023
+ Current: 
+ Federal $ — $ — $ 48 
+ State 5 45 57 
+ Foreign 1,295 1,315 1,243 
+ Total current 1,300 1,360 1,348 
+ Deferred: 
+ Federal 434 831 (5,246) 
+ State 21 (49) (653) 
+ Foreign (332) (305) (450) 
+ Total deferred 123 477 (6,349) 
+ Total provision for (benefit from) income taxes $ 1,423 $ 1,837 $ (5,001) 
+
+84
+
+Upon adoption of ASU 2023-09, Improvements to Income Tax Disclosures, as described in Note 2, Summary of Significant Accounting Policies, the reconciliation of taxes at the federal statutory rate to our provision for (benefit from) income taxes for the year ended December 31, 2025 was as follows (in millions, except for percentages):
+
+ Amount Percent 
+ U.S. federal statutory tax rate $ 1,108 21.0 % 
+ Foreign tax effects 
+ China 
+ Statutory tax rate difference between China and United States 60 1.1 
+ Withholding tax 361 6.8 
+ Other (37) (0.7) 
+ Other foreign jurisdictions 331 6.3 
+ Tax credits 
+ Research and development tax credits (352) (6.7) 
+ Foreign tax credits (327) (6.2) 
+ Changes in valuation allowances 389 7.5 
+ Nontaxable or nondeductible items 
+ Nontaxable manufacturing credits (354) (6.7) 
+ Stock-based compensation (172) (3.3) 
+ Other 83 1.6 
+ Changes in unrecognized tax benefits 194 3.7 
+ Other adjustments 139 2.6 
+ Effective tax rate $ 1,423 27.0 % 
+The reconciliation of taxes at the federal statutory rate to our provision for (benefit from) income taxes for the years ended December 31, 2024 and 2023 in accordance with the guidance prior to the adoption of ASU 2023-09 was as follows (in millions):
+
+ Year Ended December 31,
+ 2024 2023
+ Tax at statutory federal rate $ 1,887 $ 2,094 
+ State tax, net of federal benefit 8 (372) 
+ Excess tax benefits related to stock-based compensation (267) (288) 
+ Nontaxable manufacturing credit (291) (101) 
+ Foreign income rate differential (545) (816) 
+ U.S. tax credits (317) (593) 
+ GILTI and Subpart F inclusion 882 670 
+ Unrecognized tax benefits 144 183 
+ Change in valuation allowance 163 (5,962) 
+ Other 173 184 
+ Provision for (benefit from) income taxes $ 1,837 $ (5,001) 
+
+85
+
+Upon adoption of ASU 2023-09, Improvements to Income Tax Disclosures, as described in Note 2, Summary of Significant Accounting Policies, cash paid for income taxes, net of refunds, during the year ended December 31, 2025 was as follows (in millions):
+
+ Federal $ 28 
+ State 
+ California 86 
+ Other states 65 
+ Foreign 
+ China 751 
+ Other countries 302 
+ Total cash paid for income taxes, net of refunds $ 1,232 
+Cash paid for income taxes, net of refunds, during the years ended December 31, 2024 and 2023 was $1.33 billion and $1.12 billion, respectively.
+Deferred tax assets (liabilities) as of December 31, 2025 and 2024 consisted of the following (in millions):
+
+ December 31,
+2025 December 31,
+2024
+ Deferred tax assets: 
+ Net operating loss carry-forwards $ 1,083 $ 1,295 
+ Research and development credits 2,030 1,735 
+ Other tax credits and attributes 2,090 1,325 
+ Deferred revenue 999 1,101 
+ Inventory and warranty reserves 2,269 1,769 
+
+ Operating lease right-of-use liabilities 1,376 1,186 
+ Capitalized research and development costs 2,365 2,448 
+ Deferred GILTI tax assets 709 691 
+ Other 570 412 
+ Total deferred tax assets 13,491 11,962 
+ Valuation allowance (1,765) (1,224) 
+ Deferred tax assets, net of valuation allowance 11,726 10,738 
+ Deferred tax liabilities: 
+ Depreciation and amortization (3,146) (2,658) 
+
+ Operating lease right-of-use assets (1,267) (1,097) 
+
+ Other (514) (561) 
+ Total deferred tax liabilities (4,927) (4,316) 
+ Deferred tax assets (liabilities), net of valuation allowance $ 6,799 $ 6,422 
+
+86
+
+As of December 31, 2025, we maintained valuation allowances of $1.77 billion for deferred tax assets that are not more likely than not to be realized, which primarily included our California deferred tax assets, U.S. foreign tax credits and certain capitalized foreign expenses. The valuation allowance on our net deferred tax assets increased by $541 million and $332 million during the years ended December 31, 2025 and 2024, respectively, and decreased by $6.46 billion during the year ended December 31, 2023. The changes in valuation allowances during the years ended December 31, 2025 and 2024 were primarily due to the changes of our California deferred tax assets, U.S. foreign tax credits and certain capitalized foreign expenses. The change in valuation allowance during the year ended December 31, 2023 was primarily due to the release of our valuation allowance with respect to our U.S. federal and certain state deferred tax assets. In the fourth quarter of 2023, based on the relevant weight of positive and negative evidence, including the amount of our taxable income in recent years which was objective and verifiable, and consideration of our expected future taxable earnings, we concluded that it is more likely than not that most of our U.S. federal and certain state deferred tax assets are realizable and released the valuation allowance on these deferred tax assets. Our deferred tax assets without a valuation allowance are more likely than not to be realized given the expectation of future earnings in the respective jurisdictions.
+As of December 31, 2025, we had $3.56 billion of federal and $8.22 billion of state net operating loss carry-forwards available to offset future taxable income, an immaterial amount of which, if not utilized, will begin to expire in 2026. Federal and state laws can impose substantial restrictions on the utilization of net operating loss and tax credit carry-forwards in the event of an “ownership change,” as defined in Section 382 of the Internal Revenue Code. We have determined that no significant limitation would be placed on the utilization of our net operating loss and tax credit carry-forwards due to prior ownership changes or expirations.
+As of December 31, 2025, we had federal research and development tax credits of $1.83 billion, federal renewable energy tax credits of $1.38 billion, and state research and development tax credits of $1.21 billion. Most of our state research and development tax credits were in the state of California. If not utilized, some of the federal tax credits may expire in various amounts beginning in 2036. However, California research and development tax credits can be carried forward indefinitely. 
+As of December 31, 2025, we intend to indefinitely reinvest our foreign earnings and cash unless such repatriation results in no or minimal tax costs. We have recorded the taxes associated with the foreign earnings we intend to repatriate in the future. For the earnings we intend to indefinitely reinvest, no deferred tax liabilities for foreign withholding or other taxes have been recorded. The estimated amount of such unrecognized withholding tax liability associated with the indefinitely reinvested earnings is approximately $371 million.
+Uncertain Tax Positions
+The changes to our gross unrecognized tax benefits were as follows (in millions):
+
+ December 31, 2022 $ 870 
+ Increases in balances related to prior year tax positions 59 
+ Decreases in balances related to settlement with tax authorities (6) 
+ Increases in balances related to current year tax positions 255 
+ Decreases in balances related to expiration of the statute of limitations (4) 
+ December 31, 2023 1,174 
+ Increases in balances related to prior year tax positions 51 
+ Decreases in balances related to prior year tax positions (27) 
+ Increases in balances related to current year tax positions 227 
+ Decreases in balances related to settlement with tax authorities (4) 
+ Decreases in balances related to expiration of the statute of limitations (4) 
+ December 31, 2024 1,417 
+ Increases in balances related to prior year tax positions 64 
+ Decreases in balances related to prior year tax positions (24) 
+ Increases in balances related to current year tax positions 305 
+ Decreases in balances related to settlement with tax authorities (3) 
+ Decreases in balances related to expiration of the statute of limitations (13) 
+ December 31, 2025 $ 1,746 
+
+87
+
+We include interest and penalties related to unrecognized tax benefits in income tax expense. We recognized net interest and penalties related to unrecognized tax benefits in provision for (benefit from) income taxes line of our consolidated statements of operations of $10 million, $23 million and $17 million for the years ended December 31, 2025, 2024 and 2023, respectively. As of December 31, 2025, and 2024, we have accrued $79 million and $69 million, respectively, related to interest and penalties on our unrecognized tax benefits. Unrecognized tax benefits of $1.41 billion, if recognized, would affect our effective tax rate. 
+We file income tax returns in the U.S. and various state and foreign jurisdictions. We are currently under examination by the Internal Revenue Service (“IRS”) for the years 2015 to 2018. Additional tax years within the periods 2004 to 2014 and 2019 to 2024 remain subject to examination for federal income tax purposes. All net operating losses and tax credits generated to date are subject to adjustment for U.S. federal and state income tax purposes. Our returns for 2004 and subsequent tax years remain subject to examination in U.S. state and foreign jurisdictions.
+
+Note 13 – Commitments and Contingencies 
+Legal Proceedings 
+Litigation Relating to 2018 CEO Performance Award
+On June 4, 2018, a purported Tesla stockholder filed a putative class and derivative action in the Delaware Court of Chancery against Elon Musk and the members of Tesla’s board of directors as then constituted, alleging corporate waste, unjust enrichment and that such board members breached their fiduciary duties by approving the 2018 CEO Performance Award. Trial was held November 14-18, 2022. On January 30, 2024, the Court issued an opinion finding that the 2018 CEO Performance Award should be rescinded. Plaintiff’s counsel filed a brief seeking a fee award of 29,402,900 Tesla shares, plus expenses of $1,120,115.50. Tesla opposed the fee request, and at Tesla’s 2024 Annual Meeting of Stockholders, 72% of the disinterested voting shares of Tesla, excluding shares owned by Mr. Musk and Kimbal Musk, voted to ratify the 2018 CEO Performance Award. Because Tesla’s disinterested stockholders voted to ratify the 2018 CEO Performance Award, Mr. Musk and the other director defendants, joined by Tesla, filed a brief seeking to revise the Court’s January 30, 2024 opinion. On December 2, 2024, the Court issued an opinion denying the motion to revise the Court’s January 30, 2024 opinion and awarded Plaintiff’s counsel fees in the amount of $345 million. A final judgment was entered by the Court, and the director defendants and Tesla appealed the decisions to the Delaware Supreme Court. Tesla and the Director Defendants filed their response briefs on March 11, 2025. Plaintiffs filed their opening brief on April 25, 2025, and reply briefs were filed on May 16, 2025. Oral argument occurred on October 15, 2025. On December 19, 2025, the Delaware Supreme Court reversed the Court of Chancery’s rescission order, reinstating Mr. Musk’s 2018 compensation package, and awarded $1 in nominal damages. The Court also significantly reduced the attorney fee award.
+Litigation Related to Directors’ Compensation
+On June 17, 2020, a purported Tesla stockholder filed a derivative action in the Delaware Court of Chancery, purportedly on behalf of Tesla, against certain of Tesla’s current and former directors regarding compensation awards granted to Tesla’s directors, other than Elon Musk, between 2017 and 2020. The suit asserts claims for breach of fiduciary duty and unjust enrichment and seeks declaratory and injunctive relief, unspecified damages and other relief. Defendants filed their answer on September 17, 2020.
+On July 14, 2023, the parties filed a Stipulation and Agreement of Compromise and Settlement, which does not involve an admission of any wrongdoing by any party. Pursuant to the terms of the agreement, Tesla provided notice of the proposed settlement to stockholders of record as of July 14, 2023. The Court held a hearing regarding the settlement on October 13, 2023, after which it took the settlement and Plaintiff’s counsel fees request under advisement. On January 8, 2025, the Court approved the settlement and awarded Plaintiff’s counsel fees in the amount of approximately $176 million. A final judgment was entered by the Court on January 13, 2025. 
+The Company disagrees with the amount of attorneys’ fees awarded by the court. On February 10, 2025, Tesla appealed the attorneys’ fee award amount to the Delaware Supreme Court. Tesla did not appeal the Delaware Court of Chancery’s approval of the underlying settlement. Also on February 10, 2025, a single shareholder appealed the approval of the settlement. This shareholder’s appeal does not seek to alter any material terms (e.g., financial contributions or the defendants’ obligations under the Settlement Agreement). The Delaware Court of Chancery had previously rejected this shareholder’s objections when approving the Settlement Agreement. Tesla’s appeal of the attorneys’ fee award and the single shareholder’s appeal have been fully briefed. Oral argument occurred on October 29, 2025, and the parties are awaiting a decision. 
+
+88
+
+Because neither Tesla’s appeal nor the shareholder’s appeal seeks to vacate the Settlement Agreement or materially modify its terms, the Company implemented the provisions of the Settlement Agreement in May 2025 by cancelling the options requiring cancellation under its terms. 
+In connection with the settlement, Tesla received $277 million from certain directors and paid Plaintiff’s counsel fees of $176 million (which, as noted above, the Company is appealing) in the three months ended March 31, 2025. We recorded a $31 million reversal of previously recognized stock-based compensation expense in association with the returned awards and increased our provision for income taxes in relation to the return of directors’ compensation. As the settlement was an equity transaction, the net impact to additional paid-in-capital was $110 million in the three months ended March 31, 2025.
+Litigation Relating to Potential Going Private Transaction
+Between October 17, 2018 and March 8, 2021, seven derivative lawsuits were filed in the Delaware Court of Chancery, purportedly on behalf of Tesla, against Mr. Musk and the members of Tesla’s board of directors, as constituted at relevant times, in relation to statements made and actions connected to a potential going private transaction, with certain of the lawsuits challenging additional Twitter posts by Mr. Musk, among other things. Several of those actions were consolidated. All the non-consolidated cases have been dismissed with prejudice through a stipulation and order. A stipulation for dismissal with prejudice of the consolidated case was filed on December 24, 2025, and the parties are waiting for the court to approve it. In addition to these cases, two derivative lawsuits were filed on October 25, 2018 and February 11, 2019 in the U.S. District Court for the District of Delaware, purportedly on behalf of Tesla, against Mr. Musk and the members of the Tesla board of directors as then constituted. Those cases were also consolidated, and on April 25, 2025, were dismissed with prejudice through a stipulation and order. 
+On October 21, 2022, a lawsuit was filed in the Delaware Court of Chancery by a purported shareholder of Tesla alleging, among other things, that board members breached their fiduciary duties in connection with their oversight of the Company’s 2018 settlement with the SEC, as amended. Among other things, the plaintiff seeks reforms to the Company’s corporate governance and internal procedures, unspecified damages, and attorneys’ fees. The lawsuit has been stayed.
+Certain Derivative Lawsuits in Delaware 
+Before converting from a Delaware to Texas corporation on June 13, 2024, three separate derivative actions brought by purported Tesla stockholders were filed in the Delaware Court of Chancery on May 24, June 10 and June 13, 2024, purportedly on behalf of Tesla, against current and former directors regarding topics involving Elon Musk and others, X Corp. (formerly Twitter) and xAI. These suits assert various claims, including breach of fiduciary duty and breach of contract, and seek unspecified damages and other relief. On August 6, 2024, the plaintiffs in these three actions moved to consolidate the matters into a single case. The Court consolidated two of the three cases. Tesla and the directors filed motions to dismiss, and oral argument on those motions occurred on October 22, 2025. 
+Litigation and Investigations Relating to Alleged Discrimination and Harassment
+On February 9, 2022, the California Civil Rights Department (“CRD,” formerly “DFEH”) filed a civil complaint against Tesla in Alameda County, California Superior Court, alleging systemic race discrimination, hostile work environment and pay equity claims, among others. CRD’s amended complaint seeks monetary damages and injunctive relief. The trial is currently set for July 20, 2026. 
+Additionally, on June 1, 2022 the Equal Employment Opportunity Commission (“EEOC”) issued a cause finding against Tesla that closely parallels the CRD’s allegations. On September 28, 2023, the EEOC filed a civil complaint against Tesla in the United States District Court for the Northern District of California asserting claims for race harassment and retaliation and seeking, among other things, monetary and injunctive relief. The case is in discovery with no trial date set. 
+
+89
+
+Other Litigation Related to Our Products and Services
+We are also subject to various lawsuits that seek monetary and other injunctive relief. These lawsuits include proposed class actions and other consumer claims that allege, among other things, purported defects and misrepresentations related to our products and services. For example, on September 14, 2022, a proposed class action was filed against Tesla, Inc. and related entities in the U.S. District Court for the Northern District of California, alleging various claims about the Company’s driver assistance technology systems under state and federal law. This case was later consolidated with several other proposed class actions, and a Consolidated Amended Complaint was filed on October 28, 2022, which seeks damages and other relief on behalf of all persons who purchased or leased from Tesla between January 1, 2016, to the present. On March 22, 2023, the plaintiffs filed a motion for a preliminary injunction to order Tesla to (1) cease using the term “Full Self-Driving Capability” (FSD Capability), (2) cease the sale and activation of FSD Capability and deactivate FSD Capability on Tesla vehicles, and (3) provide certain notices to consumers about proposed court-findings about the accuracy of the use of the terms Autopilot and FSD Capability. Tesla opposed the motion. On September 30, 2023, the Court denied the request for a preliminary injunction, compelled four of five plaintiffs to arbitration, and dismissed the claims of the fifth plaintiff with leave to amend the complaint. On October 31, 2023, the remaining plaintiff filed an amended complaint, which Tesla moved to dismiss, and on May 15, 2024, the Court granted in part and denied in part Tesla’s motion. On May 6, 2025, the plaintiff filed a motion for class certification, which Tesla opposed, and on August 18, 2025, the Court certified a limited class comprised of California consumers who are not subject to an arbitration agreement. On September 1, 2025, Tesla filed a petition in the United States Court of Appeals for the Ninth Circuit for permission to appeal the class certification order, and on December 18, 2025, the Ninth Circuit granted Tesla’s petition. On January 5, 2026, the district court stayed the case pending resolution of the proceedings before the Ninth Circuit. Tesla’s opening brief in the Ninth Circuit is due on March 12, 2026. On October 2, 2023, a similar proposed class action was filed in San Diego County Superior Court in California. Tesla subsequently removed the San Diego County case to federal court and on January 8, 2024, the federal court granted Tesla’s motion to transfer the case to the U.S. District Court for the Northern District of California. Tesla moved to compel arbitration, which the plaintiff did not oppose, and on June 27, 2024, the Court stayed the case pending arbitration.
+On February 27, 2023, a proposed class action was filed in the U.S. District Court for the Northern District of California against Tesla, Inc., Elon Musk and certain current and former Company executives. The complaint alleges that the defendants made material misrepresentations and omissions about the Company’s Autopilot and FSD Capability technologies and seeks money damages and other relief on behalf of persons who purchased Tesla stock between February 19, 2019, and February 17, 2023. An amended complaint was filed on September 5, 2023, naming only Tesla, Inc. and Elon Musk as defendants. On November 6, 2023, Tesla moved to dismiss the amended complaint. On September 30, 2024, the Court granted Tesla’s motion to dismiss without prejudice. On November 26, 2024, the court issued a final judgment in Tesla’s favor, and on December 23, 2024, the plaintiffs filed a notice of appeal to the United States Court of Appeals for the Ninth Circuit. Oral argument occurred on November 20, 2025, and on December 2, 2025, the Ninth Circuit issued a memorandum decision affirming the district court’s dismissal of the amended complaint. On December 29, 2025, the Court’s clerk issued a mandate closing the case.
+On August 4, 2025, a proposed class action was filed in the U.S. District Court Western District of Texas against Tesla, Inc., Elon Musk, and certain current and former Company executives. The complaint alleges that the defendants violated federal securities laws through alleged material misrepresentations in public filings regarding the effectiveness of Autopilot, Full-Self Driving (Supervised), and Robotaxi. The complaint seeks monetary damages and other relief on behalf of persons who purchased Tesla stock between April 19, 2023, and June 22, 2025.
+The Company intends to vigorously defend itself in these matters; however, we cannot predict the outcome or impact. We are unable to reasonably estimate the possible loss or range of loss, if any, associated with these claims, unless noted.
+
+90
+
+Benavides v. Tesla, Inc. 
+On August 1, 2025, a jury in the U.S. District Court for the Southern District of Florida reached a verdict in a product liability trial relating to certain allegations regarding the use of our Autopilot technology in a 2019 accident that resulted in a fatality and injuries. The jury awarded $129 million in total compensatory damages, finding the driver 67% at fault and the Company 33% at fault. The jury also awarded $200 million in punitive damages. On September 15, 2025, the Company filed a post-trial motion for judgment as a matter of law or, in the alternative, a new trial on all issues or an amended judgment to lesser compensatory and punitive damages. Although we believe that the facts and law do not justify the damages awarded, the Company has recorded an immaterial accrual.
+We have experienced, and we expect to continue to face, claims and regulatory scrutiny arising from or related to misuse or claimed failures or alleged misrepresentations of new technologies that we are pioneering. We are unable to reasonably estimate the possible loss or range of loss, if any, associated with these claims, unless noted. An unfavorable outcome in some or all of these proceedings could have a material adverse impact on results of operations or cash flows for a particular period. Our view of these matters is subject to inherent uncertainties and may change in the future.
+Certain Investigations and Other Matters
+We regularly receive requests for information, including subpoenas, from regulators and governmental authorities such as the National Highway Traffic Safety Administration, the National Transportation Safety Board, the SEC, the Department of Justice (“DOJ”), and various local, state, federal, and international agencies. The ongoing requests for information include topics such as operations, technology (e.g., vehicle functionality, vehicle incidents, Autopilot and FSD Capability and Robotaxi), compliance, finance, data privacy, and other matters related to Tesla’s business, its personnel, and related parties. We routinely cooperate with such formal and informal requests for information, investigations, and other inquiries. To our knowledge no government agency in any ongoing investigation has concluded that any wrongdoing occurred. We cannot predict the outcome or impact of any ongoing matters. Should the government decide to pursue an enforcement action, there exists the possibility of a material adverse impact on our business, results of operations, prospects, cash flows, financial position or brand.
+We are also subject to various other legal proceedings, risks and claims that arise from the normal course of business activities. For example, on August 5, 2023, a putative class action was filed in the United States District Court for the Northern District of California, purportedly on behalf of all U.S. individuals impacted by a data misappropriation incident earlier that year. Several additional lawsuits followed, each asserting claims under various state laws and seeking monetary damages and other relief. If an unfavorable ruling or development were to occur in these or other possible legal proceedings, risks and claims, there exists the possibility of a material adverse impact on our business, results of operations, prospects, cash flows, financial position or brand.
+Letters of Credit
+As of December 31, 2025, we had $556 million of unused letters of credit outstanding.
+
+Note 14 – Variable Interest Entity Arrangements
+We have entered into various arrangements with investors to facilitate the funding and monetization of our energy generation systems and vehicles. In particular, our wholly owned subsidiaries and fund investors have formed and contributed cash and assets into various financing funds and entered into related agreements. We have determined that the funds are VIEs and we are the primary beneficiary of these VIEs by reference to the power and benefits criterion under ASC 810, Consolidation. We have considered the provisions within the agreements, which grant us the power to manage and make decisions that affect the operation of these VIEs, including determining the energy generation systems and the associated customer contracts to be sold or contributed to these VIEs, redeploying energy generation systems and managing customer receivables. We consider that the rights granted to the fund investors under the agreements are more protective in nature rather than participating.
+As the primary beneficiary of these VIEs, we consolidate in the financial statements the financial position, results of operations and cash flows of these VIEs, and all intercompany balances and transactions between us and these VIEs are eliminated in the consolidated financial statements. Cash distributions of income and other receipts by a fund, net of agreed upon expenses, estimated expenses, tax benefits and detriments of income and loss and tax credits, are allocated to the fund investor and our subsidiary as specified in the agreements.
+Generally, our subsidiary has the option to acquire the fund investor’s interest in the fund for an amount based on the market value of the fund or the formula specified in the agreements.
+
+91
+
+Upon the sale or liquidation of a fund, distributions would occur in the order and priority specified in the agreements.
+Pursuant to management services, maintenance and warranty arrangements, we have been contracted to provide services to the funds, such as operations and maintenance support, accounting, lease servicing and performance reporting. In some instances, we have guaranteed payments to the fund investors as specified in the agreements. A fund’s creditors have no recourse to our general credit or to that of other funds. Certain assets of the funds have been pledged as collateral for their obligations.
+The aggregate carrying values of the VIEs’ assets and liabilities, after elimination of any intercompany transactions and balances, in the consolidated balance sheets were as follows (in millions):
+
+ December 31,
+2025 December 31,
+2024
+ Assets 
+ Current assets 
+ Cash and cash equivalents $ 109 $ 49 
+ Accounts receivable, net 11 18 
+ Prepaid expenses and other current assets 198 276 
+ Total current assets 318 343 
+ Operating lease vehicles, net 456 392 
+ Energy generation and storage systems, net 2,177 2,310 
+ Other non-current assets 183 183 
+ Total assets $ 3,134 $ 3,228 
+ Liabilities 
+ Current liabilities 
+ Accrued liabilities and other $ 49 $ 32 
+ Deferred revenue 6 6 
+ Current portion of debt and finance leases 1,364 2,114 
+ Total current liabilities 1,419 2,152 
+ Deferred revenue, net of current portion 60 71 
+ Debt and finance leases, net of current portion 1,679 1,834 
+ Total liabilities $ 3,158 $ 4,057 
+
+Note 15 – Related Party Transactions
+Tesla periodically does business with certain entities with which its CEO and directors are affiliated, such as xAI, SpaceX, The Boring Company and Redwood Materials, in accordance with our Related Person Transactions Policy. During the year ended December 31, 2025, we recognized $430 million of revenues and $285 million of cost of revenues from xAI for its purchase of our Megapack products in the ordinary course of business. Other transactions with xAI and other related parties during the year ended December 31, 2025 were immaterial. During the years ended December 31, 2024 and 2023, transactions with related parties were immaterial.
+In January 2026, the Company entered into an agreement with xAI to invest approximately $2 billion to acquire shares of Series E Preferred Stock of xAI. As the investment is not in-substance common stock and the fair value is not readily determinable, we will account for the equity investment using the measurement alternative in accordance with ASC 321, Investments – Equity Securities. The equity investment will be initially recorded at cost on our consolidated balance sheet as a long-term investment subsequently adjusted only for observable price changes for identical or similar securities, net of any potential impairment, which will be evaluated quarterly. We will recognize any changes in the basis of the equity investment in Other (expense) income, net in the consolidated statements of operations.
+
+92
+
+Note 16 – Segment Reporting and Information about Geographic Areas
+Our Chief Executive Officer, as the CODM, organizes our company, manages resource allocations and measures performance among two operating and reportable segments: (i) automotive and (ii) energy generation and storage. The automotive segment includes the design, development, manufacturing, sales and leasing of electric vehicles as well as sales of automotive regulatory credits. Additionally, the automotive segment also includes services and other, which includes sales of used vehicles, non-warranty maintenance services and collision, paid Supercharging sessions, automotive insurance business revenue, part sales and retail merchandise sales. The energy generation and storage segment includes the design, manufacture, installation, sales and leasing of energy generation and storage products and related services and sales of energy generation incentives. 
+Our CODM does not evaluate operating segments using asset or liability information. The CODM uses gross profit to allocate operating and capital resources and assesses performance of each segment by comparing actual gross profit results to historical results and previously forecasted financial information. The following table presents revenues, cost of revenues and gross profit by reportable segment (in millions):
+
+ Year Ended December 31,
+ 2025 2024 2023
+ Automotive segment 
+ Revenues $ 82,056 $ 87,604 $ 90,738 
+ Cost of revenues (1) $ 68,764 $ 72,794 $ 74,219 
+ Gross profit $ 13,292 $ 14,810 $ 16,519 
+ Energy generation and storage segment 
+ Revenues $ 12,771 $ 10,086 $ 6,035 
+ Cost of revenues (2) $ 8,969 $ 7,446 $ 4,894 
+ Gross profit $ 3,802 $ 2,640 $ 1,141 
+(1)Depreciation and amortization included in Cost of revenues for the automotive segment for the years ended December 31, 2025, 2024 and 2023 was $3.78 billion, $3.68 billion and $3.45 billion, respectively.
+(2)Depreciation and amortization included in Cost of revenues for the energy generation and storage segment for the years ended December 31, 2025, 2024 and 2023 was $355 million, $377 million and $343 million, respectively.
+The following table presents revenues by geographic area based on the sales location of our products (in millions):
+
+ Year Ended December 31,
+ 2025 2024 2023
+ United States $ 47,627 $ 47,725 $ 45,235 
+ China 20,962 20,944 21,745 
+ Other international 26,238 29,021 29,793 
+ Total $ 94,827 $ 97,690 $ 96,773 
+The following table presents long-lived assets by geographic area (in millions):
+
+ December 31,
+2025 December 31,
+2024
+ United States $ 35,847 $ 32,461 
+ Germany 4,775 4,175 
+
+ Other international 4,625 4,124 
+ Total $ 45,247 $ 40,760 
+
+93
+
+The following table presents inventory by reportable segment (in millions):
+
+ December 31,
+2025 December 31,
+2024
+ Automotive $ 9,678 $ 9,988 
+ Energy generation and storage 2,714 2,029 
+ Total $ 12,392 $ 12,017 
+
+Note 17 – Restructuring and Other
+In 2025, we initiated certain actions in order to reduce costs and improve efficiency through convergence of AI chip design efforts. As a result, we recognized $390 million of expenses, within our automotive segment, related to charges for supercomputer assets, contract terminations and employee terminations.
+In the second quarter of 2024, we initiated and substantially completed certain restructuring actions to reduce costs and improve efficiency. As a result, we recognized $583 million of employee termination expenses in Restructuring and other in our consolidated income statement.<div

@@ -1,0 +1,53 @@
+id="i6be430fe3ebf411481dcec8b0abe9149_211">
+
+Table of Contents Alphabet Inc.
+Alphabet Inc.
+CONSOLIDATED STATEMENTS OF CASH FLOWS
+(in millions)
+
+ Year Ended December 31,
+ 2023 2024 2025
+ Operating activities 
+ Net income $ 73,795 $ 100,118 $ 132,170 
+ Adjustments: 
+ Depreciation of property and equipment 11,946 15,311 21,136 
+ Stock-based compensation expense 22,460 22,785 24,953 
+ Deferred income taxes (7,763) (5,257) 8,348 
+ Loss (gain) on debt and equity securities, net 823 (2,671) (24,620) 
+ Other 4,330 3,419 2,108 
+ Changes in assets and liabilities, net of effects of acquisitions: 
+ Accounts receivable, net (7,833) (5,891) (8,779) 
+ Income taxes, net 523 (2,418) (3,226) 
+ Other assets (2,143) (1,397) (4,542) 
+ Accounts payable 664 359 907 
+ Accrued expenses and other liabilities 3,937 (1,161) 12,939 
+ Accrued revenue share 482 1,059 899 
+ Deferred revenue 525 1,043 2,420 
+ Net cash provided by operating activities 101,746 125,299 164,713 
+ Investing activities 
+ Purchases of property and equipment (32,251) (52,535) (91,447) 
+ Purchases of marketable securities (77,858) (86,679) (103,773) 
+ Maturities and sales of marketable securities 86,672 103,428 83,240 
+ Purchases of non-marketable securities (3,027) (5,034) (5,716) 
+ Maturities and sales of non-marketable securities 947 882 1,367 
+ Acquisitions, net of cash acquired, and purchases of intangible assets (495) (2,931) (1,592) 
+ Other investing activities (1,051) (2,667) (2,370) 
+ Net cash used in investing activities (27,063) (45,536) (120,291) 
+ Financing activities 
+ Net payments related to stock-based award activities (9,837) (12,190) (14,167) 
+ Repurchases of stock (61,504) (62,222) (45,709) 
+ Dividend payments 0 (7,363) (10,049) 
+ Proceeds from issuance of debt, net of costs 10,790 13,589 64,564 
+ Repayments of debt (11,550) (12,701) (32,427) 
+ Proceeds from sale of interest in consolidated entities, net 8 1,154 400 
+ Net cash used in financing activities (72,093) (79,733) (37,388) 
+ Effect of exchange rate changes on cash and cash equivalents (421) (612) 208 
+ Net increase (decrease) in cash and cash equivalents 2,169 (582) 7,242 
+ Cash and cash equivalents at beginning of period 21,879 24,048 23,466 
+ Cash and cash equivalents at end of period $ 24,048 $ 23,466 $ 30,708 
+ Supplemental disclosures of non-cash investing activities: 
+ Purchases of property and equipment included in accrued liabilities and accounts payable $ 7,435 $ 10,326 $ 15,090 
+
+See accompanying notes.
+
+52. <div

@@ -1052,6 +1052,7 @@
       "2024-12-31": 8711631.0
     },
     "is_leaf": false,
+    "role": "INC_NET",
     "children": [
       {
         "concept": "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
@@ -1059,11 +1060,10 @@
         "name": "Income Loss From Continuing Operations Before Income Taxes Extraordinary Items Noncontrolling Interest",
         "weight": 1.0,
         "values": {
-          "2025-12-31": 10981201.0,
-          "2024-12-31": 8711631.0
+          "2025-12-31": 12722552.0,
+          "2024-12-31": 9965657.0
         },
         "is_leaf": false,
-        "role": "INC_NET",
         "children": [
           {
             "concept": "us-gaap_OperatingIncomeLoss",
@@ -1130,6 +1130,66 @@
                 "values": {
                   "2025-12-31": 3301306.0,
                   "2024-12-31": 2917554.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap:PreferredStockParOrStatedValuePerShare",
+                "tag": "us-gaap:PreferredStockParOrStatedValuePerShare",
+                "name": "us-gaap:Preferred Stock Par Or Stated Value Per Share",
+                "weight": 1.0,
+                "values": {
+                  "2025-12-31": 0.001
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap:CommonStockParOrStatedValuePerShare",
+                "tag": "us-gaap:CommonStockParOrStatedValuePerShare",
+                "name": "us-gaap:Common Stock Par Or Stated Value Per Share",
+                "weight": 1.0,
+                "values": {
+                  "2025-12-31": 0.001
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap:EffectiveIncomeTaxRateReconciliationCrossBorderOtherPercent",
+                "tag": "us-gaap:EffectiveIncomeTaxRateReconciliationCrossBorderOtherPercent",
+                "name": "us-gaap:Effective Income Tax Rate Reconciliation Cross Border Other Percent",
+                "weight": 1.0,
+                "values": {
+                  "2025-12-31": 0.3
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap:EffectiveIncomeTaxRateReconciliationTaxCreditsOther",
+                "tag": "us-gaap:EffectiveIncomeTaxRateReconciliationTaxCreditsOther",
+                "name": "us-gaap:Effective Income Tax Rate Reconciliation Tax Credits Other",
+                "weight": 1.0,
+                "values": {
+                  "2025-12-31": 0.1
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap:EffectiveIncomeTaxRateReconciliationChangeInDeferredTaxAssetsValuationAllowance",
+                "tag": "us-gaap:EffectiveIncomeTaxRateReconciliationChangeInDeferredTaxAssetsValuationAllowance",
+                "name": "us-gaap:Effective Income Tax Rate Reconciliation Change In Deferred Tax Assets Valuation Allowance",
+                "weight": 1.0,
+                "values": {
+                  "2025-12-31": -0.1
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap:EffectiveIncomeTaxRateReconciliationOtherAdjustments",
+                "tag": "us-gaap:EffectiveIncomeTaxRateReconciliationOtherAdjustments",
+                "name": "us-gaap:Effective Income Tax Rate Reconciliation Other Adjustments",
+                "weight": 1.0,
+                "values": {
+                  "2025-12-31": 0.1
                 },
                 "is_leaf": true
               }
@@ -1229,6 +1289,60 @@
           "values": {
             "2025-12-31": 1888408.0,
             "2024-12-31": 1702039.0
+          }
+        },
+        {
+          "concept": "us-gaap:EffectiveIncomeTaxRateReconciliationCrossBorderOtherPercent",
+          "name": "us-gaap:Effective Income Tax Rate Reconciliation Cross Border Other Percent",
+          "tag": "us-gaap:EffectiveIncomeTaxRateReconciliationCrossBorderOtherPercent",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 0.3
+          }
+        },
+        {
+          "concept": "us-gaap:EffectiveIncomeTaxRateReconciliationTaxCreditsOther",
+          "name": "us-gaap:Effective Income Tax Rate Reconciliation Tax Credits Other",
+          "tag": "us-gaap:EffectiveIncomeTaxRateReconciliationTaxCreditsOther",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 0.1
+          }
+        },
+        {
+          "concept": "us-gaap:EffectiveIncomeTaxRateReconciliationChangeInDeferredTaxAssetsValuationAllowance",
+          "name": "us-gaap:Effective Income Tax Rate Reconciliation Change In Deferred Tax Assets Valuation Allowance",
+          "tag": "us-gaap:EffectiveIncomeTaxRateReconciliationChangeInDeferredTaxAssetsValuationAllowance",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": -0.1
+          }
+        },
+        {
+          "concept": "us-gaap:EffectiveIncomeTaxRateReconciliationOtherAdjustments",
+          "name": "us-gaap:Effective Income Tax Rate Reconciliation Other Adjustments",
+          "tag": "us-gaap:EffectiveIncomeTaxRateReconciliationOtherAdjustments",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 0.1
+          }
+        },
+        {
+          "concept": "us-gaap:PreferredStockParOrStatedValuePerShare",
+          "name": "us-gaap:Preferred Stock Par Or Stated Value Per Share",
+          "tag": "us-gaap:PreferredStockParOrStatedValuePerShare",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 0.001
+          }
+        },
+        {
+          "concept": "us-gaap:CommonStockParOrStatedValuePerShare",
+          "name": "us-gaap:Common Stock Par Or Stated Value Per Share",
+          "tag": "us-gaap:CommonStockParOrStatedValuePerShare",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 0.001
           }
         }
       ]

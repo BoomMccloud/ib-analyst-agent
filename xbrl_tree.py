@@ -60,6 +60,126 @@ def fetch_cal_linkbase(html: str, base_url: str) -> str | None:
 
     return fetch_url(cal_href).decode('utf-8', errors='replace')
 
+def fetch_pre_linkbase(html: str, base_url: str) -> str | None:
+    """Find and fetch the presentation linkbase referenced by the filing."""
+    schema_pat = re.compile(r'schemaRef[^>]*href="([^"]+)"', re.IGNORECASE)
+    m = schema_pat.search(html)
+    if not m:
+        return None
+
+    schema_href = m.group(1)
+    if not schema_href.startswith('http'):
+        schema_href = base_url + schema_href
+
+    schema = fetch_url(schema_href).decode('utf-8', errors='replace')
+
+    pre_pat = re.compile(r'href="([^"]*_pre\.xml)"', re.IGNORECASE)
+    pre_m = pre_pat.search(schema)
+    if not pre_m:
+        return None
+
+    pre_href = pre_m.group(1)
+    if not pre_href.startswith('http'):
+        pre_href = base_url + pre_href
+
+    return fetch_url(pre_href).decode('utf-8', errors='replace')
+
+
+
+def parse_pre_linkbase(pre_xml: str) -> dict[str, dict[str, float]]:
+    """Parse presentation linkbase into {role: {concept: global_position}}.
+
+    Uses BS4 for proper locator resolution (label → concept via xlink:href),
+    then flattens the presentation tree to produce a global display ordering.
+    """
+    from bs4 import BeautifulSoup
+
+    soup = BeautifulSoup(pre_xml, 'xml')
+    role_orders = {}
+
+    for link in soup.find_all('presentationLink'):
+        role = link.get('xlink:role')
+        if not role:
+            continue
+
+        # Resolve locator labels to concept names
+        locators = {}
+        for loc in link.find_all('loc'):
+            label = loc.get('xlink:label')
+            href = loc.get('xlink:href', '')
+            concept = href.split('#')[-1] if '#' in href else href
+            if label and concept:
+                locators[label] = concept
+
+        # Build parent→children tree from arcs
+        children_map = defaultdict(list)
+        for arc in link.find_all('presentationArc'):
+            from_label = arc.get('xlink:from')
+            to_label = arc.get('xlink:to')
+            order = float(arc.get('order', 0.0))
+            parent_concept = locators.get(from_label)
+            child_concept = locators.get(to_label)
+            if parent_concept and child_concept:
+                children_map[parent_concept].append((order, child_concept))
+
+        # Sort children by order attribute
+        for parent in children_map:
+            children_map[parent].sort(key=lambda x: x[0])
+            children_map[parent] = [c for _, c in children_map[parent]]
+
+        # Find roots (parents that aren't children of anything)
+        all_children = set()
+        for clist in children_map.values():
+            all_children.update(clist)
+        roots = [p for p in children_map if p not in all_children]
+
+        # Flatten tree via DFS to get global display order
+        flat_order = []
+        def _flatten(node):
+            if node not in flat_order:
+                flat_order.append(node)
+            for child in children_map.get(node, []):
+                _flatten(child)
+
+        for root in roots:
+            _flatten(root)
+
+        role_orders[role] = {concept: i for i, concept in enumerate(flat_order)}
+
+    return role_orders
+
+
+def build_presentation_index(role_orders: dict, role_url: str) -> dict[str, float]:
+    """Find the presentation index for a given calc role URL."""
+    for role, concepts in role_orders.items():
+        if role_url in role or role in role_url:
+            return concepts
+
+    cal_segment = role_url.rsplit('/', 1)[-1].upper()
+    for role, concepts in role_orders.items():
+        pre_segment = role.rsplit('/', 1)[-1].upper()
+        if cal_segment == pre_segment:
+            return concepts
+
+    return {}
+
+def sort_by_presentation(node, pres_index: dict[str, float]):
+    if node.children:
+        node.children.sort(key=lambda c: pres_index.get(c.concept, 999))
+        for child in node.children:
+            sort_by_presentation(child, pres_index)
+
+
+def cascade_layout(tree: 'TreeNode') -> list['TreeNode']:
+    """Return nodes in post-order: children before parent (IS cascade layout)."""
+    result = []
+    def _postorder(node):
+        for child in node.children:
+            _postorder(child)
+        result.append(node)
+    _postorder(tree)
+    return result
+
 
 def parse_calc_linkbase(cal_xml: str) -> dict:
     """Parse calculation linkbase into per-section trees.
@@ -490,6 +610,171 @@ def _find_leaf_by_keywords(tree: TreeNode, keywords: list[str]) -> TreeNode | No
     return None
 
 
+def _find_by_keywords_bfs(tree: 'TreeNode', keywords: list[str]) -> 'TreeNode | None':
+    """BFS search for shallowest node whose concept contains any keyword."""
+    from collections import deque
+    queue = deque([tree])
+    while queue:
+        node = queue.popleft()
+        concept_lower = node.concept.lower()
+        if any(kw in concept_lower for kw in keywords):
+            return node
+        for child in node.children:
+            queue.append(child)
+    return None
+
+def _tag_is_semantic(is_tree: 'TreeNode') -> None:
+    """Tag IS_REVENUE and IS_COGS by BFS keyword matching. Gracefully skips missing roles."""
+    if not is_tree:
+        return
+    rev_node = _find_by_keywords_bfs(is_tree, ["revenue", "sales"])
+    if rev_node:
+        rev_node.role = "IS_REVENUE"
+    cogs_node = _find_by_keywords_bfs(is_tree, ["costofgoods", "costofrevenue", "costofsales"])
+    if cogs_node:
+        cogs_node.role = "IS_COGS"
+
+
+def _supplement_orphan_facts(parent: 'TreeNode', orphan_facts: dict, used_tags: set) -> None:
+    """Fill tree gaps with unused XBRL facts. Bottom-up, never mutates existing .values."""
+    for child in list(parent.children):
+        _supplement_orphan_facts(child, orphan_facts, used_tags)
+    if not parent.children or not parent.values:
+        return
+    for concept, values in list(orphan_facts.items()):
+        if concept in used_tags:
+            continue
+        closes_gap = True
+        periods_checked = 0
+        for period in parent.values:
+            parent_val = parent.values.get(period, 0)
+            children_sum = sum(c.values.get(period, 0) * c.weight for c in parent.children)
+            gap = parent_val - children_sum
+            orphan_val = values.get(period, 0)
+            if orphan_val == 0 and gap == 0:
+                continue
+            periods_checked += 1
+            if abs(gap - orphan_val) > 0.5:
+                closes_gap = False
+                break
+        if closes_gap and periods_checked > 0:
+            new_node = TreeNode(concept, weight=1.0)
+            new_node.values = dict(values)
+            parent.add_child(new_node)
+            used_tags.add(concept)
+
+
+def _supplement_orphan_facts_all(trees: dict) -> None:
+    """Run orphan fact supplementation across all statement trees."""
+    facts = trees.get("facts", {})
+    if not facts:
+        return
+    # Collect all concepts already used in any tree
+    used_tags = set()
+    def _collect(node):
+        used_tags.add(node.concept)
+        if node.tag:
+            used_tags.add(node.tag)
+        for c in node.children:
+            _collect(c)
+    for stmt in ["IS", "BS", "BS_LE", "CF"]:
+        tree = trees.get(stmt)
+        if tree:
+            _collect(tree)
+    # Supplement each tree
+    for stmt in ["IS", "BS", "BS_LE", "CF"]:
+        tree = trees.get(stmt)
+        if tree:
+            _supplement_orphan_facts(tree, facts, used_tags)
+
+
+def verify_tree_completeness(tree: 'TreeNode', periods: list[str]) -> list:
+    """Check SUM(children * weight) == declared for all branch nodes. Returns list of errors."""
+    errors = []
+    def _check(node):
+        if not node.children:
+            return
+        for period in periods:
+            declared = node.values.get(period, 0)
+            if declared == 0:
+                continue
+            computed = sum(c.values.get(period, 0) * c.weight for c in node.children)
+            gap = declared - computed
+            if abs(gap) > 1.0:
+                errors.append((node.concept, period, gap))
+        for child in node.children:
+            _check(child)
+    _check(tree)
+    return errors
+
+
+def merge_calc_pres(tree: 'TreeNode', pres_index: dict[str, float],
+                    periods: list[str]) -> 'TreeNode':
+    """Merge calc tree with presentation ordering. Adds 'Other' rows for gaps.
+
+    Three-layer approach:
+      1. CALC tree — mathematical truth (parent→children with weights)
+      2. PRES order — display ordering from presentation linkbase
+      3. "Other" — residual = declared_parent - SUM(known children)
+
+    Recurses bottom-up so children are fixed before parent's gap is computed.
+    Returns the same tree, mutated in place.
+    """
+    # Recurse into children first (bottom-up)
+    for child in list(tree.children):
+        merge_calc_pres(child, pres_index, periods)
+
+    if not tree.children:
+        return tree  # Leaf — nothing to do
+
+    # --- Partition children ---
+    presented = []
+    unpresented = []
+    for child in tree.children:
+        if child.concept in pres_index:
+            presented.append(child)
+        else:
+            unpresented.append(child)
+
+    # Sort presented children by presentation order
+    presented.sort(key=lambda c: pres_index.get(c.concept, 999))
+
+    # Reorder: presented first, then unpresented (original calc order preserved)
+    tree.children = presented + unpresented
+
+    # --- Compute residual per period ---
+    residual_values = {}
+    has_nonzero_residual = False
+    for period in periods:
+        declared = tree.values.get(period, 0)
+        if declared == 0:
+            continue
+        computed = sum(c.values.get(period, 0) * c.weight for c in tree.children)
+        gap = declared - computed
+        residual_values[period] = gap
+        if abs(gap) > 1.0:
+            has_nonzero_residual = True
+
+    # --- Insert "Other" node if there's a gap ---
+    if has_nonzero_residual:
+        other = TreeNode("__OTHER__", weight=1.0)
+        other.name = "Other"
+        other.values = residual_values
+        other.is_leaf = True
+        tree.add_child(other)
+
+    return tree
+
+
+CROSS_STATEMENT_CHECKS = [
+    {"name": "BS Balance (TA-TL-TE)", "roles": ["BS_TA", "BS_TL", "BS_TE"], "formula": "={BS_TA}-{BS_TL}-{BS_TE}"},
+    {"name": "Cash Link (CF_ENDC-BS_CASH)", "roles": ["CF_ENDC", "BS_CASH"], "formula": "={left}-{right}"},
+    {"name": "NI Link (IS-CF)", "roles": ["INC_NET", "INC_NET_CF"], "formula": "={left}-{right}"},
+    {"name": "D&A Link (IS-CF)", "roles": ["IS_DA", "CF_DA"], "formula": "={left}-{right}"},
+    {"name": "SBC Link (IS-CF)", "roles": ["IS_SBC", "CF_SBC"], "formula": "={left}-{right}"},
+]
+
+
 def _find_leaf_by_timeseries(tree: TreeNode, periods: list[str],
                               target_values: dict[str, float]) -> TreeNode | None:
     """Find a leaf node whose values match target across ALL periods (within 0.5).
@@ -673,18 +958,7 @@ def _tag_is_positions(is_tree: TreeNode | None, cf_tree: TreeNode | None):
     if not is_tree:
         return
 
-    # Tag IS_REVENUE and IS_COGS
-    def _find_by_kw(node, kw):
-        if kw in node.name.lower(): return node
-        for c in node.children:
-            res = _find_by_kw(c, kw)
-            if res: return res
-        return None
-
-    rev_node = _find_by_kw(is_tree, "revenue") or _find_by_kw(is_tree, "sales")
-    if rev_node: rev_node.role = "IS_REVENUE"
-    cogs_node = _find_by_kw(is_tree, "cost of revenue") or _find_by_kw(is_tree, "cost of sales") or _find_by_kw(is_tree, "cost of goods")
-    if cogs_node: cogs_node.role = "IS_COGS"
+    # Note: IS_REVENUE and IS_COGS are now tagged by _tag_is_semantic() in reconcile_trees()
 
     # Find CF's NI values (the authoritative source)
     cf_ni_values = None
@@ -694,27 +968,39 @@ def _tag_is_positions(is_tree: TreeNode | None, cf_tree: TreeNode | None):
             cf_ni_values = cf_ni_node.values
 
     if cf_ni_values:
-        # Strategy 1: Find the IS depth-1 child whose values match CF's NI
+        # Strategy 0: Check if the IS root itself matches CF's NI
         best_match = None
-        for child in is_tree.children:
-            if not child.values:
-                continue
-            # Count how many periods match CF's NI within tolerance
-            matches = 0
-            total = 0
-            for p, cf_val in cf_ni_values.items():
-                is_val = child.values.get(p)
-                if is_val is not None:
-                    total += 1
-                    if abs(is_val - cf_val) < 0.5:
-                        matches += 1
-            if total > 0 and matches == total:
-                best_match = child
-                break
+        root_matches = 0
+        root_total = 0
+        for p, cf_val in cf_ni_values.items():
+            is_val = is_tree.values.get(p)
+            if is_val is not None:
+                root_total += 1
+                if abs(is_val - cf_val) < 0.5:
+                    root_matches += 1
+        if root_total > 0 and root_matches == root_total:
+            best_match = is_tree
+
+        # Strategy 1: depth-1 child search (only if root didn't match)
+        if not best_match:
+            for child in is_tree.children:
+                if not child.values:
+                    continue
+                # Count how many periods match CF's NI within tolerance
+                matches = 0
+                total = 0
+                for p, cf_val in cf_ni_values.items():
+                    is_val = child.values.get(p)
+                    if is_val is not None:
+                        total += 1
+                        if abs(is_val - cf_val) < 0.5:
+                            matches += 1
+                if total > 0 and matches == total:
+                    best_match = child
+                    break
 
         if best_match:
             best_match.role = "INC_NET"
-            best_match.values = dict(cf_ni_values)
         else:
             # Strategy 2: Fall back to first positive-weight child
             fallback = None
@@ -728,12 +1014,10 @@ def _tag_is_positions(is_tree: TreeNode | None, cf_tree: TreeNode | None):
                       f"falling back to first positive-weight child: {fallback.name}",
                       file=sys.stderr)
                 fallback.role = "INC_NET"
-                fallback.values = dict(cf_ni_values)
             else:
                 print("WARNING: Could not identify INC_NET in IS tree — "
                       "tagging root as fallback", file=sys.stderr)
                 is_tree.role = "INC_NET"
-                is_tree.values = dict(cf_ni_values)
     else:
         # No CF NI available — tag IS root as INC_NET (best guess)
         print("WARNING: No CF NI values available — tagging IS root as INC_NET",
@@ -787,7 +1071,7 @@ def _filter_to_complete_periods(trees: dict):
         if tree:
             _filter_node(tree)
 
-def reconcile_trees(trees: dict) -> dict:
+def reconcile_trees(trees: dict, pres_index: dict | None = None) -> dict:
     """Tag key nodes by position and apply cross-statement value overrides."""
     facts = trees.get("facts", {})
 
@@ -800,13 +1084,29 @@ def reconcile_trees(trees: dict) -> dict:
     # --- Step C: Tag IS positions using CF's NI as authoritative ---
     _tag_is_positions(trees.get("IS"), trees.get("CF"))
 
-    # --- Step D: Apply cross-statement value overrides ---
+    # --- Step D: Tag IS Revenue and COGS by keyword BFS ---
+    _tag_is_semantic(trees.get("IS"))
+
+    # --- Step E: Apply cross-statement value overrides ---
     _override_bs_cash(trees.get("BS"), cf_endc_values)
 
-    # --- Step E: Filter to complete periods ---
+    # Persist cf_endc_values so sheet_builder can build Beginning/Ending Cash rows
+    if cf_endc_values:
+        trees["cf_endc_values"] = cf_endc_values
+
+    # --- Step F: Filter to complete periods ---
     _filter_to_complete_periods(trees)
 
-    # --- Step F: Tag D&A and SBC nodes for sheet formula references ---
+    # --- Step G: Merge calc trees with presentation ordering + Other rows ---
+    periods = trees.get("complete_periods", [])
+    if periods:
+        for stmt in ["IS", "BS", "BS_LE", "CF"]:
+            tree = trees.get(stmt)
+            if tree:
+                stmt_pres = pres_index.get(stmt, {}) if pres_index else {}
+                merge_calc_pres(tree, stmt_pres, periods)
+
+    # --- Step H: Tag D&A and SBC nodes for sheet formula references ---
     _tag_da_sbc_nodes(trees.get("IS"), trees.get("CF"))
 
     return trees
@@ -859,14 +1159,24 @@ def build_statement_trees(html: str, base_url: str) -> dict:
                     tree2 = build_tree(calc_children, facts, r)
                     result["BS_LE"] = tree2
 
+    # Fetch and parse pre linkbase
+    pre_xml = fetch_pre_linkbase(html, base_url)
+    role_orders = parse_pre_linkbase(pre_xml) if pre_xml else {}
+
+    pres_index = {}
+    for stmt, role in stmt_roles.items():
+        pres_index[stmt] = build_presentation_index(role_orders, role)
+        if stmt == "BS":
+            pres_index["BS_LE"] = pres_index["BS"]
+
     # Determine complete periods
     all_periods = set()
     for tag_vals in facts.values():
         all_periods.update(tag_vals.keys())
     result["periods"] = sorted(all_periods)
 
-    # Reconcile: tag positions + apply cross-statement overrides
-    reconcile_trees(result)
+    # Reconcile: sort, tag positions + apply cross-statement overrides
+    reconcile_trees(result, pres_index)
 
     return result
 
@@ -922,7 +1232,7 @@ def main():
 
     if args.output:
         out = {}
-        for key in ["complete_periods", "periods"]:
+        for key in ["complete_periods", "periods", "cf_endc_values"]:
             if key in result:
                 out[key] = result[key]
         out["facts"] = result.get("facts", {})

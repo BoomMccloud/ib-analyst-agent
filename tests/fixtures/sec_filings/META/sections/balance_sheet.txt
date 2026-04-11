@@ -1,0 +1,47 @@
+id="icc066a9e83ae4c46b57ee4d9dc9d7021_85">
+
+Table of Contents
+META PLATFORMS, INC. 
+CONSOLIDATED BALANCE SHEETS 
+(In millions, except number of shares and par value)
+
+ December 31,
+ 2025 2024
+ Assets 
+ Current assets: 
+ Cash and cash equivalents $ 35,873 $ 43,889 
+ Marketable securities 45,719 33,926 
+ Accounts receivable, net 19,769 16,994 
+ Prepaid expenses and other current assets 7,361 5,236 
+ Total current assets 108,722 100,045 
+ Non-marketable equity investments 27,524 6,070 
+ Property and equipment, net 176,400 121,346 
+ Operating lease right-of-use assets 20,404 14,922 
+ Goodwill 24,534 20,654 
+ Other assets 8,437 13,017 
+ Total assets $ 366,021 $ 276,054 
+
+ Liabilities and stockholders' equity 
+ Current liabilities: 
+ Accounts payable $ 8,894 $ 7,687 
+ Operating lease liabilities, current 2,213 1,942 
+ Accrued expenses and other current liabilities 30,729 23,967 
+ Total current liabilities 41,836 33,596 
+ Operating lease liabilities, non-current 22,940 18,292 
+ Long-term debt 58,744 28,826 
+ Long-term income taxes 21,005 9,987 
+ Other liabilities 4,253 2,716 
+ Total liabilities 148,778 93,417 
+ Commitments and contingencies 
+ Stockholders' equity: 
+
+Common stock, $0.000006 par value; 5,000 million Class A shares authorized, 2,187 million and 2,190 million shares issued and outstanding, as of December 31, 2025 and 2024, respectively; 4,141 million Class B shares authorized, 343 million and 344 million shares issued and outstanding, as of December 31, 2025 and 2024, respectively — — 
+ Additional paid-in capital 95,793 83,228 
+ Accumulated other comprehensive income (loss) 271 (3,097) 
+ Retained earnings 121,179 102,506 
+ Total stockholders' equity 217,243 182,637 
+ Total liabilities and stockholders' equity $ 366,021 $ 276,054 
+
+See Accompanying Notes to Consolidated Financial Statements.
+
+88<div

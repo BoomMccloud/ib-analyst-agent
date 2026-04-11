@@ -1,0 +1,30 @@
+id="i6be430fe3ebf411481dcec8b0abe9149_202">
+
+Table of Contents Alphabet Inc.
+Alphabet Inc.
+CONSOLIDATED STATEMENTS OF INCOME
+(in millions, except per share amounts)
+
+ Year Ended December 31,
+ 2023 2024 2025
+ Revenues $ 307,394 $ 350,018 $ 402,836 
+ Costs and expenses: 
+ Cost of revenues 133,332 146,306 162,535 
+ Research and development 45,427 49,326 61,087 
+ Sales and marketing 27,917 27,808 28,693 
+ General and administrative 16,425 14,188 21,482 
+ Total costs and expenses 223,101 237,628 273,797 
+ Income from operations 84,293 112,390 129,039 
+ Other income (expense), net 1,424 7,425 29,787 
+ Income before income taxes 85,717 119,815 158,826 
+ Provision for income taxes 11,922 19,697 26,656 
+
+ Net income $ 73,795 $ 100,118 $ 132,170 
+
+Basic net income per share (Note 12) $ 5.84 $ 8.13 $ 10.91 
+
+Diluted net income per share (Note 12) $ 5.80 $ 8.04 $ 10.81 
+
+See accompanying notes.
+
+49. <div

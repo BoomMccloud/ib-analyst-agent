@@ -1,0 +1,51 @@
+id="i6be430fe3ebf411481dcec8b0abe9149_199">
+
+Table of Contents Alphabet Inc.
+Alphabet Inc.
+CONSOLIDATED BALANCE SHEETS
+(in millions, except par value per share amounts)
+
+ As of December 31,
+ 2024 2025
+ Assets 
+ Current assets: 
+ Cash and cash equivalents $ 23,466 $ 30,708 
+ Marketable securities 72,191 96,135 
+ Total cash, cash equivalents, and marketable securities 95,657 126,843 
+ Accounts receivable, net 52,340 62,886 
+ Other current assets 15,714 16,309 
+ Total current assets 163,711 206,038 
+ Non-marketable securities 37,982 68,687 
+ Deferred income taxes 17,180 9,113 
+ Property and equipment, net 171,036 246,597 
+ Operating lease assets 13,588 15,221 
+ Goodwill 31,885 33,380 
+ Other non-current assets 14,874 16,245 
+ Total assets $ 450,256 $ 595,281 
+ Liabilities and Stockholders’ Equity 
+ Current liabilities: 
+ Accounts payable $ 7,987 $ 12,200 
+
+ Accrued compensation and benefits 15,069 17,546 
+ Accrued expenses and other current liabilities 51,228 55,557 
+ Accrued revenue share 9,802 10,864 
+ Deferred revenue 5,036 6,578 
+ Total current liabilities 89,122 102,745 
+ Long-term debt 10,883 46,547 
+ Income taxes payable, non-current 8,782 9,531 
+ Operating lease liabilities 11,691 12,744 
+ Other long-term liabilities 4,694 8,449 
+ Total liabilities 125,172 180,016 
+ Commitments and Contingencies (Note 10) 
+ Stockholders’ equity: 
+
+Preferred stock, $0.001 par value per share, 100 shares authorized; no shares issued and outstanding 0 0 
+
+Class A, Class B, and Class C stock and additional paid-in capital, $0.001 par value per share: 300,000 shares authorized (Class A 180,000, Class B 60,000, Class C 60,000); 12,211 (Class A 5,835, Class B 861, Class C 5,515) and 12,088 (Class A 5,822, Class B 837, Class C 5,429) shares issued and outstanding 84,800 93,126 
+ Accumulated other comprehensive income (loss) (4,800) (1,916) 
+ Retained earnings 245,084 324,055 
+ Total stockholders’ equity 325,084 415,265 
+ Total liabilities and stockholders’ equity $ 450,256 $ 595,281 
+See accompanying notes.
+
+48. <div

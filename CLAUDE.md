@@ -18,6 +18,20 @@ Each stage runs independently via CLI. Output JSON from one stage is the input t
 
 ## Running the Pipeline
 
+**IMPORTANT: Always use `run_pipeline.py` to generate sheets.** Running `xbrl_tree.py`, `pymodel.py`, and `sheet_builder.py` individually bypasses the tree completeness gate and will produce sheets with broken formulas. The pipeline gate checks that every parent's `=SUM(children)` matches its declared XBRL value before writing the sheet.
+
+```bash
+# Full pipeline (preferred — includes all gates):
+python run_pipeline.py AAPL
+
+# Individual scripts (for debugging ONLY, not for sheet generation):
+python xbrl_tree.py --url <filing_url> -o trees.json      # inspect tree
+python pymodel.py --trees trees.json --checkpoint          # check invariants
+# Do NOT run sheet_builder.py directly — use run_pipeline.py
+```
+
+### Legacy paths (for reference)
+
 ```bash
 # Stage 1: Get filing URLs
 python agent1_fetcher.py AAPL --years 5 > filings.json

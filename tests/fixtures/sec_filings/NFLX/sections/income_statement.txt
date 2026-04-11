@@ -1,0 +1,35 @@
+id="ie1400fdbdd2e4bd282737fca9a66fd5a_124">
+
+Table of Contents
+NETFLIX, INC.
+CONSOLIDATED STATEMENTS OF OPERATIONS
+(in thousands, except per share data)
+
+ Year ended December 31,
+
+ 2025 2024 2023
+ Revenues $ 45,183,036 $ 39,000,966 $ 33,723,297 
+ Cost of revenues 23,275,329 21,038,464 19,715,368 
+ Sales and marketing 3,301,306 2,917,554 2,657,883 
+
+Technology and development 3,391,390 2,925,295 2,675,758 
+
+General and administrative 1,888,408 1,702,039 1,720,285 
+ Operating income 13,326,603 10,417,614 6,954,003 
+ Other income (expense): 
+ Interest expense (776,510) (718,733) (699,826) 
+ Interest and other income (expense) 172,459 266,776 (48,772) 
+ Income before income taxes 12,722,552 9,965,657 6,205,405 
+ Provision for income taxes (1,741,351) (1,254,026) (797,415) 
+ Net income $ 10,981,201 $ 8,711,631 $ 5,407,990 
+
+ Earnings per share: 
+ Basic $ 2.58 $ 2.03 $ 1.22 
+ Diluted $ 2.53 $ 1.98 $ 1.20 
+ Weighted-average shares of common stock outstanding: 
+ Basic 4,249,512 4,295,191 4,415,712 
+ Diluted 4,343,863 4,392,608 4,494,966 
+
+See accompanying notes to consolidated financial statements.
+
+39<div

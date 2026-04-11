@@ -1,0 +1,7 @@
+{
+  "balance_sheet": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/JPM/sections/balance_sheet.txt",
+    "anchor": "i1e82dc5e49024170976eb7ddc7c0a10b_145",
+    "chars": 11960
+  }
+}

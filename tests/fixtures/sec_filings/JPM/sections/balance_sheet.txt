@@ -1,0 +1,137 @@
+id="i1e82dc5e49024170976eb7ddc7c0a10b_145">
+
+ CONSOLIDATED BALANCE SHEETS AND CASH FLOWS ANALYSIS
+Consolidated balance sheets analysis
+The following is a discussion of the significant changes between December 31, 2025 and 2024. Refer to pages 154–157 for a discussion of the Critical Accounting Estimates Used by the Firm that affect the Consolidated Balance Sheets.
+
+ Selected Consolidated balance sheets data 
+ December 31, (in millions) 2025 2024 Change
+ Assets 
+ Cash and due from banks $ 21,742 $ 23,372 (7) %
+ Deposits with banks 321,596 445,945 (28) 
+
+Federal funds sold and securities purchased under resale agreements 336,426 295,001 14 
+ Securities borrowed 286,191 219,546 30 
+ Trading assets 802,873 637,784 26 
+ Available-for-sale securities 507,198 406,852 25 
+ Held-to-maturity securities 270,134 274,468 (2) 
+ Investment securities, net of allowance for credit losses 777,332 681,320 14 
+ Loans 1,493,429 1,347,988 11 
+ Allowance for loan losses (25,765) (24,345) 6 
+ Loans, net of allowance for loan losses 1,467,664 1,323,643 11 
+
+Accrued interest and accounts receivable 111,599 101,223 10 
+ Premises and equipment 36,244 32,223 12 
+ Goodwill, MSRs and other intangible assets 64,458 64,560 — 
+ Other assets 198,775 178,197 12 
+ Total assets $ 4,424,900 $ 4,002,814 11 %
+
+Cash and due from banks and deposits with banks decreased driven by Markets activities in CIB, higher investment securities, higher loans and cash deployment in Treasury and CIO, largely offset by the impact of higher deposits and higher long-term debt.
+Federal funds sold and securities purchased under resale agreements increased driven by Markets, reflecting the impact of lower levels of netting, higher collateral requirements and higher demand for securities to cover short positions.
+Securities borrowed increased driven by Markets, reflecting higher client-driven activities and higher demand for securities to cover short positions.
+Refer to Note 11 for additional information on securities purchased under resale agreements and securities borrowed.
+Trading assets increased predominantly driven by Markets, due to higher levels of debt instruments, partially offset by lower levels of equity instruments, both related to client-driven market-making activities. Refer to Notes 2 and 5 for additional information.
+Investment securities increased. Excluding a non-cash transfer in the third quarter of 2025 of $44.1 billion of securities from available-for-sale ("AFS") to held-to-maturity (“HTM”) for asset-liability management purposes,
+
+•AFS securities increased driven by net purchases, predominantly U.S. Treasuries and non-U.S. government debt securities, partially offset by maturities and paydowns; and
+•HTM securities decreased driven by maturities and paydowns.
+Refer to Corporate results on pages 80–82, Investment Portfolio Risk Management on page 132, and Notes 2 and 10 for additional information.
+Loans increased, reflecting:
+•higher wholesale loans, predominantly in Markets associated with higher client demand,
+•higher securities-based lending in AWM due to higher client demand, and
+•higher outstanding balances in Card Services driven by growth in new accounts and higher revolving balances,
+partially offset by
+•a decline in Home Lending as loan sales and paydowns outpaced originations.
+The allowance for loan losses increased, reflecting a net addition to the allowance for loan losses of $1.4 billion, and consisted of:
+
+JPMorgan Chase & Co./2025 Form 10-K 
+55
+
+•$1.1 billion in consumer, driven by loan growth in Card Services and the impact of changes in the Firm's weighted-average macroeconomic outlook, partially offset by reduced borrower uncertainty, and
+•$350 million in wholesale, driven by a net increase in the loan portfolio, an update to loss assumptions on certain leveraged loans, and net changes in credit quality of client-specific exposures, partially offset by a reduction due to the impact of charge-offs and changes in the Firm's weighted-average macroeconomic outlook.
+There was also a $3.0 billion net addition to the allowance for lending-related commitments recognized in other liabilities on the Consolidated balance sheets. The net addition was predominantly driven by $2.2 billion related to the Apple Card transaction and the impact of new lending-related commitments.
+
+Refer to Consolidated Results of Operations and Credit and Investment Risk Management on pages 51–54 and pages 109–132, respectively, Critical Accounting Estimates Used by the Firm on pages 154–157, and Notes 2, 3, 12 and 13 for additional information on loans and the total allowance for credit losses. 
+Accrued interest and accounts receivable increased predominantly due to higher client-driven activities in Markets.
+Premises and equipment increased, reflecting the impact of net additions and improvements to the Firm’s properties, including its new headquarters, bank branches and other corporate offices. Refer to Notes 16 and 18 for additional information.
+Goodwill, MSRs and other intangibles: Refer to Note 15 for additional information.
+Other assets increased predominantly due to higher cash collateral placed with counterparties in Markets, and higher auto operating lease assets in CCB.
+
+ Selected Consolidated balance sheets data (continued) 
+ December 31, (in millions) 2025 2024 Change
+ Liabilities 
+ Deposits $ 2,559,320 $ 2,406,032 6 %
+
+Federal funds purchased and securities loaned or sold under repurchase agreements 442,396 296,835 49 
+ Short-term borrowings 64,776 52,893 22 
+ Trading liabilities 216,019 192,883 12 
+ Accounts payable and other liabilities 316,794 280,672 13 
+
+Beneficial interests issued by consolidated variable interest entities (“VIEs”) 27,951 27,323 2 
+ Long-term debt 435,206 401,418 8 
+ Total liabilities 4,062,462 3,658,056 11 
+ Stockholders’ equity 362,438 344,758 5 
+
+Total liabilities and stockholders’ equity $ 4,424,900 $ 4,002,814 11 %
+
+Deposits increased, reflecting:
+•an increase in CIB due to net inflows related to client-driven activities in Payments and Securities Services,
+•an increase in CCB primarily driven by new accounts, predominantly offset by increased customer spending, and 
+•an increase in AWM primarily driven by growth in both new accounts and balances in existing accounts, including the impact of higher-yielding product offerings, largely offset by migration into other investment products.
+Federal funds purchased and securities loaned or sold under repurchase agreements increased driven by Markets, primarily reflecting higher secured financing of trading assets.
+Short-term borrowings increased driven by higher financing requirements in Markets.
+
+Refer to Liquidity Risk Management on pages 100–107 for additional information on deposits, federal funds purchased and securities loaned or sold under repurchase agreements, and short-term borrowings; Notes 2 and 17 for deposits; and Note 11 for federal funds purchased and securities loaned or sold under repurchase agreements.
+Trading liabilities increased due to client-driven market-making activities, which resulted in higher levels of short positions, as well as higher derivative payables, primarily as a result of market movements. Refer to Notes 2 and 5 for additional information. 
+Accounts payable and other liabilities increased predominantly due to higher brokerage payables related to client-driven activities in Markets. Refer to Note 19 for additional information on accounts payable.
+
+56 
+JPMorgan Chase & Co./2025 Form 10-K
+
+Beneficial interests issued by consolidated VIEs: Refer to Liquidity Risk Management on pages 100–107; and Notes 14 and 28 for additional information related to Firm-sponsored VIEs and loan securitization trusts.
+Long-term debt increased driven by net issuances of structured notes in Markets due to client demand and an increase in the fair value of such instruments, as well as net issuances of long-term debt in Treasury and CIO, partially offset by a net reduction in Federal Home Loan Bank ("FHLB") advances. Refer to Liquidity Risk Management on pages 100–107 for additional information.
+Stockholders’ equity increased, reflecting:
+•net income, and 
+•net unrealized gains in AOCI in Treasury and CIO, driven by the impact of lower interest rates on AFS securities and cash flow hedges, and spreads tightening on AFS securities,
+largely offset by
+•the impact of capital actions, including net repurchases of common shares and dividend payments on common and preferred stock.
+Refer to Consolidated Statements of changes in stockholders’ equity on page 168, Capital Actions on page 97, and Note 24 for additional information.
+
+JPMorgan Chase & Co./2025 Form 10-K 
+57
+
+Consolidated cash flows analysis
+The following is a discussion of cash flow activities during the years ended December 31, 2025 and 2024. Refer to Consolidated cash flows analysis on page 66 of the Firm’s 2024 Form 10-K for a discussion of the 2023 activities.
+
+ (in millions) Year ended December 31,
+ 2025 2024 2023
+
+Net cash provided by/
+(used in) 
+ Operating activities $ (147,782) $ (42,012) $ 12,974 
+ Investing activities (265,565) (163,403) 67,643 
+
+Financing activities 269,533 63,447 (25,571) 
+
+Effect of exchange rate changes on cash 17,835 (12,866) 1,871 
+
+Net increase/(decrease) in cash and due from banks and deposits with banks $ (125,979) $ (154,834) $ 56,917 
+Operating activities 
+JPMorganChase’s operating assets and liabilities primarily support the Firm’s lending and capital markets activities. These assets and liabilities can vary significantly in the normal course of business due to the amount and timing of cash flows, which are affected by client-driven and risk management activities and market conditions. The Firm believes that cash flows from operations, available cash and other liquidity sources, and its capacity to generate cash through secured and unsecured sources, are sufficient to meet its operating liquidity needs.
+•In 2025, cash used resulted from higher trading assets, higher securities borrowed, net originations and purchases of loans held-for-sale, higher other assets and higher accrued interest and accounts receivable, partially offset by net income excluding non-cash adjustments, and higher trading liabilities. 
+•In 2024, cash used resulted from higher trading assets and higher securities borrowed, largely offset by net income excluding non-cash adjustments.
+
+Investing activities
+The Firm’s investing activities predominantly include originating held-for-investment loans, and investing in the investment securities portfolio and other short-term instruments.
+•In 2025, cash used resulted from net loan originations, net purchases of investment securities and higher securities purchased under resale agreements. 
+•In 2024, cash used resulted from net purchases of investment securities, net loan originations and higher securities purchased under resale agreements, partially offset by proceeds from sales and securitizations of loans held-for-investment.
+Financing activities
+The Firm’s financing activities include acquiring customer deposits and issuing long-term debt and preferred stock.
+•In 2025, cash provided primarily reflected higher deposits, higher securities loaned or sold under repurchase agreements and net proceeds from long- and short-term borrowings, 
+•In 2024, cash provided primarily reflected higher securities loaned or sold under repurchase agreements and net proceeds from long- and short-term borrowings, partially offset by net redemption of preferred stock.
+•For both periods, cash was used for repurchases of common stock and cash dividends on common and preferred stock.
+* * *
+Refer to Consolidated Balance Sheets Analysis on pages 55–57, Capital Risk Management on pages 89–99, and Liquidity Risk Management on pages 100–107, and the Consolidated Statements of Cash Flows on page 169 for a further discussion of the activities affecting the Firm’s cash flows.
+
+58 
+JPMorgan Chase & Co./2025 Form 10-K<div

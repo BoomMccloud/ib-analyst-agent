@@ -1,0 +1,54 @@
+id="ie1400fdbdd2e4bd282737fca9a66fd5a_133">
+
+Table of Contents
+NETFLIX, INC.
+CONSOLIDATED STATEMENTS OF CASH FLOWS
+(in thousands)
+
+ Year Ended December 31,
+
+ 2025 2024 2023
+ Cash flows from operating activities: 
+ Net income $ 10,981,201 $ 8,711,631 $ 5,407,990 
+ Adjustments to reconcile net income to net cash provided by operating activities: 
+ Additions to content assets (17,096,617) (16,223,617) (12,554,703) 
+ Change in content liabilities (610,838) (779,135) (585,602) 
+ Amortization of content assets 16,422,166 15,301,517 14,197,437 
+ Depreciation and amortization of property, equipment and intangibles 333,389 328,914 356,947 
+ Stock-based compensation expense 368,449 272,588 339,368 
+ Foreign currency remeasurement loss (gain) on debt 72,348 (121,539) 176,296 
+ Other non-cash items 577,451 494,778 512,075 
+ Deferred income taxes (442,056) (590,698) (459,359) 
+ Changes in operating assets and liabilities: 
+ Other current assets (790,661) 22,180 (181,003) 
+ Accounts payable (8,039) 121,353 93,502 
+ Accrued expenses and other liabilities 881,218 191,899 103,565 
+ Deferred revenue 254,917 77,844 178,708 
+ Other non-current assets and liabilities (793,655) (446,351) (310,920) 
+ Net cash provided by operating activities 10,149,273 7,361,364 7,274,301 
+ Cash flows from investing activities: 
+ Purchases of property and equipment (688,220) (439,538) (348,552) 
+ Acquisitions (17,194) — — 
+ Purchases of investments (169,965) (1,742,246) (504,862) 
+ Proceeds from maturities and sales of investments 1,917,067 — 1,395,165 
+
+ Net cash provided by (used in) investing activities 1,041,688 (2,181,784) 541,751 
+ Cash flows from financing activities: 
+ Proceeds from issuance of debt — 1,794,460 — 
+
+ Repayments of debt (1,833,450) (400,000) — 
+ Proceeds from issuance of common stock 666,965 832,887 169,990 
+ Repurchases of common stock (9,127,167) (6,263,746) (6,045,347) 
+ Taxes paid related to net share settlement of equity awards (46,165) (8,285) — 
+ Other financing activities (5,806) (29,743) (75,446) 
+ Net cash used in financing activities (10,345,623) (4,074,427) (5,950,803) 
+ Effect of exchange rate changes on cash, cash equivalents and restricted cash 386,519 (416,331) 82,684 
+ Net increase in cash, cash equivalents and restricted cash 1,231,857 688,822 1,947,933 
+ Cash, cash equivalents and restricted cash, beginning of year 7,807,337 7,118,515 5,170,582 
+ Cash, cash equivalents and restricted cash, end of year $ 9,039,194 $ 7,807,337 $ 7,118,515 
+ Supplemental disclosure: 
+
+ Interest paid 718,611 674,502 684,504 
+See accompanying notes to consolidated financial statements.
+
+41<div

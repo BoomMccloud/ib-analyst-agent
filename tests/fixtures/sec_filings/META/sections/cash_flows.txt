@@ -1,0 +1,78 @@
+id="icc066a9e83ae4c46b57ee4d9dc9d7021_97">
+
+Table of Contents
+META PLATFORMS, INC.
+CONSOLIDATED STATEMENTS OF CASH FLOWS
+(In millions)
+
+Year Ended December 31, 
+ 2025 2024 2023
+ Cash flows from operating activities 
+ Net income $ 60,458 $ 62,360 $ 39,098 
+ Adjustments to reconcile net income to net cash provided by operating activities: 
+ Depreciation and amortization 18,616 15,498 11,178 
+ Share-based compensation 20,427 16,690 14,027 
+ Deferred income taxes 18,738 (4,738) 131 
+ Unrealized (gain) loss on equity investments (1,138) (53) 102 
+ Impairment charges for facilities consolidation — 383 2,432 
+
+ Other (416) 140 309 
+ Changes in assets and liabilities: 
+ Accounts receivable (1,815) (1,485) (2,399) 
+ Prepaid expenses and other current assets (89) (698) 559 
+ Other assets (481) (270) (80) 
+ Accounts payable (14) 373 51 
+
+ Accrued expenses and other current liabilities 1,077 323 5,081 
+ Other liabilities 437 2,805 624 
+ Net cash provided by operating activities 115,800 91,328 71,113 
+ Cash flows from investing activities 
+ Purchases of property and equipment (69,691) (37,256) (27,045) 
+
+ Purchases of marketable securities (36,929) (25,542) (2,982) 
+ Sales and maturities of marketable securities 26,874 15,789 6,184 
+ Payments for held-for-sale assets (2,432) — — 
+ Proceeds from Venture distribution 2,554 — — 
+ Purchases of non-marketable equity investments (18,330) (11) (1) 
+ Acquisitions of businesses and intangible assets (4,231) (270) (629) 
+ Other investing activities 182 140 (22) 
+ Net cash used in investing activities (102,003) (47,150) (24,495) 
+ Cash flows from financing activities 
+ Taxes paid related to net share settlement of equity awards (18,400) (13,770) (7,012) 
+ Repurchases of Class A common stock (26,248) (30,125) (19,774) 
+ Payments for dividends and dividend equivalents (5,324) (5,072) — 
+ Proceeds from issuance of long-term debt, net 29,906 10,432 8,455 
+ Principal payments on finance leases (2,524) (1,969) (1,058) 
+ Other financing activities 2,220 (277) (111) 
+ Net cash used in financing activities (20,370) (40,781) (19,500) 
+ Effect of exchange rate changes on cash, cash equivalents, and restricted cash equivalents 235 (786) 113 
+ Net increase (decrease) in cash, cash equivalents, and restricted cash equivalents (6,338) 2,611 27,231 
+ Cash, cash equivalents, and restricted cash equivalents at beginning of the period 45,438 42,827 15,596 
+ Cash, cash equivalents, and restricted cash equivalents at end of the period $ 39,100 $ 45,438 $ 42,827 
+ Reconciliation of cash, cash equivalents, and restricted cash equivalents to the consolidated balance sheets 
+ Cash and cash equivalents $ 35,873 $ 43,889 $ 41,862 
+ Restricted cash equivalents, included in prepaid expenses and other current assets 837 353 99 
+ Restricted cash equivalents, included in other assets 2,390 1,196 866 
+ Total cash, cash equivalents, and restricted cash equivalents $ 39,100 $ 45,438 $ 42,827 
+
+See Accompanying Notes to Consolidated Financial Statements.
+
+92
+
+Table of Contents
+META PLATFORMS, INC.
+CONSOLIDATED STATEMENTS OF CASH FLOWS
+(In millions)
+
+Year Ended December 31, 
+ 2025 2024 2023
+ Supplemental cash flow data 
+ Cash paid for income taxes, net $ 7,578 $ 10,554 $ 6,607 
+ Cash paid for interest, net of amounts capitalized $ 696 $ 486 $ 448 
+ Non-cash investing and financing activities: 
+ Property and equipment in accounts payable and accrued expenses and other current liabilities $ 9,331 $ 7,127 $ 4,105 
+ Acquisition of businesses and intangible assets in accounts payable, accrued expenses and other current liabilities, and other liabilities $ 2,659 $ 172 $ 119 
+
+See Accompanying Notes to Consolidated Financial Statements.
+
+93<div

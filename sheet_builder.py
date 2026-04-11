@@ -42,20 +42,100 @@ def _build_weight_formula(col: str, child_rows: list[tuple[int, float]]) -> str:
         parts.append(f"{sign}{col}{r}")
     return "=" + "".join(parts).lstrip("+")
 
+def _render_cross_checks(checks, role_map: dict, periods: list[str]) -> list:
+    """Render cross-statement check rows. Skips checks with missing roles."""
+    rows = []
+    for check in (checks if isinstance(checks, (list, tuple)) else list(checks.values())):
+        roles = check.get("roles", [])
+        if not all(r in role_map for r in roles):
+            continue
+        row = ["", "", check.get("name", "Check"), ""]
+        for i in range(len(periods)):
+            col = dcol(i)
+            refs = {}
+            for role in roles:
+                sheet_name, row_num = role_map[role]
+                refs[role] = f"'{sheet_name}'!{col}{row_num}"
+            if len(roles) == 2:
+                refs["left"] = refs[roles[0]]
+                refs["right"] = refs[roles[1]]
+            try:
+                formula = check["formula"].format(**refs)
+            except KeyError:
+                formula = ""
+            row.append(formula)
+        rows.append(row)
+    return rows
+
 def prev_period(p: str, periods: list[str]) -> str | None:
     idx = periods.index(p)
     return periods[idx - 1] if idx > 0 else None
 
-def _render_sheet_body(tree, periods, start_row, global_role_map, sheet_name):
-    """Render a tree into rows. Leaves get values, parents get formulas."""
+def _cascade_layout(node, current_row, indent=0):
     layout = []
-    def _assign_rows(node, indent=0):
-        row_num = start_row + len(layout)
-        layout.append((row_num, indent, node))
-        for child in node.children:
-            _assign_rows(child, indent + 1)
+    if not node.children:
+        return [(current_row, indent, node)]
     
-    _assign_rows(tree)
+    backbone = None
+    expense_children = []
+    for child in node.children:
+        if getattr(child, 'weight', 1.0) == 1.0 and child.children and backbone is None:
+            backbone = child
+        else:
+            expense_children.append(child)
+            
+    if backbone:
+        backbone_rows = _cascade_layout(backbone, current_row, indent)
+        layout.extend(backbone_rows)
+        current_row = backbone_rows[-1][0] + 1
+        
+        for child in expense_children:
+            if child.children:
+                def _assign_layout(n, ind):
+                    nonlocal current_row
+                    res = [(current_row, ind, n)]
+                    current_row += 1
+                    for c in n.children:
+                        res.extend(_assign_layout(c, ind + 1))
+                    return res
+                sub_rows = _assign_layout(child, indent + 1)
+            else:
+                sub_rows = [(current_row, indent + 1, child)]
+                current_row += 1
+            layout.extend(sub_rows)
+    else:
+        plus_children = [c for c in node.children if getattr(c, 'weight', 1.0) == 1.0]
+        minus_children = [c for c in node.children if getattr(c, 'weight', 1.0) != 1.0]
+        for child in plus_children + minus_children:
+            if child.children:
+                def _assign_layout(n, ind):
+                    nonlocal current_row
+                    res = [(current_row, ind, n)]
+                    current_row += 1
+                    for c in n.children:
+                        res.extend(_assign_layout(c, ind + 1))
+                    return res
+                sub_rows = _assign_layout(child, indent + 1)
+            else:
+                sub_rows = [(current_row, indent + 1, child)]
+                current_row += 1
+            layout.extend(sub_rows)
+            
+    layout.append((current_row, indent, node))
+    return layout
+
+def _render_sheet_body(tree, periods, start_row, global_role_map, sheet_name, is_cascade=False):
+    """Render a tree into rows. Leaves get values, parents get formulas."""
+    if is_cascade:
+        layout = _cascade_layout(tree, start_row, 0)
+    else:
+        layout = []
+        def _assign_rows(node, indent=0):
+            row_num = start_row + len(layout)
+            layout.append((row_num, indent, node))
+            for child in node.children:
+                _assign_rows(child, indent + 1)
+        _assign_rows(tree)
     node_row = {id(entry[2]): entry[0] for entry in layout}
     
     rows = []
@@ -63,18 +143,6 @@ def _render_sheet_body(tree, periods, start_row, global_role_map, sheet_name):
         label = ("  " * indent) + node.name
         if node.role:
             global_role_map[node.role] = (sheet_name, row_num)
-            if node.role == "IS_REVENUE":
-                global_role_map["IS_COMPUTED_REVENUE"] = (sheet_name, row_num)
-            elif node.role == "IS_COGS":
-                global_role_map["IS_COMPUTED_COGS"] = (sheet_name, row_num)
-            elif node.role == "BS_TE":
-                global_role_map["BS_COMPUTED_TE"] = (sheet_name, row_num)
-            elif node.role == "CF_OPCF":
-                global_role_map["CF_COMPUTED_OPCF"] = (sheet_name, row_num)
-            elif node.role == "CF_INVCF":
-                global_role_map["CF_COMPUTED_INVCF"] = (sheet_name, row_num)
-            elif node.role == "CF_FINCF":
-                global_role_map["CF_COMPUTED_FINCF"] = (sheet_name, row_num)
         
         row = ["", "", label, ""]
         if not node.children:
@@ -109,6 +177,8 @@ def _add_check_row(rows, periods, formula_fn):
     rows.append(row)
 
 def _write_summary_tab(sid, periods, global_role_map) -> list:
+    from xbrl_tree import CROSS_STATEMENT_CHECKS
+
     rows = [
         [],
         ["", "", "3-Statement Summary", ""] + list(periods),
@@ -122,7 +192,7 @@ def _write_summary_tab(sid, periods, global_role_map) -> list:
             row.append(f"={_cell_ref(target_role, col, global_role_map)}")
         rows.append(row)
         global_role_map[role] = ("Summary", row_num)
-    
+
     _add_summary_row("Total Assets", "SUMM_TA", "BS_TA")
     _add_summary_row("Total Liabilities", "SUMM_TL", "BS_TL")
     _add_summary_row("Total L&E", "SUMM_TLE", "BS_TLE")
@@ -130,32 +200,12 @@ def _write_summary_tab(sid, periods, global_role_map) -> list:
     _add_summary_row("Beginning Cash", "SUMM_BEGC", "CF_BEGC")
     _add_summary_row("Net Change in Cash", "SUMM_NETCH", "CF_NETCH")
     _add_summary_row("Ending Cash", "SUMM_ENDC", "CF_ENDC")
-    
-    def summ_ta_check(col):
-        r1, r2 = _cell_ref("SUMM_TA", col, global_role_map), _cell_ref("BS_TA", col, global_role_map)
-        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
-    def summ_tl_check(col):
-        r1, r2 = _cell_ref("SUMM_TL", col, global_role_map), _cell_ref("BS_TL", col, global_role_map)
-        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
-    def summ_balance_check(col):
-        tle, ta = _cell_ref("SUMM_TLE", col, global_role_map), _cell_ref("SUMM_TA", col, global_role_map)
-        return f"={tle}-{ta}" if tle != "0" and ta != "0" else None
-    def summ_opcf_check(col):
-        r1, r2 = _cell_ref("SUMM_OPCF", col, global_role_map), _cell_ref("CF_OPCF", col, global_role_map)
-        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
-    def summ_cash_proof(col):
-        begc = _cell_ref("SUMM_BEGC", col, global_role_map)
-        endc = _cell_ref("SUMM_ENDC", col, global_role_map)
-        netch = _cell_ref("SUMM_NETCH", col, global_role_map)
-        if begc != "0" and endc != "0" and netch != "0":
-            return f"={begc}-{endc}+{netch}"
-        return None
-    
-    _add_check_row(rows, periods, summ_ta_check)
-    _add_check_row(rows, periods, summ_tl_check)
-    _add_check_row(rows, periods, summ_balance_check)
-    _add_check_row(rows, periods, summ_opcf_check)
-    _add_check_row(rows, periods, summ_cash_proof)
+
+    # --- Declarative cross-statement checks (replaces tautological closures) ---
+    rows.append([""] * (4 + len(periods)))  # blank separator
+    check_rows = _render_cross_checks(CROSS_STATEMENT_CHECKS, global_role_map, periods)
+    rows.extend(check_rows)
+
     gws_write(sid, f"Summary!A1:{dcol(len(periods)-1)}{len(rows)}", rows)
     return rows
 
@@ -224,53 +274,14 @@ def write_sheets(trees: dict, company: str) -> tuple[str, str]:
     global_role_map = {}
     tab_rows = {}
 
-    # Pre-register Summary roles to break circular dependency with check rows
-    global_role_map["SUMM_TA"] = ("Summary", 4)
-    global_role_map["SUMM_TL"] = ("Summary", 5)
-    global_role_map["SUMM_TLE"] = ("Summary", 6)
-    global_role_map["SUMM_OPCF"] = ("Summary", 7)
-    global_role_map["SUMM_BEGC"] = ("Summary", 8)
-    global_role_map["SUMM_NETCH"] = ("Summary", 9)
-    global_role_map["SUMM_ENDC"] = ("Summary", 10)
-
-    def _ref(role, col):        return _cell_ref(role, col, global_role_map)
-
-    # --- 9 check formulas for IS/BS/CF tabs (5 more in _write_summary_tab) ---
-    def is_revenue_check(col):
-        r1, r2 = _ref("IS_COMPUTED_REVENUE", col), _ref("IS_REVENUE", col)
-        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
-    def is_cogs_check(col):
-        r1, r2 = _ref("IS_COMPUTED_COGS", col), _ref("IS_COGS", col)
-        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
-    def bs_ta_check(col):
-        r1, r2 = _ref("SUMM_TA", col), _ref("BS_TA", col)
-        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
-    def bs_tl_check(col):
-        r1, r2 = _ref("SUMM_TL", col), _ref("BS_TL", col)
-        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
-    def bs_balance_check(col):
-        tle, ta = _ref("BS_TLE", col), _ref("BS_TA", col)
-        return f"={tle}-{ta}" if tle != "0" and ta != "0" else None
-    def bs_equity_check(col):
-        r1, r2 = _ref("BS_COMPUTED_TE", col), _ref("BS_TE", col)
-        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
-    def cf_opcf_check(col):
-        r1, r2 = _ref("CF_COMPUTED_OPCF", col), _ref("CF_OPCF", col)
-        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
-    def cf_invcf_check(col):
-        r1, r2 = _ref("CF_COMPUTED_INVCF", col), _ref("CF_INVCF", col)
-        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
-    def cf_fincf_check(col):
-        r1, r2 = _ref("CF_COMPUTED_FINCF", col), _ref("CF_FINCF", col)
-        return f"={r1}-{r2}" if r1 != "0" and r2 != "0" else None
+    # No pre-registered Summary rows — Summary is rendered AFTER IS/BS/CF
+    # so global_role_map is complete before Summary formulas are built.
 
     # --- IS tab ---
     is_tree = trees.get("IS")
     if is_tree:
         header_rows = [[], ["", "", "$m", ""] + list(periods), []]
-        body_rows = _render_sheet_body(is_tree, periods, start_row=len(header_rows)+1, global_role_map=global_role_map, sheet_name="IS")
-        _add_check_row(body_rows, periods, is_revenue_check)
-        _add_check_row(body_rows, periods, is_cogs_check)
+        body_rows = _render_sheet_body(is_tree, periods, start_row=len(header_rows)+1, global_role_map=global_role_map, sheet_name="IS", is_cascade=True)
         is_rows = header_rows + body_rows
         tab_rows["IS"] = is_rows
         _write_sheet_tab(sid, "IS", is_rows, periods, is_tree, global_role_map)
@@ -285,16 +296,12 @@ def write_sheets(trees: dict, company: str) -> tuple[str, str]:
         if bs_tree:
             assets_rows = _render_sheet_body(bs_tree, periods, start_row=current_row, global_role_map=global_role_map, sheet_name="BS")
             body_rows += assets_rows
-            _add_check_row(body_rows, periods, bs_ta_check)
-            current_row += len(assets_rows) + 1
+            current_row += len(assets_rows)
             body_rows.append([""] * (4 + len(periods)))
             current_row += 1
         if bs_le_tree:
             le_rows = _render_sheet_body(bs_le_tree, periods, start_row=current_row, global_role_map=global_role_map, sheet_name="BS")
             body_rows += le_rows
-            _add_check_row(body_rows, periods, bs_tl_check)
-            _add_check_row(body_rows, periods, bs_balance_check)
-            _add_check_row(body_rows, periods, bs_equity_check)
         bs_rows = header_rows + body_rows
         tab_rows["BS"] = bs_rows
         _write_sheet_tab(sid, "BS", bs_rows, periods, None, global_role_map)
@@ -304,65 +311,49 @@ def write_sheets(trees: dict, company: str) -> tuple[str, str]:
     if cf_tree:
         header_rows = [[], ["", "", "$m", ""] + list(periods), []]
         body_rows = _render_sheet_body(cf_tree, periods, start_row=len(header_rows)+1, global_role_map=global_role_map, sheet_name="CF")
-        
+
         current_row = len(header_rows) + len(body_rows) + 1
         body_rows.append([""] * (4 + len(periods)))
         current_row += 1
-        
+
+        # --- Cash Proof ---
+        # The calc tree only has duration flows (Net Change = OPCF + INVCF + FINCF + FX).
+        # Beginning/Ending Cash are instant-context facts outside the calc tree.
+        # Ending Cash = Beginning Cash + Net Change (formula, not hardcoded).
         cf_endc_values = trees.get("cf_endc_values", {})
+        sorted_endc_dates = sorted(cf_endc_values.keys())
+
         begc_row_num = current_row
         begc_row = ["", "", "Beginning Cash", ""]
         for p in periods:
-            prev_p = prev_period(p, periods)
-            begc_row.append(round(cf_endc_values.get(prev_p, 0)) if prev_p else "")
+            prev_dates = [d for d in sorted_endc_dates if d < p]
+            begc_row.append(round(cf_endc_values[prev_dates[-1]]) if prev_dates else "")
         body_rows.append(begc_row)
         global_role_map["CF_BEGC"] = ("CF", begc_row_num)
         current_row += 1
-        
+
         netch_row_num = current_row
         netch_ref = global_role_map.get("CF_NETCH")
         netch_row = ["", "", "Net Change in Cash", ""]
         for i in range(len(periods)):
             col = dcol(i)
-            if netch_ref:
-                netch_row.append(f"={col}{netch_ref[1]}")
-            else:
-                netch_row.append("")
+            netch_row.append(f"={col}{netch_ref[1]}" if netch_ref else "")
         body_rows.append(netch_row)
         current_row += 1
-        
-        fx_ref = global_role_map.get("CF_FX")
-        cf_fx_values = trees.get("cf_fx_values")
-        fx_row_num = current_row
-        fx_row = ["", "", "FX Impact", ""]
-        for i in range(len(periods)):
-            col = dcol(i)
-            if fx_ref:
-                fx_row.append(f"={col}{fx_ref[1]}")
-            elif cf_fx_values:
-                fx_row.append(round(cf_fx_values.get(periods[i], 0)))
-            else:
-                fx_row.append(0)
-        body_rows.append(fx_row)
-        global_role_map["CF_FX_PROOF"] = ("CF", fx_row_num)
-        current_row += 1
-        
+
         endc_row_num = current_row
         endc_row = ["", "", "Ending Cash", ""]
         for i in range(len(periods)):
             col = dcol(i)
-            endc_row.append(f"={col}{begc_row_num}+{col}{netch_row_num}+{col}{fx_row_num}")
+            endc_row.append(f"={col}{begc_row_num}+{col}{netch_row_num}")
         body_rows.append(endc_row)
         global_role_map["CF_ENDC"] = ("CF", endc_row_num)
-        
-        _add_check_row(body_rows, periods, cf_opcf_check)
-        _add_check_row(body_rows, periods, cf_invcf_check)
-        _add_check_row(body_rows, periods, cf_fincf_check)
-        
+
         cf_rows = header_rows + body_rows
         tab_rows["CF"] = cf_rows
         _write_sheet_tab(sid, "CF", cf_rows, periods, None, global_role_map)
 
+    # --- Summary tab (rendered LAST — global_role_map is now complete) ---
     summ_rows = _write_summary_tab(sid, periods, global_role_map)
     tab_rows["Summary"] = summ_rows
 

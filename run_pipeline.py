@@ -92,8 +92,29 @@ def main():
     # Stage 3+4: Verify + render
     if tree_files:
         print(f"\n=== STAGE 3: Verifying model ===")
-        # Checkpoint: verify invariants on each tree file
+        # Checkpoint: verify tree completeness + cross-statement invariants
         for tf in tree_files:
+            import json as _json
+            from xbrl_tree import verify_tree_completeness, TreeNode
+            with open(tf) as _f:
+                _trees = _json.load(_f)
+            for stmt in ["IS", "BS", "BS_LE", "CF"]:
+                if stmt in _trees and isinstance(_trees[stmt], dict):
+                    _trees[stmt] = TreeNode.from_dict(_trees[stmt])
+            _periods = _trees.get("complete_periods", [])
+            _all_errors = []
+            for stmt in ["IS", "BS", "BS_LE", "CF"]:
+                if _trees.get(stmt):
+                    _all_errors.extend(verify_tree_completeness(_trees[stmt], _periods))
+            if _all_errors:
+                print(f"  Tree completeness: {len(_all_errors)} gap(s):", file=sys.stderr)
+                for concept, period, gap in _all_errors:
+                    print(f"    {concept[:50]:50s} {period} gap={gap:>10,.0f}", file=sys.stderr)
+                print("  WARNING: Tree gaps detected — sheet formulas may not match declared values",
+                      file=sys.stderr)
+            else:
+                print(f"  Tree completeness: ALL PASS")
+            # Cross-statement invariants
             run_command([sys.executable, "pymodel.py", "--trees", tf, "--checkpoint"])
 
         print(f"\n=== STAGE 4: Writing Google Sheet (Phase 3) ===")

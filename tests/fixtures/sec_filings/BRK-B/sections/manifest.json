@@ -1,0 +1,22 @@
+{
+  "income_statement": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/BRK-B/sections/income_statement.txt",
+    "anchor": "consolidated_statements_earnings",
+    "chars": 2703
+  },
+  "balance_sheet": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/BRK-B/sections/balance_sheet.txt",
+    "anchor": "consolidated_balance_sheets",
+    "chars": 3260
+  },
+  "cash_flows": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/BRK-B/sections/cash_flows.txt",
+    "anchor": "consolidated_statements_cash_flows",
+    "chars": 3343
+  },
+  "notes": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/BRK-B/sections/notes.txt",
+    "anchor": "notes_to_consolidated_financial_statemen",
+    "chars": 161847
+  }
+}

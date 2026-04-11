@@ -1,0 +1,22 @@
+{
+  "income_statement": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/AMZN/sections/income_statement.txt",
+    "anchor": "i9e7c0f1183ed47abbb1f061fe4864e14_121",
+    "chars": 1400
+  },
+  "balance_sheet": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/AMZN/sections/balance_sheet.txt",
+    "anchor": "i9e7c0f1183ed47abbb1f061fe4864e14_127",
+    "chars": 1570
+  },
+  "cash_flows": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/AMZN/sections/cash_flows.txt",
+    "anchor": "i9e7c0f1183ed47abbb1f061fe4864e14_118",
+    "chars": 2380
+  },
+  "notes": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/AMZN/sections/notes.txt",
+    "anchor": "i9e7c0f1183ed47abbb1f061fe4864e14_133",
+    "chars": 108900
+  }
+}

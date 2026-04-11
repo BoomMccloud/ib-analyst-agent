@@ -1,0 +1,22 @@
+{
+  "income_statement": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/PFE/sections/income_statement.txt",
+    "anchor": "i8b50a6660a8d4e9ca2cc36f05ea41a36_115",
+    "chars": 101
+  },
+  "balance_sheet": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/PFE/sections/balance_sheet.txt",
+    "anchor": "i8b50a6660a8d4e9ca2cc36f05ea41a36_172",
+    "chars": 2084
+  },
+  "cash_flows": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/PFE/sections/cash_flows.txt",
+    "anchor": "i8b50a6660a8d4e9ca2cc36f05ea41a36_178",
+    "chars": 3767
+  },
+  "notes": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/PFE/sections/notes.txt",
+    "anchor": "i8b50a6660a8d4e9ca2cc36f05ea41a36_181",
+    "chars": 130
+  }
+}

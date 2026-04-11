@@ -1,0 +1,337 @@
+id="consolidated_statements_earnings">CONSOLIDATED STATEMENTS OF EARNINGS
+(dollars in millions except per share amounts)
+
+Year Ended December 31,
+
+2025
+
+2024
+
+2023
+
+Revenues:
+
+Insurance and Other:
+
+Insurance premiums earned
+
+$
+
+88,902
+
+$
+
+88,257
+
+$
+
+83,403
+
+Sales and service revenues
+
+199,524
+
+202,334
+
+207,148
+
+Leasing revenues
+
+10,034
+
+9,227
+
+8,416
+
+Interest, dividend and other investment income
+
+23,261
+
+21,825
+
+15,764
+
+321,721
+
+321,643
+
+314,731
+
+Railroad, Utilities and Energy:
+
+Railroad transportation revenues
+
+23,330
+
+23,355
+
+23,791
+
+Utility and energy operating revenues
+
+21,856
+
+21,518
+
+21,232
+
+Service revenues and other income
+
+4,537
+
+4,917
+
+4,728
+
+49,723
+
+49,790
+
+49,751
+
+Total revenues
+
+371,444
+
+371,433
+
+364,482
+
+Investment gains (losses)
+
+39,078
+
+52,799
+
+74,855
+
+Costs and expenses:
+
+Insurance and Other:
+
+Insurance losses and loss adjustment expenses
+
+57,307
+
+56,186
+
+57,187
+
+Life, annuity and health insurance benefits
+
+4,379
+
+3,858
+
+4,029
+
+Insurance underwriting expenses
+
+17,756
+
+16,808
+
+15,270
+
+Cost of sales and services
+
+160,062
+
+163,642
+
+169,281
+
+Cost of leasing
+
+7,685
+
+7,069
+
+6,037
+
+Selling, general and administrative expenses
+
+29,735
+
+25,642
+
+25,458
+
+Interest expense
+
+1,329
+
+1,594
+
+1,671
+
+278,253
+
+274,799
+
+278,933
+
+Railroad, Utilities and Energy:
+
+Freight rail transportation expenses
+
+15,366
+
+15,965
+
+16,464
+
+Utilities and energy cost of sales and other expenses
+
+16,959
+
+16,984
+
+18,399
+
+Other expenses
+
+4,155
+
+4,343
+
+4,016
+
+Interest expense
+
+3,740
+
+3,606
+
+3,332
+
+40,220
+
+40,898
+
+42,211
+
+Total costs and expenses
+
+318,473
+
+315,697
+
+321,144
+
+Earnings before income taxes and equity method earnings
+
+92,049
+
+108,535
+
+118,193
+
+Equity method earnings (losses)
+
+(9,590
+
+)
+
+1,841
+
+1,973
+
+Earnings before income taxes
+
+82,459
+
+110,376
+
+120,166
+
+Income tax expense
+
+15,199
+
+20,815
+
+23,019
+
+Net earnings
+
+67,260
+
+89,561
+
+97,147
+
+Earnings attributable to noncontrolling interests
+
+292
+
+566
+
+924
+
+Net earnings attributable to Berkshire shareholders
+
+$
+
+66,968
+
+$
+
+88,995
+
+$
+
+96,223
+
+Net earnings per average equivalent Class A share
+
+$
+
+46,563
+
+$
+
+61,900
+
+$
+
+66,412
+
+Net earnings per average equivalent Class B share*
+
+$
+
+31.04
+
+$
+
+41.27
+
+$
+
+44.27
+
+Average equivalent Class A shares outstanding
+
+1,438,223
+
+1,437,720
+
+1,448,880
+
+Average equivalent Class B shares outstanding
+
+2,157,335,139
+
+2,156,580,296
+
+2,173,319,709
+
+——————
+* Net earnings per average equivalent Class B share outstanding is equal to one-fifteen-hundredth of the equivalent Class A amount. See Note 22. 
+See accompanying Notes to Consolidated Financial Statements
+
+K-68
+
+BERKSHIRE HATHAWAY INC.
+and Subsidiaries<p style="font-size:10pt;margin-top:0;font-family:Times New Roman;margin-bottom:0;text-align:center;"

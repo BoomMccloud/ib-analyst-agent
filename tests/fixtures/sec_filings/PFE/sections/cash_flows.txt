@@ -1,0 +1,99 @@
+id="i8b50a6660a8d4e9ca2cc36f05ea41a36_178">
+
+Consolidated Statements of Cash Flows
+Pfizer Inc. and Subsidiary Companies
+
+ Year Ended December 31, 
+ (MILLIONS) 2025 2024 2023
+
+ Operating Activities 
+ Net income before allocation to noncontrolling interests $ 7,812 $ 8,062 $ 2,158 
+ Discontinued operations—net of tax 25 11 (15) 
+ Net income from continuing operations before allocation to noncontrolling interests 7,787 8,051 2,172 
+
+Adjustments to reconcile net income from continuing operations before allocation to noncontrolling interests to net cash provided by/(used in) operating activities: 
+ Depreciation and amortization 6,592 7,013 6,290 
+ Asset write-offs and impairments 5,270 4,242 3,408 
+ Deferred taxes (2,133) (2,102) (3,442) 
+
+ Share-based compensation expense 799 877 525 
+ Benefit plan contributions in excess of expense/income (786) (12) (787) 
+
+Inventory write-offs and related charges associated with COVID-19 products(a) — — 6,199 
+
+ Other adjustments, net (470) (2,260) (3,492) 
+ Other changes in assets and liabilities, net of acquisitions and divestitures: 
+ Trade accounts receivable (263) (109) 347 
+
+Inventories(a) 561 (854) (1,169) 
+
+Other assets 1,289 3,380 (663) 
+ Trade accounts payable (469) (1,023) (300) 
+
+Other liabilities(b) (3,667) (3,115) 595 
+ Other tax accounts, net (2,805) (1,345) (982) 
+
+Net cash provided by/(used in) operating activities 11,704 12,744 8,700 
+
+ Investing Activities 
+ Purchases of property, plant and equipment (2,629) (2,909) (3,907) 
+ Purchases of short-term investments (14,356) (10,133) (30,974) 
+ Proceeds from redemptions/sales of short-term investments 17,959 4,128 39,264 
+ Net (purchases of)/proceeds from redemptions/sales of short-term investments with original maturities of three months or less (2,675) 3,136 5,174 
+ Purchases of long-term investments (294) (180) (204) 
+ Proceeds from redemptions/sales of long-term investments 1,095 1,570 1,979 
+
+Proceeds from partial sales of investment in Haleon(c) 6,311 7,040 — 
+ Acquisitions of businesses, net of cash acquired (6,927) — (43,430) 
+
+ Other investing activities, net 165 2 (179) 
+
+Net cash provided by/(used in) investing activities (1,351) 2,652 (32,278) 
+
+ Financing Activities 
+ Proceeds from short-term borrowings — 8,907 4,525 
+ Payments on short-term borrowings (2,199) (11,226) (3) 
+ Net (payments on)/proceeds from short-term borrowings with original maturities of three months or less (796) (2,590) 3,161 
+
+Proceeds from issuance of long-term debt 9,678 — 30,831 
+ Payments on long-term debt (6,757) (2,250) (2,569) 
+
+ Cash dividends paid (9,771) (9,512) (9,247) 
+
+Other financing activities, net (458) (469) (631) 
+
+ Net cash provided by/(used in) financing activities (10,304) (17,140) 26,066 
+
+Effect of exchange-rate changes on cash and cash equivalents and restricted cash and cash equivalents 41 (66) (40) 
+
+Net increase/(decrease) in cash and cash equivalents and restricted cash and cash equivalents 91 (1,810) 2,448 
+ Cash and cash equivalents and restricted cash and cash equivalents, at beginning of period 1,107 2,917 468 
+ Cash and cash equivalents and restricted cash and cash equivalents, at end of period $ 1,197 $ 1,107 $ 2,917 
+
+ - Continued -
+
+ Pfizer Inc. 
+2025 Form 10-K 
+56
+
+Consolidated Statements of Cash Flows
+Pfizer Inc. and Subsidiary Companies
+
+ Year Ended December 31, 
+ 2025 2024 2023
+ Supplemental Cash Flow Information 
+ Cash paid/(received) during the period for: 
+ Income taxes $ 4,688 $ 3,605 $ 3,147 
+ Interest paid 2,739 3,227 2,215 
+ Interest rate hedges 140 178 134 
+
+ Non-cash transaction: 
+ Right-of-use assets obtained in exchange for lease liabilities $ 288 $ 283 $ 614 
+(a)See Note 17A.
+(b)See Note 17C.
+(c)See Note 2C.
+See Accompanying Notes.
+
+ Pfizer Inc. 
+2025 Form 10-K 
+57<div

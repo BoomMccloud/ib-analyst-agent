@@ -1,0 +1,27 @@
+{
+  "income_statement": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/TSLA/sections/income_statement.txt",
+    "anchor": "i39f9a11fdbe840828cbaefa2e098ffa8_205",
+    "chars": 1899
+  },
+  "balance_sheet": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/TSLA/sections/balance_sheet.txt",
+    "anchor": "i39f9a11fdbe840828cbaefa2e098ffa8_19",
+    "chars": 1974
+  },
+  "cash_flows": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/TSLA/sections/cash_flows.txt",
+    "anchor": "i39f9a11fdbe840828cbaefa2e098ffa8_214",
+    "chars": 2922
+  },
+  "mda": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/TSLA/sections/mda.txt",
+    "anchor": "i39f9a11fdbe840828cbaefa2e098ffa8_178",
+    "chars": 55630
+  },
+  "notes": {
+    "file": "/Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/fixtures/sec_filings/TSLA/sections/notes.txt",
+    "anchor": "i39f9a11fdbe840828cbaefa2e098ffa8_217",
+    "chars": 149044
+  }
+}

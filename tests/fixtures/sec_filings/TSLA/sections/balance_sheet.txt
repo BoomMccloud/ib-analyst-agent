@@ -1,0 +1,54 @@
+id="i39f9a11fdbe840828cbaefa2e098ffa8_19">
+
+Tesla, Inc.
+Consolidated Balance Sheets
+(in millions, except per share data)
+
+ December 31,
+2025 December 31,
+2024
+ Assets 
+ Current assets 
+ Cash and cash equivalents $ 16,513 $ 16,139 
+ Short-term investments 27,546 20,424 
+ Accounts receivable, net 4,576 4,418 
+ Inventory 12,392 12,017 
+ Prepaid expenses and other current assets 7,615 5,362 
+ Total current assets 68,642 58,360 
+ Operating lease vehicles, net 4,912 5,581 
+ Energy generation and storage systems, net 4,604 4,924 
+ Property, plant and equipment, net 40,643 35,836 
+ Operating lease right-of-use assets 6,027 5,160 
+ Digital assets 1,008 1,076 
+
+ Deferred tax assets 6,925 6,524 
+ Other non-current assets 5,045 4,609 
+ Total assets $ 137,806 $ 122,070 
+ Liabilities 
+ Current liabilities 
+ Accounts payable $ 13,371 $ 12,474 
+ Accrued liabilities and other 13,279 10,723 
+ Deferred revenue 3,424 3,168 
+ Current portion of debt and finance leases 1,640 2,456 
+ Total current liabilities 31,714 28,821 
+ Debt and finance leases, net of current portion 6,736 5,757 
+ Deferred revenue, net of current portion 3,631 3,317 
+ Other long-term liabilities 12,860 10,495 
+ Total liabilities 54,941 48,390 
+ Commitments and contingencies (Note 13) 
+ Redeemable noncontrolling interests in subsidiaries 58 63 
+ Equity 
+ Stockholders’ equity 
+
+Preferred stock; $0.001 par value; 100 shares authorized; no shares issued and outstanding — — 
+
+Common stock; $0.001 par value; 6,000 shares authorized; 3,751 and 3,216 shares issued and outstanding as of December 31, 2025 and 2024, respectively 3 3 
+ Additional paid-in capital 42,770 38,371 
+ Accumulated other comprehensive income (loss) 361 (670) 
+ Retained earnings 39,003 35,209 
+ Total stockholders’ equity 82,137 72,913 
+ Noncontrolling interests in subsidiaries 670 704 
+ Total liabilities and equity $ 137,806 $ 122,070 
+The accompanying notes are an integral part of these consolidated financial statements.
+
+49<div

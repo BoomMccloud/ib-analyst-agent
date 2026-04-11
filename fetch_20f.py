@@ -21,34 +21,7 @@ HEADERS = {"User-Agent": f"SecFilingsAgent {_contact}"}
 TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
 
-REQUEST_INTERVAL = 1.0 / 8
-_last_request_time = 0.0
-
-
-def _throttle():
-    global _last_request_time
-    now = time.monotonic()
-    elapsed = now - _last_request_time
-    if elapsed < REQUEST_INTERVAL:
-        time.sleep(REQUEST_INTERVAL - elapsed)
-    _last_request_time = time.monotonic()
-
-
-def fetch_url(url: str, retries: int = 5) -> bytes:
-    for attempt in range(retries):
-        _throttle()
-        try:
-            req = urllib.request.Request(url, headers=HEADERS)
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                return resp.read()
-        except urllib.error.HTTPError as e:
-            if e.code == 429 and attempt < retries - 1:
-                wait = 10 * (attempt + 1)
-                print(f"  Rate limited, waiting {wait}s...", file=sys.stderr)
-                time.sleep(wait)
-            else:
-                raise
-
+from sec_utils import fetch_url
 
 def fetch_json(url: str) -> dict:
     return json.loads(fetch_url(url).decode())

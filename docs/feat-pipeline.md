@@ -8,6 +8,14 @@
 * `template_row_map.json` (Used for old static templates)
 * `diagnose_model.py` (Obsolete; validation is in `pymodel.py`)
 * `build_model_sheet.py` (Old 40-code architecture; superseded by `pymodel.py` flex-row approach)
+* `legacy_pymodel.py` (Obsolete; flat dict models replaced by tree-based modeling)
+* `extract_sections.py` (Obsolete; legacy LLM-based extraction path removed)
+* `structure_financials.py` (Obsolete; legacy LLM-based flat extraction path replaced by xbrl_tree.py)
+* `agent3_modeler.py` (Obsolete; tied to old structured JSON format)
+* `financial_utils.py` (Obsolete; hardcoded mappings for old 40-code architecture)
+* `xbrl_group.py` (Obsolete; superseded by tree-based modeling)
+* `patch_sheet_builder.py` (Development artifact)
+* `patch_xbrl_tree.py` (Development artifact)
 
 ### Files to ADD
 * `sheet_builder.py`: Dedicated presentation layer. Extracts `write_sheets()` from `pymodel.py` to decouple the financial math engine from Google Sheets API and formatting logic.
@@ -27,9 +35,7 @@
   - Add `--checkpoint` mode: runs `load_filing()` + `verify_model()` only, writes `historical_baseline.json` (Phase 1 checkpoint)
   - Return a structured `ModelResult` object instead of calling `write_sheets()`. All presentation and Google Sheets logic is extracted to `sheet_builder.py`.
   - Accept optional `--forecast forecast_spec.json` to use LLM-derived drivers instead of hardcoded defaults
-* `run_pipeline.py`: Update to act as the pipeline controller: (1) `pymodel.py --checkpoint` → `historical_baseline.json`, (2) `agent3_modeler.py` → `forecast_spec.json`, (3) `pymodel.py --forecast forecast_spec.json` → `ModelResult`, (4) `sheet_builder.py` → Google Sheet.
-* `structure_financials.py`: Update to use Anthropic Tool Use / Structured Outputs with inline `input_schema` dicts (no external schemas.py dependency).
-* `agent3_modeler.py`: Update prompt to explicitly forbid arithmetic. **Remove existing prompt sections that ask for calculations** (current lines 63-104 request headcount math, cost-per-employee, etc. — these must be deleted or rewritten as driver-only outputs). Ingest `historical_baseline.json`, output ONLY business drivers (e.g., `growth_rate`, `capex_pct`) validated via Tool Use `input_schema`.
+* `run_pipeline.py`: Update to act as the pipeline controller orchestrating `xbrl_tree.py`, `pymodel.py`, and `sheet_builder.py`.
 
 ### Why `pymodel.py` owns the math (but not presentation)
 
