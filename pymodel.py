@@ -6,7 +6,7 @@ from xbrl_tree import TreeNode, find_node_by_role, build_statement_trees, reconc
 
 
 def verify_model(trees: dict) -> list[tuple]:
-    """Run 5 cross-statement invariant checks on reconciled trees.
+    """Run 7 cross-statement invariant checks on reconciled trees using fv().
 
     Args:
         trees: dict from build_statement_trees() after reconcile_trees().
@@ -21,7 +21,7 @@ def verify_model(trees: dict) -> list[tuple]:
             trees[stmt] = TreeNode.from_dict(trees[stmt])
 
     errors = []
-    periods = trees.get("complete_periods", [])
+    periods = sorted(trees.get("complete_periods", []))
 
     # Locate nodes by role
     bs_ta = find_node_by_role(trees["BS"], "BS_TA") if trees.get("BS") else None
@@ -31,12 +31,20 @@ def verify_model(trees: dict) -> list[tuple]:
     inc_net_is = find_node_by_role(trees["IS"], "INC_NET") if trees.get("IS") else None
     inc_net_cf = find_node_by_role(trees["CF"], "INC_NET_CF") if trees.get("CF") else None
 
-    # Helper: get value from node for a period, default 0
-    def nv(node, period):
-        """Node value: get a period's value from a tree node, or 0."""
+    is_da = find_node_by_role(trees["IS"], "IS_DA") if trees.get("IS") else None
+    cf_da = find_node_by_role(trees["CF"], "CF_DA") if trees.get("CF") else None
+    is_sbc = find_node_by_role(trees["IS"], "IS_SBC") if trees.get("IS") else None
+    cf_sbc = find_node_by_role(trees["CF"], "CF_SBC") if trees.get("CF") else None
+    cf_begc = find_node_by_role(trees["CF"], "CF_BEGC") if trees.get("CF") else None
+
+    def fv(node, period):
+        """Formula value: what =SUM(children) would produce in the sheet.
+        Falls back to declared value for leaves."""
         if node is None:
             return 0
-        return node.values.get(period, 0)
+        if not node.children:
+            return node.values.get(period, 0)
+        return sum(fv(c, period) * c.weight for c in node.children)
 
     # Use CF_ENDC values computed by xbrl_tree.py (single source of truth).
     # Falls back to facts lookup if cf_endc_values not stored.
@@ -60,89 +68,81 @@ def verify_model(trees: dict) -> list[tuple]:
         # 1. BS Balance: TA == TL + TE
         if bs_ta and bs_tl and bs_te:
             check("BS Balance (TA-TL-TE)", p,
-                  nv(bs_ta, p) - nv(bs_tl, p) - nv(bs_te, p))
+                  fv(bs_ta, p) - fv(bs_tl, p) - fv(bs_te, p))
 
         # 2. Cash Link: CF_ENDC == BS_CASH
         if bs_cash and cf_endc_values:
             cf_endc = cf_endc_values.get(p, 0)
             if cf_endc != 0:
                 check("Cash (CF_ENDC - BS_CASH)", p,
-                      cf_endc - nv(bs_cash, p))
+                      cf_endc - fv(bs_cash, p))
 
         # 3. NI Link: INC_NET (IS) == INC_NET (CF)
         if inc_net_is and inc_net_cf:
-            is_ni = nv(inc_net_is, p)
-            cf_ni = nv(inc_net_cf, p)
+            is_ni = fv(inc_net_is, p)
+            cf_ni = fv(inc_net_cf, p)
             if is_ni != 0:
                 check("NI Link (IS - CF)", p, is_ni - cf_ni)
 
-        # 4. D&A Link: IS D&A == CF D&A (value-matched)
-        # Walk CF_OPCF's children to find a leaf matching IS D&A value
-        is_da = _find_is_value_by_label(trees.get("IS"), p, ["depreciation", "amortization"])
-        if is_da and is_da != 0:
-            cf_da = _find_cf_match_by_value(trees.get("CF"), p, is_da)
-            if cf_da is not None:
-                check("D&A Link (IS - CF)", p, is_da - cf_da)
+        # Check 4: D&A Link (role-tag-based)
+        if is_da and cf_da:
+            is_da_val = fv(is_da, p)
+            cf_da_val = fv(cf_da, p)
+            if is_da_val != 0:
+                check("D&A Link (IS - CF)", p, is_da_val - cf_da_val)
 
-        # 5. SBC Link: IS SBC == CF SBC (value-matched)
-        is_sbc = _find_is_value_by_label(trees.get("IS"), p, ["stock", "share", "compensation"])
-        if is_sbc and is_sbc != 0:
-            cf_sbc = _find_cf_match_by_value(trees.get("CF"), p, is_sbc)
-            if cf_sbc is not None:
-                check("SBC Link (IS - CF)", p, is_sbc - cf_sbc)
+        # Check 5: SBC Link (role-tag-based)
+        if is_sbc and cf_sbc:
+            is_sbc_val = fv(is_sbc, p)
+            cf_sbc_val = fv(cf_sbc, p)
+            if is_sbc_val != 0:
+                check("SBC Link (IS - CF)", p, is_sbc_val - cf_sbc_val)
+
+        # Check 6: Cash Begin: CF_BEGC[t] == BS_CASH[t-1]
+        if cf_begc and bs_cash and len(periods) > 1:
+            p_idx = periods.index(p)
+            if p_idx > 0:
+                prev_p = periods[p_idx - 1]
+                begc_val = fv(cf_begc, p)
+                bs_cash_prev = fv(bs_cash, prev_p)
+                if begc_val != 0 and bs_cash_prev != 0:
+                    check("Cash Begin (CF_BEGC - BS_CASH[t-1])", p,
+                          begc_val - bs_cash_prev)
+
+    # Check 7: Segment sums
+    is_rev = find_node_by_role(trees["IS"], "IS_REVENUE") if trees.get("IS") else None
+    is_cogs = find_node_by_role(trees["IS"], "IS_COGS") if trees.get("IS") else None
+    for label, node in [("IS Revenue", is_rev), ("IS COGS", is_cogs)]:
+        if node and node.children:
+            _verify_segment_sums(node, periods, errors, label_prefix=label)
 
     return errors
 
 
-def _find_is_value_by_label(is_tree: TreeNode | None, period: str,
-                             keywords: list[str]) -> float | None:
-    """Find an IS tree leaf whose name contains ALL keywords (case-insensitive).
+def _verify_segment_sums(node: TreeNode, periods: list[str],
+                          errors: list, label_prefix: str = "Segments"):
+    """Recursively verify that children sum to parent at every level.
 
-    Returns the node's value for the given period, or None if not found.
-    Used for D&A and SBC which don't have fixed role tags.
+    Uses fv() (formula values) for children, so the check reflects what
+    =SUM(children) would actually produce in the sheet.
     """
-    if not is_tree:
-        return None
+    def _fv(n, period):
+        """Formula value: what =SUM(children) would produce."""
+        if not n.children:
+            return n.values.get(period, 0)
+        return sum(_fv(c, period) * c.weight for c in n.children)
 
-    def _search(node):
-        name_lower = node.name.lower()
-        if all(kw in name_lower for kw in keywords):
-            return node.values.get(period, 0)
-        for child in node.children:
-            result = _search(child)
-            if result is not None:
-                return result
-        return None
+    if not node.children:
+        return
+    for p in periods:
+        parent_val = node.values.get(p, 0)
+        children_sum = sum(_fv(c, p) * c.weight for c in node.children)
+        delta = parent_val - children_sum
+        if abs(delta) > 1.0:
+            errors.append((f"{label_prefix} ({node.name})", p, delta))
+    for child in node.children:
+        _verify_segment_sums(child, periods, errors, label_prefix=label_prefix)
 
-    return _search(is_tree)
-
-
-def _find_cf_match_by_value(cf_tree: TreeNode | None, period: str,
-                              target_value: float) -> float | None:
-    """Search CF tree leaves for one whose value matches target (within 0.5).
-
-    This is the same value-matching approach used in the old verify_model:
-    scan CF operating items to find one whose value equals the IS value.
-    """
-    if not cf_tree:
-        return None
-
-    opcf_node = find_node_by_role(cf_tree, "CF_OPCF")
-    if not opcf_node:
-        return None
-
-    def _search_leaves(node):
-        if node.is_leaf and node.values:
-            val = node.values.get(period, 0)
-            if abs(val - target_value) < 0.5:
-                return val
-        for child in node.children:
-            result = _search_leaves(child)
-            if result is not None:
-                return result
-        return None
-
-    return _search_leaves(opcf_node)
 
 def main():
     parser = argparse.ArgumentParser(description="Verify financial model invariants")

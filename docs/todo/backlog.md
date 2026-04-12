@@ -188,3 +188,42 @@ New tests exist for tree-based logic (`test_model_historical.py`, `test_sheet_fo
 **Impact:** Cannot build models for MSFT and other modern filers.
 **What to do:**
 - Update `xbrl_tree.py` to parse `calculation-1.1.xsd` files in addition to `_cal.xml`.
+
+---
+
+## Architectural Improvements (Hybrid Approach)
+
+### 27. Semantic Reconciliation Layer (LLM-in-the-Loop)
+**What:** Introduce a dedicated LLM step when deterministic tree merging fails (e.g., due to restatements breaking exact-value overlaps).
+**Impact:** Prevents massive `__OTHER__` residual rows and brittle merge failures by intelligently mapping concepts before resorting to catch-all balancing rows.
+**What to do:**
+- When `merge_trees.py` detects an unmapped concept or gap, isolate the discrepancy and prompt an LLM to determine the structural shift (e.g., 1-to-N split).
+- Execute the LLM's mapping instruction instead of immediately failing or creating residuals.
+
+---
+
+### 28. Standardized Chart of Accounts (COA) Mapping
+**What:** The pipeline extracts the exact tree structure defined by the company, resulting in bespoke model layouts for every company.
+**Impact:** Makes cross-company comparisons (comparables) very difficult for analysts.
+**What to do:**
+- Define a Standardized Chart of Accounts (e.g., standard Revenue, COGS, SG&A, Operating Income).
+- Use an LLM or deterministic dictionary to map the bespoke nodes from the raw XBRL tree into the standardized buckets.
+
+---
+
+### 29. Handle Restatements via "As-Reported" vs. "Latest-Available" Tracking
+**What:** Attempting to perfectly merge conflicting historical realities (restatements) into a single tree breaks exact value matching.
+**Impact:** Restated prior years (e.g., due to discontinued operations) destroy the merged tree's integrity.
+**What to do:**
+- Treat each filing as a separate "vintage".
+- Trust the newest available vintage for any given year.
+- Only use older filings to backfill years completely missing from the newer filings. Use the Semantic Reconciliation Layer to stitch them together if concepts don't perfectly align.
+
+---
+
+### 30. Soft Invariants vs. Hard Invariants
+**What:** `pymodel.py` currently treats all 5 invariants as hard failures, including things like `NI Link` which often differ due to tagging quirks like Non-Controlling Interest (NCI).
+**Impact:** Deterministic rules fail frequently across a large universe of companies due to semantic gaps in accounting concepts.
+**What to do:**
+- Differentiate between Hard Invariants (e.g., Assets == Liabilities + Equity) that must pass, and Soft Invariants (e.g., NI Link) that flag for review.
+- Append a "Review Note" to the generated Google Sheet cell for Soft Invariant failures instead of halting the pipeline.
