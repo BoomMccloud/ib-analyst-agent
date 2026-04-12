@@ -1,0 +1,2710 @@
+{
+  "complete_periods": [
+    "2020-09-26",
+    "2021-09-25",
+    "2022-09-24",
+    "2023-09-30",
+    "2024-09-28",
+    "2025-09-27"
+  ],
+  "periods": [
+    "2022-09-24",
+    "2023-09-30",
+    "2024-09-28",
+    "2025-03-28",
+    "2025-09-27",
+    "2025-10-17"
+  ],
+  "cf_endc_values": {
+    "2024-09-28": 29943.0,
+    "2023-09-30": 30737.0,
+    "2022-09-24": 24977.0,
+    "2025-09-27": 35934.0,
+    "2021-09-25": 35929.0,
+    "2020-09-26": 39789.0,
+    "2019-09-28": 50224.0,
+    "2018-09-29": 25913.0
+  },
+  "unit_label": "$m",
+  "facts": {
+    "dei:EntityPublicFloat": {
+      "2025-03-28": 3253431000000.0
+    },
+    "dei:EntityCommonStockSharesOutstanding": {
+      "2025-10-17": 14776353000.0
+    },
+    "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax": {
+      "2025-09-27": 416161.0,
+      "2024-09-28": 391035.0,
+      "2023-09-30": 383285.0
+    },
+    "us-gaap:CostOfGoodsAndServicesSold": {
+      "2025-09-27": 220960.0,
+      "2024-09-28": 210352.0,
+      "2023-09-30": 214137.0
+    },
+    "us-gaap:GrossProfit": {
+      "2025-09-27": 195201.0,
+      "2024-09-28": 180683.0,
+      "2023-09-30": 169148.0
+    },
+    "us-gaap:ResearchAndDevelopmentExpense": {
+      "2025-09-27": 34550.0,
+      "2024-09-28": 31370.0,
+      "2023-09-30": 29915.0
+    },
+    "us-gaap:SellingGeneralAndAdministrativeExpense": {
+      "2025-09-27": 27601.0,
+      "2024-09-28": 26097.0,
+      "2023-09-30": 24932.0
+    },
+    "us-gaap:OperatingExpenses": {
+      "2025-09-27": 62151.0,
+      "2024-09-28": 57467.0,
+      "2023-09-30": 54847.0
+    },
+    "us-gaap:OperatingIncomeLoss": {
+      "2025-09-27": 133050.0,
+      "2024-09-28": 123216.0,
+      "2023-09-30": 114301.0
+    },
+    "us-gaap:NonoperatingIncomeExpense": {
+      "2025-09-27": -321.0,
+      "2024-09-28": 269.0,
+      "2023-09-30": -565.0
+    },
+    "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest": {
+      "2025-09-27": 132729.0,
+      "2024-09-28": 123485.0,
+      "2023-09-30": 113736.0
+    },
+    "us-gaap:IncomeTaxExpenseBenefit": {
+      "2025-09-27": 20719.0,
+      "2024-09-28": 29749.0,
+      "2023-09-30": 16741.0
+    },
+    "us-gaap:NetIncomeLoss": {
+      "2025-09-27": 112010.0,
+      "2024-09-28": 93736.0,
+      "2023-09-30": 96995.0
+    },
+    "us-gaap:EarningsPerShareBasic": {
+      "2025-09-27": 7.49,
+      "2024-09-28": 6.11,
+      "2023-09-30": 6.16
+    },
+    "us-gaap:EarningsPerShareDiluted": {
+      "2025-09-27": 7.46,
+      "2024-09-28": 6.08,
+      "2023-09-30": 6.13
+    },
+    "us-gaap:WeightedAverageNumberOfSharesOutstandingBasic": {
+      "2025-09-27": 14948500.0,
+      "2024-09-28": 15343783.0,
+      "2023-09-30": 15744231.0
+    },
+    "us-gaap:WeightedAverageNumberOfDilutedSharesOutstanding": {
+      "2025-09-27": 15004697.0,
+      "2024-09-28": 15408095.0,
+      "2023-09-30": 15812547.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationAdjustmentNetOfTax": {
+      "2025-09-27": -267.0,
+      "2024-09-28": 395.0,
+      "2023-09-30": -765.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossCashFlowHedgeGainLossBeforeReclassificationAfterTax": {
+      "2025-09-27": 849.0
+    },
+    "aapl:OtherComprehensiveIncomeLossDerivativeInstrumentGainLossbeforeReclassificationafterTax": {
+      "2024-09-28": -832.0,
+      "2023-09-30": 323.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossCashFlowHedgeGainLossReclassificationAfterTax": {
+      "2025-09-27": 212.0
+    },
+    "aapl:OtherComprehensiveIncomeLossDerivativeInstrumentGainLossReclassificationAfterTax": {
+      "2024-09-28": 1337.0,
+      "2023-09-30": 1717.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTax": {
+      "2025-09-27": 637.0
+    },
+    "aapl:OtherComprehensiveIncomeLossDerivativeInstrumentGainLossafterReclassificationandTax": {
+      "2024-09-28": -2169.0,
+      "2023-09-30": -1394.0
+    },
+    "us-gaap:OtherComprehensiveIncomeUnrealizedHoldingGainLossOnSecuritiesArisingDuringPeriodNetOfTax": {
+      "2025-09-27": 817.0,
+      "2024-09-28": 5850.0,
+      "2023-09-30": 1563.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossReclassificationAdjustmentFromAOCIForSaleOfSecuritiesNetOfTax": {
+      "2025-09-27": -414.0,
+      "2024-09-28": -204.0,
+      "2023-09-30": -253.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossAvailableForSaleSecuritiesAdjustmentNetOfTax": {
+      "2025-09-27": 1231.0,
+      "2024-09-28": 6054.0,
+      "2023-09-30": 1816.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent": {
+      "2025-09-27": 1601.0,
+      "2024-09-28": 4280.0,
+      "2023-09-30": -343.0
+    },
+    "us-gaap:ComprehensiveIncomeNetOfTax": {
+      "2025-09-27": 113611.0,
+      "2024-09-28": 98016.0,
+      "2023-09-30": 96652.0
+    },
+    "us-gaap:CashAndCashEquivalentsAtCarryingValue": {
+      "2025-09-27": 35934.0,
+      "2024-09-28": 29943.0
+    },
+    "us-gaap:MarketableSecuritiesCurrent": {
+      "2025-09-27": 18763.0,
+      "2024-09-28": 35228.0
+    },
+    "us-gaap:AccountsReceivableNetCurrent": {
+      "2025-09-27": 39777.0,
+      "2024-09-28": 33410.0
+    },
+    "us-gaap:NontradeReceivablesCurrent": {
+      "2025-09-27": 33180.0,
+      "2024-09-28": 32833.0
+    },
+    "us-gaap:InventoryNet": {
+      "2025-09-27": 5718.0,
+      "2024-09-28": 7286.0
+    },
+    "us-gaap:OtherAssetsCurrent": {
+      "2025-09-27": 14585.0,
+      "2024-09-28": 14287.0
+    },
+    "us-gaap:AssetsCurrent": {
+      "2025-09-27": 147957.0,
+      "2024-09-28": 152987.0
+    },
+    "us-gaap:MarketableSecuritiesNoncurrent": {
+      "2025-09-27": 77723.0,
+      "2024-09-28": 91479.0
+    },
+    "us-gaap:PropertyPlantAndEquipmentNet": {
+      "2025-09-27": 49834.0,
+      "2024-09-28": 45680.0
+    },
+    "us-gaap:OtherAssetsNoncurrent": {
+      "2025-09-27": 83727.0,
+      "2024-09-28": 74834.0
+    },
+    "us-gaap:AssetsNoncurrent": {
+      "2025-09-27": 211284.0,
+      "2024-09-28": 211993.0
+    },
+    "us-gaap:Assets": {
+      "2025-09-27": 359241.0,
+      "2024-09-28": 364980.0
+    },
+    "us-gaap:AccountsPayableCurrent": {
+      "2025-09-27": 69860.0,
+      "2024-09-28": 68960.0
+    },
+    "us-gaap:OtherLiabilitiesCurrent": {
+      "2025-09-27": 66387.0,
+      "2024-09-28": 78304.0
+    },
+    "us-gaap:ContractWithCustomerLiabilityCurrent": {
+      "2025-09-27": 9055.0,
+      "2024-09-28": 8249.0
+    },
+    "us-gaap:CommercialPaper": {
+      "2025-09-27": 7979.0,
+      "2024-09-28": 9967.0
+    },
+    "us-gaap:LongTermDebtCurrent": {
+      "2025-09-27": 12350.0,
+      "2024-09-28": 10912.0
+    },
+    "us-gaap:LiabilitiesCurrent": {
+      "2025-09-27": 165631.0,
+      "2024-09-28": 176392.0
+    },
+    "us-gaap:LongTermDebtNoncurrent": {
+      "2025-09-27": 78328.0,
+      "2024-09-28": 85750.0
+    },
+    "us-gaap:OtherLiabilitiesNoncurrent": {
+      "2025-09-27": 41549.0,
+      "2024-09-28": 45888.0
+    },
+    "us-gaap:LiabilitiesNoncurrent": {
+      "2025-09-27": 119877.0,
+      "2024-09-28": 131638.0
+    },
+    "us-gaap:Liabilities": {
+      "2025-09-27": 285508.0,
+      "2024-09-28": 308030.0
+    },
+    "us-gaap:CommonStockParOrStatedValuePerShare": {
+      "2025-09-27": 1e-05
+    },
+    "us-gaap:CommonStockSharesAuthorized": {
+      "2025-09-27": 50400000.0
+    },
+    "us-gaap:CommonStockSharesIssued": {
+      "2025-09-27": 14773260.0,
+      "2024-09-28": 15116786.0
+    },
+    "us-gaap:CommonStocksIncludingAdditionalPaidInCapital": {
+      "2025-09-27": 93568.0,
+      "2024-09-28": 83276.0
+    },
+    "us-gaap:RetainedEarningsAccumulatedDeficit": {
+      "2025-09-27": -14264.0,
+      "2024-09-28": -19154.0
+    },
+    "us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax": {
+      "2025-09-27": -5571.0,
+      "2024-09-28": -7172.0
+    },
+    "us-gaap:StockholdersEquity": {
+      "2025-09-27": 73733.0,
+      "2024-09-28": 56950.0,
+      "2023-09-30": 62146.0,
+      "2022-09-24": 50672.0
+    },
+    "us-gaap:LiabilitiesAndStockholdersEquity": {
+      "2025-09-27": 359241.0,
+      "2024-09-28": 364980.0
+    },
+    "us-gaap:CommonStockDividendsPerShareDeclared": {
+      "2025-09-27": 1.02,
+      "2024-09-28": 0.98,
+      "2023-09-30": 0.94
+    },
+    "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents": {
+      "2024-09-28": 29943.0,
+      "2023-09-30": 30737.0,
+      "2022-09-24": 24977.0,
+      "2025-09-27": 35934.0
+    },
+    "us-gaap:DepreciationDepletionAndAmortization": {
+      "2025-09-27": 11698.0,
+      "2024-09-28": 11445.0,
+      "2023-09-30": 11519.0
+    },
+    "us-gaap:ShareBasedCompensation": {
+      "2025-09-27": 12863.0,
+      "2024-09-28": 11688.0,
+      "2023-09-30": 10833.0
+    },
+    "us-gaap:OtherNoncashIncomeExpense": {
+      "2025-09-27": 89.0,
+      "2024-09-28": 2266.0,
+      "2023-09-30": 2227.0
+    },
+    "us-gaap:IncreaseDecreaseInAccountsReceivable": {
+      "2025-09-27": 6682.0,
+      "2024-09-28": 3788.0,
+      "2023-09-30": 1688.0
+    },
+    "us-gaap:IncreaseDecreaseInOtherReceivables": {
+      "2025-09-27": 347.0,
+      "2024-09-28": 1356.0,
+      "2023-09-30": -1271.0
+    },
+    "us-gaap:IncreaseDecreaseInInventories": {
+      "2025-09-27": -1400.0,
+      "2024-09-28": 1046.0,
+      "2023-09-30": 1618.0
+    },
+    "us-gaap:IncreaseDecreaseInOtherOperatingAssets": {
+      "2025-09-27": 9197.0,
+      "2024-09-28": 11731.0,
+      "2023-09-30": 5684.0
+    },
+    "us-gaap:IncreaseDecreaseInAccountsPayable": {
+      "2025-09-27": 902.0,
+      "2024-09-28": 6020.0,
+      "2023-09-30": -1889.0
+    },
+    "us-gaap:IncreaseDecreaseInOtherOperatingLiabilities": {
+      "2025-09-27": -11076.0,
+      "2024-09-28": 15552.0,
+      "2023-09-30": 3031.0
+    },
+    "us-gaap:NetCashProvidedByUsedInOperatingActivities": {
+      "2025-09-27": 111482.0,
+      "2024-09-28": 118254.0,
+      "2023-09-30": 110543.0
+    },
+    "us-gaap:PaymentsToAcquireAvailableForSaleSecuritiesDebt": {
+      "2025-09-27": 24407.0,
+      "2024-09-28": 48656.0,
+      "2023-09-30": 29513.0
+    },
+    "us-gaap:ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities": {
+      "2025-09-27": 40907.0,
+      "2024-09-28": 51211.0,
+      "2023-09-30": 39686.0
+    },
+    "us-gaap:ProceedsFromSaleOfAvailableForSaleSecuritiesDebt": {
+      "2025-09-27": 12890.0,
+      "2024-09-28": 11135.0,
+      "2023-09-30": 5828.0
+    },
+    "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment": {
+      "2025-09-27": 12715.0,
+      "2024-09-28": 9447.0,
+      "2023-09-30": 10959.0
+    },
+    "us-gaap:PaymentsForProceedsFromOtherInvestingActivities": {
+      "2025-09-27": 1480.0,
+      "2024-09-28": 1308.0,
+      "2023-09-30": 1337.0
+    },
+    "us-gaap:NetCashProvidedByUsedInInvestingActivities": {
+      "2025-09-27": 15195.0,
+      "2024-09-28": 2935.0,
+      "2023-09-30": 3705.0
+    },
+    "us-gaap:PaymentsRelatedToTaxWithholdingForShareBasedCompensation": {
+      "2025-09-27": 5960.0,
+      "2024-09-28": 5441.0,
+      "2023-09-30": 5431.0
+    },
+    "us-gaap:PaymentsOfDividends": {
+      "2025-09-27": 15421.0,
+      "2024-09-28": 15234.0,
+      "2023-09-30": 15025.0
+    },
+    "us-gaap:PaymentsForRepurchaseOfCommonStock": {
+      "2025-09-27": 90711.0,
+      "2024-09-28": 94949.0,
+      "2023-09-30": 77550.0
+    },
+    "us-gaap:ProceedsFromIssuanceOfLongTermDebt": {
+      "2025-09-27": 4481.0,
+      "2023-09-30": 5228.0
+    },
+    "us-gaap:RepaymentsOfLongTermDebt": {
+      "2025-09-27": 10932.0,
+      "2024-09-28": 9958.0,
+      "2023-09-30": 11151.0
+    },
+    "us-gaap:ProceedsFromRepaymentsOfCommercialPaper": {
+      "2025-09-27": -2032.0,
+      "2024-09-28": 3960.0,
+      "2023-09-30": -3978.0
+    },
+    "us-gaap:ProceedsFromPaymentsForOtherFinancingActivities": {
+      "2025-09-27": -111.0,
+      "2024-09-28": -361.0,
+      "2023-09-30": -581.0
+    },
+    "us-gaap:NetCashProvidedByUsedInFinancingActivities": {
+      "2025-09-27": -120686.0,
+      "2024-09-28": -121983.0,
+      "2023-09-30": -108488.0
+    },
+    "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect": {
+      "2025-09-27": 5991.0,
+      "2024-09-28": -794.0,
+      "2023-09-30": 5760.0
+    },
+    "us-gaap:IncomeTaxesPaidNet": {
+      "2025-09-27": 43369.0,
+      "2024-09-28": 26102.0,
+      "2023-09-30": 18679.0
+    },
+    "us-gaap:ContractWithCustomerLiabilityRevenueRecognized": {
+      "2025-09-27": 8229.0,
+      "2024-09-28": 7728.0,
+      "2023-09-30": 8169.0
+    },
+    "us-gaap:ContractWithCustomerLiability": {
+      "2025-09-27": 13.7,
+      "2024-09-28": 12.8
+    },
+    "us-gaap:IncrementalCommonSharesAttributableToShareBasedPaymentArrangements": {
+      "2025-09-27": 56197.0,
+      "2024-09-28": 64312.0,
+      "2023-09-30": 68316.0
+    },
+    "aapl:CashCashEquivalentsAndMarketableSecuritiesCost": {
+      "2025-09-27": 134711.0,
+      "2024-09-28": 160600.0
+    },
+    "aapl:CashEquivalentsAndMarketableSecuritiesAccumulatedGrossUnrealizedGainBeforeTax": {
+      "2025-09-27": 736.0,
+      "2024-09-28": 688.0
+    },
+    "aapl:CashEquivalentsAndMarketableSecuritiesAccumulatedGrossUnrealizedLossBeforeTax": {
+      "2025-09-27": 3027.0,
+      "2024-09-28": 4638.0
+    },
+    "aapl:CashCashEquivalentsAndMarketableSecurities": {
+      "2025-09-27": 132420.0,
+      "2024-09-28": 156650.0
+    },
+    "us-gaap:HedgedLiabilityFairValueHedge": {
+      "2025-09-27": 12.6,
+      "2024-09-28": 13.5
+    },
+    "us-gaap:PropertyPlantAndEquipmentGross": {
+      "2025-09-27": 125848.0,
+      "2024-09-28": 119128.0
+    },
+    "us-gaap:AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment": {
+      "2025-09-27": 76014.0,
+      "2024-09-28": 73448.0
+    },
+    "us-gaap:Depreciation": {
+      "2025-09-27": 8.0,
+      "2024-09-28": 8.2,
+      "2023-09-30": 8.5
+    },
+    "us-gaap:DeferredIncomeTaxAssetsNet": {
+      "2025-09-27": 20777.0,
+      "2024-09-28": 19499.0
+    },
+    "us-gaap:OtherAssetsMiscellaneousNoncurrent": {
+      "2025-09-27": 62950.0,
+      "2024-09-28": 55335.0
+    },
+    "us-gaap:AccruedIncomeTaxesCurrent": {
+      "2025-09-27": 13016.0,
+      "2024-09-28": 26601.0
+    },
+    "aapl:AccruedDistributionAndMarketingCurrent": {
+      "2025-09-27": 8919.0,
+      "2024-09-28": 7679.0
+    },
+    "us-gaap:OtherAccruedLiabilitiesCurrent": {
+      "2025-09-27": 44452.0,
+      "2024-09-28": 44024.0
+    },
+    "us-gaap:CurrentFederalTaxExpenseBenefit": {
+      "2025-09-27": 11487.0,
+      "2024-09-28": 5571.0,
+      "2023-09-30": 9445.0
+    },
+    "us-gaap:DeferredFederalIncomeTaxExpenseBenefit": {
+      "2025-09-27": -1804.0,
+      "2024-09-28": -3080.0,
+      "2023-09-30": -3644.0
+    },
+    "us-gaap:FederalIncomeTaxExpenseBenefitContinuingOperations": {
+      "2025-09-27": 9683.0,
+      "2024-09-28": 2491.0,
+      "2023-09-30": 5801.0
+    },
+    "us-gaap:CurrentStateAndLocalTaxExpenseBenefit": {
+      "2025-09-27": 1680.0,
+      "2024-09-28": 1726.0,
+      "2023-09-30": 1570.0
+    },
+    "us-gaap:DeferredStateAndLocalIncomeTaxExpenseBenefit": {
+      "2025-09-27": -139.0,
+      "2024-09-28": -298.0,
+      "2023-09-30": -49.0
+    },
+    "us-gaap:StateAndLocalIncomeTaxExpenseBenefitContinuingOperations": {
+      "2025-09-27": 1541.0,
+      "2024-09-28": 1428.0,
+      "2023-09-30": 1521.0
+    },
+    "us-gaap:CurrentForeignTaxExpenseBenefit": {
+      "2025-09-27": 8891.0,
+      "2024-09-28": 25483.0,
+      "2023-09-30": 8750.0
+    },
+    "us-gaap:DeferredForeignIncomeTaxExpenseBenefit": {
+      "2025-09-27": 604.0,
+      "2024-09-28": 347.0,
+      "2023-09-30": 669.0
+    },
+    "us-gaap:ForeignIncomeTaxExpenseBenefitContinuingOperations": {
+      "2025-09-27": 9495.0,
+      "2024-09-28": 25830.0,
+      "2023-09-30": 9419.0
+    },
+    "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign": {
+      "2025-09-27": 82.0,
+      "2024-09-28": 77.3,
+      "2023-09-30": 72.9
+    },
+    "us-gaap:EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate": {
+      "2023-09-30": 21.0
+    },
+    "us-gaap:IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate": {
+      "2025-09-27": 27873.0,
+      "2024-09-28": 25932.0,
+      "2023-09-30": 23885.0
+    },
+    "us-gaap:IncomeTaxReconciliationForeignIncomeTaxRateDifferential": {
+      "2025-09-27": -8120.0,
+      "2024-09-28": -5311.0,
+      "2023-09-30": -5744.0
+    },
+    "us-gaap:IncomeTaxReconciliationChangeInDeferredTaxAssetsValuationAllowance": {
+      "2025-09-27": 2091.0
+    },
+    "us-gaap:IncomeTaxReconciliationTaxCreditsResearch": {
+      "2025-09-27": 1049.0,
+      "2024-09-28": 1397.0,
+      "2023-09-30": 1212.0
+    },
+    "aapl:EffectiveIncomeTaxRateReconciliationImpactOfTheStateAidDecisionAmount": {
+      "2025-09-27": -486.0,
+      "2024-09-28": 10246.0
+    },
+    "us-gaap:IncomeTaxReconciliationOtherAdjustments": {
+      "2025-09-27": 410.0,
+      "2024-09-28": 279.0,
+      "2023-09-30": -188.0
+    },
+    "us-gaap:EffectiveIncomeTaxRateContinuingOperations": {
+      "2025-09-27": 15.6,
+      "2024-09-28": 24.1,
+      "2023-09-30": 14.7
+    },
+    "aapl:DeferredTaxAssetsCapitalizedResearchAndDevelopment": {
+      "2025-09-27": 15041.0,
+      "2024-09-28": 10739.0
+    },
+    "us-gaap:DeferredTaxAssetsTaxCreditCarryforwards": {
+      "2025-09-27": 8643.0,
+      "2024-09-28": 8856.0
+    },
+    "us-gaap:DeferredTaxAssetsTaxDeferredExpenseReservesAndAccruals": {
+      "2025-09-27": 6154.0,
+      "2024-09-28": 6114.0
+    },
+    "us-gaap:DeferredTaxAssetsDeferredIncome": {
+      "2025-09-27": 2953.0,
+      "2024-09-28": 3413.0
+    },
+    "aapl:DeferredTaxAssetsLeaseLiabilities": {
+      "2025-09-27": 2577.0,
+      "2024-09-28": 2410.0
+    },
+    "us-gaap:DeferredTaxAssetsOther": {
+      "2025-09-27": 3049.0,
+      "2024-09-28": 3341.0
+    },
+    "us-gaap:DeferredTaxAssetsGross": {
+      "2025-09-27": 38417.0,
+      "2024-09-28": 34873.0
+    },
+    "us-gaap:DeferredTaxAssetsValuationAllowance": {
+      "2025-09-27": 10966.0,
+      "2024-09-28": 8866.0
+    },
+    "us-gaap:DeferredTaxAssetsNet": {
+      "2025-09-27": 27451.0,
+      "2024-09-28": 26007.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesPropertyPlantAndEquipment": {
+      "2025-09-27": 3276.0,
+      "2024-09-28": 2551.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesLeasingArrangements": {
+      "2025-09-27": 2300.0,
+      "2024-09-28": 2125.0
+    },
+    "aapl:DeferredTaxLiabilitiesMinimumTaxonForeignEarnings": {
+      "2025-09-27": 1217.0,
+      "2024-09-28": 1674.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesOther": {
+      "2025-09-27": 678.0,
+      "2024-09-28": 455.0
+    },
+    "us-gaap:DeferredIncomeTaxLiabilities": {
+      "2025-09-27": 7471.0,
+      "2024-09-28": 6805.0
+    },
+    "us-gaap:DeferredTaxAssetsLiabilitiesNet": {
+      "2025-09-27": 19980.0,
+      "2024-09-28": 19202.0
+    },
+    "us-gaap:DeferredTaxAssetsTaxCreditCarryforwardsForeign": {
+      "2025-09-27": 4.7
+    },
+    "us-gaap:DeferredTaxAssetsTaxCreditCarryforwardsResearch": {
+      "2025-09-27": 4.0
+    },
+    "us-gaap:UnrecognizedTaxBenefits": {
+      "2025-09-27": 23242.0,
+      "2024-09-28": 22038.0,
+      "2023-09-30": 19454.0,
+      "2022-09-24": 16758.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsThatWouldImpactEffectiveTaxRate": {
+      "2025-09-27": 10.6,
+      "2024-09-28": 10.8
+    },
+    "us-gaap:UnrecognizedTaxBenefitsIncreasesResultingFromPriorPeriodTaxPositions": {
+      "2025-09-27": 1971.0,
+      "2024-09-28": 1727.0,
+      "2023-09-30": 2044.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsDecreasesResultingFromPriorPeriodTaxPositions": {
+      "2025-09-27": 71.0,
+      "2024-09-28": 386.0,
+      "2023-09-30": 1463.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsIncreasesResultingFromCurrentPeriodTaxPositions": {
+      "2025-09-27": 3795.0,
+      "2024-09-28": 2542.0,
+      "2023-09-30": 2628.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsDecreasesResultingFromSettlementsWithTaxingAuthorities": {
+      "2025-09-27": 2939.0,
+      "2024-09-28": 1070.0,
+      "2023-09-30": 19.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations": {
+      "2025-09-27": 1552.0,
+      "2024-09-28": 229.0,
+      "2023-09-30": 494.0
+    },
+    "us-gaap:DecreaseInUnrecognizedTaxBenefitsIsReasonablyPossible": {
+      "2025-09-27": 6.0
+    },
+    "us-gaap:OperatingLeaseCost": {
+      "2025-09-27": 2.1,
+      "2024-09-28": 2.0
+    },
+    "us-gaap:VariableLeaseCost": {
+      "2025-09-27": 16.1,
+      "2024-09-28": 13.8,
+      "2023-09-30": 13.9
+    },
+    "us-gaap:OperatingLeasePayments": {
+      "2025-09-27": 2.1,
+      "2024-09-28": 1.9
+    },
+    "aapl:RightofUseAssetsObtainedinExchangeforOperatingandFinanceLeaseLiabilities": {
+      "2025-09-27": 2.8,
+      "2024-09-28": 1.0,
+      "2023-09-30": 2.1
+    },
+    "us-gaap:OperatingLeaseRightOfUseAsset": {
+      "2025-09-27": 11205.0,
+      "2024-09-28": 10234.0
+    },
+    "us-gaap:FinanceLeaseRightOfUseAsset": {
+      "2025-09-27": 1033.0,
+      "2024-09-28": 1069.0
+    },
+    "aapl:OperatingandFinanceLeaseRightofUseAsset": {
+      "2025-09-27": 12238.0,
+      "2024-09-28": 11303.0
+    },
+    "us-gaap:OperatingLeaseLiabilityCurrent": {
+      "2025-09-27": 1579.0,
+      "2024-09-28": 1488.0
+    },
+    "us-gaap:OperatingLeaseLiabilityNoncurrent": {
+      "2025-09-27": 10911.0,
+      "2024-09-28": 10046.0
+    },
+    "us-gaap:FinanceLeaseLiabilityCurrent": {
+      "2025-09-27": 538.0,
+      "2024-09-28": 144.0
+    },
+    "us-gaap:FinanceLeaseLiabilityNoncurrent": {
+      "2025-09-27": 692.0,
+      "2024-09-28": 752.0
+    },
+    "aapl:OperatingandFinanceLeaseLiability": {
+      "2025-09-27": 13720.0,
+      "2024-09-28": 12430.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueNextTwelveMonths": {
+      "2025-09-27": 1967.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueNextTwelveMonths": {
+      "2025-09-27": 563.0
+    },
+    "aapl:LesseeOperatingAndFinanceLeaseLiabilityToBePaidYearOne": {
+      "2025-09-27": 2530.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueYearTwo": {
+      "2025-09-27": 1988.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueYearTwo": {
+      "2025-09-27": 73.0
+    },
+    "aapl:LesseeOperatingAndFinanceLeaseLiabilityToBePaidYearTwo": {
+      "2025-09-27": 2061.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueYearThree": {
+      "2025-09-27": 1848.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueYearThree": {
+      "2025-09-27": 51.0
+    },
+    "aapl:LesseeOperatingAndFinanceLeaseLiabilityToBePaidYearThree": {
+      "2025-09-27": 1899.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueYearFour": {
+      "2025-09-27": 1585.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueYearFour": {
+      "2025-09-27": 48.0
+    },
+    "aapl:LesseeOperatingAndFinanceLeaseLiabilityToBePaidYearFour": {
+      "2025-09-27": 1633.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueYearFive": {
+      "2025-09-27": 1381.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueYearFive": {
+      "2025-09-27": 43.0
+    },
+    "aapl:LesseeOperatingAndFinanceLeaseLiabilityToBePaidYearFive": {
+      "2025-09-27": 1424.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueAfterYearFive": {
+      "2025-09-27": 5956.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueAfterYearFive": {
+      "2025-09-27": 801.0
+    },
+    "aapl:LesseeOperatingAndFinanceLeaseLiabilityToBePaidAfterYearFive": {
+      "2025-09-27": 6757.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDue": {
+      "2025-09-27": 14725.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDue": {
+      "2025-09-27": 1579.0
+    },
+    "aapl:LesseeOperatingAndFinanceLeaseLiabilityToBePaid": {
+      "2025-09-27": 16304.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityUndiscountedExcessAmount": {
+      "2025-09-27": 2235.0
+    },
+    "us-gaap:FinanceLeaseLiabilityUndiscountedExcessAmount": {
+      "2025-09-27": 349.0
+    },
+    "aapl:LesseeOperatingandFinanceLeaseLiabilityUndiscountedExcessAmount": {
+      "2025-09-27": 2584.0
+    },
+    "us-gaap:OperatingLeaseLiability": {
+      "2025-09-27": 12490.0
+    },
+    "us-gaap:FinanceLeaseLiability": {
+      "2025-09-27": 1230.0
+    },
+    "aapl:OperatingandFinanceLeaseWeightedAverageDiscountRatePercent": {
+      "2025-09-27": 3.4,
+      "2024-09-28": 3.1
+    },
+    "us-gaap:ProceedsFromRepaymentsOfShortTermDebtMaturingInThreeMonthsOrLess": {
+      "2025-09-27": -5820.0,
+      "2024-09-28": 3960.0,
+      "2023-09-30": -1333.0
+    },
+    "us-gaap:ProceedsFromShortTermDebtMaturingInMoreThanThreeMonths": {
+      "2025-09-27": 5836.0
+    },
+    "us-gaap:RepaymentsOfShortTermDebtMaturingInMoreThanThreeMonths": {
+      "2025-09-27": 2048.0,
+      "2023-09-30": 2645.0
+    },
+    "us-gaap:ProceedsFromRepaymentsOfShortTermDebtMaturingInMoreThanThreeMonths": {
+      "2025-09-27": 3788.0,
+      "2023-09-30": -2645.0
+    },
+    "us-gaap:DebtInstrumentCarryingAmount": {
+      "2025-09-27": 91281.0,
+      "2024-09-28": 97341.0
+    },
+    "us-gaap:DebtInstrumentUnamortizedDiscountPremiumAndDebtIssuanceCostsNet": {
+      "2025-09-27": 309.0,
+      "2024-09-28": 321.0
+    },
+    "aapl:HedgeAccountingAdjustmentsRelatedToLongTermDebt": {
+      "2025-09-27": 294.0,
+      "2024-09-28": 358.0
+    },
+    "us-gaap:LongTermDebt": {
+      "2025-09-27": 90678.0,
+      "2024-09-28": 96662.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInNextTwelveMonths": {
+      "2025-09-27": 12393.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInYearTwo": {
+      "2025-09-27": 10078.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInYearThree": {
+      "2025-09-27": 9300.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFour": {
+      "2025-09-27": 5235.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFive": {
+      "2025-09-27": 4972.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalAfterYearFive": {
+      "2025-09-27": 49303.0
+    },
+    "us-gaap:StockRepurchasedAndRetiredDuringPeriodShares": {
+      "2025-09-27": 402.0
+    },
+    "us-gaap:StockRepurchasedAndRetiredDuringPeriodValue": {
+      "2025-09-27": 89.3
+    },
+    "us-gaap:AllocatedShareBasedCompensationExpense": {
+      "2025-09-27": 12863.0,
+      "2024-09-28": 11688.0,
+      "2023-09-30": 10833.0
+    },
+    "us-gaap:EmployeeServiceShareBasedCompensationTaxBenefitFromCompensationExpense": {
+      "2025-09-27": 3602.0,
+      "2024-09-28": 3350.0,
+      "2023-09-30": 3421.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceOnFirstAnniversary": {
+      "2025-09-27": 4752.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceOnSecondAnniversary": {
+      "2025-09-27": 3708.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceOnThirdAnniversary": {
+      "2025-09-27": 1981.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceOnFourthAnniversary": {
+      "2025-09-27": 1306.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceOnFifthAnniversary": {
+      "2025-09-27": 788.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationDueAfterFiveYears": {
+      "2025-09-27": 773.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount": {
+      "2025-09-27": 13308.0
+    },
+    "us-gaap:SellingAndMarketingExpense": {
+      "2025-09-27": 19524.0,
+      "2024-09-28": 18639.0,
+      "2023-09-30": 18260.0
+    },
+    "us-gaap:GeneralAndAdministrativeExpense": {
+      "2025-09-27": 8077.0,
+      "2024-09-28": 7458.0,
+      "2023-09-30": 6672.0
+    },
+    "us-gaap:NoncurrentAssets": {
+      "2025-09-27": 49834.0,
+      "2024-09-28": 45680.0
+    }
+  },
+  "IS": {
+    "concept": "us-gaap_NetIncomeLoss",
+    "tag": "us-gaap:NetIncomeLoss",
+    "name": "Net Income Loss",
+    "weight": 1.0,
+    "values": {
+      "2025-09-27": 112010.0,
+      "2024-09-28": 93736.0,
+      "2023-09-30": 96995.0,
+      "2022-09-24": 99803.0,
+      "2021-09-25": 94680.0,
+      "2020-09-26": 57411.0
+    },
+    "is_leaf": false,
+    "role": "INC_NET",
+    "children": [
+      {
+        "concept": "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+        "tag": "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+        "name": "Income Loss From Continuing Operations Before Income Taxes Extraordinary Items Noncontrolling Interest",
+        "weight": 1.0,
+        "values": {
+          "2025-09-27": 132729.0,
+          "2024-09-28": 123485.0,
+          "2023-09-30": 113736.0,
+          "2022-09-24": 119103.0,
+          "2021-09-25": 109207.0,
+          "2020-09-26": 67091.0
+        },
+        "is_leaf": false,
+        "children": [
+          {
+            "concept": "us-gaap_OperatingIncomeLoss",
+            "tag": "us-gaap:OperatingIncomeLoss",
+            "name": "Operating Income Loss",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 133050.0,
+              "2024-09-28": 123216.0,
+              "2023-09-30": 114301.0,
+              "2022-09-24": 119437.0,
+              "2021-09-25": 108949.0,
+              "2020-09-26": 66288.0
+            },
+            "is_leaf": false,
+            "children": [
+              {
+                "concept": "us-gaap_GrossProfit",
+                "tag": "us-gaap:GrossProfit",
+                "name": "Gross Profit",
+                "weight": 1.0,
+                "values": {
+                  "2025-09-27": 195201.0,
+                  "2024-09-28": 180683.0,
+                  "2023-09-30": 169148.0,
+                  "2022-09-24": 170782.0,
+                  "2021-09-25": 152836.0,
+                  "2020-09-26": 104956.0
+                },
+                "is_leaf": false,
+                "children": [
+                  {
+                    "concept": "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+                    "tag": "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax",
+                    "name": "Revenue From Contract With Customer Excluding Assessed Tax",
+                    "weight": 1.0,
+                    "values": {
+                      "2025-09-27": 416161.0,
+                      "2024-09-28": 391035.0,
+                      "2023-09-30": 383285.0,
+                      "2022-09-24": 394328.0,
+                      "2021-09-25": 365817.0,
+                      "2020-09-26": 274515.0
+                    },
+                    "is_leaf": false,
+                    "role": "IS_REVENUE",
+                    "children": [
+                      {
+                        "concept": "us-gaap_ServiceMember",
+                        "tag": "us-gaap:ServiceMember",
+                        "name": "Services",
+                        "weight": 1.0,
+                        "values": {
+                          "2025-09-27": 109158.0,
+                          "2024-09-28": 96169.0,
+                          "2023-09-30": 24855.0,
+                          "2022-09-24": 22075.0,
+                          "2021-09-25": 20715.0,
+                          "2020-09-26": 18273.0
+                        },
+                        "is_leaf": true
+                      },
+                      {
+                        "concept": "aapl_IPhoneMember",
+                        "tag": "aapl:IPhoneMember",
+                        "name": "iPhone",
+                        "weight": 1.0,
+                        "values": {
+                          "2025-09-27": 209586.0,
+                          "2024-09-28": 201183.0,
+                          "2023-09-30": 200583.0,
+                          "2022-09-24": 205489.0,
+                          "2021-09-25": 191973.0,
+                          "2020-09-26": 137781.0
+                        },
+                        "is_leaf": true
+                      },
+                      {
+                        "concept": "aapl_MacMember",
+                        "tag": "aapl:MacMember",
+                        "name": "Mac",
+                        "weight": 1.0,
+                        "values": {
+                          "2025-09-27": 33708.0,
+                          "2024-09-28": 29984.0,
+                          "2023-09-30": 29357.0,
+                          "2022-09-24": 40177.0,
+                          "2021-09-25": 35190.0,
+                          "2020-09-26": 28622.0
+                        },
+                        "is_leaf": true
+                      },
+                      {
+                        "concept": "aapl_IPadMember",
+                        "tag": "aapl:IPadMember",
+                        "name": "iPad",
+                        "weight": 1.0,
+                        "values": {
+                          "2025-09-27": 28023.0,
+                          "2024-09-28": 26694.0,
+                          "2023-09-30": 28300.0,
+                          "2022-09-24": 29292.0,
+                          "2021-09-25": 31862.0,
+                          "2020-09-26": 23724.0
+                        },
+                        "is_leaf": true
+                      },
+                      {
+                        "concept": "aapl_WearablesHomeandAccessoriesMember",
+                        "tag": "aapl:WearablesHomeandAccessoriesMember",
+                        "name": "Wearables, Home and Accessories",
+                        "weight": 1.0,
+                        "values": {
+                          "2025-09-27": 35686.0,
+                          "2024-09-28": 37005.0,
+                          "2023-09-30": 39845.0,
+                          "2022-09-24": 41241.0,
+                          "2021-09-25": 38367.0,
+                          "2020-09-26": 30620.0
+                        },
+                        "is_leaf": true
+                      },
+                      {
+                        "concept": "__OTHER__us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+                        "tag": ":_OTHER__us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+                        "name": "Other",
+                        "weight": 1.0,
+                        "values": {
+                          "2020-09-26": 35495.0,
+                          "2021-09-25": 47710.0,
+                          "2022-09-24": 56054.0,
+                          "2023-09-30": 60345.0
+                        },
+                        "is_leaf": true
+                      }
+                    ]
+                  },
+                  {
+                    "concept": "us-gaap_CostOfGoodsAndServicesSold",
+                    "tag": "us-gaap:CostOfGoodsAndServicesSold",
+                    "name": "Cost Of Goods And Services Sold",
+                    "weight": -1.0,
+                    "values": {
+                      "2025-09-27": 220960.0,
+                      "2024-09-28": 210352.0,
+                      "2023-09-30": 214137.0,
+                      "2022-09-24": 223546.0,
+                      "2021-09-25": 212981.0,
+                      "2020-09-26": 169559.0
+                    },
+                    "is_leaf": false,
+                    "role": "IS_COGS",
+                    "children": [
+                      {
+                        "concept": "us-gaap_ProductMember",
+                        "tag": "us-gaap:ProductMember",
+                        "name": "Products",
+                        "weight": 1.0,
+                        "values": {
+                          "2025-09-27": 194116.0,
+                          "2024-09-28": 185233.0,
+                          "2023-09-30": 189282.0,
+                          "2022-09-24": 201471.0,
+                          "2021-09-25": 192266.0,
+                          "2020-09-26": 151286.0
+                        },
+                        "is_leaf": true
+                      },
+                      {
+                        "concept": "us-gaap_ServiceMember",
+                        "tag": "us-gaap:ServiceMember",
+                        "name": "Services",
+                        "weight": 1.0,
+                        "values": {
+                          "2025-09-27": 26844.0,
+                          "2024-09-28": 25119.0,
+                          "2023-09-30": 24855.0,
+                          "2022-09-24": 22075.0,
+                          "2021-09-25": 20715.0,
+                          "2020-09-26": 18273.0
+                        },
+                        "is_leaf": true
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "concept": "us-gaap_OperatingExpenses",
+                "tag": "us-gaap:OperatingExpenses",
+                "name": "Operating Expenses",
+                "weight": -1.0,
+                "values": {
+                  "2025-09-27": 62151.0,
+                  "2024-09-28": 57467.0,
+                  "2023-09-30": 54847.0,
+                  "2022-09-24": 51345.0,
+                  "2021-09-25": 43887.0,
+                  "2020-09-26": 38668.0
+                },
+                "is_leaf": false,
+                "children": [
+                  {
+                    "concept": "us-gaap_ResearchAndDevelopmentExpense",
+                    "tag": "us-gaap:ResearchAndDevelopmentExpense",
+                    "name": "Research And Development Expense",
+                    "weight": 1.0,
+                    "values": {
+                      "2025-09-27": 34550.0,
+                      "2024-09-28": 31370.0,
+                      "2023-09-30": 29915.0,
+                      "2022-09-24": 26251.0,
+                      "2021-09-25": 21914.0,
+                      "2020-09-26": 18752.0
+                    },
+                    "is_leaf": true
+                  },
+                  {
+                    "concept": "us-gaap_SellingGeneralAndAdministrativeExpense",
+                    "tag": "us-gaap:SellingGeneralAndAdministrativeExpense",
+                    "name": "Selling General And Administrative Expense",
+                    "weight": 1.0,
+                    "values": {
+                      "2025-09-27": 27601.0,
+                      "2024-09-28": 26097.0,
+                      "2023-09-30": 24932.0,
+                      "2022-09-24": 25094.0,
+                      "2021-09-25": 21973.0,
+                      "2020-09-26": 19916.0
+                    },
+                    "is_leaf": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "concept": "us-gaap_NonoperatingIncomeExpense",
+            "tag": "us-gaap:NonoperatingIncomeExpense",
+            "name": "Nonoperating Income Expense",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": -321.0,
+              "2024-09-28": 269.0,
+              "2023-09-30": -565.0,
+              "2022-09-24": -334.0,
+              "2021-09-25": 258.0,
+              "2020-09-26": 803.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_IncomeTaxExpenseBenefit",
+        "tag": "us-gaap:IncomeTaxExpenseBenefit",
+        "name": "Income Tax Expense Benefit",
+        "weight": -1.0,
+        "values": {
+          "2025-09-27": 20719.0,
+          "2024-09-28": 29749.0,
+          "2023-09-30": 16741.0,
+          "2022-09-24": 19300.0,
+          "2021-09-25": 14527.0,
+          "2020-09-26": 9680.0
+        },
+        "is_leaf": true
+      }
+    ]
+  },
+  "IS_groupable": [
+    {
+      "parent": "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+      "parent_name": "Revenue From Contract With Customer Excluding Assessed Tax",
+      "parent_total": {
+        "2025-09-27": 416161.0,
+        "2024-09-28": 391035.0
+      },
+      "siblings": [
+        {
+          "concept": "aapl_IPhoneMember",
+          "name": "iPhone",
+          "tag": "aapl:IPhoneMember",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 209586.0,
+            "2024-09-28": 201183.0
+          }
+        },
+        {
+          "concept": "us-gaap_ServiceMember",
+          "name": "Services",
+          "tag": "us-gaap:ServiceMember",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 109158.0,
+            "2024-09-28": 96169.0
+          }
+        },
+        {
+          "concept": "aapl_WearablesHomeandAccessoriesMember",
+          "name": "Wearables, Home and Accessories",
+          "tag": "aapl:WearablesHomeandAccessoriesMember",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 35686.0,
+            "2024-09-28": 37005.0
+          }
+        },
+        {
+          "concept": "aapl_MacMember",
+          "name": "Mac",
+          "tag": "aapl:MacMember",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 33708.0,
+            "2024-09-28": 29984.0
+          }
+        },
+        {
+          "concept": "aapl_IPadMember",
+          "name": "iPad",
+          "tag": "aapl:IPadMember",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 28023.0,
+            "2024-09-28": 26694.0
+          }
+        }
+      ]
+    }
+  ],
+  "BS": {
+    "concept": "us-gaap_Assets",
+    "tag": "us-gaap:Assets",
+    "name": "Assets",
+    "weight": 1.0,
+    "values": {
+      "2025-09-27": 359241.0,
+      "2024-09-28": 364980.0,
+      "2023-09-30": 352583.0,
+      "2022-09-24": 352755.0,
+      "2021-09-25": 351002.0,
+      "2020-09-26": 323888.0
+    },
+    "is_leaf": false,
+    "role": "BS_TA",
+    "children": [
+      {
+        "concept": "us-gaap_AssetsCurrent",
+        "tag": "us-gaap:AssetsCurrent",
+        "name": "Assets Current",
+        "weight": 1.0,
+        "values": {
+          "2025-09-27": 147957.0,
+          "2024-09-28": 152987.0,
+          "2023-09-30": 144338.0,
+          "2022-09-24": 136736.0,
+          "2021-09-25": 135825.0,
+          "2020-09-26": 145486.0
+        },
+        "is_leaf": false,
+        "role": "BS_TCA",
+        "children": [
+          {
+            "concept": "us-gaap_CashAndCashEquivalentsAtCarryingValue",
+            "tag": "us-gaap:CashAndCashEquivalentsAtCarryingValue",
+            "name": "Cash And Cash Equivalents At Carrying Value",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 35934.0,
+              "2024-09-28": 29943.0,
+              "2023-09-30": 30737.0,
+              "2022-09-24": 24977.0,
+              "2021-09-25": 35929.0,
+              "2020-09-26": 39789.0
+            },
+            "is_leaf": true,
+            "role": "BS_CASH"
+          },
+          {
+            "concept": "us-gaap_MarketableSecuritiesCurrent",
+            "tag": "us-gaap:MarketableSecuritiesCurrent",
+            "name": "Marketable Securities Current",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 18763.0,
+              "2024-09-28": 35228.0,
+              "2023-09-30": 31590.0,
+              "2022-09-24": 24658.0,
+              "2021-09-25": 27699.0,
+              "2020-09-26": 52927.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_AccountsReceivableNetCurrent",
+            "tag": "us-gaap:AccountsReceivableNetCurrent",
+            "name": "Accounts Receivable",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 39777.0,
+              "2024-09-28": 33410.0,
+              "2023-09-30": 29508.0,
+              "2022-09-24": 28184.0,
+              "2021-09-25": 26278.0,
+              "2020-09-26": 16120.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_NontradeReceivablesCurrent",
+            "tag": "us-gaap:NontradeReceivablesCurrent",
+            "name": "Nontrade Receivables Current",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 33180.0,
+              "2024-09-28": 32833.0,
+              "2023-09-30": 31477.0,
+              "2022-09-24": 32748.0,
+              "2021-09-25": 25228.0,
+              "2020-09-26": 21325.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_InventoryNet",
+            "tag": "us-gaap:InventoryNet",
+            "name": "Inventory Net",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 5718.0,
+              "2024-09-28": 7286.0,
+              "2023-09-30": 6331.0,
+              "2022-09-24": 4946.0,
+              "2021-09-25": 6580.0,
+              "2020-09-26": 4061.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_OtherAssetsCurrent",
+            "tag": "us-gaap:OtherAssetsCurrent",
+            "name": "Other Assets Current",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 14585.0,
+              "2024-09-28": 14287.0,
+              "2023-09-30": 14695.0,
+              "2022-09-24": 21223.0,
+              "2021-09-25": 14111.0,
+              "2020-09-26": 11264.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_AssetsNoncurrent",
+        "tag": "us-gaap:AssetsNoncurrent",
+        "name": "Assets",
+        "weight": 1.0,
+        "values": {
+          "2025-09-27": 211284.0,
+          "2024-09-28": 211993.0,
+          "2023-09-30": 209017.0,
+          "2022-09-24": 217350.0,
+          "2021-09-25": 216166.0,
+          "2020-09-26": 180175.0
+        },
+        "is_leaf": false,
+        "children": [
+          {
+            "concept": "us-gaap_MarketableSecuritiesNoncurrent",
+            "tag": "us-gaap:MarketableSecuritiesNoncurrent",
+            "name": "Marketable Securities",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 77723.0,
+              "2024-09-28": 91479.0,
+              "2023-09-30": 100544.0,
+              "2022-09-24": 120805.0,
+              "2021-09-25": 127877.0,
+              "2020-09-26": 100887.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PropertyPlantAndEquipmentNet",
+            "tag": "us-gaap:PropertyPlantAndEquipmentNet",
+            "name": "Property Plant And Equipment Net",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 49834.0,
+              "2024-09-28": 45680.0,
+              "2023-09-30": 43715.0,
+              "2022-09-24": 42117.0,
+              "2021-09-25": 39440.0,
+              "2020-09-26": 36766.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_OtherAssetsNoncurrent",
+            "tag": "us-gaap:OtherAssetsNoncurrent",
+            "name": "Other Assets",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 83727.0,
+              "2024-09-28": 74834.0,
+              "2023-09-30": 64758.0,
+              "2022-09-24": 54428.0,
+              "2021-09-25": 48849.0,
+              "2020-09-26": 42522.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "__OTHER__us-gaap_Assets",
+        "tag": ":_OTHER__us-gaap_Assets",
+        "name": "Other",
+        "weight": 1.0,
+        "values": {
+          "2020-09-26": -1773.0,
+          "2021-09-25": -989.0,
+          "2022-09-24": -1331.0,
+          "2023-09-30": -772.0
+        },
+        "is_leaf": true
+      }
+    ]
+  },
+  "BS_groupable": [
+    {
+      "parent": "us-gaap_AssetsCurrent",
+      "parent_name": "Assets Current",
+      "parent_total": {
+        "2025-09-27": 147957.0,
+        "2024-09-28": 152987.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_AccountsReceivableNetCurrent",
+          "name": "Accounts Receivable",
+          "tag": "us-gaap:AccountsReceivableNetCurrent",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 39777.0,
+            "2024-09-28": 33410.0
+          }
+        },
+        {
+          "concept": "us-gaap_NontradeReceivablesCurrent",
+          "name": "Nontrade Receivables Current",
+          "tag": "us-gaap:NontradeReceivablesCurrent",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 33180.0,
+            "2024-09-28": 32833.0
+          }
+        },
+        {
+          "concept": "us-gaap_CashAndCashEquivalentsAtCarryingValue",
+          "name": "Cash And Cash Equivalents At Carrying Value",
+          "tag": "us-gaap:CashAndCashEquivalentsAtCarryingValue",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 35934.0,
+            "2024-09-28": 29943.0
+          }
+        },
+        {
+          "concept": "us-gaap_MarketableSecuritiesCurrent",
+          "name": "Marketable Securities Current",
+          "tag": "us-gaap:MarketableSecuritiesCurrent",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 18763.0,
+            "2024-09-28": 35228.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherAssetsCurrent",
+          "name": "Other Assets Current",
+          "tag": "us-gaap:OtherAssetsCurrent",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 14585.0,
+            "2024-09-28": 14287.0
+          }
+        },
+        {
+          "concept": "us-gaap_InventoryNet",
+          "name": "Inventory Net",
+          "tag": "us-gaap:InventoryNet",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 5718.0,
+            "2024-09-28": 7286.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_AssetsNoncurrent",
+      "parent_name": "Assets",
+      "parent_total": {
+        "2025-09-27": 211284.0,
+        "2024-09-28": 211993.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_MarketableSecuritiesNoncurrent",
+          "name": "Marketable Securities",
+          "tag": "us-gaap:MarketableSecuritiesNoncurrent",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 77723.0,
+            "2024-09-28": 91479.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherAssetsNoncurrent",
+          "name": "Other Assets",
+          "tag": "us-gaap:OtherAssetsNoncurrent",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 83727.0,
+            "2024-09-28": 74834.0
+          }
+        },
+        {
+          "concept": "us-gaap_PropertyPlantAndEquipmentNet",
+          "name": "Property Plant And Equipment Net",
+          "tag": "us-gaap:PropertyPlantAndEquipmentNet",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 49834.0,
+            "2024-09-28": 45680.0
+          }
+        }
+      ]
+    }
+  ],
+  "BS_LE": {
+    "concept": "us-gaap_LiabilitiesAndStockholdersEquity",
+    "tag": "us-gaap:LiabilitiesAndStockholdersEquity",
+    "name": "Liabilities And Stockholders Equity",
+    "weight": 1.0,
+    "values": {
+      "2025-09-27": 359241.0,
+      "2024-09-28": 364980.0,
+      "2023-09-30": 352583.0,
+      "2022-09-24": 352755.0,
+      "2021-09-25": 351002.0,
+      "2020-09-26": 323888.0
+    },
+    "is_leaf": false,
+    "role": "BS_TLE",
+    "children": [
+      {
+        "concept": "us-gaap_Liabilities",
+        "tag": "us-gaap:Liabilities",
+        "name": "Liabilities",
+        "weight": 1.0,
+        "values": {
+          "2025-09-27": 285508.0,
+          "2024-09-28": 308030.0,
+          "2023-09-30": 290437.0,
+          "2022-09-24": 302083.0,
+          "2021-09-25": 287912.0,
+          "2020-09-26": 258549.0
+        },
+        "is_leaf": false,
+        "role": "BS_TL",
+        "children": [
+          {
+            "concept": "us-gaap_LiabilitiesCurrent",
+            "tag": "us-gaap:LiabilitiesCurrent",
+            "name": "Liabilities Current",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 165631.0,
+              "2024-09-28": 176392.0,
+              "2023-09-30": 145308.0,
+              "2022-09-24": 153982.0,
+              "2021-09-25": 125481.0,
+              "2020-09-26": 105392.0
+            },
+            "is_leaf": false,
+            "role": "BS_TCL",
+            "children": [
+              {
+                "concept": "us-gaap_AccountsPayableCurrent",
+                "tag": "us-gaap:AccountsPayableCurrent",
+                "name": "Accounts Payable Current",
+                "weight": 1.0,
+                "values": {
+                  "2025-09-27": 69860.0,
+                  "2024-09-28": 68960.0,
+                  "2023-09-30": 62611.0,
+                  "2022-09-24": 64115.0,
+                  "2021-09-25": 54763.0,
+                  "2020-09-26": 42296.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_OtherLiabilitiesCurrent",
+                "tag": "us-gaap:OtherLiabilitiesCurrent",
+                "name": "Other Liabilities Current",
+                "weight": 1.0,
+                "values": {
+                  "2025-09-27": 66387.0,
+                  "2024-09-28": 78304.0,
+                  "2023-09-30": 58829.0,
+                  "2022-09-24": 60845.0,
+                  "2021-09-25": 47493.0,
+                  "2020-09-26": 42684.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_ContractWithCustomerLiabilityCurrent",
+                "tag": "us-gaap:ContractWithCustomerLiabilityCurrent",
+                "name": "Contract With Customer Liability Current",
+                "weight": 1.0,
+                "values": {
+                  "2025-09-27": 9055.0,
+                  "2024-09-28": 8249.0,
+                  "2023-09-30": 8061.0,
+                  "2022-09-24": 7912.0,
+                  "2021-09-25": 7612.0,
+                  "2020-09-26": 6643.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_CommercialPaper",
+                "tag": "us-gaap:CommercialPaper",
+                "name": "Commercial Paper",
+                "weight": 1.0,
+                "values": {
+                  "2025-09-27": 7979.0,
+                  "2024-09-28": 9967.0,
+                  "2023-09-30": 5985.0,
+                  "2022-09-24": 9982.0,
+                  "2021-09-25": 6000.0,
+                  "2020-09-26": 4996.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_LongTermDebtCurrent",
+                "tag": "us-gaap:LongTermDebtCurrent",
+                "name": "Long Term Debt Current",
+                "weight": 1.0,
+                "values": {
+                  "2025-09-27": 12350.0,
+                  "2024-09-28": 10912.0,
+                  "2023-09-30": 9822.0,
+                  "2022-09-24": 11128.0,
+                  "2021-09-25": 9613.0,
+                  "2020-09-26": 8773.0
+                },
+                "is_leaf": true
+              }
+            ]
+          },
+          {
+            "concept": "us-gaap_LiabilitiesNoncurrent",
+            "tag": "us-gaap:LiabilitiesNoncurrent",
+            "name": "Liabilities",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 119877.0,
+              "2024-09-28": 131638.0,
+              "2023-09-30": 145129.0,
+              "2022-09-24": 148101.0,
+              "2021-09-25": 162431.0,
+              "2020-09-26": 153157.0
+            },
+            "is_leaf": false,
+            "children": [
+              {
+                "concept": "us-gaap_LongTermDebtNoncurrent",
+                "tag": "us-gaap:LongTermDebtNoncurrent",
+                "name": "Long Term Debt",
+                "weight": 1.0,
+                "values": {
+                  "2025-09-27": 78328.0,
+                  "2024-09-28": 85750.0,
+                  "2023-09-30": 95281.0,
+                  "2022-09-24": 98959.0,
+                  "2021-09-25": 109106.0,
+                  "2020-09-26": 98667.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_OtherLiabilitiesNoncurrent",
+                "tag": "us-gaap:OtherLiabilitiesNoncurrent",
+                "name": "Other Liabilities",
+                "weight": 1.0,
+                "values": {
+                  "2025-09-27": 41549.0,
+                  "2024-09-28": 45888.0,
+                  "2023-09-30": 49848.0,
+                  "2022-09-24": 49142.0,
+                  "2021-09-25": 53325.0,
+                  "2020-09-26": 54490.0
+                },
+                "is_leaf": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_CommitmentsAndContingencies",
+        "tag": "us-gaap:CommitmentsAndContingencies",
+        "name": "Commitments And Contingencies",
+        "weight": 1.0,
+        "values": {},
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_StockholdersEquity",
+        "tag": "us-gaap:StockholdersEquity",
+        "name": "Stockholders Equity",
+        "weight": 1.0,
+        "values": {
+          "2025-09-27": 73733.0,
+          "2024-09-28": 56950.0,
+          "2023-09-30": 62146.0,
+          "2022-09-24": 50672.0,
+          "2021-09-25": 63090.0,
+          "2020-09-26": 65339.0
+        },
+        "is_leaf": false,
+        "role": "BS_TE",
+        "children": [
+          {
+            "concept": "us-gaap_CommonStocksIncludingAdditionalPaidInCapital",
+            "tag": "us-gaap:CommonStocksIncludingAdditionalPaidInCapital",
+            "name": "Common Stocks Including Additional Paid In Capital",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 93568.0,
+              "2024-09-28": 83276.0,
+              "2023-09-30": 73812.0,
+              "2022-09-24": 64849.0,
+              "2021-09-25": 57365.0,
+              "2020-09-26": 50779.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_RetainedEarningsAccumulatedDeficit",
+            "tag": "us-gaap:RetainedEarningsAccumulatedDeficit",
+            "name": "Retained Earnings Accumulated Deficit",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": -14264.0,
+              "2024-09-28": -19154.0,
+              "2023-09-30": -214.0,
+              "2022-09-24": -3068.0,
+              "2021-09-25": 5562.0,
+              "2020-09-26": 14966.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+            "tag": "us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+            "name": "Accumulated Other Comprehensive Income Loss Net Of Tax",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": -5571.0,
+              "2024-09-28": -7172.0,
+              "2023-09-30": -11452.0,
+              "2022-09-24": -11109.0,
+              "2021-09-25": 163.0,
+              "2020-09-26": -406.0
+            },
+            "is_leaf": true
+          }
+        ]
+      }
+    ]
+  },
+  "BS_LE_groupable": [
+    {
+      "parent": "us-gaap_LiabilitiesCurrent",
+      "parent_name": "Liabilities Current",
+      "parent_total": {
+        "2025-09-27": 165631.0,
+        "2024-09-28": 176392.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_OtherLiabilitiesCurrent",
+          "name": "Other Liabilities Current",
+          "tag": "us-gaap:OtherLiabilitiesCurrent",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 66387.0,
+            "2024-09-28": 78304.0
+          }
+        },
+        {
+          "concept": "us-gaap_AccountsPayableCurrent",
+          "name": "Accounts Payable Current",
+          "tag": "us-gaap:AccountsPayableCurrent",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 69860.0,
+            "2024-09-28": 68960.0
+          }
+        },
+        {
+          "concept": "us-gaap_LongTermDebtCurrent",
+          "name": "Long Term Debt Current",
+          "tag": "us-gaap:LongTermDebtCurrent",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 12350.0,
+            "2024-09-28": 10912.0
+          }
+        },
+        {
+          "concept": "us-gaap_CommercialPaper",
+          "name": "Commercial Paper",
+          "tag": "us-gaap:CommercialPaper",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 7979.0,
+            "2024-09-28": 9967.0
+          }
+        },
+        {
+          "concept": "us-gaap_ContractWithCustomerLiabilityCurrent",
+          "name": "Contract With Customer Liability Current",
+          "tag": "us-gaap:ContractWithCustomerLiabilityCurrent",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 9055.0,
+            "2024-09-28": 8249.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_StockholdersEquity",
+      "parent_name": "Stockholders Equity",
+      "parent_total": {
+        "2025-09-27": 73733.0,
+        "2024-09-28": 56950.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_CommonStocksIncludingAdditionalPaidInCapital",
+          "name": "Common Stocks Including Additional Paid In Capital",
+          "tag": "us-gaap:CommonStocksIncludingAdditionalPaidInCapital",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 93568.0,
+            "2024-09-28": 83276.0
+          }
+        },
+        {
+          "concept": "us-gaap_RetainedEarningsAccumulatedDeficit",
+          "name": "Retained Earnings Accumulated Deficit",
+          "tag": "us-gaap:RetainedEarningsAccumulatedDeficit",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": -14264.0,
+            "2024-09-28": -19154.0
+          }
+        },
+        {
+          "concept": "us-gaap_AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+          "name": "Accumulated Other Comprehensive Income Loss Net Of Tax",
+          "tag": "us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": -5571.0,
+            "2024-09-28": -7172.0
+          }
+        }
+      ]
+    }
+  ],
+  "CF": {
+    "concept": "us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
+    "tag": "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
+    "name": "Cash Cash Equivalents Restricted Cash And Restricted Cash Equivalents Period Increase Decrease Including Exchange Rate Effect",
+    "weight": 1.0,
+    "values": {
+      "2025-09-27": 5991.0,
+      "2024-09-28": -794.0,
+      "2023-09-30": 5760.0,
+      "2022-09-24": -10952.0,
+      "2021-09-25": -3860.0,
+      "2020-09-26": -10435.0
+    },
+    "is_leaf": false,
+    "role": "CF_NETCH",
+    "children": [
+      {
+        "concept": "us-gaap_NetCashProvidedByUsedInOperatingActivities",
+        "tag": "us-gaap:NetCashProvidedByUsedInOperatingActivities",
+        "name": "Net Cash Provided By Used In Operating Activities",
+        "weight": 1.0,
+        "values": {
+          "2025-09-27": 111482.0,
+          "2024-09-28": 118254.0,
+          "2023-09-30": 110543.0,
+          "2022-09-24": 122151.0,
+          "2021-09-25": 104038.0,
+          "2020-09-26": 80674.0
+        },
+        "is_leaf": false,
+        "role": "CF_OPCF",
+        "children": [
+          {
+            "concept": "us-gaap_NetIncomeLoss",
+            "tag": "us-gaap:NetIncomeLoss",
+            "name": "Net Income Loss",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 112010.0,
+              "2024-09-28": 93736.0,
+              "2023-09-30": 96995.0,
+              "2022-09-24": 99803.0,
+              "2021-09-25": 94680.0,
+              "2020-09-26": 57411.0
+            },
+            "is_leaf": true,
+            "role": "INC_NET_CF"
+          },
+          {
+            "concept": "us-gaap_DepreciationDepletionAndAmortization",
+            "tag": "us-gaap:DepreciationDepletionAndAmortization",
+            "name": "Depreciation Depletion And Amortization",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 11698.0,
+              "2024-09-28": 11445.0,
+              "2023-09-30": 11519.0,
+              "2022-09-24": 11104.0,
+              "2021-09-25": 11284.0,
+              "2020-09-26": 11056.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ShareBasedCompensation",
+            "tag": "us-gaap:ShareBasedCompensation",
+            "name": "Share Based Compensation",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 12863.0,
+              "2024-09-28": 11688.0,
+              "2023-09-30": 10833.0,
+              "2022-09-24": 9038.0,
+              "2021-09-25": 7906.0,
+              "2020-09-26": 6829.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_OtherNoncashIncomeExpense",
+            "tag": "us-gaap:OtherNoncashIncomeExpense",
+            "name": "Other Noncash Income Expense",
+            "weight": -1.0,
+            "values": {
+              "2025-09-27": 89.0,
+              "2024-09-28": 2266.0,
+              "2023-09-30": 2227.0,
+              "2022-09-24": -111.0,
+              "2021-09-25": 147.0,
+              "2020-09-26": 97.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInAccountsReceivable",
+            "tag": "us-gaap:IncreaseDecreaseInAccountsReceivable",
+            "name": "Increase Decrease In Accounts Receivable",
+            "weight": -1.0,
+            "values": {
+              "2025-09-27": 6682.0,
+              "2024-09-28": 3788.0,
+              "2023-09-30": 1688.0,
+              "2022-09-24": 1823.0,
+              "2021-09-25": 10125.0,
+              "2020-09-26": -6917.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInOtherReceivables",
+            "tag": "us-gaap:IncreaseDecreaseInOtherReceivables",
+            "name": "Increase Decrease In Other Receivables",
+            "weight": -1.0,
+            "values": {
+              "2025-09-27": 347.0,
+              "2024-09-28": 1356.0,
+              "2023-09-30": -1271.0,
+              "2022-09-24": 7520.0,
+              "2021-09-25": 3903.0,
+              "2020-09-26": -1553.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInInventories",
+            "tag": "us-gaap:IncreaseDecreaseInInventories",
+            "name": "Increase Decrease In Inventories",
+            "weight": -1.0,
+            "values": {
+              "2025-09-27": -1400.0,
+              "2024-09-28": 1046.0,
+              "2023-09-30": 1618.0,
+              "2022-09-24": -1484.0,
+              "2021-09-25": 2642.0,
+              "2020-09-26": 127.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInOtherOperatingAssets",
+            "tag": "us-gaap:IncreaseDecreaseInOtherOperatingAssets",
+            "name": "Increase Decrease In Other Operating Assets",
+            "weight": -1.0,
+            "values": {
+              "2025-09-27": 9197.0,
+              "2024-09-28": 11731.0,
+              "2023-09-30": 5684.0,
+              "2022-09-24": 6499.0,
+              "2021-09-25": 8042.0,
+              "2020-09-26": 9588.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInAccountsPayable",
+            "tag": "us-gaap:IncreaseDecreaseInAccountsPayable",
+            "name": "Increase Decrease In Accounts Payable",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 902.0,
+              "2024-09-28": 6020.0,
+              "2023-09-30": -1889.0,
+              "2022-09-24": 9448.0,
+              "2021-09-25": 12326.0,
+              "2020-09-26": -4062.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInOtherOperatingLiabilities",
+            "tag": "us-gaap:IncreaseDecreaseInOtherOperatingLiabilities",
+            "name": "Increase Decrease In Other Operating Liabilities",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": -11076.0,
+              "2024-09-28": 15552.0,
+              "2023-09-30": 3031.0,
+              "2022-09-24": 5632.0,
+              "2021-09-25": 5799.0,
+              "2020-09-26": 8916.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "__OTHER__us-gaap_NetCashProvidedByUsedInOperatingActivities",
+            "tag": ":_OTHER__us-gaap_NetCashProvidedByUsedInOperatingActivities",
+            "name": "Other",
+            "weight": 1.0,
+            "values": {
+              "2020-09-26": 1866.0,
+              "2021-09-25": -3098.0,
+              "2022-09-24": 1373.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+        "tag": "us-gaap:NetCashProvidedByUsedInInvestingActivities",
+        "name": "Net Cash Provided By Used In Investing Activities",
+        "weight": 1.0,
+        "values": {
+          "2025-09-27": 15195.0,
+          "2024-09-28": 2935.0,
+          "2023-09-30": 3705.0,
+          "2022-09-24": -22354.0,
+          "2021-09-25": -14545.0,
+          "2020-09-26": -4289.0
+        },
+        "is_leaf": false,
+        "role": "CF_INVCF",
+        "children": [
+          {
+            "concept": "us-gaap_PaymentsToAcquireAvailableForSaleSecuritiesDebt",
+            "tag": "us-gaap:PaymentsToAcquireAvailableForSaleSecuritiesDebt",
+            "name": "Payments To Acquire Available For Sale Securities Debt",
+            "weight": -1.0,
+            "values": {
+              "2025-09-27": 24407.0,
+              "2024-09-28": 48656.0,
+              "2023-09-30": 29513.0,
+              "2022-09-24": 76923.0,
+              "2021-09-25": 109558.0,
+              "2020-09-26": 114938.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",
+            "tag": "us-gaap:ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",
+            "name": "Proceeds From Maturities Prepayments And Calls Of Available For Sale Securities",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 40907.0,
+              "2024-09-28": 51211.0,
+              "2023-09-30": 39686.0,
+              "2022-09-24": 29917.0,
+              "2021-09-25": 59023.0,
+              "2020-09-26": 69918.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ProceedsFromSaleOfAvailableForSaleSecuritiesDebt",
+            "tag": "us-gaap:ProceedsFromSaleOfAvailableForSaleSecuritiesDebt",
+            "name": "Proceeds From Sale Of Available For Sale Securities Debt",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 12890.0,
+              "2024-09-28": 11135.0,
+              "2023-09-30": 5828.0,
+              "2022-09-24": 37446.0,
+              "2021-09-25": 47460.0,
+              "2020-09-26": 50473.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment",
+            "tag": "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment",
+            "name": "Payments To Acquire Property Plant And Equipment",
+            "weight": -1.0,
+            "values": {
+              "2025-09-27": 12715.0,
+              "2024-09-28": 9447.0,
+              "2023-09-30": 10959.0,
+              "2022-09-24": 10708.0,
+              "2021-09-25": 11085.0,
+              "2020-09-26": 7309.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
+            "tag": "us-gaap:PaymentsForProceedsFromOtherInvestingActivities",
+            "name": "Payments For Proceeds From Other Investing Activities",
+            "weight": -1.0,
+            "values": {
+              "2025-09-27": 1480.0,
+              "2024-09-28": 1308.0,
+              "2023-09-30": 1337.0,
+              "2022-09-24": 1780.0,
+              "2021-09-25": 608.0,
+              "2020-09-26": 791.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "__OTHER__us-gaap_NetCashProvidedByUsedInInvestingActivities",
+            "tag": ":_OTHER__us-gaap_NetCashProvidedByUsedInInvestingActivities",
+            "name": "Other",
+            "weight": 1.0,
+            "values": {
+              "2020-09-26": -1642.0,
+              "2021-09-25": 223.0,
+              "2022-09-24": -306.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+        "tag": "us-gaap:NetCashProvidedByUsedInFinancingActivities",
+        "name": "Net Cash Provided By Used In Financing Activities",
+        "weight": 1.0,
+        "values": {
+          "2025-09-27": -120686.0,
+          "2024-09-28": -121983.0,
+          "2023-09-30": -108488.0,
+          "2022-09-24": -110749.0,
+          "2021-09-25": -93353.0,
+          "2020-09-26": -86820.0
+        },
+        "is_leaf": false,
+        "role": "CF_FINCF",
+        "children": [
+          {
+            "concept": "us-gaap_PaymentsRelatedToTaxWithholdingForShareBasedCompensation",
+            "tag": "us-gaap:PaymentsRelatedToTaxWithholdingForShareBasedCompensation",
+            "name": "Payments Related To Tax Withholding For Share Based Compensation",
+            "weight": -1.0,
+            "values": {
+              "2025-09-27": 5960.0,
+              "2024-09-28": 5441.0,
+              "2023-09-30": 5431.0,
+              "2022-09-24": 6223.0,
+              "2021-09-25": 6556.0,
+              "2020-09-26": 3634.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsOfDividends",
+            "tag": "us-gaap:PaymentsOfDividends",
+            "name": "Payments Of Dividends",
+            "weight": -1.0,
+            "values": {
+              "2025-09-27": 15421.0,
+              "2024-09-28": 15234.0,
+              "2023-09-30": 15025.0,
+              "2022-09-24": 14841.0,
+              "2021-09-25": 14467.0,
+              "2020-09-26": 14081.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsForRepurchaseOfCommonStock",
+            "tag": "us-gaap:PaymentsForRepurchaseOfCommonStock",
+            "name": "Payments For Repurchase Of Common Stock",
+            "weight": -1.0,
+            "values": {
+              "2025-09-27": 90711.0,
+              "2024-09-28": 94949.0,
+              "2023-09-30": 77550.0,
+              "2022-09-24": 89402.0,
+              "2021-09-25": 85971.0,
+              "2020-09-26": 72358.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ProceedsFromIssuanceOfLongTermDebt",
+            "tag": "us-gaap:ProceedsFromIssuanceOfLongTermDebt",
+            "name": "Proceeds From Issuance Of Long Term Debt",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": 4481.0,
+              "2023-09-30": 5228.0,
+              "2022-09-24": 5465.0,
+              "2021-09-25": 20393.0,
+              "2020-09-26": 16091.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_RepaymentsOfLongTermDebt",
+            "tag": "us-gaap:RepaymentsOfLongTermDebt",
+            "name": "Repayments Of Long Term Debt",
+            "weight": -1.0,
+            "values": {
+              "2025-09-27": 10932.0,
+              "2024-09-28": 9958.0,
+              "2023-09-30": 11151.0,
+              "2022-09-24": 9543.0,
+              "2021-09-25": 8750.0,
+              "2020-09-26": 12629.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ProceedsFromRepaymentsOfCommercialPaper",
+            "tag": "us-gaap:ProceedsFromRepaymentsOfCommercialPaper",
+            "name": "Proceeds From Repayments Of Commercial Paper",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": -2032.0,
+              "2024-09-28": 3960.0,
+              "2023-09-30": -3978.0,
+              "2022-09-24": 3955.0,
+              "2021-09-25": 1022.0,
+              "2020-09-26": -963.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
+            "tag": "us-gaap:ProceedsFromPaymentsForOtherFinancingActivities",
+            "name": "Proceeds From Payments For Other Financing Activities",
+            "weight": 1.0,
+            "values": {
+              "2025-09-27": -111.0,
+              "2024-09-28": -361.0,
+              "2023-09-30": -581.0,
+              "2022-09-24": -160.0,
+              "2021-09-25": -129.0,
+              "2020-09-26": -126.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ProceedsFromIssuanceOfCommonStock",
+            "tag": "us-gaap:ProceedsFromIssuanceOfCommonStock",
+            "name": "Proceeds From Issuance Of Common Stock",
+            "weight": 1.0,
+            "values": {
+              "2021-09-25": 1105.0,
+              "2020-09-26": 880.0
+            },
+            "is_leaf": true
+          }
+        ]
+      }
+    ]
+  },
+  "CF_groupable": [
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInOperatingActivities",
+      "parent_name": "Net Cash Provided By Used In Operating Activities",
+      "parent_total": {
+        "2025-09-27": 111482.0,
+        "2024-09-28": 118254.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_NetIncomeLoss",
+          "name": "Net Income Loss",
+          "tag": "us-gaap:NetIncomeLoss",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 112010.0,
+            "2024-09-28": 93736.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInOtherOperatingLiabilities",
+          "name": "Increase Decrease In Other Operating Liabilities",
+          "tag": "us-gaap:IncreaseDecreaseInOtherOperatingLiabilities",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": -11076.0,
+            "2024-09-28": 15552.0
+          }
+        },
+        {
+          "concept": "us-gaap_ShareBasedCompensation",
+          "name": "Share Based Compensation",
+          "tag": "us-gaap:ShareBasedCompensation",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 12863.0,
+            "2024-09-28": 11688.0
+          }
+        },
+        {
+          "concept": "us-gaap_DepreciationDepletionAndAmortization",
+          "name": "Depreciation Depletion And Amortization",
+          "tag": "us-gaap:DepreciationDepletionAndAmortization",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 11698.0,
+            "2024-09-28": 11445.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInOtherOperatingAssets",
+          "name": "Increase Decrease In Other Operating Assets",
+          "tag": "us-gaap:IncreaseDecreaseInOtherOperatingAssets",
+          "weight": -1.0,
+          "values": {
+            "2025-09-27": 9197.0,
+            "2024-09-28": 11731.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInAccountsReceivable",
+          "name": "Increase Decrease In Accounts Receivable",
+          "tag": "us-gaap:IncreaseDecreaseInAccountsReceivable",
+          "weight": -1.0,
+          "values": {
+            "2025-09-27": 6682.0,
+            "2024-09-28": 3788.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInAccountsPayable",
+          "name": "Increase Decrease In Accounts Payable",
+          "tag": "us-gaap:IncreaseDecreaseInAccountsPayable",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 902.0,
+            "2024-09-28": 6020.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInInventories",
+          "name": "Increase Decrease In Inventories",
+          "tag": "us-gaap:IncreaseDecreaseInInventories",
+          "weight": -1.0,
+          "values": {
+            "2025-09-27": -1400.0,
+            "2024-09-28": 1046.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherNoncashIncomeExpense",
+          "name": "Other Noncash Income Expense",
+          "tag": "us-gaap:OtherNoncashIncomeExpense",
+          "weight": -1.0,
+          "values": {
+            "2025-09-27": 89.0,
+            "2024-09-28": 2266.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInOtherReceivables",
+          "name": "Increase Decrease In Other Receivables",
+          "tag": "us-gaap:IncreaseDecreaseInOtherReceivables",
+          "weight": -1.0,
+          "values": {
+            "2025-09-27": 347.0,
+            "2024-09-28": 1356.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+      "parent_name": "Net Cash Provided By Used In Investing Activities",
+      "parent_total": {
+        "2025-09-27": 15195.0,
+        "2024-09-28": 2935.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",
+          "name": "Proceeds From Maturities Prepayments And Calls Of Available For Sale Securities",
+          "tag": "us-gaap:ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 40907.0,
+            "2024-09-28": 51211.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsToAcquireAvailableForSaleSecuritiesDebt",
+          "name": "Payments To Acquire Available For Sale Securities Debt",
+          "tag": "us-gaap:PaymentsToAcquireAvailableForSaleSecuritiesDebt",
+          "weight": -1.0,
+          "values": {
+            "2025-09-27": 24407.0,
+            "2024-09-28": 48656.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromSaleOfAvailableForSaleSecuritiesDebt",
+          "name": "Proceeds From Sale Of Available For Sale Securities Debt",
+          "tag": "us-gaap:ProceedsFromSaleOfAvailableForSaleSecuritiesDebt",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 12890.0,
+            "2024-09-28": 11135.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment",
+          "name": "Payments To Acquire Property Plant And Equipment",
+          "tag": "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment",
+          "weight": -1.0,
+          "values": {
+            "2025-09-27": 12715.0,
+            "2024-09-28": 9447.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
+          "name": "Payments For Proceeds From Other Investing Activities",
+          "tag": "us-gaap:PaymentsForProceedsFromOtherInvestingActivities",
+          "weight": -1.0,
+          "values": {
+            "2025-09-27": 1480.0,
+            "2024-09-28": 1308.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+      "parent_name": "Net Cash Provided By Used In Financing Activities",
+      "parent_total": {
+        "2025-09-27": -120686.0,
+        "2024-09-28": -121983.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_PaymentsForRepurchaseOfCommonStock",
+          "name": "Payments For Repurchase Of Common Stock",
+          "tag": "us-gaap:PaymentsForRepurchaseOfCommonStock",
+          "weight": -1.0,
+          "values": {
+            "2025-09-27": 90711.0,
+            "2024-09-28": 94949.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsOfDividends",
+          "name": "Payments Of Dividends",
+          "tag": "us-gaap:PaymentsOfDividends",
+          "weight": -1.0,
+          "values": {
+            "2025-09-27": 15421.0,
+            "2024-09-28": 15234.0
+          }
+        },
+        {
+          "concept": "us-gaap_RepaymentsOfLongTermDebt",
+          "name": "Repayments Of Long Term Debt",
+          "tag": "us-gaap:RepaymentsOfLongTermDebt",
+          "weight": -1.0,
+          "values": {
+            "2025-09-27": 10932.0,
+            "2024-09-28": 9958.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsRelatedToTaxWithholdingForShareBasedCompensation",
+          "name": "Payments Related To Tax Withholding For Share Based Compensation",
+          "tag": "us-gaap:PaymentsRelatedToTaxWithholdingForShareBasedCompensation",
+          "weight": -1.0,
+          "values": {
+            "2025-09-27": 5960.0,
+            "2024-09-28": 5441.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromIssuanceOfLongTermDebt",
+          "name": "Proceeds From Issuance Of Long Term Debt",
+          "tag": "us-gaap:ProceedsFromIssuanceOfLongTermDebt",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": 4481.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromRepaymentsOfCommercialPaper",
+          "name": "Proceeds From Repayments Of Commercial Paper",
+          "tag": "us-gaap:ProceedsFromRepaymentsOfCommercialPaper",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": -2032.0,
+            "2024-09-28": 3960.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
+          "name": "Proceeds From Payments For Other Financing Activities",
+          "tag": "us-gaap:ProceedsFromPaymentsForOtherFinancingActivities",
+          "weight": 1.0,
+          "values": {
+            "2025-09-27": -111.0,
+            "2024-09-28": -361.0
+          }
+        }
+      ]
+    }
+  ],
+  "revenue_segments": {
+    "concept": "_REVENUE_SEGMENTS",
+    "tag": ":REVENUE_SEGMENTS",
+    "name": "Revenue Segments",
+    "weight": 1.0,
+    "values": {
+      "2025-09-27": 416161.0,
+      "2024-09-28": 391035.0,
+      "2023-09-30": 383285.0,
+      "2022-09-24": 394328.0,
+      "2021-09-25": 365817.0,
+      "2020-09-26": 274515.0
+    },
+    "is_leaf": false,
+    "children": [
+      {
+        "concept": "aapl_IPhoneMember",
+        "tag": "aapl:IPhoneMember",
+        "name": "iPhone",
+        "weight": 1.0,
+        "values": {
+          "2025-09-27": 209586.0,
+          "2024-09-28": 201183.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_ServiceMember",
+        "tag": "us-gaap:ServiceMember",
+        "name": "Services",
+        "weight": 1.0,
+        "values": {
+          "2025-09-27": 109158.0,
+          "2024-09-28": 96169.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "aapl_WearablesHomeandAccessoriesMember",
+        "tag": "aapl:WearablesHomeandAccessoriesMember",
+        "name": "Wearables, Home and Accessories",
+        "weight": 1.0,
+        "values": {
+          "2025-09-27": 35686.0,
+          "2024-09-28": 37005.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "aapl_MacMember",
+        "tag": "aapl:MacMember",
+        "name": "Mac",
+        "weight": 1.0,
+        "values": {
+          "2025-09-27": 33708.0,
+          "2024-09-28": 29984.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "aapl_IPadMember",
+        "tag": "aapl:IPadMember",
+        "name": "iPad",
+        "weight": 1.0,
+        "values": {
+          "2025-09-27": 28023.0,
+          "2024-09-28": 26694.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "__OTHER___REVENUE_SEGMENTS",
+        "tag": ":_OTHER___REVENUE_SEGMENTS",
+        "name": "Other",
+        "weight": 1.0,
+        "values": {
+          "2020-09-26": 274515.0,
+          "2021-09-25": 365817.0,
+          "2022-09-24": 394328.0,
+          "2023-09-30": 383285.0
+        },
+        "is_leaf": true
+      }
+    ]
+  }
+}

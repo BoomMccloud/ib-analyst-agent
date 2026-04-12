@@ -89,39 +89,47 @@ def main():
         else:
             print(f"  XBRL tree extraction failed for {date}")
 
-    # Stage 3+4: Verify + render
+    # Stage 3: Merge all filings into one tree
     if tree_files:
-        print(f"\n=== STAGE 3: Verifying model ===")
-        # Checkpoint: verify tree completeness + cross-statement invariants
-        for tf in tree_files:
-            import json as _json
-            from xbrl_tree import verify_tree_completeness, TreeNode
-            with open(tf) as _f:
-                _trees = _json.load(_f)
-            for stmt in ["IS", "BS", "BS_LE", "CF"]:
-                if stmt in _trees and isinstance(_trees[stmt], dict):
-                    _trees[stmt] = TreeNode.from_dict(_trees[stmt])
-            _periods = _trees.get("complete_periods", [])
-            _all_errors = []
-            for stmt in ["IS", "BS", "BS_LE", "CF"]:
-                if _trees.get(stmt):
-                    _all_errors.extend(verify_tree_completeness(_trees[stmt], _periods))
-            if _all_errors:
-                print(f"  Tree completeness: {len(_all_errors)} gap(s):", file=sys.stderr)
-                for concept, period, gap in _all_errors:
-                    print(f"    {concept[:50]:50s} {period} gap={gap:>10,.0f}", file=sys.stderr)
-                print("  WARNING: Tree gaps detected — sheet formulas may not match declared values",
-                      file=sys.stderr)
-            else:
-                print(f"  Tree completeness: ALL PASS")
-            # Cross-statement invariants
-            run_command([sys.executable, "pymodel.py", "--trees", tf, "--checkpoint"])
+        if len(tree_files) > 1:
+            print(f"\n=== STAGE 3a: Merging {len(tree_files)} filings ===")
+            merged_file = str(out_dir / "merged.json")
+            run_command([sys.executable, "merge_trees.py"] + tree_files +
+                        ["-o", merged_file])
+        else:
+            print(f"\n=== STAGE 3a: Single filing, no merge needed ===")
+            merged_file = tree_files[0]
 
-        print(f"\n=== STAGE 4: Writing Google Sheet (Phase 3) ===")
-        # sheet_builder uses the first tree file (most recent filing)
-        run_command([sys.executable, "sheet_builder.py", "--trees", tree_files[0],
+        # Stage 3b: Verify tree completeness on merged output
+        print(f"\n=== STAGE 3b: Verifying model ===")
+        import json as _json
+        from xbrl_tree import verify_tree_completeness, TreeNode
+        with open(merged_file) as _f:
+            _trees = _json.load(_f)
+        for stmt in ["IS", "BS", "BS_LE", "CF"]:
+            if stmt in _trees and isinstance(_trees[stmt], dict):
+                _trees[stmt] = TreeNode.from_dict(_trees[stmt])
+        _periods = _trees.get("complete_periods", [])
+        _all_errors = []
+        for stmt in ["IS", "BS", "BS_LE", "CF"]:
+            if _trees.get(stmt):
+                _all_errors.extend(verify_tree_completeness(_trees[stmt], _periods))
+        if _all_errors:
+            print(f"  FAIL: {len(_all_errors)} tree completeness gap(s) found:", file=sys.stderr)
+            for concept, period, gap in _all_errors:
+                print(f"    {concept[:50]:50s} {period} gap={gap:>10,.0f}", file=sys.stderr)
+            sys.exit(1)
+        else:
+            print(f"  Tree completeness: ALL PASS")
+
+        # Stage 3c: Cross-statement invariant checkpoint on merged file
+        run_command([sys.executable, "pymodel.py", "--trees", merged_file, "--checkpoint"])
+
+        # Stage 4: Write Google Sheet from merged tree
+        print(f"\n=== STAGE 4: Writing Google Sheet ===")
+        run_command([sys.executable, "sheet_builder.py", "--trees", merged_file,
                       "--company", company_name])
-        
+
         print(f"\n=== STAGE 5: Forecasting (Phase 4 - Coming Soon) ===")
         print(f"Forecasting logic to be implemented in Phase 4.")
     else:

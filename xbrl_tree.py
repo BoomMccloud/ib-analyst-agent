@@ -20,7 +20,7 @@ import re
 import sys
 from collections import defaultdict
 
-from parse_xbrl_facts import build_xbrl_facts_dict
+from parse_xbrl_facts import build_xbrl_facts_dict, build_segment_facts_dict
 from sec_utils import fetch_url
 
 
@@ -84,6 +84,93 @@ def fetch_pre_linkbase(html: str, base_url: str) -> str | None:
 
     return fetch_url(pre_href).decode('utf-8', errors='replace')
 
+
+def fetch_lab_linkbase(html: str, base_url: str) -> str | None:
+    """Find and fetch the label linkbase referenced by the filing."""
+    schema_pat = re.compile(r'schemaRef[^>]*href="([^"]+)"', re.IGNORECASE)
+    m = schema_pat.search(html)
+    if not m:
+        return None
+
+    schema_href = m.group(1)
+    if not schema_href.startswith('http'):
+        schema_href = base_url + schema_href
+
+    schema = fetch_url(schema_href).decode('utf-8', errors='replace')
+
+    lab_pat = re.compile(r'href="([^"]*_lab\.xml)"', re.IGNORECASE)
+    lab_m = lab_pat.search(schema)
+    if not lab_m:
+        return None
+
+    lab_href = lab_m.group(1)
+    if not lab_href.startswith('http'):
+        lab_href = base_url + lab_href
+
+    return fetch_url(lab_href).decode('utf-8', errors='replace')
+
+
+def parse_lab_linkbase(lab_xml: str) -> dict[str, dict[str, str]]:
+    """Parse label linkbase into {concept: {role_suffix: text}}.
+
+    Returns e.g. {"us-gaap_Revenue...": {"label": "Revenue from...", "terseLabel": "Net sales"}}
+    Concept keys use underscore separator (matching calc linkbase convention).
+    """
+    import xml.etree.ElementTree as ET
+    root = ET.fromstring(lab_xml)
+    ns = {
+        'link': 'http://www.xbrl.org/2003/linkbase',
+        'xlink': 'http://www.w3.org/1999/xlink',
+    }
+    labels = {}
+    for label_link in root.findall('.//link:labelLink', ns):
+        locs = {}
+        for loc in label_link.findall('link:loc', ns):
+            locs[loc.get('{http://www.w3.org/1999/xlink}label')] = \
+                loc.get('{http://www.w3.org/1999/xlink}href', '')
+        lab_texts = {}
+        for lab in label_link.findall('link:label', ns):
+            role = lab.get('{http://www.w3.org/1999/xlink}role', '')
+            role_suffix = role.rsplit('/', 1)[-1] if '/' in role else role
+            xlink_label = lab.get('{http://www.w3.org/1999/xlink}label')
+            if xlink_label not in lab_texts:
+                lab_texts[xlink_label] = {}
+            lab_texts[xlink_label][role_suffix] = lab.text or ''
+        for arc in label_link.findall('link:labelArc', ns):
+            from_label = arc.get('{http://www.w3.org/1999/xlink}from')
+            to_label = arc.get('{http://www.w3.org/1999/xlink}to')
+            href = locs.get(from_label, '')
+            texts = lab_texts.get(to_label, {})
+            if href and texts:
+                # Convert href to concept key: "schema.xsd#us-gaap_Assets" -> "us-gaap_Assets"
+                concept = href.split('#')[-1] if '#' in href else href
+                if concept not in labels:
+                    labels[concept] = {}
+                labels[concept].update(texts)
+    return labels
+
+
+def get_label(concept_or_member: str, lab_labels: dict, prefer_terse: bool = True) -> str:
+    """Get best label for a concept/member from the label linkbase.
+
+    For member names like 'us-gaap:ProductMember', converts to underscore form
+    and strips 'Member' suffix from the fallback.
+    """
+    # Normalize: colon form -> underscore form for lookup
+    key = concept_or_member.replace(':', '_', 1) if ':' in concept_or_member else concept_or_member
+    entry = lab_labels.get(key, {})
+    if prefer_terse and entry.get("terseLabel"):
+        return entry["terseLabel"]
+    if entry.get("label"):
+        return entry["label"]
+    # Fallback: clean the concept/member name
+    name = key.split('_', 1)[-1] if '_' in key else key
+    # Strip "Member" suffix
+    if name.endswith("Member"):
+        name = name[:-6]
+    # CamelCase to spaces
+    name = re.sub(r'([a-z])([A-Z])', r'\1 \2', name)
+    return name
 
 
 def parse_pre_linkbase(pre_xml: str) -> dict[str, dict[str, float]]:
@@ -534,9 +621,25 @@ def _tag_bs_positions(assets_tree: TreeNode | None, liab_eq_tree: TreeNode | Non
         for child in assets_tree.children:
             if child.children and not child.is_leaf:
                 child.role = "BS_TCA"
-                # Tag first flex item as BS_CASH (for cash link override later)
-                if child.children:
-                    child.children[0].role = "BS_CASH"
+                # Tag BS_CASH: prefer child whose concept matches CashAndCashEquivalent*
+                cash_node = None
+                for grandchild in child.children:
+                    # Strip namespace prefix (colon or underscore separator)
+                    bare = grandchild.concept
+                    if ':' in bare:
+                        bare = bare.split(':', 1)[1]
+                    elif '_' in bare:
+                        bare = bare.split('_', 1)[1]
+                    if bare.lower().startswith("cashandcashequivalent"):
+                        cash_node = grandchild
+                        break
+                # Fallback: first child (preserves old behavior when no cash concept)
+                if cash_node is None and child.children:
+                    cash_node = child.children[0]
+                    print(f"WARNING: No CashAndCashEquivalent* concept found in TCA children, "
+                          f"falling back to position 0 ({cash_node.concept})", file=sys.stderr)
+                if cash_node:
+                    cash_node.role = "BS_CASH"
                 found_tca = True
                 break
         if not found_tca:
@@ -594,45 +697,103 @@ def _tag_bs_positions(assets_tree: TreeNode | None, liab_eq_tree: TreeNode | Non
             print("WARNING: Could not identify BS_TL/BS_TE in L&E tree — "
                   "no non-zero branch children found", file=sys.stderr)
 
-def _find_leaf_by_keywords(tree: TreeNode, keywords: list[str]) -> TreeNode | None:
-    """Find a leaf node whose name contains all keywords (case-insensitive).
-    
-    Example: _find_leaf_by_keywords(is_tree, ["depreciation"]) finds
-    "Depreciation And Amortization" but not "Accumulated Depreciation" (which is on BS).
+def _find_by_keywords(tree: 'TreeNode', keywords: list[str],
+                      mode: str = "all", search: str = "dfs",
+                      leaf_only: bool = True, field: str = "name") -> 'TreeNode | None':
+    """Unified keyword search over a TreeNode tree.
+
+    Args:
+        tree: Root node to search.
+        keywords: Keywords to match (case-insensitive).
+        mode: "all" = node must contain ALL keywords; "any" = at least one.
+        search: "dfs" = depth-first; "bfs" = breadth-first (shallowest match).
+        leaf_only: If True, skip non-leaf nodes.
+        field: "name" = search node.name; "concept" = search node.concept.
     """
-    name_lower = tree.name.lower()
-    if tree.is_leaf and all(kw in name_lower for kw in keywords):
-        return tree
-    for child in tree.children:
-        result = _find_leaf_by_keywords(child, keywords)
-        if result:
-            return result
-    return None
+    match_fn = all if mode == "all" else any
 
+    def _matches(node):
+        if leaf_only and not node.is_leaf:
+            return False
+        text = getattr(node, field, "").lower()
+        return match_fn(kw in text for kw in keywords)
 
-def _find_by_keywords_bfs(tree: 'TreeNode', keywords: list[str]) -> 'TreeNode | None':
-    """BFS search for shallowest node whose concept contains any keyword."""
+    if search == "bfs":
+        from collections import deque
+        queue = deque([tree])
+        while queue:
+            node = queue.popleft()
+            if _matches(node):
+                return node
+            for child in node.children:
+                queue.append(child)
+        return None
+    else:  # dfs
+        if _matches(tree):
+            return tree
+        for child in tree.children:
+            result = _find_by_keywords(child, keywords, mode=mode, search=search,
+                                       leaf_only=leaf_only, field=field)
+            if result:
+                return result
+        return None
+
+def _tag_is_semantic(is_tree: 'TreeNode') -> None:
+    """Tag IS_REVENUE and IS_COGS by BFS keyword + value matching.
+
+    Strategy: find COGS first (unambiguous keywords), then find Revenue
+    as the largest-value sibling or near-sibling that contains revenue/sales
+    keywords but NOT cost keywords. Falls back to value-based detection:
+    the largest positive-valued node at the same depth as COGS.
+    """
+    if not is_tree:
+        return
+    cogs_keywords = ["costofgoods", "costofrevenue", "costofsales"]
+    rev_keywords = ["revenue", "sales"]
+
+    # Tag COGS first (unambiguous)
+    cogs_node = _find_by_keywords(is_tree, cogs_keywords, mode="any", search="bfs", leaf_only=False, field="concept")
+    if cogs_node:
+        cogs_node.role = "IS_COGS"
+
+    # Find Revenue: exclude nodes whose concept also matches COGS keywords
     from collections import deque
-    queue = deque([tree])
+    queue = deque([is_tree])
     while queue:
         node = queue.popleft()
         concept_lower = node.concept.lower()
-        if any(kw in concept_lower for kw in keywords):
-            return node
+        is_rev = any(kw in concept_lower for kw in rev_keywords)
+        is_cost = any(kw in concept_lower for kw in cogs_keywords)
+        if is_rev and not is_cost:
+            node.role = "IS_REVENUE"
+            return
         for child in node.children:
             queue.append(child)
-    return None
 
-def _tag_is_semantic(is_tree: 'TreeNode') -> None:
-    """Tag IS_REVENUE and IS_COGS by BFS keyword matching. Gracefully skips missing roles."""
-    if not is_tree:
-        return
-    rev_node = _find_by_keywords_bfs(is_tree, ["revenue", "sales"])
-    if rev_node:
-        rev_node.role = "IS_REVENUE"
-    cogs_node = _find_by_keywords_bfs(is_tree, ["costofgoods", "costofrevenue", "costofsales"])
+    # Fallback: if COGS found, Revenue is likely its sibling with the largest values
     if cogs_node:
-        cogs_node.role = "IS_COGS"
+        parent = _find_parent(is_tree, cogs_node)
+        if parent:
+            best, best_avg = None, 0
+            for child in parent.children:
+                if child is cogs_node or child.role:
+                    continue
+                avg = sum(abs(v) for v in child.values.values()) / max(len(child.values), 1)
+                if avg > best_avg:
+                    best, best_avg = child, avg
+            if best:
+                best.role = "IS_REVENUE"
+
+
+def _find_parent(tree: TreeNode, target: TreeNode) -> TreeNode | None:
+    """Find the parent of target node in the tree."""
+    for child in tree.children:
+        if child is target:
+            return tree
+        result = _find_parent(child, target)
+        if result:
+            return result
+    return None
 
 
 def _supplement_orphan_facts(parent: 'TreeNode', orphan_facts: dict, used_tags: set) -> None:
@@ -757,7 +918,7 @@ def merge_calc_pres(tree: 'TreeNode', pres_index: dict[str, float],
 
     # --- Insert "Other" node if there's a gap ---
     if has_nonzero_residual:
-        other = TreeNode("__OTHER__", weight=1.0)
+        other = TreeNode(f"__OTHER__{tree.concept}", weight=1.0)
         other.name = "Other"
         other.values = residual_values
         other.is_leaf = True
@@ -831,9 +992,9 @@ def _tag_da_sbc_nodes(is_tree: TreeNode | None, cf_tree: TreeNode | None):
     
     # --- D&A ---
     # Try "depreciation" first, fall back to "amortization"
-    is_da = _find_leaf_by_keywords(is_tree, ["depreciation"])
+    is_da = _find_by_keywords(is_tree, ["depreciation"], mode="all", search="dfs", leaf_only=True, field="name")
     if not is_da:
-        is_da = _find_leaf_by_keywords(is_tree, ["amortization"])
+        is_da = _find_by_keywords(is_tree, ["amortization"], mode="all", search="dfs", leaf_only=True, field="name")
     
     if is_da:
         is_da.role = "IS_DA"
@@ -847,9 +1008,9 @@ def _tag_da_sbc_nodes(is_tree: TreeNode | None, cf_tree: TreeNode | None):
     
     # --- SBC ---
     # Try "stock" + "compensation" first, fall back to "share" + "compensation"
-    is_sbc = _find_leaf_by_keywords(is_tree, ["stock", "compensation"])
+    is_sbc = _find_by_keywords(is_tree, ["stock", "compensation"], mode="all", search="dfs", leaf_only=True, field="name")
     if not is_sbc:
-        is_sbc = _find_leaf_by_keywords(is_tree, ["share", "compensation"])
+        is_sbc = _find_by_keywords(is_tree, ["share", "compensation"], mode="all", search="dfs", leaf_only=True, field="name")
     
     if is_sbc:
         is_sbc.role = "IS_SBC"
@@ -1081,6 +1242,350 @@ def _override_bs_cash(assets_tree: TreeNode | None, cf_endc_values: dict | None)
         if tca_node and abs(delta) > 0.5:
             tca_node.values[period] = tca_node.values.get(period, 0) + delta
 
+# ---------------------------------------------------------------------------
+# Segment Decomposition
+# ---------------------------------------------------------------------------
+
+# Dimension priority order for IS segment breakdowns
+_SEGMENT_DIM_PRIORITY = [
+    "srt:ProductOrServiceAxis",
+    "us-gaap:StatementBusinessSegmentsAxis",
+]
+
+
+def _find_best_decomposition(members_data: dict, total_values: dict,
+                              periods: list[str]) -> list[str] | None:
+    """Find the largest subset of members that sums to total across all periods.
+
+    Returns list of member keys, or None if no valid decomposition found.
+    """
+    from itertools import combinations
+
+    member_names = list(members_data.keys())
+    if not member_names or not total_values:
+        return None
+
+    def subset_sums_to_total(subset):
+        for p in periods:
+            t = total_values.get(p)
+            if t is None:
+                continue
+            s = sum(members_data[m].get(p, 0) for m in subset)
+            if abs(s - t) > 0.5:
+                return False
+        return True
+
+    # Try from largest subset down to size 2
+    for size in range(len(member_names), 1, -1):
+        for subset in combinations(member_names, size):
+            if subset_sums_to_total(subset):
+                return list(subset)
+    return None
+
+
+def _detect_segments_for_node(node: TreeNode, seg_facts: dict,
+                               periods: list[str]) -> tuple[list[str], dict] | None:
+    """Detect the best segment decomposition for a leaf tree node.
+
+    Tries dimensions in priority order. For each, finds the largest subset
+    of members that sums to the node's total values.
+
+    Returns (leaf_members, {member: {period: value}}) or None.
+    """
+    tag = node.tag
+    tag_segs = seg_facts.get(tag, {})
+    if not tag_segs:
+        return None
+
+    for dim in _SEGMENT_DIM_PRIORITY:
+        members = tag_segs.get(dim)
+        if not members:
+            continue
+        leaves = _find_best_decomposition(members, node.values, periods)
+        if leaves:
+            leaf_data = {m: members[m] for m in leaves}
+            return leaves, leaf_data
+
+    return None
+
+
+def _attach_segment_children(node: TreeNode, leaf_members: list[str],
+                              member_values: dict, lab_labels: dict,
+                              periods: list[str]):
+    """Convert a leaf node into a parent with segment children."""
+    period_set = set(periods)
+    for member in leaf_members:
+        child = TreeNode(member.replace(':', '_', 1), weight=1.0)
+        child.name = get_label(member, lab_labels)
+        # Filter to complete periods only
+        child.values = {p: v for p, v in member_values[member].items() if p in period_set}
+        child.is_leaf = True
+        child.role = None
+        node.add_child(child)
+    # Node is now a parent — is_leaf was set to False by add_child
+
+
+def _attach_is_segments(trees: dict, seg_facts: dict, lab_labels: dict):
+    """Attach segment breakdowns to IS Revenue and COGS nodes.
+
+    For each node with role IS_REVENUE or IS_COGS:
+    1. Try dimensions in priority order
+    2. Verify leaves sum to total
+    3. Prefer the dimension that works for BOTH Rev and COGS (shared margins)
+    4. Attach as children
+    """
+    is_tree = trees.get("IS")
+    if not is_tree:
+        return
+
+    periods = trees.get("complete_periods", [])
+    if not periods:
+        return
+
+    # Find Rev and COGS nodes — if the tagged node has calc children,
+    # try to attach segments to its leaf children instead
+    def _collect_segment_targets(node):
+        if not node:
+            return []
+        if node.is_leaf:
+            return [node]
+        # Node has calc children — collect leaf descendants
+        leaves = []
+        for child in node.children:
+            if child.is_leaf:
+                leaves.append(child)
+        return leaves
+
+    rev_node = find_node_by_role(is_tree, "IS_REVENUE")
+    cogs_node = find_node_by_role(is_tree, "IS_COGS")
+    rev_targets = _collect_segment_targets(rev_node)
+    cogs_targets = _collect_segment_targets(cogs_node)
+    targets = rev_targets + cogs_targets
+
+    if not targets:
+        return
+
+    # Strategy: find the best shared dimension first
+    # Check which dimensions work for both a rev leaf and a cogs leaf
+    shared_done = set()
+    if rev_targets and cogs_targets:
+        for dim in _SEGMENT_DIM_PRIORITY:
+            for rt in rev_targets:
+                for ct in cogs_targets:
+                    rev_members = seg_facts.get(rt.tag, {}).get(dim)
+                    cogs_members = seg_facts.get(ct.tag, {}).get(dim)
+                    if not rev_members or not cogs_members:
+                        continue
+                    rev_leaves = _find_best_decomposition(rev_members, rt.values, periods)
+                    cogs_leaves = _find_best_decomposition(cogs_members, ct.values, periods)
+                    if rev_leaves and cogs_leaves:
+                        print(f"  Segments: shared {dim} — "
+                              f"Revenue ({len(rev_leaves)} segments), "
+                              f"COGS ({len(cogs_leaves)} segments)", file=sys.stderr)
+                        _attach_segment_children(rt, rev_leaves,
+                                                 {m: rev_members[m] for m in rev_leaves}, lab_labels, periods)
+                        _attach_segment_children(ct, cogs_leaves,
+                                                 {m: cogs_members[m] for m in cogs_leaves}, lab_labels, periods)
+                        shared_done.update([id(rt), id(ct)])
+            if shared_done:
+                break  # found a shared dimension, stop
+    # Remove already-handled nodes from targets
+    targets = [t for t in targets if id(t) not in shared_done]
+
+    # No shared dimension — decompose each independently
+    for node in targets:
+        result = _detect_segments_for_node(node, seg_facts, periods)
+        if result:
+            leaf_members, member_values = result
+            role_label = "Revenue" if node.role == "IS_REVENUE" else "COGS"
+            print(f"  Segments: {role_label} → {len(leaf_members)} segments",
+                  file=sys.stderr)
+            _attach_segment_children(node, leaf_members, member_values, lab_labels, periods)
+
+
+def _build_revenue_segment_tree(trees: dict, seg_facts: dict,
+                                 multi_seg_facts: dict,
+                                 lab_labels: dict) -> TreeNode | None:
+    """Build a hierarchical revenue segment tree for forecasting.
+
+    Architecture:
+    1. Outer level: BusinessSegmentsAxis (1D) — verified sum ≈ total
+    2. Inner level: ProductOrServiceAxis × BusinessSegmentsAxis (2D)
+       filtered to each outer segment — verified sum = segment total
+    3. Residual "Other/Eliminations" node if outer sum ≠ total
+
+    Returns a TreeNode tree, or None if no useful segments found.
+    """
+    is_tree = trees.get("IS")
+    if not is_tree:
+        return None
+    periods = trees.get("complete_periods", [])
+    if not periods:
+        return None
+    period_set = set(periods)
+
+    # Find the revenue tag(s) — collect from IS_REVENUE node and its children
+    rev_node = find_node_by_role(is_tree, "IS_REVENUE")
+    if not rev_node:
+        return None
+
+    # Collect candidate revenue tags — from IS tree + common GAAP revenue tags
+    rev_tags = set()
+    def _collect_tags(node):
+        rev_tags.add(node.tag)
+        for child in node.children:
+            _collect_tags(child)
+    _collect_tags(rev_node)
+    # Also check common revenue tags that may have segment data
+    # even if the IS tree uses a different aggregation tag
+    rev_tags.update([
+        "us-gaap:Revenues",
+        "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax",
+        "us-gaap:SalesRevenueNet",
+    ])
+
+    # Get total revenue values from the IS tree
+    total_values = {p: v for p, v in rev_node.values.items() if p in period_set}
+    if not total_values:
+        return None
+
+    # --- Try BusinessSegmentsAxis as outer level ---
+    biz_dim = "us-gaap:StatementBusinessSegmentsAxis"
+    prod_dim = "srt:ProductOrServiceAxis"
+
+    # Find 1D business segments for any revenue tag
+    biz_members = None
+    biz_tag = None
+    for tag in rev_tags:
+        tag_segs = seg_facts.get(tag, {})
+        members = tag_segs.get(biz_dim)
+        if not members:
+            continue
+        # Check if these segments approximately sum to total (allow small hedging gap)
+        member_sum = {}
+        for m_vals in members.values():
+            for p, v in m_vals.items():
+                if p in period_set:
+                    member_sum[p] = member_sum.get(p, 0) + v
+        # Allow up to 1% gap (hedging/eliminations)
+        all_close = all(
+            abs(member_sum.get(p, 0) - total_values.get(p, 0)) / max(abs(total_values[p]), 1) < 0.01
+            for p in periods if total_values.get(p, 0) != 0
+        )
+        if all_close and len(members) >= 2:
+            biz_members = members
+            biz_tag = tag
+            break
+
+    if not biz_members:
+        # No business segments — try ProductOrServiceAxis as outer level
+        prod_members = None
+        for tag in rev_tags:
+            tag_segs = seg_facts.get(tag, {})
+            members = tag_segs.get(prod_dim)
+            if not members or len(members) < 2:
+                continue
+            leaves = _find_best_decomposition(members, total_values, periods)
+            if leaves and len(leaves) >= 2:
+                prod_members = {m: members[m] for m in leaves}
+                break
+
+        if not prod_members:
+            return None
+
+        # Build flat tree from ProductOrServiceAxis leaves
+        root = TreeNode("_REVENUE_SEGMENTS", weight=1.0)
+        root.name = "Revenue Segments"
+        root.values = dict(total_values)
+        root.is_leaf = False
+        for member, vals in sorted(prod_members.items(),
+                                    key=lambda x: -sum(abs(v) for v in x[1].values())):
+            child = TreeNode(member.replace(':', '_', 1), weight=1.0)
+            child.name = get_label(member, lab_labels)
+            child.values = {p: v for p, v in vals.items() if p in period_set}
+            child.is_leaf = True
+            root.add_child(child)
+        print(f"  Revenue segments: {len(root.children)} products "
+              f"(ProductOrServiceAxis)", file=sys.stderr)
+        return root
+
+    # Build the outer tree: Revenue → segments
+    root = TreeNode("_REVENUE_SEGMENTS", weight=1.0)
+    root.name = "Revenue Segments"
+    root.values = dict(total_values)
+    root.is_leaf = False
+
+    # Find 2D product×segment facts
+    prod_biz_dims = tuple(sorted([prod_dim, biz_dim]))
+    multi_2d = {}
+    for tag in rev_tags:
+        tag_multi = multi_seg_facts.get(tag, {})
+        if prod_biz_dims in tag_multi:
+            multi_2d = tag_multi[prod_biz_dims]
+            break
+
+    # Determine dimension ordering in the tuple key
+    dim_order = list(prod_biz_dims)
+    prod_idx = dim_order.index(prod_dim)
+    biz_idx = dim_order.index(biz_dim)
+
+    seg_sum = {p: 0.0 for p in periods}
+    for seg_member, seg_vals in sorted(biz_members.items(),
+                                        key=lambda x: -sum(abs(v) for v in x[1].values())):
+        seg_node = TreeNode(seg_member.replace(':', '_', 1), weight=1.0)
+        seg_node.name = get_label(seg_member, lab_labels)
+        seg_node.values = {p: v for p, v in seg_vals.items() if p in period_set}
+
+        for p in periods:
+            seg_sum[p] += seg_node.values.get(p, 0)
+
+        # Find 2D product members within this segment
+        inner_members = {}
+        for member_tuple, vals in multi_2d.items():
+            if member_tuple[biz_idx] == seg_member:
+                prod_member = member_tuple[prod_idx]
+                inner_members[prod_member] = {p: v for p, v in vals.items() if p in period_set}
+
+        if inner_members:
+            # Apply decomposition: find leaves that sum to segment total
+            leaves = _find_best_decomposition(inner_members, seg_node.values, periods)
+            if leaves:
+                for leaf_member in leaves:
+                    child = TreeNode(leaf_member.replace(':', '_', 1), weight=1.0)
+                    child.name = get_label(leaf_member, lab_labels)
+                    child.values = dict(inner_members[leaf_member])
+                    child.is_leaf = True
+                    seg_node.add_child(child)
+                print(f"  Revenue segments: {seg_node.name} → "
+                      f"{len(leaves)} products", file=sys.stderr)
+            else:
+                seg_node.is_leaf = True
+        else:
+            seg_node.is_leaf = True
+
+        root.add_child(seg_node)
+
+    # Add residual node if segments don't exactly sum to total
+    for p in periods:
+        gap = total_values.get(p, 0) - seg_sum.get(p, 0)
+        if abs(gap) > 0.5:
+            elim_node = TreeNode("_ELIMINATIONS", weight=1.0)
+            elim_node.name = "Hedging & Eliminations"
+            elim_node.values = {
+                p: total_values.get(p, 0) - seg_sum.get(p, 0)
+                for p in periods
+            }
+            elim_node.is_leaf = True
+            root.add_child(elim_node)
+            print(f"  Revenue segments: added Hedging & Eliminations", file=sys.stderr)
+            break
+
+    # Only return if we have meaningful segments (2+ children)
+    if len(root.children) >= 2:
+        return root
+    return None
+
+
 def _filter_to_complete_periods(trees: dict):
     """Remove values for periods that aren't present in ALL statements."""
     is_periods = set(trees["IS"].values.keys()) if trees.get("IS") else set()
@@ -1155,7 +1660,7 @@ def build_statement_trees(html: str, base_url: str) -> dict:
               "facts": dict, "periods": list}
     """
     # Parse iXBRL facts
-    facts = build_xbrl_facts_dict(html)
+    facts, unit_label = build_xbrl_facts_dict(html)
 
     # Fetch and parse calc linkbase
     cal_xml = fetch_cal_linkbase(html, base_url)
@@ -1166,7 +1671,7 @@ def build_statement_trees(html: str, base_url: str) -> dict:
     all_trees = parse_calc_linkbase(cal_xml)
     stmt_roles = classify_roles(list(all_trees.keys()))
 
-    result = {"facts": facts}
+    result = {"facts": facts, "unit_label": unit_label}
     for stmt, role in stmt_roles.items():
         calc_children = all_trees[role]
         roots = find_roots(calc_children)
@@ -1214,6 +1719,19 @@ def build_statement_trees(html: str, base_url: str) -> dict:
 
     # Reconcile: sort, tag positions + apply cross-statement overrides
     reconcile_trees(result, pres_index)
+
+    # --- Segment decomposition for Revenue/COGS ---
+    seg_facts, multi_seg_facts = build_segment_facts_dict(html)
+    lab_xml = fetch_lab_linkbase(html, base_url)
+    lab_labels = parse_lab_linkbase(lab_xml) if lab_xml else {}
+    result["lab_labels"] = lab_labels
+    _attach_is_segments(result, seg_facts, lab_labels)
+
+    # --- Build hierarchical revenue segment tree ---
+    rev_segments = _build_revenue_segment_tree(
+        result, seg_facts, multi_seg_facts, lab_labels)
+    if rev_segments:
+        result["revenue_segments"] = rev_segments
 
     return result
 
@@ -1269,7 +1787,7 @@ def main():
 
     if args.output:
         out = {}
-        for key in ["complete_periods", "periods", "cf_endc_values"]:
+        for key in ["complete_periods", "periods", "cf_endc_values", "unit_label"]:
             if key in result:
                 out[key] = result[key]
         out["facts"] = result.get("facts", {})
@@ -1278,6 +1796,9 @@ def main():
             if tree:
                 out[stmt] = tree.to_dict()
                 out[f"{stmt}_groupable"] = find_groupable_siblings(tree)
+        rev_seg = result.get("revenue_segments")
+        if rev_seg:
+            out["revenue_segments"] = rev_seg.to_dict()
         with open(args.output, "w") as f:
             json.dump(out, f, indent=2)
         print(f"\nSaved to {args.output}", file=sys.stderr)

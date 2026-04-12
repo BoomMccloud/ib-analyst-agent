@@ -111,7 +111,7 @@ class TestTwoPassRendering:
         """Leaf rows must contain numbers (int/float), not formulas."""
         tree = _build_simple_tree()
         role_map = {}
-        rows = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
+        rows, _ = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
                                    sheet_name="IS")
         # Rows 1 and 2 are children (leaves)
         for leaf_row in rows[1:]:  # skip parent row
@@ -123,7 +123,7 @@ class TestTwoPassRendering:
         """Parent rows must contain formula strings starting with '='."""
         tree = _build_simple_tree()
         role_map = {}
-        rows = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
+        rows, _ = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
                                    sheet_name="IS")
         parent_row = rows[0]  # first row = parent
         for cell in parent_row[4:]:  # data columns
@@ -134,7 +134,7 @@ class TestTwoPassRendering:
         """Total rows = total nodes in tree (1 parent + 2 leaves = 3)."""
         tree = _build_simple_tree()
         role_map = {}
-        rows = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
+        rows, _ = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
                                    sheet_name="IS")
         assert len(rows) == 3
     
@@ -142,7 +142,7 @@ class TestTwoPassRendering:
         """Rows appear parent-first, then children depth-first."""
         tree = _build_simple_tree()
         role_map = {}
-        rows = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
+        rows, _ = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
                                    sheet_name="IS")
         labels = [row[2].strip() for row in rows]
         assert labels[0] == "Revenue"
@@ -153,7 +153,7 @@ class TestTwoPassRendering:
         """Every row starts with ["", "", label, ""]."""
         tree = _build_simple_tree()
         role_map = {}
-        rows = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
+        rows, _ = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
                                    sheet_name="IS")
         for row in rows:
             assert row[0] == ""
@@ -165,7 +165,7 @@ class TestTwoPassRendering:
         """Depth-0 node has no indent, depth-1 nodes have 2-space indent."""
         tree = _build_simple_tree()
         role_map = {}
-        rows = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
+        rows, _ = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
                                    sheet_name="IS")
         assert not rows[0][2].startswith(" "), "Root should have no indent"
         assert rows[1][2].startswith("  "), "Child should have 2-space indent"
@@ -176,7 +176,7 @@ class TestTwoPassRendering:
         tree = _build_simple_tree()
         tree.role = "IS_REVENUE"
         role_map = {}
-        rows = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
+        rows, _ = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
                                    sheet_name="IS")
         assert "IS_REVENUE" in role_map
         assert role_map["IS_REVENUE"] == ("IS", 4)
@@ -185,7 +185,7 @@ class TestTwoPassRendering:
         """Parent formula should reference its children's actual row numbers."""
         tree = _build_simple_tree()
         role_map = {}
-        rows = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
+        rows, _ = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
                                    sheet_name="IS")
         # Parent is row 4, children are rows 5 and 6
         # Children are contiguous +1, so formula should be =SUM(E5:E6)
@@ -196,7 +196,7 @@ class TestTwoPassRendering:
         """Data values/formulas begin at index 4 (column E)."""
         tree = _build_simple_tree()
         role_map = {}
-        rows = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
+        rows, _ = _render_sheet_body(tree, PERIODS, start_row=4, global_role_map=role_map,
                                    sheet_name="IS")
         assert len(rows[0]) == 4 + len(PERIODS)
 

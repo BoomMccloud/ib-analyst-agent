@@ -103,9 +103,11 @@ Checks 5 cross-statement invariants:
 |---|-----------|----------------|
 | 1 | BS_TA == BS_TL + BS_TE | Balance sheet doesn't balance |
 | 2 | CF_ENDC == BS_CASH | Cash flow ending cash != balance sheet cash |
-| 3 | INC_NET (IS) == INC_NET (CF) | Net income mismatch across statements |
-| 4 | IS_DA == CF_DA | D&A mismatch (when both are tagged) |
-| 5 | IS_SBC == CF_SBC | SBC mismatch (when both are tagged) |
+| 3 | CF_BEGC[t] == BS_CASH[t-1] | Beginning cash != prior period ending cash |
+| 4 | INC_NET (IS) == INC_NET (CF) | Net income mismatch across statements |
+| 5 | Segment Sums | Child segments must sum exactly to parent |
+| 6 | IS_DA == CF_DA | D&A mismatch (using role tags) |
+| 7 | IS_SBC == CF_SBC | SBC mismatch (using role tags) |
 
 These are **real checks** — they compare independently computed values that must agree. They cannot be enforced by construction because they cross statement boundaries.
 
@@ -155,7 +157,7 @@ The original spec proposed 13 invariants split into "tautological" (enforced by 
 | BEGC + NETCH == ENDC | Sheet formula: Ending Cash `=Beginning Cash + Net Change` |
 | Revenue - COGS == GP | Tree: GP node's children are Revenue(+1) and COGS(-1) |
 
-The 5 real cross-statement checks remain in `verify_model()`.
+The 7 real cross-statement checks remain in `verify_model()`.
 
 ### Declarative Cross-Statement Checks
 
@@ -243,7 +245,7 @@ python run_pipeline.py AAPL
 
 ### Phase 1: XBRL Tree Engine (COMPLETE)
 
-Deterministic extraction from iXBRL + calculation linkbase. Position-based tagging. 5 cross-statement invariants. Tested on 10 companies.
+Deterministic extraction from iXBRL + calculation linkbase. Position-based tagging. 7 cross-statement invariants. Tested on 10 companies.
 
 ### Phase 1b: Dual Linkbase + Three-Layer Merge (COMPLETE)
 
@@ -267,6 +269,12 @@ Remaining work:
 - `pymodel.py` applies drivers to compute forward periods
 - `sheet_builder.py` renders forecast columns with driver formulas
 - Inline assertions after each forecast step for immediate failure localization
+
+### Phase 5: XBRL Calculation 1.1 Support (FUTURE)
+
+Support for the new XBRL calculation linkbase format used by MSFT and other companies filing with the updated spec.
+.
+ization
 
 ### Phase 5: XBRL Calculation 1.1 Support (FUTURE)
 

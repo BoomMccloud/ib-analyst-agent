@@ -1,0 +1,102 @@
+{
+  "NFLX": {
+    "status": "FAIL",
+    "stages": {
+      "fetch": "FAIL"
+    },
+    "warnings": [],
+    "errors": [
+      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
+    ]
+  },
+  "AAPL": {
+    "status": "FAIL",
+    "stages": {
+      "fetch": "FAIL"
+    },
+    "warnings": [],
+    "errors": [
+      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
+    ]
+  },
+  "MSFT": {
+    "status": "FAIL",
+    "stages": {
+      "fetch": "FAIL"
+    },
+    "warnings": [],
+    "errors": [
+      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
+    ]
+  },
+  "AMZN": {
+    "status": "FAIL",
+    "stages": {
+      "fetch": "FAIL"
+    },
+    "warnings": [],
+    "errors": [
+      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
+    ]
+  },
+  "GOOG": {
+    "status": "FAIL",
+    "stages": {
+      "fetch": "FAIL"
+    },
+    "warnings": [],
+    "errors": [
+      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
+    ]
+  },
+  "META": {
+    "status": "FAIL",
+    "stages": {
+      "fetch": "FAIL"
+    },
+    "warnings": [],
+    "errors": [
+      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
+    ]
+  },
+  "TSLA": {
+    "status": "FAIL",
+    "stages": {
+      "fetch": "FAIL"
+    },
+    "warnings": [],
+    "errors": [
+      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
+    ]
+  },
+  "JPM": {
+    "status": "FAIL",
+    "stages": {
+      "fetch": "FAIL"
+    },
+    "warnings": [],
+    "errors": [
+      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
+    ]
+  },
+  "BRK-B": {
+    "status": "FAIL",
+    "stages": {
+      "fetch": "FAIL"
+    },
+    "warnings": [],
+    "errors": [
+      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
+    ]
+  },
+  "PFE": {
+    "status": "FAIL",
+    "stages": {
+      "fetch": "FAIL"
+    },
+    "warnings": [],
+    "errors": [
+      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
+    ]
+  }
+}

@@ -1,0 +1,2828 @@
+{
+  "complete_periods": [
+    "2020-12-31",
+    "2021-12-31"
+  ],
+  "periods": [
+    "2018-12-31",
+    "2019-12-31",
+    "2020-12-31",
+    "2021-06-30",
+    "2021-12-31",
+    "2022-01-26"
+  ],
+  "cf_endc_values": {
+    "2018-12-31": 32173.0,
+    "2019-12-31": 36410.0,
+    "2020-12-31": 42377.0,
+    "2021-12-31": 36477.0
+  },
+  "unit_label": "$m",
+  "facts": {
+    "amzn:EmployeeServiceShareBasedCompensationNonvestedAwardsCompensationCostExpectedToBeExpensedInNextTwelveMonthsPercentage": {
+      "2021-12-31": 50.0
+    },
+    "dei:EntityPublicFloat": {
+      "2021-06-30": 1507362696975.0
+    },
+    "dei:EntityCommonStockSharesOutstanding": {
+      "2022-01-26": 508844410.0
+    },
+    "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents": {
+      "2018-12-31": 32173.0,
+      "2019-12-31": 36410.0,
+      "2020-12-31": 42377.0,
+      "2021-12-31": 36477.0
+    },
+    "us-gaap:NetIncomeLoss": {
+      "2019-12-31": 11588.0,
+      "2020-12-31": 21331.0,
+      "2021-12-31": 33364.0
+    },
+    "us-gaap:DepreciationDepletionAndAmortization": {
+      "2019-12-31": 21789.0,
+      "2020-12-31": 25251.0,
+      "2021-12-31": 34296.0
+    },
+    "us-gaap:ShareBasedCompensation": {
+      "2019-12-31": 6864.0,
+      "2020-12-31": 9208.0,
+      "2021-12-31": 12757.0
+    },
+    "us-gaap:OtherOperatingActivitiesCashFlowStatement": {
+      "2019-12-31": 164.0,
+      "2020-12-31": -71.0,
+      "2021-12-31": 137.0
+    },
+    "us-gaap:OtherNoncashIncomeExpense": {
+      "2019-12-31": 249.0,
+      "2020-12-31": 2582.0,
+      "2021-12-31": 14306.0
+    },
+    "us-gaap:DeferredIncomeTaxExpenseBenefit": {
+      "2019-12-31": 796.0,
+      "2020-12-31": -554.0,
+      "2021-12-31": -310.0
+    },
+    "us-gaap:IncreaseDecreaseInInventories": {
+      "2019-12-31": 3278.0,
+      "2020-12-31": 2849.0,
+      "2021-12-31": 9487.0
+    },
+    "us-gaap:IncreaseDecreaseInAccountsReceivableAndOtherOperatingAssets": {
+      "2019-12-31": 7681.0,
+      "2020-12-31": 8169.0,
+      "2021-12-31": 18163.0
+    },
+    "us-gaap:IncreaseDecreaseInAccountsPayable": {
+      "2019-12-31": 8193.0,
+      "2020-12-31": 17480.0,
+      "2021-12-31": 3602.0
+    },
+    "us-gaap:IncreaseDecreaseInAccruedLiabilitiesAndOtherOperatingLiabilities": {
+      "2019-12-31": -1383.0,
+      "2020-12-31": 5754.0,
+      "2021-12-31": 2123.0
+    },
+    "us-gaap:IncreaseDecreaseInContractWithCustomerLiability": {
+      "2019-12-31": 1711.0,
+      "2020-12-31": 1265.0,
+      "2021-12-31": 2314.0
+    },
+    "us-gaap:NetCashProvidedByUsedInOperatingActivities": {
+      "2019-12-31": 38514.0,
+      "2020-12-31": 66064.0,
+      "2021-12-31": 46327.0
+    },
+    "us-gaap:PaymentsToAcquireProductiveAssets": {
+      "2019-12-31": 16861.0,
+      "2020-12-31": 40140.0,
+      "2021-12-31": 61053.0
+    },
+    "amzn:ProceedsFromPropertyPlantAndEquipmentSalesAndIncentives": {
+      "2019-12-31": 4172.0,
+      "2020-12-31": 5096.0,
+      "2021-12-31": 5657.0
+    },
+    "amzn:PaymentsToAcquireBusinessesNetOfCashAcquiredAndOther": {
+      "2019-12-31": 2461.0,
+      "2020-12-31": 2325.0,
+      "2021-12-31": 1985.0
+    },
+    "us-gaap:ProceedsFromSaleAndMaturityOfMarketableSecurities": {
+      "2019-12-31": 22681.0,
+      "2020-12-31": 50237.0,
+      "2021-12-31": 59384.0
+    },
+    "us-gaap:PaymentsToAcquireMarketableSecurities": {
+      "2019-12-31": 31812.0,
+      "2020-12-31": 72479.0,
+      "2021-12-31": 60157.0
+    },
+    "us-gaap:NetCashProvidedByUsedInInvestingActivities": {
+      "2019-12-31": -24281.0,
+      "2020-12-31": -59611.0,
+      "2021-12-31": -58154.0
+    },
+    "amzn:ProceedsFromShortTermDebtAndOtherFinancingActivities": {
+      "2019-12-31": 1402.0,
+      "2020-12-31": 6796.0,
+      "2021-12-31": 7956.0
+    },
+    "amzn:RepaymentsOfShortTermDebtAndOtherFinancingActivities": {
+      "2019-12-31": 1518.0,
+      "2020-12-31": 6177.0,
+      "2021-12-31": 7753.0
+    },
+    "us-gaap:ProceedsFromIssuanceOfLongTermDebt": {
+      "2019-12-31": 871.0,
+      "2020-12-31": 10525.0,
+      "2021-12-31": 19003.0
+    },
+    "us-gaap:RepaymentsOfLongTermDebt": {
+      "2019-12-31": 1166.0,
+      "2020-12-31": 1553.0,
+      "2021-12-31": 1590.0
+    },
+    "us-gaap:FinanceLeasePrincipalPayments": {
+      "2019-12-31": 9628.0,
+      "2020-12-31": 10642.0,
+      "2021-12-31": 11163.0
+    },
+    "amzn:RepaymentsOfLongTermFinancingObligations": {
+      "2019-12-31": 27.0,
+      "2020-12-31": 53.0,
+      "2021-12-31": 162.0
+    },
+    "us-gaap:NetCashProvidedByUsedInFinancingActivities": {
+      "2019-12-31": -10066.0,
+      "2020-12-31": -1104.0,
+      "2021-12-31": 6291.0
+    },
+    "us-gaap:EffectOfExchangeRateOnCashAndCashEquivalents": {
+      "2019-12-31": 70.0,
+      "2020-12-31": 618.0,
+      "2021-12-31": -364.0
+    },
+    "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect": {
+      "2019-12-31": 4237.0,
+      "2020-12-31": 5967.0,
+      "2021-12-31": -5900.0
+    },
+    "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax": {
+      "2019-12-31": 280522.0,
+      "2020-12-31": 386064.0,
+      "2021-12-31": 469822.0
+    },
+    "us-gaap:CostOfGoodsAndServicesSold": {
+      "2019-12-31": 165536.0,
+      "2020-12-31": 233307.0,
+      "2021-12-31": 272344.0
+    },
+    "amzn:FulfillmentExpense": {
+      "2019-12-31": 40232.0,
+      "2020-12-31": 58517.0,
+      "2021-12-31": 75111.0
+    },
+    "amzn:TechnologyAndContentExpense": {
+      "2019-12-31": 35931.0,
+      "2020-12-31": 42740.0,
+      "2021-12-31": 56052.0
+    },
+    "us-gaap:MarketingExpense": {
+      "2019-12-31": 18878.0,
+      "2020-12-31": 22008.0,
+      "2021-12-31": 32551.0
+    },
+    "us-gaap:GeneralAndAdministrativeExpense": {
+      "2019-12-31": 5203.0,
+      "2020-12-31": 6668.0,
+      "2021-12-31": 8823.0
+    },
+    "us-gaap:OtherOperatingIncomeExpenseNet": {
+      "2019-12-31": -201.0,
+      "2020-12-31": 75.0,
+      "2021-12-31": -62.0
+    },
+    "us-gaap:CostsAndExpenses": {
+      "2019-12-31": 265981.0,
+      "2020-12-31": 363165.0,
+      "2021-12-31": 444943.0
+    },
+    "us-gaap:OperatingIncomeLoss": {
+      "2019-12-31": 14541.0,
+      "2020-12-31": 22899.0,
+      "2021-12-31": 24879.0
+    },
+    "us-gaap:InvestmentIncomeInterest": {
+      "2019-12-31": 832.0,
+      "2020-12-31": 555.0,
+      "2021-12-31": 448.0
+    },
+    "us-gaap:InterestExpense": {
+      "2019-12-31": 1600.0,
+      "2020-12-31": 1647.0,
+      "2021-12-31": 1809.0
+    },
+    "us-gaap:OtherNonoperatingIncomeExpense": {
+      "2019-12-31": 203.0,
+      "2020-12-31": 2371.0,
+      "2021-12-31": 14633.0
+    },
+    "us-gaap:NonoperatingIncomeExpense": {
+      "2019-12-31": -565.0,
+      "2020-12-31": 1279.0,
+      "2021-12-31": 13272.0
+    },
+    "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments": {
+      "2019-12-31": 13976.0,
+      "2020-12-31": 24178.0,
+      "2021-12-31": 38151.0
+    },
+    "us-gaap:IncomeTaxExpenseBenefit": {
+      "2019-12-31": 2374.0,
+      "2020-12-31": 2863.0,
+      "2021-12-31": 4791.0
+    },
+    "us-gaap:IncomeLossFromEquityMethodInvestments": {
+      "2019-12-31": -14.0,
+      "2020-12-31": 16.0,
+      "2021-12-31": 4.0
+    },
+    "us-gaap:EarningsPerShareBasic": {
+      "2019-12-31": 23.46,
+      "2020-12-31": 42.64,
+      "2021-12-31": 65.96
+    },
+    "us-gaap:EarningsPerShareDiluted": {
+      "2019-12-31": 23.01,
+      "2020-12-31": 41.83,
+      "2021-12-31": 64.81
+    },
+    "us-gaap:WeightedAverageNumberOfSharesOutstandingBasic": {
+      "2019-12-31": 494.0,
+      "2020-12-31": 500.0,
+      "2021-12-31": 506.0
+    },
+    "us-gaap:WeightedAverageNumberOfDilutedSharesOutstanding": {
+      "2019-12-31": 504.0,
+      "2020-12-31": 510.0,
+      "2021-12-31": 515.0
+    },
+    "us-gaap:OtherComprehensiveIncomeForeignCurrencyTranslationGainLossArisingDuringPeriodTax": {
+      "2019-12-31": -5.0,
+      "2020-12-31": -36.0,
+      "2021-12-31": 47.0
+    },
+    "us-gaap:OtherComprehensiveIncomeForeignCurrencyTransactionAndTranslationGainLossArisingDuringPeriodNetOfTax": {
+      "2019-12-31": 78.0,
+      "2020-12-31": 561.0,
+      "2021-12-31": -819.0
+    },
+    "amzn:OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationReclassificationAdjustmentFromAOCITax": {
+      "2019-12-31": 29.0,
+      "2020-12-31": 0.0,
+      "2021-12-31": 0.0
+    },
+    "amzn:OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationReclassificationAdjustmentFromAOCINetOfTax": {
+      "2019-12-31": 108.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationAdjustmentNetOfTax": {
+      "2019-12-31": -30.0,
+      "2020-12-31": 561.0,
+      "2021-12-31": -819.0
+    },
+    "us-gaap:OtherComprehensiveIncomeUnrealizedHoldingGainLossOnSecuritiesArisingDuringPeriodTax": {
+      "2019-12-31": -12.0,
+      "2020-12-31": -83.0,
+      "2021-12-31": 72.0
+    },
+    "us-gaap:OtherComprehensiveIncomeUnrealizedHoldingGainLossOnSecuritiesArisingDuringPeriodNetOfTax": {
+      "2019-12-31": 83.0,
+      "2020-12-31": 273.0,
+      "2021-12-31": -343.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossReclassificationAdjustmentFromAOCIForSaleOfSecuritiesTax": {
+      "2019-12-31": 0.0,
+      "2020-12-31": -8.0,
+      "2021-12-31": -13.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossReclassificationAdjustmentFromAOCIForSaleOfSecuritiesNetOfTax": {
+      "2019-12-31": 4.0,
+      "2020-12-31": 28.0,
+      "2021-12-31": 34.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossAvailableForSaleSecuritiesAdjustmentNetOfTax": {
+      "2019-12-31": 79.0,
+      "2020-12-31": 245.0,
+      "2021-12-31": -377.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossNetOfTax": {
+      "2019-12-31": 49.0,
+      "2020-12-31": 806.0,
+      "2021-12-31": -1196.0
+    },
+    "us-gaap:ComprehensiveIncomeNetOfTax": {
+      "2019-12-31": 11637.0,
+      "2020-12-31": 22137.0,
+      "2021-12-31": 32168.0
+    },
+    "us-gaap:CashAndCashEquivalentsAtCarryingValue": {
+      "2020-12-31": 42122.0,
+      "2021-12-31": 36220.0
+    },
+    "us-gaap:MarketableSecuritiesCurrent": {
+      "2020-12-31": 42274.0,
+      "2021-12-31": 59829.0
+    },
+    "us-gaap:InventoryNet": {
+      "2020-12-31": 23795.0,
+      "2021-12-31": 32640.0
+    },
+    "us-gaap:AccountsReceivableNetCurrent": {
+      "2020-12-31": 24542.0,
+      "2021-12-31": 32891.0
+    },
+    "us-gaap:AssetsCurrent": {
+      "2020-12-31": 132733.0,
+      "2021-12-31": 161580.0
+    },
+    "us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization": {
+      "2020-12-31": 113114.0,
+      "2021-12-31": 160281.0,
+      "2019-12-31": 72705.0
+    },
+    "us-gaap:OperatingLeaseRightOfUseAsset": {
+      "2020-12-31": 37553.0,
+      "2021-12-31": 56082.0
+    },
+    "us-gaap:Goodwill": {
+      "2020-12-31": 15017.0,
+      "2021-12-31": 15371.0,
+      "2019-12-31": 14754.0
+    },
+    "us-gaap:OtherAssetsNoncurrent": {
+      "2020-12-31": 22778.0,
+      "2021-12-31": 27235.0
+    },
+    "us-gaap:Assets": {
+      "2020-12-31": 321195.0,
+      "2021-12-31": 420549.0,
+      "2019-12-31": 225248.0
+    },
+    "us-gaap:AccountsPayableCurrent": {
+      "2020-12-31": 72539.0,
+      "2021-12-31": 78664.0
+    },
+    "us-gaap:AccruedLiabilitiesCurrent": {
+      "2020-12-31": 44138.0,
+      "2021-12-31": 51775.0
+    },
+    "us-gaap:ContractWithCustomerLiabilityCurrent": {
+      "2020-12-31": 9708.0,
+      "2021-12-31": 11827.0
+    },
+    "us-gaap:LiabilitiesCurrent": {
+      "2020-12-31": 126385.0,
+      "2021-12-31": 142266.0
+    },
+    "amzn:LeaseLiabilityNoncurrent": {
+      "2020-12-31": 52573.0,
+      "2021-12-31": 67651.0
+    },
+    "us-gaap:LongTermDebtNoncurrent": {
+      "2020-12-31": 31816.0,
+      "2021-12-31": 48744.0
+    },
+    "us-gaap:OtherLiabilitiesNoncurrent": {
+      "2020-12-31": 17017.0,
+      "2021-12-31": 23643.0
+    },
+    "us-gaap:PreferredStockParOrStatedValuePerShare": {
+      "2020-12-31": 0.01,
+      "2021-12-31": 0.01
+    },
+    "us-gaap:PreferredStockSharesAuthorized": {
+      "2020-12-31": 500.0,
+      "2021-12-31": 500.0
+    },
+    "us-gaap:CommonStockParOrStatedValuePerShare": {
+      "2020-12-31": 0.01
+    },
+    "us-gaap:CommonStockSharesAuthorized": {
+      "2021-12-31": 5000.0
+    },
+    "us-gaap:CommonStockSharesIssued": {
+      "2020-12-31": 527.0,
+      "2021-12-31": 532.0
+    },
+    "us-gaap:CommonStockSharesOutstanding": {
+      "2020-12-31": 503.0,
+      "2021-12-31": 509.0
+    },
+    "us-gaap:CommonStockValue": {
+      "2020-12-31": 5.0,
+      "2021-12-31": 5.0
+    },
+    "us-gaap:TreasuryStockValue": {
+      "2020-12-31": 1837.0,
+      "2021-12-31": 1837.0
+    },
+    "us-gaap:AdditionalPaidInCapital": {
+      "2020-12-31": 42865.0,
+      "2021-12-31": 55538.0
+    },
+    "us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax": {
+      "2020-12-31": -180.0,
+      "2021-12-31": -1376.0
+    },
+    "us-gaap:RetainedEarningsAccumulatedDeficit": {
+      "2020-12-31": 52551.0,
+      "2021-12-31": 85915.0
+    },
+    "us-gaap:StockholdersEquity": {
+      "2020-12-31": 93404.0,
+      "2021-12-31": 138245.0,
+      "2018-12-31": 43549.0,
+      "2019-12-31": 62060.0
+    },
+    "us-gaap:LiabilitiesAndStockholdersEquity": {
+      "2020-12-31": 321195.0,
+      "2021-12-31": 420549.0
+    },
+    "us-gaap:StockIssuedDuringPeriodValueEmployeeBenefitPlan": {
+      "2019-12-31": 6867.0,
+      "2020-12-31": 9207.0,
+      "2021-12-31": 12673.0
+    },
+    "amzn:InterestPaidOnLongTermDebt": {
+      "2019-12-31": 875.0,
+      "2020-12-31": 916.0,
+      "2021-12-31": 1098.0
+    },
+    "us-gaap:OperatingLeasePayments": {
+      "2019-12-31": 3361.0,
+      "2020-12-31": 4475.0,
+      "2021-12-31": 6722.0
+    },
+    "us-gaap:FinanceLeaseInterestPaymentOnLiability": {
+      "2019-12-31": 647.0,
+      "2020-12-31": 612.0,
+      "2021-12-31": 521.0
+    },
+    "amzn:InterestPaidFinancingObligations": {
+      "2019-12-31": 39.0,
+      "2020-12-31": 102.0,
+      "2021-12-31": 153.0
+    },
+    "us-gaap:IncomeTaxesPaidNet": {
+      "2019-12-31": 881.0,
+      "2020-12-31": 1713.0,
+      "2021-12-31": 3688.0
+    },
+    "us-gaap:RightOfUseAssetObtainedInExchangeForOperatingLeaseLiability": {
+      "2019-12-31": 7870.0,
+      "2020-12-31": 16217.0,
+      "2021-12-31": 25369.0
+    },
+    "us-gaap:RightOfUseAssetObtainedInExchangeForFinanceLeaseLiability": {
+      "2019-12-31": 13723.0,
+      "2020-12-31": 11588.0,
+      "2021-12-31": 7061.0
+    },
+    "amzn:PropertyAndEquipmentObtainedInExchangeForFinancingObligations": {
+      "2019-12-31": 1362.0,
+      "2020-12-31": 2267.0,
+      "2021-12-31": 5616.0
+    },
+    "us-gaap:IncrementalCommonSharesAttributableToShareBasedPaymentArrangements": {
+      "2019-12-31": 10.0,
+      "2020-12-31": 10.0,
+      "2021-12-31": 9.0
+    },
+    "us-gaap:ContractWithCustomerRefundLiability": {
+      "2019-12-31": 712.0,
+      "2020-12-31": 859.0,
+      "2021-12-31": 1.0
+    },
+    "us-gaap:ContractWithCustomerRightToRecoverProduct": {
+      "2019-12-31": 629.0,
+      "2020-12-31": 852.0,
+      "2021-12-31": 882.0
+    },
+    "us-gaap:AdvertisingExpense": {
+      "2019-12-31": 11.0,
+      "2020-12-31": 10.9,
+      "2021-12-31": 16.9
+    },
+    "us-gaap:MarketableSecuritiesUnrealizedGainLoss": {
+      "2019-12-31": 7.0,
+      "2020-12-31": 525.0,
+      "2021-12-31": 11526.0
+    },
+    "us-gaap:FairValueAdjustmentOfWarrants": {
+      "2019-12-31": -11.0,
+      "2020-12-31": -1527.0,
+      "2021-12-31": -1315.0
+    },
+    "us-gaap:EquitySecuritiesWithoutReadilyDeterminableFairValueUpwardPriceAdjustmentAnnualAmount": {
+      "2019-12-31": 328.0,
+      "2020-12-31": 342.0,
+      "2021-12-31": 1866.0
+    },
+    "us-gaap:ForeignCurrencyTransactionGainLossBeforeTax": {
+      "2019-12-31": -20.0,
+      "2020-12-31": 35.0,
+      "2021-12-31": -55.0
+    },
+    "amzn:MiscellaneousIncomeExpense": {
+      "2019-12-31": -123.0,
+      "2020-12-31": -58.0,
+      "2021-12-31": -19.0
+    },
+    "amzn:EquityInvestmentDiscountDueToLackOfMarketability": {
+      "2021-12-31": 800.0
+    },
+    "us-gaap:InventoryValuationReserves": {
+      "2020-12-31": 2.3,
+      "2021-12-31": 2.6
+    },
+    "us-gaap:AllowanceForDoubtfulAccountsReceivableCurrent": {
+      "2019-12-31": 718.0,
+      "2020-12-31": 1.1,
+      "2021-12-31": 1.1
+    },
+    "us-gaap:ProvisionForDoubtfulAccounts": {
+      "2019-12-31": 1.0,
+      "2020-12-31": 1.4,
+      "2021-12-31": 1.0
+    },
+    "us-gaap:AllowanceForDoubtfulAccountsReceivableWriteOffs": {
+      "2019-12-31": 793.0,
+      "2020-12-31": 1.0,
+      "2021-12-31": 1.1
+    },
+    "amzn:VideoandMusicContentCapitalizedCosts": {
+      "2020-12-31": 6.8,
+      "2021-12-31": 10.7
+    },
+    "amzn:VideoandMusicContentExpense": {
+      "2020-12-31": 11.0,
+      "2021-12-31": 13.0
+    },
+    "us-gaap:EquitySecuritiesWithoutReadilyDeterminableFairValueAmount": {
+      "2020-12-31": 2.7,
+      "2021-12-31": 603.0
+    },
+    "us-gaap:EmployeeRelatedLiabilitiesCurrent": {
+      "2020-12-31": 7.6,
+      "2021-12-31": 9.1
+    },
+    "us-gaap:ContractWithCustomerLiability": {
+      "2020-12-31": 11.6,
+      "2021-12-31": 14.0
+    },
+    "us-gaap:ContractWithCustomerLiabilityRevenueRecognized": {
+      "2021-12-31": 9.3
+    },
+    "us-gaap:ContractWithCustomerLiabilityNoncurrent": {
+      "2020-12-31": 1.9,
+      "2021-12-31": 2.2
+    },
+    "amzn:ForeignCurrencyTransactionGainLossOnIntercompanyBalances": {
+      "2019-12-31": -95.0,
+      "2020-12-31": -118.0,
+      "2021-12-31": 19.0
+    },
+    "us-gaap:EquitySecuritiesFvNiUnrealizedGainLoss": {
+      "2019-12-31": 4.0,
+      "2020-12-31": 448.0,
+      "2021-12-31": 11.6
+    },
+    "us-gaap:DebtSecuritiesAvailableForSaleRealizedGain": {
+      "2019-12-31": 11.0,
+      "2020-12-31": 92.0,
+      "2021-12-31": 85.0
+    },
+    "us-gaap:DebtSecuritiesAvailableForSaleRealizedLoss": {
+      "2019-12-31": 7.0,
+      "2020-12-31": 56.0,
+      "2021-12-31": 38.0
+    },
+    "us-gaap:AvailableForSaleSecuritiesDebtMaturitiesWithinOneYearAmortizedCost": {
+      "2021-12-31": 39070.0
+    },
+    "us-gaap:AvailableForSaleSecuritiesDebtMaturitiesWithinOneYearFairValue": {
+      "2021-12-31": 39075.0
+    },
+    "us-gaap:AvailableForSaleSecuritiesDebtMaturitiesAfterOneThroughFiveYearsAmortizedCost": {
+      "2021-12-31": 22790.0
+    },
+    "us-gaap:AvailableForSaleSecuritiesDebtMaturitiesAfterOneThroughFiveYearsFairValue": {
+      "2021-12-31": 22712.0
+    },
+    "us-gaap:AvailableForSaleSecuritiesDebtMaturitiesAfterFiveThroughTenYearsAmortizedCost": {
+      "2021-12-31": 2124.0
+    },
+    "us-gaap:AvailableForSaleSecuritiesDebtMaturitiesAfterFiveThroughTenYearsFairValue": {
+      "2021-12-31": 2121.0
+    },
+    "us-gaap:AvailableForSaleSecuritiesDebtMaturitiesAfterTenYearsAmortizedCost": {
+      "2021-12-31": 4086.0
+    },
+    "us-gaap:AvailableForSaleSecuritiesDebtMaturitiesAfterTenYearsFairValue": {
+      "2021-12-31": 4073.0
+    },
+    "us-gaap:AvailableForSaleSecuritiesDebtMaturitiesSingleMaturityDateAmortizedCostBasis": {
+      "2021-12-31": 68070.0
+    },
+    "us-gaap:AvailableForSaleSecuritiesDebtMaturitiesSingleMaturityDate": {
+      "2021-12-31": 67981.0
+    },
+    "us-gaap:RestrictedCashCurrent": {
+      "2020-12-31": 233.0,
+      "2021-12-31": 242.0
+    },
+    "us-gaap:RestrictedCashNoncurrent": {
+      "2020-12-31": 22.0,
+      "2021-12-31": 15.0
+    },
+    "us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization": {
+      "2020-12-31": 173548.0,
+      "2021-12-31": 238800.0
+    },
+    "us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAccumulatedDepreciationAndAmortization": {
+      "2020-12-31": 60434.0,
+      "2021-12-31": 78519.0
+    },
+    "us-gaap:Depreciation": {
+      "2019-12-31": 15150.0,
+      "2020-12-31": 16239.0,
+      "2021-12-31": 22909.0
+    },
+    "us-gaap:FinanceLeaseRightOfUseAssetAmortization": {
+      "2019-12-31": 10094.0,
+      "2020-12-31": 8452.0,
+      "2021-12-31": 9857.0
+    },
+    "us-gaap:FinanceLeaseRightOfUseAssetBeforeAccumulatedAmortization": {
+      "2020-12-31": 68.1,
+      "2021-12-31": 72.2
+    },
+    "us-gaap:FinanceLeaseRightOfUseAssetAccumulatedAmortization": {
+      "2020-12-31": 36.5,
+      "2021-12-31": 43.4
+    },
+    "us-gaap:OperatingLeaseCost": {
+      "2019-12-31": 3669.0,
+      "2020-12-31": 5019.0,
+      "2021-12-31": 7199.0
+    },
+    "us-gaap:FinanceLeaseInterestExpense": {
+      "2019-12-31": 695.0,
+      "2020-12-31": 617.0,
+      "2021-12-31": 473.0
+    },
+    "amzn:FinanceLeaseCost": {
+      "2019-12-31": 10789.0,
+      "2020-12-31": 9069.0,
+      "2021-12-31": 10330.0
+    },
+    "us-gaap:VariableLeaseCost": {
+      "2019-12-31": 966.0,
+      "2020-12-31": 1238.0,
+      "2021-12-31": 1556.0
+    },
+    "us-gaap:LeaseCost": {
+      "2019-12-31": 15424.0,
+      "2020-12-31": 15326.0,
+      "2021-12-31": 19085.0
+    },
+    "us-gaap:OperatingLeaseWeightedAverageDiscountRatePercent": {
+      "2020-12-31": 2.5,
+      "2021-12-31": 2.2
+    },
+    "us-gaap:FinanceLeaseWeightedAverageDiscountRatePercent": {
+      "2020-12-31": 2.1,
+      "2021-12-31": 2.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDue": {
+      "2020-12-31": 44833.0,
+      "2021-12-31": 66269.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDue": {
+      "2020-12-31": 30437.0,
+      "2021-12-31": 25866.0
+    },
+    "amzn:LeaseLiabilityPaymentsDue": {
+      "2020-12-31": 75270.0,
+      "2021-12-31": 92135.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityUndiscountedExcessAmount": {
+      "2020-12-31": 5734.0,
+      "2021-12-31": 7939.0
+    },
+    "us-gaap:FinanceLeaseLiabilityUndiscountedExcessAmount": {
+      "2020-12-31": 2003.0,
+      "2021-12-31": 2113.0
+    },
+    "amzn:LeaseLiabilityUndiscountedExcessAmount": {
+      "2020-12-31": 7737.0,
+      "2021-12-31": 10052.0
+    },
+    "us-gaap:OperatingLeaseLiability": {
+      "2020-12-31": 39099.0,
+      "2021-12-31": 58330.0
+    },
+    "us-gaap:FinanceLeaseLiability": {
+      "2020-12-31": 28434.0,
+      "2021-12-31": 23753.0
+    },
+    "amzn:LeaseLiability": {
+      "2020-12-31": 67533.0,
+      "2021-12-31": 82083.0
+    },
+    "us-gaap:OperatingLeaseLiabilityCurrent": {
+      "2020-12-31": 4586.0,
+      "2021-12-31": 6349.0
+    },
+    "us-gaap:FinanceLeaseLiabilityCurrent": {
+      "2020-12-31": 10374.0,
+      "2021-12-31": 8083.0
+    },
+    "amzn:LeaseLiabilityCurrent": {
+      "2020-12-31": 14960.0,
+      "2021-12-31": 14432.0
+    },
+    "us-gaap:OperatingLeaseLiabilityNoncurrent": {
+      "2020-12-31": 34513.0,
+      "2021-12-31": 51981.0
+    },
+    "us-gaap:FinanceLeaseLiabilityNoncurrent": {
+      "2020-12-31": 18060.0,
+      "2021-12-31": 15670.0
+    },
+    "us-gaap:GoodwillAcquiredDuringPeriod": {
+      "2020-12-31": 212.0,
+      "2021-12-31": 366.0
+    },
+    "us-gaap:GoodwillTranslationAndPurchaseAccountingAdjustments": {
+      "2020-12-31": 51.0,
+      "2021-12-31": -12.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsGross": {
+      "2020-12-31": 5333.0,
+      "2021-12-31": 5786.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAccumulatedAmortization": {
+      "2020-12-31": 1495.0,
+      "2021-12-31": 1826.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsNet": {
+      "2020-12-31": 3838.0,
+      "2021-12-31": 3960.0
+    },
+    "us-gaap:IndefiniteLivedIntangibleAssetsExcludingGoodwill": {
+      "2020-12-31": 1143.0,
+      "2021-12-31": 1147.0
+    },
+    "us-gaap:IntangibleAssetsGrossExcludingGoodwill": {
+      "2020-12-31": 6476.0,
+      "2021-12-31": 6933.0
+    },
+    "us-gaap:IntangibleAssetsNetExcludingGoodwill": {
+      "2020-12-31": 4981.0,
+      "2021-12-31": 5107.0
+    },
+    "us-gaap:AmortizationOfIntangibleAssets": {
+      "2019-12-31": 565.0,
+      "2020-12-31": 509.0,
+      "2021-12-31": 512.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAmortizationExpenseNextTwelveMonths": {
+      "2021-12-31": 528.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAmortizationExpenseYearTwo": {
+      "2021-12-31": 452.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAmortizationExpenseYearThree": {
+      "2021-12-31": 378.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAmortizationExpenseYearFour": {
+      "2021-12-31": 318.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAmortizationExpenseYearFive": {
+      "2021-12-31": 290.0
+    },
+    "us-gaap:FiniteLivedIntangibleAssetsAmortizationExpenseAfterYearFive": {
+      "2021-12-31": 1994.0
+    },
+    "us-gaap:LongTermDebt": {
+      "2020-12-31": 33174.0,
+      "2021-12-31": 50553.0
+    },
+    "us-gaap:LongTermDebtCurrent": {
+      "2020-12-31": 1155.0,
+      "2021-12-31": 1491.0
+    },
+    "us-gaap:DebtInstrumentCarryingAmount": {
+      "2020-12-31": 31816.0,
+      "2021-12-31": 48744.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInNextTwelveMonths": {
+      "2021-12-31": 1493.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInYearTwo": {
+      "2021-12-31": 3560.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInYearThree": {
+      "2021-12-31": 5750.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFour": {
+      "2021-12-31": 2250.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFive": {
+      "2021-12-31": 2750.0
+    },
+    "us-gaap:LongTermDebtMaturitiesRepaymentsOfPrincipalAfterYearFive": {
+      "2021-12-31": 34750.0
+    },
+    "amzn:LongTermDebtMaturitiesRepaymentsOfPrincipalAndInterestInNextTwelveMonths": {
+      "2021-12-31": 2841.0
+    },
+    "amzn:LongTermDebtMaturitiesRepaymentsOfPrincipalAndInterestInYearTwo": {
+      "2021-12-31": 4852.0
+    },
+    "amzn:LongTermDebtMaturitiesRepaymentsOfPrincipalAndInterestInYearThree": {
+      "2021-12-31": 7014.0
+    },
+    "amzn:LongTermDebtMaturitiesRepaymentsOfPrincipalAndInterestInYearFour": {
+      "2021-12-31": 3400.0
+    },
+    "amzn:LongTermDebtMaturitiesRepaymentsOfPrincipalAndInterestInYearFive": {
+      "2021-12-31": 3829.0
+    },
+    "amzn:LongTermDebtMaturitiesRepaymentsOfPrincipalAndInterestAfterYearFive": {
+      "2021-12-31": 52784.0
+    },
+    "amzn:LongTermDebtIncludingInterest": {
+      "2021-12-31": 74720.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueNextTwelveMonths": {
+      "2021-12-31": 7838.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueYearTwo": {
+      "2021-12-31": 7178.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueYearThree": {
+      "2021-12-31": 6649.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueYearFour": {
+      "2021-12-31": 6128.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueYearFive": {
+      "2021-12-31": 5574.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueAfterYearFive": {
+      "2021-12-31": 32902.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueNextTwelveMonths": {
+      "2021-12-31": 8278.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueYearTwo": {
+      "2021-12-31": 4772.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueYearThree": {
+      "2021-12-31": 2278.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueYearFour": {
+      "2021-12-31": 1355.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueYearFive": {
+      "2021-12-31": 1220.0
+    },
+    "us-gaap:FinanceLeaseLiabilityPaymentsDueAfterYearFive": {
+      "2021-12-31": 7963.0
+    },
+    "amzn:FinancingObligationsFutureMinimumPaymentsDueNextTwelveMonths": {
+      "2021-12-31": 423.0
+    },
+    "amzn:FinancingObligationsFutureMinimumPaymentsDueInTwoYears": {
+      "2021-12-31": 422.0
+    },
+    "amzn:FinancingObligationsFutureMinimumPaymentsDueInThreeYears": {
+      "2021-12-31": 419.0
+    },
+    "amzn:FinancingObligationsFutureMinimumPaymentsDueInFourYears": {
+      "2021-12-31": 410.0
+    },
+    "amzn:FinancingObligationsFutureMinimumPaymentsDueInFiveYears": {
+      "2021-12-31": 417.0
+    },
+    "amzn:FinancingObligationsFutureMinimumPaymentsDueAfterYearFive": {
+      "2021-12-31": 6404.0
+    },
+    "amzn:FinancingObligationsFutureMinimumPaymentsDue": {
+      "2021-12-31": 8495.0
+    },
+    "amzn:LesseeLeaseNotYetCommencedFutureMinimumPaymentsDueNextTwelveMonths": {
+      "2021-12-31": 1206.0
+    },
+    "amzn:LesseeLeaseNotYetCommencedFutureMinimumPaymentsDueInTwoYears": {
+      "2021-12-31": 1902.0
+    },
+    "amzn:LesseeLeaseNotYetCommencedFutureMinimumPaymentsDueInThreeYears": {
+      "2021-12-31": 2094.0
+    },
+    "amzn:LesseeLeaseNotYetCommencedFutureMinimumPaymentsDueInFourYears": {
+      "2021-12-31": 2145.0
+    },
+    "amzn:LesseeLeaseNotYetCommencedFutureMinimumPaymentsDueInFiveYears": {
+      "2021-12-31": 2237.0
+    },
+    "amzn:LesseeLeaseNotYetCommencedFutureMinimumPaymentsDueAfterYearFive": {
+      "2021-12-31": 21571.0
+    },
+    "amzn:LesseeLeaseNotYetCommencedFutureMinimumPaymentsDue": {
+      "2021-12-31": 31155.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceOnFirstAnniversary": {
+      "2021-12-31": 5969.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceOnSecondAnniversary": {
+      "2021-12-31": 5910.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceOnThirdAnniversary": {
+      "2021-12-31": 5158.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceOnFourthAnniversary": {
+      "2021-12-31": 4213.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceOnFifthAnniversary": {
+      "2021-12-31": 4159.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationDueAfterFiveYears": {
+      "2021-12-31": 9493.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount": {
+      "2021-12-31": 34902.0
+    },
+    "us-gaap:OtherCommitmentDueInNextTwelveMonths": {
+      "2021-12-31": 2905.0
+    },
+    "us-gaap:OtherCommitmentDueInSecondYear": {
+      "2021-12-31": 1620.0
+    },
+    "us-gaap:OtherCommitmentDueInThirdYear": {
+      "2021-12-31": 1290.0
+    },
+    "us-gaap:OtherCommitmentDueInFourthYear": {
+      "2021-12-31": 1006.0
+    },
+    "us-gaap:OtherCommitmentDueInFifthYear": {
+      "2021-12-31": 1137.0
+    },
+    "us-gaap:OtherCommitmentDueAfterFifthYear": {
+      "2021-12-31": 11325.0
+    },
+    "us-gaap:OtherCommitment": {
+      "2021-12-31": 19283.0
+    },
+    "us-gaap:ContractualObligationDueInNextTwelveMonths": {
+      "2021-12-31": 29460.0
+    },
+    "us-gaap:ContractualObligationDueInSecondYear": {
+      "2021-12-31": 26656.0
+    },
+    "us-gaap:ContractualObligationDueInThirdYear": {
+      "2021-12-31": 24902.0
+    },
+    "us-gaap:ContractualObligationDueInFourthYear": {
+      "2021-12-31": 18657.0
+    },
+    "us-gaap:ContractualObligationDueInFifthYear": {
+      "2021-12-31": 18573.0
+    },
+    "us-gaap:ContractualObligationDueAfterFifthYear": {
+      "2021-12-31": 142442.0
+    },
+    "us-gaap:ContractualObligation": {
+      "2021-12-31": 260690.0
+    },
+    "amzn:FinancingObligationsCurrent": {
+      "2020-12-31": 111.0,
+      "2021-12-31": 196.0
+    },
+    "amzn:FinancingObligationsNoncurrent": {
+      "2020-12-31": 3.4,
+      "2021-12-31": 6.2
+    },
+    "amzn:FinancingObligationsWeightedAverageInterestRate": {
+      "2020-12-31": 3.8,
+      "2021-12-31": 3.2
+    },
+    "us-gaap:UnrecognizedTaxBenefits": {
+      "2021-12-31": 3242.0,
+      "2018-12-31": 3414.0,
+      "2019-12-31": 3923.0,
+      "2020-12-31": 2820.0
+    },
+    "amzn:CommonStockSharesOutstandingIncludingNonvestedStockAwards": {
+      "2019-12-31": 512.0,
+      "2020-12-31": 518.0,
+      "2021-12-31": 523.0
+    },
+    "us-gaap:AllocatedShareBasedCompensationExpense": {
+      "2019-12-31": 6864.0,
+      "2020-12-31": 9208.0,
+      "2021-12-31": 12757.0
+    },
+    "us-gaap:EmployeeServiceShareBasedCompensationTaxBenefitFromCompensationExpense": {
+      "2019-12-31": 1.4,
+      "2020-12-31": 1.9,
+      "2021-12-31": 2.7
+    },
+    "us-gaap:EmployeeServiceShareBasedCompensationNonvestedAwardsTotalCompensationCostNotYetRecognized": {
+      "2021-12-31": 16.6
+    },
+    "amzn:ShareBasedCompensationArrangementByShareBasedPaymentAwardFairValueAssumptionsForfeitureRate": {
+      "2021-12-31": 27.0
+    },
+    "us-gaap:CommonStockCapitalSharesReservedForFutureIssuance": {
+      "2021-12-31": 97.0
+    },
+    "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic": {
+      "2019-12-31": 13285.0,
+      "2020-12-31": 20219.0,
+      "2021-12-31": 35879.0
+    },
+    "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign": {
+      "2019-12-31": 691.0,
+      "2020-12-31": 3959.0,
+      "2021-12-31": 2272.0
+    },
+    "us-gaap:IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate": {
+      "2019-12-31": 2935.0,
+      "2020-12-31": 5078.0,
+      "2021-12-31": 8012.0
+    },
+    "us-gaap:IncomeTaxReconciliationForeignIncomeTaxRateDifferential": {
+      "2019-12-31": 453.0,
+      "2020-12-31": -538.0,
+      "2021-12-31": -1349.0
+    },
+    "us-gaap:IncomeTaxReconciliationStateAndLocalIncomeTaxes": {
+      "2019-12-31": 221.0,
+      "2020-12-31": 343.0,
+      "2021-12-31": 465.0
+    },
+    "us-gaap:IncomeTaxReconciliationTaxCredits": {
+      "2019-12-31": 466.0,
+      "2020-12-31": 639.0,
+      "2021-12-31": 1136.0
+    },
+    "us-gaap:IncomeTaxReconciliationNondeductibleExpenseShareBasedCompensationCost": {
+      "2019-12-31": -850.0,
+      "2020-12-31": -1107.0,
+      "2021-12-31": -1094.0
+    },
+    "us-gaap:EffectiveIncomeTaxRateReconciliationTaxCutsAndJobsActOf2017TransitionTaxOnAccumulatedForeignEarningsAmount": {
+      "2019-12-31": -72.0,
+      "2020-12-31": -372.0,
+      "2021-12-31": -301.0
+    },
+    "us-gaap:IncomeTaxReconciliationOtherAdjustments": {
+      "2019-12-31": 153.0,
+      "2020-12-31": 98.0,
+      "2021-12-31": 194.0
+    },
+    "us-gaap:EffectiveIncomeTaxRateReconciliationShareBasedCompensationExcessTaxBenefitAmount": {
+      "2019-12-31": -1.4,
+      "2020-12-31": -1.8,
+      "2021-12-31": -1.9
+    },
+    "us-gaap:IncomeTaxReconciliationChangeInDeferredTaxAssetsValuationAllowance": {
+      "2021-12-31": 2.6
+    },
+    "us-gaap:DeferredTaxAssetsOperatingLossCarryforwardsDomestic": {
+      "2020-12-31": 245.0,
+      "2021-12-31": 228.0
+    },
+    "us-gaap:DeferredTaxAssetsOperatingLossCarryforwardsForeign": {
+      "2020-12-31": 3876.0,
+      "2021-12-31": 2417.0
+    },
+    "us-gaap:DeferredTaxAssetsTaxDeferredExpenseReservesAndAccruals": {
+      "2020-12-31": 2457.0,
+      "2021-12-31": 2821.0
+    },
+    "us-gaap:DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsShareBasedCompensationCost": {
+      "2020-12-31": 2033.0,
+      "2021-12-31": 2738.0
+    },
+    "us-gaap:DeferredTaxAssetsPropertyPlantAndEquipment": {
+      "2020-12-31": 1886.0,
+      "2021-12-31": 941.0
+    },
+    "amzn:DeferredTaxAssetsOperatingLeaseLiabilities": {
+      "2020-12-31": 10183.0,
+      "2021-12-31": 15399.0
+    },
+    "us-gaap:DeferredTaxAssetsOther": {
+      "2020-12-31": 559.0,
+      "2021-12-31": 603.0
+    },
+    "us-gaap:DeferredTaxAssetsTaxCreditCarryforwards": {
+      "2020-12-31": 207.0,
+      "2021-12-31": 626.0
+    },
+    "us-gaap:DeferredTaxAssetsGross": {
+      "2020-12-31": 21446.0,
+      "2021-12-31": 25773.0
+    },
+    "us-gaap:DeferredTaxAssetsValuationAllowance": {
+      "2020-12-31": 5803.0,
+      "2021-12-31": 3596.0
+    },
+    "us-gaap:DeferredTaxAssetsNet": {
+      "2020-12-31": 15643.0,
+      "2021-12-31": 22177.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesPropertyPlantAndEquipment": {
+      "2020-12-31": 5508.0,
+      "2021-12-31": 3562.0
+    },
+    "amzn:DeferredTaxLiabilitiesOperatingLeaseAssets": {
+      "2020-12-31": 9539.0,
+      "2021-12-31": 14422.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesInvestments": {
+      "2020-12-31": 569.0,
+      "2021-12-31": 4019.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesOther": {
+      "2020-12-31": 893.0,
+      "2021-12-31": 668.0
+    },
+    "us-gaap:DeferredTaxLiabilities": {
+      "2020-12-31": 866.0,
+      "2021-12-31": 494.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsIncreasesResultingFromPriorPeriodTaxPositions": {
+      "2019-12-31": 216.0,
+      "2020-12-31": 88.0,
+      "2021-12-31": 403.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsDecreasesResultingFromPriorPeriodTaxPositions": {
+      "2019-12-31": 181.0,
+      "2020-12-31": 465.0,
+      "2021-12-31": 354.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsIncreasesResultingFromCurrentPeriodTaxPositions": {
+      "2019-12-31": 707.0,
+      "2020-12-31": 507.0,
+      "2021-12-31": 507.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsDecreasesResultingFromSettlementsWithTaxingAuthorities": {
+      "2019-12-31": 207.0,
+      "2020-12-31": 1207.0,
+      "2021-12-31": 60.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations": {
+      "2019-12-31": 26.0,
+      "2020-12-31": 26.0,
+      "2021-12-31": 74.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsThatWouldImpactEffectiveTaxRate": {
+      "2021-12-31": 1.6
+    },
+    "us-gaap:UnrecognizedTaxBenefitsIncomeTaxPenaltiesAndInterestAccrued": {
+      "2020-12-31": 83.0,
+      "2021-12-31": 110.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsIncomeTaxPenaltiesAndInterestExpense": {
+      "2019-12-31": 4.0,
+      "2020-12-31": -48.0,
+      "2021-12-31": 28.0
+    },
+    "us-gaap:PropertyPlantAndEquipmentAdditions": {
+      "2019-12-31": 30018.0,
+      "2020-12-31": 57976.0,
+      "2021-12-31": 72325.0
+    }
+  },
+  "IS": {
+    "concept": "us-gaap_NetIncomeLoss",
+    "tag": "us-gaap:NetIncomeLoss",
+    "name": "Net Income Loss",
+    "weight": 1.0,
+    "values": {
+      "2020-12-31": 21331.0,
+      "2021-12-31": 33364.0
+    },
+    "is_leaf": false,
+    "role": "INC_NET",
+    "children": [
+      {
+        "concept": "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments",
+        "tag": "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments",
+        "name": "Income Loss From Continuing Operations Before Income Taxes Minority Interest And Income Loss From Equity Method Investments",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 24178.0,
+          "2021-12-31": 38151.0
+        },
+        "is_leaf": false,
+        "children": [
+          {
+            "concept": "us-gaap_OperatingIncomeLoss",
+            "tag": "us-gaap:OperatingIncomeLoss",
+            "name": "Operating Income Loss",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 22899.0,
+              "2021-12-31": 24879.0
+            },
+            "is_leaf": false,
+            "children": [
+              {
+                "concept": "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+                "tag": "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax",
+                "name": "Revenue From Contract With Customer Excluding Assessed Tax",
+                "weight": 1.0,
+                "values": {
+                  "2020-12-31": 386064.0,
+                  "2021-12-31": 469822.0
+                },
+                "is_leaf": false,
+                "role": "IS_REVENUE",
+                "children": [
+                  {
+                    "concept": "amzn_OnlineStoresMember",
+                    "tag": "amzn:OnlineStoresMember",
+                    "name": "Online stores",
+                    "weight": 1.0,
+                    "values": {
+                      "2020-12-31": 197346.0,
+                      "2021-12-31": 222075.0
+                    },
+                    "is_leaf": true
+                  },
+                  {
+                    "concept": "amzn_PhysicalStoresMember",
+                    "tag": "amzn:PhysicalStoresMember",
+                    "name": "Physical stores",
+                    "weight": 1.0,
+                    "values": {
+                      "2020-12-31": 16227.0,
+                      "2021-12-31": 17075.0
+                    },
+                    "is_leaf": true
+                  },
+                  {
+                    "concept": "amzn_ThirdPartySellerServicesMember",
+                    "tag": "amzn:ThirdPartySellerServicesMember",
+                    "name": "Third-party seller services",
+                    "weight": 1.0,
+                    "values": {
+                      "2020-12-31": 80461.0,
+                      "2021-12-31": 103366.0
+                    },
+                    "is_leaf": true
+                  },
+                  {
+                    "concept": "amzn_SubscriptionServicesMember",
+                    "tag": "amzn:SubscriptionServicesMember",
+                    "name": "Subscription services",
+                    "weight": 1.0,
+                    "values": {
+                      "2020-12-31": 25207.0,
+                      "2021-12-31": 31768.0
+                    },
+                    "is_leaf": true
+                  },
+                  {
+                    "concept": "us-gaap_AdvertisingMember",
+                    "tag": "us-gaap:AdvertisingMember",
+                    "name": "Advertising services",
+                    "weight": 1.0,
+                    "values": {
+                      "2020-12-31": 19773.0,
+                      "2021-12-31": 31160.0
+                    },
+                    "is_leaf": true
+                  },
+                  {
+                    "concept": "amzn_AmazonWebServicesMember",
+                    "tag": "amzn:AmazonWebServicesMember",
+                    "name": "AWS",
+                    "weight": 1.0,
+                    "values": {
+                      "2020-12-31": 45370.0,
+                      "2021-12-31": 62202.0
+                    },
+                    "is_leaf": true
+                  },
+                  {
+                    "concept": "amzn_OtherServicesMember",
+                    "tag": "amzn:OtherServicesMember",
+                    "name": "Other",
+                    "weight": 1.0,
+                    "values": {
+                      "2020-12-31": 1680.0,
+                      "2021-12-31": 2176.0
+                    },
+                    "is_leaf": true
+                  }
+                ]
+              },
+              {
+                "concept": "us-gaap_CostsAndExpenses",
+                "tag": "us-gaap:CostsAndExpenses",
+                "name": "Costs And Expenses",
+                "weight": -1.0,
+                "values": {
+                  "2020-12-31": 363165.0,
+                  "2021-12-31": 444943.0
+                },
+                "is_leaf": false,
+                "children": [
+                  {
+                    "concept": "us-gaap_CostOfGoodsAndServicesSold",
+                    "tag": "us-gaap:CostOfGoodsAndServicesSold",
+                    "name": "Cost Of Goods And Services Sold",
+                    "weight": 1.0,
+                    "values": {
+                      "2020-12-31": 233307.0,
+                      "2021-12-31": 272344.0
+                    },
+                    "is_leaf": true,
+                    "role": "IS_COGS"
+                  },
+                  {
+                    "concept": "amzn_FulfillmentExpense",
+                    "tag": "amzn:FulfillmentExpense",
+                    "name": "Fulfillment Expense",
+                    "weight": 1.0,
+                    "values": {
+                      "2020-12-31": 58517.0,
+                      "2021-12-31": 75111.0
+                    },
+                    "is_leaf": true
+                  },
+                  {
+                    "concept": "amzn_TechnologyAndContentExpense",
+                    "tag": "amzn:TechnologyAndContentExpense",
+                    "name": "Technology And Content Expense",
+                    "weight": 1.0,
+                    "values": {
+                      "2020-12-31": 42740.0,
+                      "2021-12-31": 56052.0
+                    },
+                    "is_leaf": true
+                  },
+                  {
+                    "concept": "us-gaap_MarketingExpense",
+                    "tag": "us-gaap:MarketingExpense",
+                    "name": "Marketing Expense",
+                    "weight": 1.0,
+                    "values": {
+                      "2020-12-31": 22008.0,
+                      "2021-12-31": 32551.0
+                    },
+                    "is_leaf": true
+                  },
+                  {
+                    "concept": "us-gaap_GeneralAndAdministrativeExpense",
+                    "tag": "us-gaap:GeneralAndAdministrativeExpense",
+                    "name": "General And Administrative Expense",
+                    "weight": 1.0,
+                    "values": {
+                      "2020-12-31": 6668.0,
+                      "2021-12-31": 8823.0
+                    },
+                    "is_leaf": true
+                  },
+                  {
+                    "concept": "us-gaap_OtherOperatingIncomeExpenseNet",
+                    "tag": "us-gaap:OtherOperatingIncomeExpenseNet",
+                    "name": "Other Operating Income Expense Net",
+                    "weight": -1.0,
+                    "values": {
+                      "2020-12-31": 75.0,
+                      "2021-12-31": -62.0
+                    },
+                    "is_leaf": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "concept": "us-gaap_NonoperatingIncomeExpense",
+            "tag": "us-gaap:NonoperatingIncomeExpense",
+            "name": "Nonoperating Income Expense",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 1279.0,
+              "2021-12-31": 13272.0
+            },
+            "is_leaf": false,
+            "children": [
+              {
+                "concept": "us-gaap_InvestmentIncomeInterest",
+                "tag": "us-gaap:InvestmentIncomeInterest",
+                "name": "Investment Income Interest",
+                "weight": 1.0,
+                "values": {
+                  "2020-12-31": 555.0,
+                  "2021-12-31": 448.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_InterestExpense",
+                "tag": "us-gaap:InterestExpense",
+                "name": "Interest Expense",
+                "weight": -1.0,
+                "values": {
+                  "2020-12-31": 1647.0,
+                  "2021-12-31": 1809.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_OtherNonoperatingIncomeExpense",
+                "tag": "us-gaap:OtherNonoperatingIncomeExpense",
+                "name": "Other Nonoperating Income Expense",
+                "weight": 1.0,
+                "values": {
+                  "2020-12-31": 2371.0,
+                  "2021-12-31": 14633.0
+                },
+                "is_leaf": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_IncomeTaxExpenseBenefit",
+        "tag": "us-gaap:IncomeTaxExpenseBenefit",
+        "name": "Income Tax Expense Benefit",
+        "weight": -1.0,
+        "values": {
+          "2020-12-31": 2863.0,
+          "2021-12-31": 4791.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_IncomeLossFromEquityMethodInvestments",
+        "tag": "us-gaap:IncomeLossFromEquityMethodInvestments",
+        "name": "Income Loss From Equity Method Investments",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 16.0,
+          "2021-12-31": 4.0
+        },
+        "is_leaf": true
+      }
+    ]
+  },
+  "IS_groupable": [
+    {
+      "parent": "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+      "parent_name": "Revenue From Contract With Customer Excluding Assessed Tax",
+      "parent_total": {
+        "2020-12-31": 386064.0,
+        "2021-12-31": 469822.0
+      },
+      "siblings": [
+        {
+          "concept": "amzn_OnlineStoresMember",
+          "name": "Online stores",
+          "tag": "amzn:OnlineStoresMember",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 197346.0,
+            "2021-12-31": 222075.0
+          }
+        },
+        {
+          "concept": "amzn_ThirdPartySellerServicesMember",
+          "name": "Third-party seller services",
+          "tag": "amzn:ThirdPartySellerServicesMember",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 80461.0,
+            "2021-12-31": 103366.0
+          }
+        },
+        {
+          "concept": "amzn_AmazonWebServicesMember",
+          "name": "AWS",
+          "tag": "amzn:AmazonWebServicesMember",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 45370.0,
+            "2021-12-31": 62202.0
+          }
+        },
+        {
+          "concept": "amzn_SubscriptionServicesMember",
+          "name": "Subscription services",
+          "tag": "amzn:SubscriptionServicesMember",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 25207.0,
+            "2021-12-31": 31768.0
+          }
+        },
+        {
+          "concept": "us-gaap_AdvertisingMember",
+          "name": "Advertising services",
+          "tag": "us-gaap:AdvertisingMember",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 19773.0,
+            "2021-12-31": 31160.0
+          }
+        },
+        {
+          "concept": "amzn_PhysicalStoresMember",
+          "name": "Physical stores",
+          "tag": "amzn:PhysicalStoresMember",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 16227.0,
+            "2021-12-31": 17075.0
+          }
+        },
+        {
+          "concept": "amzn_OtherServicesMember",
+          "name": "Other",
+          "tag": "amzn:OtherServicesMember",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 1680.0,
+            "2021-12-31": 2176.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_CostsAndExpenses",
+      "parent_name": "Costs And Expenses",
+      "parent_total": {
+        "2020-12-31": 363165.0,
+        "2021-12-31": 444943.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_CostOfGoodsAndServicesSold",
+          "name": "Cost Of Goods And Services Sold",
+          "tag": "us-gaap:CostOfGoodsAndServicesSold",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 233307.0,
+            "2021-12-31": 272344.0
+          }
+        },
+        {
+          "concept": "amzn_FulfillmentExpense",
+          "name": "Fulfillment Expense",
+          "tag": "amzn:FulfillmentExpense",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 58517.0,
+            "2021-12-31": 75111.0
+          }
+        },
+        {
+          "concept": "amzn_TechnologyAndContentExpense",
+          "name": "Technology And Content Expense",
+          "tag": "amzn:TechnologyAndContentExpense",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 42740.0,
+            "2021-12-31": 56052.0
+          }
+        },
+        {
+          "concept": "us-gaap_MarketingExpense",
+          "name": "Marketing Expense",
+          "tag": "us-gaap:MarketingExpense",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 22008.0,
+            "2021-12-31": 32551.0
+          }
+        },
+        {
+          "concept": "us-gaap_GeneralAndAdministrativeExpense",
+          "name": "General And Administrative Expense",
+          "tag": "us-gaap:GeneralAndAdministrativeExpense",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 6668.0,
+            "2021-12-31": 8823.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherOperatingIncomeExpenseNet",
+          "name": "Other Operating Income Expense Net",
+          "tag": "us-gaap:OtherOperatingIncomeExpenseNet",
+          "weight": -1.0,
+          "values": {
+            "2020-12-31": 75.0,
+            "2021-12-31": -62.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_NonoperatingIncomeExpense",
+      "parent_name": "Nonoperating Income Expense",
+      "parent_total": {
+        "2020-12-31": 1279.0,
+        "2021-12-31": 13272.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_OtherNonoperatingIncomeExpense",
+          "name": "Other Nonoperating Income Expense",
+          "tag": "us-gaap:OtherNonoperatingIncomeExpense",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 2371.0,
+            "2021-12-31": 14633.0
+          }
+        },
+        {
+          "concept": "us-gaap_InterestExpense",
+          "name": "Interest Expense",
+          "tag": "us-gaap:InterestExpense",
+          "weight": -1.0,
+          "values": {
+            "2020-12-31": 1647.0,
+            "2021-12-31": 1809.0
+          }
+        },
+        {
+          "concept": "us-gaap_InvestmentIncomeInterest",
+          "name": "Investment Income Interest",
+          "tag": "us-gaap:InvestmentIncomeInterest",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 555.0,
+            "2021-12-31": 448.0
+          }
+        }
+      ]
+    }
+  ],
+  "BS": {
+    "concept": "us-gaap_Assets",
+    "tag": "us-gaap:Assets",
+    "name": "Assets",
+    "weight": 1.0,
+    "values": {
+      "2020-12-31": 321195.0,
+      "2021-12-31": 420549.0
+    },
+    "is_leaf": false,
+    "role": "BS_TA",
+    "children": [
+      {
+        "concept": "us-gaap_AssetsCurrent",
+        "tag": "us-gaap:AssetsCurrent",
+        "name": "Assets Current",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 132988.0,
+          "2021-12-31": 161837.0
+        },
+        "is_leaf": false,
+        "role": "BS_TCA",
+        "children": [
+          {
+            "concept": "us-gaap_CashAndCashEquivalentsAtCarryingValue",
+            "tag": "us-gaap:CashAndCashEquivalentsAtCarryingValue",
+            "name": "Cash And Cash Equivalents At Carrying Value",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 42377.0,
+              "2021-12-31": 36477.0
+            },
+            "is_leaf": true,
+            "role": "BS_CASH"
+          },
+          {
+            "concept": "us-gaap_MarketableSecuritiesCurrent",
+            "tag": "us-gaap:MarketableSecuritiesCurrent",
+            "name": "Marketable Securities Current",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 42274.0,
+              "2021-12-31": 59829.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_InventoryNet",
+            "tag": "us-gaap:InventoryNet",
+            "name": "Inventory Net",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 23795.0,
+              "2021-12-31": 32640.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_AccountsReceivableNetCurrent",
+            "tag": "us-gaap:AccountsReceivableNetCurrent",
+            "name": "Accounts Receivable",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 24542.0,
+              "2021-12-31": 32891.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
+        "tag": "us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
+        "name": "Property Plant And Equipment And Finance Lease Right Of Use Asset After Accumulated Depreciation And Amortization",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 113114.0,
+          "2021-12-31": 160281.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_OperatingLeaseRightOfUseAsset",
+        "tag": "us-gaap:OperatingLeaseRightOfUseAsset",
+        "name": "Operating Lease Right Of Use Asset",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 37553.0,
+          "2021-12-31": 56082.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_Goodwill",
+        "tag": "us-gaap:Goodwill",
+        "name": "Goodwill",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 15017.0,
+          "2021-12-31": 15371.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_OtherAssetsNoncurrent",
+        "tag": "us-gaap:OtherAssetsNoncurrent",
+        "name": "Other Assets",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 22778.0,
+          "2021-12-31": 27235.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "__OTHER__us-gaap_Assets",
+        "tag": ":_OTHER__us-gaap_Assets",
+        "name": "Other",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": -255.0,
+          "2021-12-31": -257.0
+        },
+        "is_leaf": true
+      }
+    ]
+  },
+  "BS_groupable": [
+    {
+      "parent": "us-gaap_Assets",
+      "parent_name": "Assets",
+      "parent_total": {
+        "2020-12-31": 321195.0,
+        "2021-12-31": 420549.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
+          "name": "Property Plant And Equipment And Finance Lease Right Of Use Asset After Accumulated Depreciation And Amortization",
+          "tag": "us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 113114.0,
+            "2021-12-31": 160281.0
+          }
+        },
+        {
+          "concept": "us-gaap_OperatingLeaseRightOfUseAsset",
+          "name": "Operating Lease Right Of Use Asset",
+          "tag": "us-gaap:OperatingLeaseRightOfUseAsset",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 37553.0,
+            "2021-12-31": 56082.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherAssetsNoncurrent",
+          "name": "Other Assets",
+          "tag": "us-gaap:OtherAssetsNoncurrent",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 22778.0,
+            "2021-12-31": 27235.0
+          }
+        },
+        {
+          "concept": "us-gaap_Goodwill",
+          "name": "Goodwill",
+          "tag": "us-gaap:Goodwill",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 15017.0,
+            "2021-12-31": 15371.0
+          }
+        },
+        {
+          "concept": "__OTHER__us-gaap_Assets",
+          "name": "Other",
+          "tag": ":_OTHER__us-gaap_Assets",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": -255.0,
+            "2021-12-31": -257.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_AssetsCurrent",
+      "parent_name": "Assets Current",
+      "parent_total": {
+        "2020-12-31": 132988.0,
+        "2021-12-31": 161837.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_MarketableSecuritiesCurrent",
+          "name": "Marketable Securities Current",
+          "tag": "us-gaap:MarketableSecuritiesCurrent",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 42274.0,
+            "2021-12-31": 59829.0
+          }
+        },
+        {
+          "concept": "us-gaap_CashAndCashEquivalentsAtCarryingValue",
+          "name": "Cash And Cash Equivalents At Carrying Value",
+          "tag": "us-gaap:CashAndCashEquivalentsAtCarryingValue",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 42377.0,
+            "2021-12-31": 36477.0
+          }
+        },
+        {
+          "concept": "us-gaap_AccountsReceivableNetCurrent",
+          "name": "Accounts Receivable",
+          "tag": "us-gaap:AccountsReceivableNetCurrent",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 24542.0,
+            "2021-12-31": 32891.0
+          }
+        },
+        {
+          "concept": "us-gaap_InventoryNet",
+          "name": "Inventory Net",
+          "tag": "us-gaap:InventoryNet",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 23795.0,
+            "2021-12-31": 32640.0
+          }
+        }
+      ]
+    }
+  ],
+  "BS_LE": {
+    "concept": "us-gaap_LiabilitiesAndStockholdersEquity",
+    "tag": "us-gaap:LiabilitiesAndStockholdersEquity",
+    "name": "Liabilities And Stockholders Equity",
+    "weight": 1.0,
+    "values": {
+      "2020-12-31": 321195.0,
+      "2021-12-31": 420549.0
+    },
+    "is_leaf": false,
+    "role": "BS_TLE",
+    "children": [
+      {
+        "concept": "amzn_LeaseLiabilityNoncurrent",
+        "tag": "amzn:LeaseLiabilityNoncurrent",
+        "name": "Lease Liability",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 52573.0,
+          "2021-12-31": 67651.0
+        },
+        "is_leaf": true,
+        "role": "BS_TE"
+      },
+      {
+        "concept": "__LIABILITIES_SYNTHETIC",
+        "tag": ":_LIABILITIES_SYNTHETIC",
+        "name": "Liabilities",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 268622.0,
+          "2021-12-31": 352898.0
+        },
+        "is_leaf": false,
+        "role": "BS_TL",
+        "children": [
+          {
+            "concept": "us-gaap_LiabilitiesCurrent",
+            "tag": "us-gaap:LiabilitiesCurrent",
+            "name": "Liabilities Current",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 126385.0,
+              "2021-12-31": 142266.0
+            },
+            "is_leaf": false,
+            "role": "BS_TCL",
+            "children": [
+              {
+                "concept": "us-gaap_AccountsPayableCurrent",
+                "tag": "us-gaap:AccountsPayableCurrent",
+                "name": "Accounts Payable Current",
+                "weight": 1.0,
+                "values": {
+                  "2020-12-31": 72539.0,
+                  "2021-12-31": 78664.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_AccruedLiabilitiesCurrent",
+                "tag": "us-gaap:AccruedLiabilitiesCurrent",
+                "name": "Accrued Liabilities Current",
+                "weight": 1.0,
+                "values": {
+                  "2020-12-31": 44138.0,
+                  "2021-12-31": 51775.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_ContractWithCustomerLiabilityCurrent",
+                "tag": "us-gaap:ContractWithCustomerLiabilityCurrent",
+                "name": "Contract With Customer Liability Current",
+                "weight": 1.0,
+                "values": {
+                  "2020-12-31": 9708.0,
+                  "2021-12-31": 11827.0
+                },
+                "is_leaf": true
+              }
+            ]
+          },
+          {
+            "concept": "us-gaap_LongTermDebtNoncurrent",
+            "tag": "us-gaap:LongTermDebtNoncurrent",
+            "name": "Long Term Debt",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 31816.0,
+              "2021-12-31": 48744.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_OtherLiabilitiesNoncurrent",
+            "tag": "us-gaap:OtherLiabilitiesNoncurrent",
+            "name": "Other Liabilities",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 17017.0,
+              "2021-12-31": 23643.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_StockholdersEquity",
+            "tag": "us-gaap:StockholdersEquity",
+            "name": "Stockholders Equity",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 93404.0,
+              "2021-12-31": 138245.0
+            },
+            "is_leaf": false,
+            "children": [
+              {
+                "concept": "us-gaap_PreferredStockValue",
+                "tag": "us-gaap:PreferredStockValue",
+                "name": "Preferred Stock Value",
+                "weight": 1.0,
+                "values": {},
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_CommonStockValue",
+                "tag": "us-gaap:CommonStockValue",
+                "name": "Common Stock Value",
+                "weight": 1.0,
+                "values": {
+                  "2020-12-31": 5.0,
+                  "2021-12-31": 5.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_TreasuryStockValue",
+                "tag": "us-gaap:TreasuryStockValue",
+                "name": "Treasury Stock Value",
+                "weight": -1.0,
+                "values": {
+                  "2020-12-31": 1837.0,
+                  "2021-12-31": 1837.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_AdditionalPaidInCapital",
+                "tag": "us-gaap:AdditionalPaidInCapital",
+                "name": "Additional Paid In Capital",
+                "weight": 1.0,
+                "values": {
+                  "2020-12-31": 42865.0,
+                  "2021-12-31": 55538.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+                "tag": "us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+                "name": "Accumulated Other Comprehensive Income Loss Net Of Tax",
+                "weight": 1.0,
+                "values": {
+                  "2020-12-31": -180.0,
+                  "2021-12-31": -1376.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_RetainedEarningsAccumulatedDeficit",
+                "tag": "us-gaap:RetainedEarningsAccumulatedDeficit",
+                "name": "Retained Earnings Accumulated Deficit",
+                "weight": 1.0,
+                "values": {
+                  "2020-12-31": 52551.0,
+                  "2021-12-31": 85915.0
+                },
+                "is_leaf": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "BS_LE_groupable": [
+    {
+      "parent": "us-gaap_LiabilitiesCurrent",
+      "parent_name": "Liabilities Current",
+      "parent_total": {
+        "2020-12-31": 126385.0,
+        "2021-12-31": 142266.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_AccountsPayableCurrent",
+          "name": "Accounts Payable Current",
+          "tag": "us-gaap:AccountsPayableCurrent",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 72539.0,
+            "2021-12-31": 78664.0
+          }
+        },
+        {
+          "concept": "us-gaap_AccruedLiabilitiesCurrent",
+          "name": "Accrued Liabilities Current",
+          "tag": "us-gaap:AccruedLiabilitiesCurrent",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 44138.0,
+            "2021-12-31": 51775.0
+          }
+        },
+        {
+          "concept": "us-gaap_ContractWithCustomerLiabilityCurrent",
+          "name": "Contract With Customer Liability Current",
+          "tag": "us-gaap:ContractWithCustomerLiabilityCurrent",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 9708.0,
+            "2021-12-31": 11827.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_StockholdersEquity",
+      "parent_name": "Stockholders Equity",
+      "parent_total": {
+        "2020-12-31": 93404.0,
+        "2021-12-31": 138245.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_RetainedEarningsAccumulatedDeficit",
+          "name": "Retained Earnings Accumulated Deficit",
+          "tag": "us-gaap:RetainedEarningsAccumulatedDeficit",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 52551.0,
+            "2021-12-31": 85915.0
+          }
+        },
+        {
+          "concept": "us-gaap_AdditionalPaidInCapital",
+          "name": "Additional Paid In Capital",
+          "tag": "us-gaap:AdditionalPaidInCapital",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 42865.0,
+            "2021-12-31": 55538.0
+          }
+        },
+        {
+          "concept": "us-gaap_TreasuryStockValue",
+          "name": "Treasury Stock Value",
+          "tag": "us-gaap:TreasuryStockValue",
+          "weight": -1.0,
+          "values": {
+            "2020-12-31": 1837.0,
+            "2021-12-31": 1837.0
+          }
+        },
+        {
+          "concept": "us-gaap_AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+          "name": "Accumulated Other Comprehensive Income Loss Net Of Tax",
+          "tag": "us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": -180.0,
+            "2021-12-31": -1376.0
+          }
+        },
+        {
+          "concept": "us-gaap_CommonStockValue",
+          "name": "Common Stock Value",
+          "tag": "us-gaap:CommonStockValue",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 5.0,
+            "2021-12-31": 5.0
+          }
+        },
+        {
+          "concept": "us-gaap_PreferredStockValue",
+          "name": "Preferred Stock Value",
+          "tag": "us-gaap:PreferredStockValue",
+          "weight": 1.0,
+          "values": {}
+        }
+      ]
+    }
+  ],
+  "CF": {
+    "concept": "us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
+    "tag": "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
+    "name": "Cash Cash Equivalents Restricted Cash And Restricted Cash Equivalents Period Increase Decrease Including Exchange Rate Effect",
+    "weight": 1.0,
+    "values": {
+      "2020-12-31": 5967.0,
+      "2021-12-31": -5900.0
+    },
+    "is_leaf": false,
+    "role": "CF_NETCH",
+    "children": [
+      {
+        "concept": "us-gaap_NetCashProvidedByUsedInOperatingActivities",
+        "tag": "us-gaap:NetCashProvidedByUsedInOperatingActivities",
+        "name": "Net Cash Provided By Used In Operating Activities",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 66064.0,
+          "2021-12-31": 46327.0
+        },
+        "is_leaf": false,
+        "role": "CF_OPCF",
+        "children": [
+          {
+            "concept": "us-gaap_NetIncomeLoss",
+            "tag": "us-gaap:NetIncomeLoss",
+            "name": "Net Income Loss",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 21331.0,
+              "2021-12-31": 33364.0
+            },
+            "is_leaf": true,
+            "role": "INC_NET_CF"
+          },
+          {
+            "concept": "us-gaap_DepreciationDepletionAndAmortization",
+            "tag": "us-gaap:DepreciationDepletionAndAmortization",
+            "name": "Depreciation Depletion And Amortization",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 25251.0,
+              "2021-12-31": 34296.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ShareBasedCompensation",
+            "tag": "us-gaap:ShareBasedCompensation",
+            "name": "Share Based Compensation",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 9208.0,
+              "2021-12-31": 12757.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_OtherOperatingActivitiesCashFlowStatement",
+            "tag": "us-gaap:OtherOperatingActivitiesCashFlowStatement",
+            "name": "Other Operating Activities Cash Flow Statement",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": -71.0,
+              "2021-12-31": 137.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_OtherNoncashIncomeExpense",
+            "tag": "us-gaap:OtherNoncashIncomeExpense",
+            "name": "Other Noncash Income Expense",
+            "weight": -1.0,
+            "values": {
+              "2020-12-31": 2582.0,
+              "2021-12-31": 14306.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_DeferredIncomeTaxExpenseBenefit",
+            "tag": "us-gaap:DeferredIncomeTaxExpenseBenefit",
+            "name": "Deferred Income Tax Expense Benefit",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": -554.0,
+              "2021-12-31": -310.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInInventories",
+            "tag": "us-gaap:IncreaseDecreaseInInventories",
+            "name": "Increase Decrease In Inventories",
+            "weight": -1.0,
+            "values": {
+              "2020-12-31": 2849.0,
+              "2021-12-31": 9487.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInAccountsReceivableAndOtherOperatingAssets",
+            "tag": "us-gaap:IncreaseDecreaseInAccountsReceivableAndOtherOperatingAssets",
+            "name": "Increase Decrease In Accounts Receivable And Other Operating Assets",
+            "weight": -1.0,
+            "values": {
+              "2020-12-31": 8169.0,
+              "2021-12-31": 18163.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInAccountsPayable",
+            "tag": "us-gaap:IncreaseDecreaseInAccountsPayable",
+            "name": "Increase Decrease In Accounts Payable",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 17480.0,
+              "2021-12-31": 3602.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInAccruedLiabilitiesAndOtherOperatingLiabilities",
+            "tag": "us-gaap:IncreaseDecreaseInAccruedLiabilitiesAndOtherOperatingLiabilities",
+            "name": "Increase Decrease In Accrued Liabilities And Other Operating Liabilities",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 5754.0,
+              "2021-12-31": 2123.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInContractWithCustomerLiability",
+            "tag": "us-gaap:IncreaseDecreaseInContractWithCustomerLiability",
+            "name": "Increase Decrease In Contract With Customer Liability",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 1265.0,
+              "2021-12-31": 2314.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+        "tag": "us-gaap:NetCashProvidedByUsedInInvestingActivities",
+        "name": "Net Cash Provided By Used In Investing Activities",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": -59611.0,
+          "2021-12-31": -58154.0
+        },
+        "is_leaf": false,
+        "role": "CF_INVCF",
+        "children": [
+          {
+            "concept": "us-gaap_PaymentsToAcquireProductiveAssets",
+            "tag": "us-gaap:PaymentsToAcquireProductiveAssets",
+            "name": "Payments To Acquire Productive Assets",
+            "weight": -1.0,
+            "values": {
+              "2020-12-31": 40140.0,
+              "2021-12-31": 61053.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "amzn_ProceedsFromPropertyPlantAndEquipmentSalesAndIncentives",
+            "tag": "amzn:ProceedsFromPropertyPlantAndEquipmentSalesAndIncentives",
+            "name": "Proceeds From Property Plant And Equipment Sales And Incentives",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 5096.0,
+              "2021-12-31": 5657.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "amzn_PaymentsToAcquireBusinessesNetOfCashAcquiredAndOther",
+            "tag": "amzn:PaymentsToAcquireBusinessesNetOfCashAcquiredAndOther",
+            "name": "Payments To Acquire Businesses Net Of Cash Acquired And Other",
+            "weight": -1.0,
+            "values": {
+              "2020-12-31": 2325.0,
+              "2021-12-31": 1985.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ProceedsFromSaleAndMaturityOfMarketableSecurities",
+            "tag": "us-gaap:ProceedsFromSaleAndMaturityOfMarketableSecurities",
+            "name": "Proceeds From Sale And Maturity Of Marketable Securities",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 50237.0,
+              "2021-12-31": 59384.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsToAcquireMarketableSecurities",
+            "tag": "us-gaap:PaymentsToAcquireMarketableSecurities",
+            "name": "Payments To Acquire Marketable Securities",
+            "weight": -1.0,
+            "values": {
+              "2020-12-31": 72479.0,
+              "2021-12-31": 60157.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+        "tag": "us-gaap:NetCashProvidedByUsedInFinancingActivities",
+        "name": "Net Cash Provided By Used In Financing Activities",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": -1104.0,
+          "2021-12-31": 6291.0
+        },
+        "is_leaf": false,
+        "role": "CF_FINCF",
+        "children": [
+          {
+            "concept": "amzn_ProceedsFromShortTermDebtAndOtherFinancingActivities",
+            "tag": "amzn:ProceedsFromShortTermDebtAndOtherFinancingActivities",
+            "name": "Proceeds From Short Term Debt And Other Financing Activities",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 6796.0,
+              "2021-12-31": 7956.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "amzn_RepaymentsOfShortTermDebtAndOtherFinancingActivities",
+            "tag": "amzn:RepaymentsOfShortTermDebtAndOtherFinancingActivities",
+            "name": "Repayments Of Short Term Debt And Other Financing Activities",
+            "weight": -1.0,
+            "values": {
+              "2020-12-31": 6177.0,
+              "2021-12-31": 7753.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ProceedsFromIssuanceOfLongTermDebt",
+            "tag": "us-gaap:ProceedsFromIssuanceOfLongTermDebt",
+            "name": "Proceeds From Issuance Of Long Term Debt",
+            "weight": 1.0,
+            "values": {
+              "2020-12-31": 10525.0,
+              "2021-12-31": 19003.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_RepaymentsOfLongTermDebt",
+            "tag": "us-gaap:RepaymentsOfLongTermDebt",
+            "name": "Repayments Of Long Term Debt",
+            "weight": -1.0,
+            "values": {
+              "2020-12-31": 1553.0,
+              "2021-12-31": 1590.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_FinanceLeasePrincipalPayments",
+            "tag": "us-gaap:FinanceLeasePrincipalPayments",
+            "name": "Finance Lease Principal Payments",
+            "weight": -1.0,
+            "values": {
+              "2020-12-31": 10642.0,
+              "2021-12-31": 11163.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "amzn_RepaymentsOfLongTermFinancingObligations",
+            "tag": "amzn:RepaymentsOfLongTermFinancingObligations",
+            "name": "Repayments Of Long Term Financing Obligations",
+            "weight": -1.0,
+            "values": {
+              "2020-12-31": 53.0,
+              "2021-12-31": 162.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_EffectOfExchangeRateOnCashAndCashEquivalents",
+        "tag": "us-gaap:EffectOfExchangeRateOnCashAndCashEquivalents",
+        "name": "Effect Of Exchange Rate On Cash And Cash Equivalents",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 618.0,
+          "2021-12-31": -364.0
+        },
+        "is_leaf": true,
+        "role": "CF_FX"
+      }
+    ]
+  },
+  "CF_groupable": [
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInOperatingActivities",
+      "parent_name": "Net Cash Provided By Used In Operating Activities",
+      "parent_total": {
+        "2020-12-31": 66064.0,
+        "2021-12-31": 46327.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_DepreciationDepletionAndAmortization",
+          "name": "Depreciation Depletion And Amortization",
+          "tag": "us-gaap:DepreciationDepletionAndAmortization",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 25251.0,
+            "2021-12-31": 34296.0
+          }
+        },
+        {
+          "concept": "us-gaap_NetIncomeLoss",
+          "name": "Net Income Loss",
+          "tag": "us-gaap:NetIncomeLoss",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 21331.0,
+            "2021-12-31": 33364.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInAccountsReceivableAndOtherOperatingAssets",
+          "name": "Increase Decrease In Accounts Receivable And Other Operating Assets",
+          "tag": "us-gaap:IncreaseDecreaseInAccountsReceivableAndOtherOperatingAssets",
+          "weight": -1.0,
+          "values": {
+            "2020-12-31": 8169.0,
+            "2021-12-31": 18163.0
+          }
+        },
+        {
+          "concept": "us-gaap_ShareBasedCompensation",
+          "name": "Share Based Compensation",
+          "tag": "us-gaap:ShareBasedCompensation",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 9208.0,
+            "2021-12-31": 12757.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInAccountsPayable",
+          "name": "Increase Decrease In Accounts Payable",
+          "tag": "us-gaap:IncreaseDecreaseInAccountsPayable",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 17480.0,
+            "2021-12-31": 3602.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherNoncashIncomeExpense",
+          "name": "Other Noncash Income Expense",
+          "tag": "us-gaap:OtherNoncashIncomeExpense",
+          "weight": -1.0,
+          "values": {
+            "2020-12-31": 2582.0,
+            "2021-12-31": 14306.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInInventories",
+          "name": "Increase Decrease In Inventories",
+          "tag": "us-gaap:IncreaseDecreaseInInventories",
+          "weight": -1.0,
+          "values": {
+            "2020-12-31": 2849.0,
+            "2021-12-31": 9487.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInAccruedLiabilitiesAndOtherOperatingLiabilities",
+          "name": "Increase Decrease In Accrued Liabilities And Other Operating Liabilities",
+          "tag": "us-gaap:IncreaseDecreaseInAccruedLiabilitiesAndOtherOperatingLiabilities",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 5754.0,
+            "2021-12-31": 2123.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInContractWithCustomerLiability",
+          "name": "Increase Decrease In Contract With Customer Liability",
+          "tag": "us-gaap:IncreaseDecreaseInContractWithCustomerLiability",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 1265.0,
+            "2021-12-31": 2314.0
+          }
+        },
+        {
+          "concept": "us-gaap_DeferredIncomeTaxExpenseBenefit",
+          "name": "Deferred Income Tax Expense Benefit",
+          "tag": "us-gaap:DeferredIncomeTaxExpenseBenefit",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": -554.0,
+            "2021-12-31": -310.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherOperatingActivitiesCashFlowStatement",
+          "name": "Other Operating Activities Cash Flow Statement",
+          "tag": "us-gaap:OtherOperatingActivitiesCashFlowStatement",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": -71.0,
+            "2021-12-31": 137.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+      "parent_name": "Net Cash Provided By Used In Investing Activities",
+      "parent_total": {
+        "2020-12-31": -59611.0,
+        "2021-12-31": -58154.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_PaymentsToAcquireMarketableSecurities",
+          "name": "Payments To Acquire Marketable Securities",
+          "tag": "us-gaap:PaymentsToAcquireMarketableSecurities",
+          "weight": -1.0,
+          "values": {
+            "2020-12-31": 72479.0,
+            "2021-12-31": 60157.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromSaleAndMaturityOfMarketableSecurities",
+          "name": "Proceeds From Sale And Maturity Of Marketable Securities",
+          "tag": "us-gaap:ProceedsFromSaleAndMaturityOfMarketableSecurities",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 50237.0,
+            "2021-12-31": 59384.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsToAcquireProductiveAssets",
+          "name": "Payments To Acquire Productive Assets",
+          "tag": "us-gaap:PaymentsToAcquireProductiveAssets",
+          "weight": -1.0,
+          "values": {
+            "2020-12-31": 40140.0,
+            "2021-12-31": 61053.0
+          }
+        },
+        {
+          "concept": "amzn_ProceedsFromPropertyPlantAndEquipmentSalesAndIncentives",
+          "name": "Proceeds From Property Plant And Equipment Sales And Incentives",
+          "tag": "amzn:ProceedsFromPropertyPlantAndEquipmentSalesAndIncentives",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 5096.0,
+            "2021-12-31": 5657.0
+          }
+        },
+        {
+          "concept": "amzn_PaymentsToAcquireBusinessesNetOfCashAcquiredAndOther",
+          "name": "Payments To Acquire Businesses Net Of Cash Acquired And Other",
+          "tag": "amzn:PaymentsToAcquireBusinessesNetOfCashAcquiredAndOther",
+          "weight": -1.0,
+          "values": {
+            "2020-12-31": 2325.0,
+            "2021-12-31": 1985.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+      "parent_name": "Net Cash Provided By Used In Financing Activities",
+      "parent_total": {
+        "2020-12-31": -1104.0,
+        "2021-12-31": 6291.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_ProceedsFromIssuanceOfLongTermDebt",
+          "name": "Proceeds From Issuance Of Long Term Debt",
+          "tag": "us-gaap:ProceedsFromIssuanceOfLongTermDebt",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 10525.0,
+            "2021-12-31": 19003.0
+          }
+        },
+        {
+          "concept": "us-gaap_FinanceLeasePrincipalPayments",
+          "name": "Finance Lease Principal Payments",
+          "tag": "us-gaap:FinanceLeasePrincipalPayments",
+          "weight": -1.0,
+          "values": {
+            "2020-12-31": 10642.0,
+            "2021-12-31": 11163.0
+          }
+        },
+        {
+          "concept": "amzn_ProceedsFromShortTermDebtAndOtherFinancingActivities",
+          "name": "Proceeds From Short Term Debt And Other Financing Activities",
+          "tag": "amzn:ProceedsFromShortTermDebtAndOtherFinancingActivities",
+          "weight": 1.0,
+          "values": {
+            "2020-12-31": 6796.0,
+            "2021-12-31": 7956.0
+          }
+        },
+        {
+          "concept": "amzn_RepaymentsOfShortTermDebtAndOtherFinancingActivities",
+          "name": "Repayments Of Short Term Debt And Other Financing Activities",
+          "tag": "amzn:RepaymentsOfShortTermDebtAndOtherFinancingActivities",
+          "weight": -1.0,
+          "values": {
+            "2020-12-31": 6177.0,
+            "2021-12-31": 7753.0
+          }
+        },
+        {
+          "concept": "us-gaap_RepaymentsOfLongTermDebt",
+          "name": "Repayments Of Long Term Debt",
+          "tag": "us-gaap:RepaymentsOfLongTermDebt",
+          "weight": -1.0,
+          "values": {
+            "2020-12-31": 1553.0,
+            "2021-12-31": 1590.0
+          }
+        },
+        {
+          "concept": "amzn_RepaymentsOfLongTermFinancingObligations",
+          "name": "Repayments Of Long Term Financing Obligations",
+          "tag": "amzn:RepaymentsOfLongTermFinancingObligations",
+          "weight": -1.0,
+          "values": {
+            "2020-12-31": 53.0,
+            "2021-12-31": 162.0
+          }
+        }
+      ]
+    }
+  ],
+  "revenue_segments": {
+    "concept": "_REVENUE_SEGMENTS",
+    "tag": ":REVENUE_SEGMENTS",
+    "name": "Revenue Segments",
+    "weight": 1.0,
+    "values": {
+      "2020-12-31": 386064.0,
+      "2021-12-31": 469822.0
+    },
+    "is_leaf": false,
+    "children": [
+      {
+        "concept": "amzn_NorthAmericaSegmentMember",
+        "tag": "amzn:NorthAmericaSegmentMember",
+        "name": "North America",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 236282.0,
+          "2021-12-31": 279833.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "amzn_InternationalSegmentMember",
+        "tag": "amzn:InternationalSegmentMember",
+        "name": "International",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 104412.0,
+          "2021-12-31": 127787.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "amzn_AmazonWebServicesSegmentMember",
+        "tag": "amzn:AmazonWebServicesSegmentMember",
+        "name": "AWS",
+        "weight": 1.0,
+        "values": {
+          "2020-12-31": 45370.0,
+          "2021-12-31": 62202.0
+        },
+        "is_leaf": true
+      }
+    ]
+  }
+}

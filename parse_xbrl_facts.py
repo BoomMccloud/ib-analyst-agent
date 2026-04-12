@@ -41,7 +41,8 @@ def _parse_xbrl_value(raw: str) -> float | None:
 def extract_xbrl_contexts(html: str) -> dict:
     """Parse <xbrli:context> blocks to map id -> period info.
 
-    Returns: {context_id: {"period": "2024-12-31", "is_instant": bool, "has_segment": bool}}
+    Returns: {context_id: {"period": "2024-12-31", "is_instant": bool,
+              "has_segment": bool, "segments": {dim: member}}}
     """
     ctx_pattern = re.compile(
         r'<xbrli:context\s+id="([^"]+)"[^>]*>([\s\S]*?)</xbrli:context>',
@@ -50,6 +51,7 @@ def extract_xbrl_contexts(html: str) -> dict:
     instant_pat = re.compile(r'<xbrli:instant>([^<]+)</xbrli:instant>', re.IGNORECASE)
     end_pat = re.compile(r'<xbrli:endDate>([^<]+)</xbrli:endDate>', re.IGNORECASE)
     segment_pat = re.compile(r'xbrldi:', re.IGNORECASE)
+    member_pat = re.compile(r'dimension="([^"]+)">([^<]+)<', re.IGNORECASE)
 
     contexts = {}
     for m in ctx_pattern.finditer(html):
@@ -57,6 +59,9 @@ def extract_xbrl_contexts(html: str) -> dict:
         body = m.group(2)
 
         has_segment = bool(segment_pat.search(body))
+        segments = {}
+        if has_segment:
+            segments = {dim: member for dim, member in member_pat.findall(body)}
 
         instant = instant_pat.search(body)
         if instant:
@@ -64,6 +69,7 @@ def extract_xbrl_contexts(html: str) -> dict:
                 "period": instant.group(1).strip(),
                 "is_instant": True,
                 "has_segment": has_segment,
+                "segments": segments,
             }
             continue
 
@@ -73,6 +79,7 @@ def extract_xbrl_contexts(html: str) -> dict:
                 "period": end.group(1).strip(),
                 "is_instant": False,
                 "has_segment": has_segment,
+                "segments": segments,
             }
 
     return contexts
@@ -88,6 +95,7 @@ def extract_xbrl_facts(html: str) -> list[dict]:
     name_pat = re.compile(r'name="([^"]+)"')
     ctx_pat = re.compile(r'contextRef="([^"]+)"')
     sign_pat = re.compile(r'sign="-"')
+    scale_pat = re.compile(r'scale="([^"]+)"')
 
     facts = []
     for m in tag_pattern.finditer(html):
@@ -111,6 +119,9 @@ def extract_xbrl_facts(html: str) -> list[dict]:
         # The displayed value in the HTML is already in the filing's stated
         # unit (typically millions). scale="6" just tells processors how to
         # convert back to raw dollars — we want the human-readable value.
+        # We DO extract scale to detect the filing's display unit.
+        scale_m = scale_pat.search(attrs)
+        scale = int(scale_m.group(1)) if scale_m else None
 
         # Extract decimals attribute for precision ranking when duplicates exist.
         dec_pat = re.compile(r'decimals="([^"]+)"')
@@ -122,18 +133,35 @@ def extract_xbrl_facts(html: str) -> list[dict]:
             "context": ctx_m.group(1),
             "value": value,
             "decimals": decimals,
+            "scale": scale,
         })
 
     return facts
 
 
-def build_xbrl_facts_dict(html: str) -> dict:
+def _detect_unit_label(raw_facts: list[dict]) -> str:
+    """Detect the filing's display unit from the dominant scale attribute.
+
+    scale="6" → millions, scale="3" → thousands, scale="9" → billions.
+    Returns a short label like "$m", "$k", "$bn", or "$" (unknown).
+    """
+    from collections import Counter
+    scales = [f["scale"] for f in raw_facts if f["scale"] is not None]
+    if not scales:
+        return "$m"  # default assumption
+    dominant = Counter(scales).most_common(1)[0][0]
+    return {3: "$k", 6: "$m", 9: "$bn"}.get(dominant, "$")
+
+
+def build_xbrl_facts_dict(html: str) -> tuple[dict, str]:
     """Extract and resolve all XBRL facts from HTML.
 
-    Returns: {tag: {period: value}} — only primary entity, no segments.
+    Returns: ({tag: {period: value}}, unit_label) — only primary entity,
+    no segments. unit_label is "$m", "$k", "$bn", etc.
     """
     contexts = extract_xbrl_contexts(html)
     raw_facts = extract_xbrl_facts(html)
+    unit_label = _detect_unit_label(raw_facts)
 
     facts = {}  # tag -> {period: value}
     precision = {}  # tag -> {period: decimals} — track precision for dedup
@@ -157,7 +185,37 @@ def build_xbrl_facts_dict(html: str) -> dict:
             facts[tag][period] = fact["value"]
             precision[tag][period] = dec
 
-    return facts
+    return facts, unit_label
+
+
+def build_segment_facts_dict(html: str) -> tuple[dict, dict]:
+    """Extract segment-dimensioned XBRL facts from HTML.
+
+    Returns: (single_dim, multi_dim)
+      single_dim: {tag: {dim: {member: {period: value}}}}
+      multi_dim:  {tag: {dim_tuple: {member_tuple: {period: value}}}}
+    """
+    contexts = extract_xbrl_contexts(html)
+    raw_facts = extract_xbrl_facts(html)
+
+    single = {}  # tag -> {dim -> {member -> {period: value}}}
+    multi = {}   # tag -> {dim_tuple -> {member_tuple -> {period: value}}}
+    for fact in raw_facts:
+        ctx = contexts.get(fact["context"])
+        if not ctx or not ctx["has_segment"]:
+            continue
+        segments = ctx.get("segments", {})
+        tag = fact["tag"]
+        period = ctx["period"]
+        if len(segments) == 1:
+            dim, member = next(iter(segments.items()))
+            single.setdefault(tag, {}).setdefault(dim, {}).setdefault(member, {})[period] = fact["value"]
+        elif len(segments) >= 2:
+            dim_key = tuple(sorted(segments.keys()))
+            member_key = tuple(segments[d] for d in sorted(segments.keys()))
+            multi.setdefault(tag, {}).setdefault(dim_key, {}).setdefault(member_key, {})[period] = fact["value"]
+
+    return single, multi
 
 
 # ---------------------------------------------------------------------------
@@ -494,7 +552,7 @@ def main():
     if args.html:
         with open(args.html) as f:
             html = f.read()
-        xbrl_facts = build_xbrl_facts_dict(html)
+        xbrl_facts, _unit = build_xbrl_facts_dict(html)
     elif args.input:
         with open(args.input) as f:
             xbrl_facts = json.load(f)

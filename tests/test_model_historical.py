@@ -284,6 +284,7 @@ def test_verify_model_catches_bs_imbalance():
 
     # Break BS balance by modifying TA
     bs_ta = find_node_by_role(trees["BS"], "BS_TA")
+    bs_ta.children = []
     for p in list(bs_ta.values.keys()):
         bs_ta.values[p] += 999
 
@@ -299,6 +300,7 @@ def test_verify_model_catches_ni_mismatch():
 
     # Break NI link by modifying IS's NI
     inc_net_is = find_node_by_role(trees["IS"], "INC_NET")
+    inc_net_is.children = []  # Force fv() to use declared values
     for p in list(inc_net_is.values.keys()):
         inc_net_is.values[p] += 500
 

@@ -2,7 +2,7 @@ import json
 from xbrl_tree import TreeNode
 from sheet_builder import _cascade_layout
 
-with open("pipeline_output/nflx_trees.json") as f:
+with open("pipeline_output/validation/NFLX/trees_2026-01-23.json") as f:
     trees_data = json.load(f)
 
 is_tree_data = trees_data["IS"]

@@ -483,7 +483,7 @@ def _collect_roles(tree: TreeNode) -> dict[str, float]:
     return result
 
 
-def test_real_single_company(company: str):
+def _test_real_single_company(company: str):
     """Test merge on a single company's real data."""
     print(f"\n{'=' * 70}")
     print(f"REAL DATA: {company}")
@@ -575,7 +575,7 @@ def test_real_all_companies():
     results = {}
     for co in companies:
         try:
-            test_real_single_company(co)
+            _test_real_single_company(co)
             results[co] = "PASS"
         except FileNotFoundError:
             results[co] = "SKIP (no fixture)"

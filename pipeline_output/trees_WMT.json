@@ -160,8 +160,8 @@
       "2024-01-31": 15889.0
     },
     "us-gaap:CashAndCashEquivalentsAtCarryingValue": {
-      "2026-01-31": 10.7,
-      "2025-01-31": 9.0
+      "2026-01-31": 10727.0,
+      "2025-01-31": 9037.0
     },
     "us-gaap:ReceivablesNetCurrent": {
       "2026-01-31": 11172.0,
@@ -206,8 +206,8 @@
       "2024-01-31": 252399.0
     },
     "us-gaap:ShortTermBorrowings": {
-      "2026-01-31": 6.6,
-      "2025-01-31": 3.1
+      "2026-01-31": 6596.0,
+      "2025-01-31": 3068.0
     },
     "us-gaap:AccountsPayableCurrent": {
       "2026-01-31": 63061.0,
@@ -448,7 +448,7 @@
     "us-gaap:ProceedsFromIssuanceOrSaleOfEquity": {
       "2026-01-31": 111.0,
       "2025-01-31": 362.0,
-      "2024-01-31": 0.7
+      "2024-01-31": 716.0
     },
     "us-gaap:ProceedsFromPaymentsForOtherFinancingActivities": {
       "2026-01-31": -2511.0,
@@ -923,8 +923,8 @@
       "2025-01-31": 16498.0
     },
     "us-gaap:DeferredTaxAssetsValuationAllowance": {
-      "2026-01-31": 4.4,
-      "2025-01-31": 7.4
+      "2026-01-31": 4421.0,
+      "2025-01-31": 7405.0
     },
     "us-gaap:DeferredTaxAssetsNet": {
       "2026-01-31": 10118.0,
@@ -1250,8 +1250,8 @@
         "name": "Assets Current",
         "weight": 1.0,
         "values": {
-          "2026-01-31": 96184.3,
-          "2025-01-31": 88985.0
+          "2026-01-31": 85468.0,
+          "2025-01-31": 79957.0
         },
         "is_leaf": false,
         "role": "BS_TCA",
@@ -1298,17 +1298,6 @@
             "values": {
               "2026-01-31": 4124.0,
               "2025-01-31": 4011.0
-            },
-            "is_leaf": true
-          },
-          {
-            "concept": "__OTHER__",
-            "tag": ":_OTHER__",
-            "name": "Other",
-            "weight": 1.0,
-            "values": {
-              "2025-01-31": 9028.0,
-              "2026-01-31": 10716.300000000003
             },
             "is_leaf": true
           }
@@ -1375,8 +1364,8 @@
         "name": "Other",
         "weight": 1.0,
         "values": {
-          "2025-01-31": -9527.0,
-          "2026-01-31": -11310.299999999988
+          "2025-01-31": -499.0,
+          "2026-01-31": -594.0
         },
         "is_leaf": true
       }
@@ -1432,16 +1421,6 @@
           }
         },
         {
-          "concept": "__OTHER__",
-          "name": "Other",
-          "tag": ":_OTHER__",
-          "weight": 1.0,
-          "values": {
-            "2025-01-31": -9527.0,
-            "2026-01-31": -11310.299999999988
-          }
-        },
-        {
           "concept": "us-gaap_FinanceLeaseRightOfUseAsset",
           "name": "Finance Lease Right Of Use Asset",
           "tag": "us-gaap:FinanceLeaseRightOfUseAsset",
@@ -1450,6 +1429,16 @@
             "2026-01-31": 6123.0,
             "2025-01-31": 6112.0
           }
+        },
+        {
+          "concept": "__OTHER__",
+          "name": "Other",
+          "tag": ":_OTHER__",
+          "weight": 1.0,
+          "values": {
+            "2025-01-31": -499.0,
+            "2026-01-31": -594.0
+          }
         }
       ]
     },
@@ -1457,8 +1446,8 @@
       "parent": "us-gaap_AssetsCurrent",
       "parent_name": "Assets Current",
       "parent_total": {
-        "2026-01-31": 96184.3,
-        "2025-01-31": 88985.0
+        "2026-01-31": 85468.0,
+        "2025-01-31": 79957.0
       },
       "siblings": [
         {
@@ -1489,16 +1478,6 @@
           "values": {
             "2026-01-31": 11321.0,
             "2025-01-31": 9536.0
-          }
-        },
-        {
-          "concept": "__OTHER__",
-          "name": "Other",
-          "tag": ":_OTHER__",
-          "weight": 1.0,
-          "values": {
-            "2025-01-31": 9028.0,
-            "2026-01-31": 10716.300000000003
           }
         },
         {
@@ -1567,8 +1546,8 @@
                 "name": "Short Term Borrowings",
                 "weight": 1.0,
                 "values": {
-                  "2026-01-31": 6.6,
-                  "2025-01-31": 3.1
+                  "2026-01-31": 6596.0,
+                  "2025-01-31": 3068.0
                 },
                 "is_leaf": true
               },
@@ -1635,17 +1614,6 @@
                 "values": {
                   "2026-01-31": 856.0,
                   "2025-01-31": 800.0
-                },
-                "is_leaf": true
-              },
-              {
-                "concept": "__OTHER__",
-                "tag": ":_OTHER__",
-                "name": "Other",
-                "weight": 1.0,
-                "values": {
-                  "2025-01-31": 3064.899999999994,
-                  "2026-01-31": 6589.399999999994
                 },
                 "is_leaf": true
               }
@@ -1861,13 +1829,13 @@
           }
         },
         {
-          "concept": "__OTHER__",
-          "name": "Other",
-          "tag": ":_OTHER__",
+          "concept": "us-gaap_ShortTermBorrowings",
+          "name": "Short Term Borrowings",
+          "tag": "us-gaap:ShortTermBorrowings",
           "weight": 1.0,
           "values": {
-            "2025-01-31": 3064.899999999994,
-            "2026-01-31": 6589.399999999994
+            "2026-01-31": 6596.0,
+            "2025-01-31": 3068.0
           }
         },
         {
@@ -1908,16 +1876,6 @@
           "values": {
             "2026-01-31": 596.0,
             "2025-01-31": 608.0
-          }
-        },
-        {
-          "concept": "us-gaap_ShortTermBorrowings",
-          "name": "Short Term Borrowings",
-          "tag": "us-gaap:ShortTermBorrowings",
-          "weight": 1.0,
-          "values": {
-            "2026-01-31": 6.6,
-            "2025-01-31": 3.1
           }
         }
       ]

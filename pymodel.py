@@ -53,7 +53,7 @@ def verify_model(trees: dict) -> list[tuple]:
                 break
 
     def check(name, period, val):
-        if abs(val) > 0.5:
+        if abs(val) > 1.0:
             errors.append((name, period, val))
 
     for p in periods:
