@@ -7,9 +7,11 @@ Evaluation performed 2026-04-12. Ordered by priority within each tier.
 ## P0 — High Impact / Low Effort
 
 ### 1. Fix Multi-Year Merge Validation Bugs
+**[DONE]**
 **What:** The 10-company validation run (`docs/todo/spec_multi_year_merge_bugs.md`) identified critical bugs preventing successful merges for TSLA (BS_CASH tagging failure), BRK-B (wrong hierarchy root), and JPM (duplicate facts).
 **Impact:** Prevents correct model generation for major companies.
 **What to do:** Implement the fixes described in `docs/todo/spec_multi_year_merge_bugs.md`.
+**Resolution:** Reclassification detection (`us-gaap_Revenues` -> `us-gaap_RevenueFromContract...`) fixed by ensuring newest-first processing, skipping `__OTHER__` nodes in `base_index`, and retaining newest authoritative values. TSLA `TemporaryEquity` gap fixed by using `startswith("__OTHER__")` instead of `startswith("__")` so synthetic parent nodes don't get skipped in value merging.
 
 ---
 

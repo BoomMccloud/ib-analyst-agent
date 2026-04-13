@@ -11,6 +11,7 @@ import json
 import logging
 import sys
 from xbrl_tree import TreeNode
+from concept_matcher import ConceptMatcher, ConceptMap
 
 logger = logging.getLogger(__name__)
 
@@ -26,96 +27,7 @@ def _find_by_concept(node, concept):
     return None
 
 
-def _collect_all_concepts(tree, period_values=None):
-    """Collect {concept: {period: value}} from a tree, recursively."""
-    if period_values is None:
-        period_values = {}
-    if tree.concept not in period_values:
-        period_values[tree.concept] = {}
-    for p, v in tree.values.items():
-        if v != 0:
-            period_values[tree.concept][p] = v
-    for c in tree.children:
-        _collect_all_concepts(c, period_values)
-    return period_values
-
-
-def _build_concept_to_parent(tree, mapping=None):
-    """Build {child_concept: parent_concept} mapping."""
-    if mapping is None:
-        mapping = {}
-    for c in tree.children:
-        mapping[c.concept] = tree.concept
-        _build_concept_to_parent(c, mapping)
-    return mapping
-
-
-def _build_value_index(tree, period):
-    """Build {value: [node]} index for a tree at a given period."""
-    index = {}
-    def _walk(n):
-        val = n.values.get(period, 0)
-        if val != 0:
-            index.setdefault(val, []).append(n)
-        for c in n.children:
-            _walk(c)
-    _walk(tree)
-    return index
-
-
-def _build_rename_map(base_tree, old_tree, overlap_period):
-    """Build {old_concept: new_concept} mapping using value matching.
-
-    For concepts in old_tree that don't exist in base_tree,
-    find a unique value match in base_tree for the overlap period.
-    """
-    renames = {}
-    base_index = _build_value_index(base_tree, overlap_period)
-    base_concepts = set()
-    def _collect(n):
-        base_concepts.add(n.concept)
-        for c in n.children:
-            _collect(c)
-    _collect(base_tree)
-
-    def _walk_old(n):
-        if n.concept not in base_concepts and n.concept != "__OTHER__":
-            val = n.values.get(overlap_period, 0)
-            if val != 0:
-                candidates = base_index.get(val, [])
-                if len(candidates) == 1:
-                    renames[n.concept] = candidates[0].concept
-        for c in n.children:
-            _walk_old(c)
-    _walk_old(old_tree)
-    return renames
-
-
-def _merge_values_by_concept(base_node, all_values, renames):
-    """Fill in base_node's values from the all_values dict, handling renames.
-
-    Skips __OTHER__ nodes — they are synthetic residuals that must be
-    recomputed after all real concepts are filled in.
-    """
-    concept = base_node.concept
-    if not concept.startswith("__"):
-        # Direct concept match
-        if concept in all_values:
-            for p, v in all_values[concept].items():
-                if p not in base_node.values:
-                    base_node.values[p] = v
-        # Check if any old concept renames to this one
-        for old_concept, new_concept in renames.items():
-            if new_concept == concept and old_concept in all_values:
-                for p, v in all_values[old_concept].items():
-                    if p not in base_node.values:
-                        base_node.values[p] = v
-    # Recurse
-    for c in base_node.children:
-        _merge_values_by_concept(c, all_values, renames)
-
-
-def _find_orphans(all_values, base_tree, renames, parent_maps):
+def _find_orphans(cmap: ConceptMap, base_tree):
     """Find concepts that exist in older filings but not in the base tree.
 
     Returns {parent_concept: [(orphan_concept, {period: value})]}
@@ -129,26 +41,26 @@ def _find_orphans(all_values, base_tree, renames, parent_maps):
     _collect(base_tree)
 
     # Also exclude renamed concepts (they're already mapped)
-    renamed_old = set(renames.keys())
-    renamed_new = set(renames.values())
+    renamed_old = set(cmap.renames.keys())
+    renamed_new = set(cmap.renames.values())
 
     orphans = {}  # parent_concept -> [(concept, values)]
-    for concept, values in all_values.items():
+    for concept, values in cmap.all_values.items():
         if concept in base_concepts:
             continue
         if concept in renamed_old:
             continue
-        if concept.startswith("__"):
+        if concept.startswith("__OTHER__"):
             continue
         if "Member" in concept:
             continue
         # Find parent from any filing's parent map
         parent = None
-        for pmap in parent_maps:
+        for pmap in cmap.parent_maps:
             if concept in pmap:
                 parent = pmap[concept]
                 # If parent was renamed, use new name
-                parent = renames.get(parent, parent)
+                parent = cmap.renames.get(parent, parent)
                 break
         if parent and parent in base_concepts:
             orphans.setdefault(parent, []).append((concept, values))
@@ -171,14 +83,13 @@ def _recompute_residuals(node, periods):
         return
 
     # Find existing __OTHER__ child
-    other_child = None
-    for c in node.children:
-        if c.concept.startswith("__"):
-            other_child = c
-            break
+    other_child = next(
+        (c for c in node.children if c.concept.startswith("__OTHER__")),
+        None,
+    )
 
     # Compute residuals
-    real_children = [c for c in node.children if not c.concept.startswith("__")]
+    real_children = [c for c in node.children if not c.concept.startswith("__OTHER__")]
     new_values = {}
     for p in periods:
         parent_val = node.values.get(p, 0)
@@ -240,54 +151,22 @@ def merge_filing_trees(tree_files):
     for data in all_data:
         all_periods.update(data.get("complete_periods", []))
     all_periods = sorted(all_periods)
+    
+    matcher = ConceptMatcher()
 
     for stmt in ["IS", "BS", "BS_LE", "CF", "revenue_segments"]:
         base_tree = filing_trees[0].get(stmt)
         if not base_tree:
             continue
 
-        # Pass 1: Collect all concepts+values from all filings
-        all_values = {}
-        parent_maps = []
-        for i in range(len(all_data)):
-            old_tree = filing_trees[i].get(stmt)
-            if not old_tree:
-                continue
-            _collect_all_concepts(old_tree, all_values)
-            parent_maps.append(_build_concept_to_parent(old_tree))
+        # Pass 1 & 2: Alignment
+        cmap = matcher.align_statement(stmt, filing_trees, all_data)
 
-        # Pass 2: Build rename maps using overlapping periods
-        all_renames = {}
-        for i in range(1, len(all_data)):
-            old_tree = filing_trees[i].get(stmt)
-            if not old_tree:
-                continue
-            older_periods = all_data[i].get("complete_periods", [])
-            # Find overlap with the filing before it (i-1)
-            prev_periods = all_data[i-1].get("complete_periods", [])
-            overlap = set(prev_periods) & set(older_periods)
-            if not overlap:
-                continue
-            overlap_period = max(overlap)
-            prev_tree = filing_trees[i-1].get(stmt)
-            if prev_tree:
-                renames = _build_rename_map(prev_tree, old_tree, overlap_period)
-                # Chain renames: if A→B and B→C, then A→C
-                for old_c, new_c in renames.items():
-                    final = new_c
-                    while final in all_renames:
-                        final = all_renames[final]
-                    all_renames[old_c] = final
-                if renames:
-                    print(f"  {stmt}: renames at {overlap_period}: "
-                          f"{', '.join(f'{k.split(chr(95),1)[-1][:30]}→{v.split(chr(95),1)[-1][:30]}' for k,v in renames.items())}",
-                          file=sys.stderr)
-
-        # Pass 3: Fill values into base tree (concept match + renames)
-        _merge_values_by_concept(base_tree, all_values, all_renames)
+        # Pass 3: Fill values into base tree
+        matcher.merge_values_by_concept(base_tree, cmap)
 
         # Pass 4: Find orphan concepts and add them if they reduce the parent gap
-        orphans = _find_orphans(all_values, base_tree, all_renames, parent_maps)
+        orphans = _find_orphans(cmap, base_tree)
         for parent_concept, orphan_list in orphans.items():
             parent_node = _find_by_concept(base_tree, parent_concept)
             if not parent_node or not parent_node.values:
@@ -304,7 +183,7 @@ def merge_filing_trees(tree_files):
                     parent_val = parent_node.values.get(p, 0)
                     if parent_val == 0:
                         continue
-                    real_children = [c for c in parent_node.children if not c.concept.startswith("__")]
+                    real_children = [c for c in parent_node.children if not c.concept.startswith("__OTHER__")]
                     current_sum = sum(c.values.get(p, 0) * c.weight for c in real_children)
                     current_gap = abs(parent_val - current_sum)
                     new_sum = current_sum + filtered_vals.get(p, 0)
@@ -323,6 +202,9 @@ def merge_filing_trees(tree_files):
                 else:
                     print(f"  {stmt}: skipped orphan {orphan_concept.split('_',1)[-1][:40]} "
                           f"(would {'hurt' if hurts else 'not help'})", file=sys.stderr)
+
+        # Pass 4b: Detect and fix structural reclassifications
+        matcher.detect_and_fix_structural_shifts(base_tree, all_periods, stmt)
 
         # Pass 5: Recompute __OTHER__ residuals
         _recompute_residuals(base_tree, all_periods)

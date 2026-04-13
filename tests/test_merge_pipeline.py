@@ -471,7 +471,7 @@ class TestResidualSanityLogging:
         # Verify __OTHER__ was created with the residual
         other = None
         for c in parent.children:
-            if c.concept.startswith("__"):
+            if c.concept.startswith("__OTHER__"):
                 other = c
                 break
         assert other is not None, "No __OTHER__ node created"

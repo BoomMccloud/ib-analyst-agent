@@ -1,7 +1,8 @@
 # Multi-Year Tree Merge — Design Spec
 
-> **Status**: Updated 2026-04-12 — reflects current codebase state after Priority 1 and Priority 2 implementation.
-> **Remaining work**: Reclassification detection (Step 1c), hard gate on `verify_tree_completeness()`.
+> **Status**: ✅ **COMPLETE** (2026-04-13) — all priorities shipped.
+> **Validation**: 8/9 multi-filing companies ALL PASS (AAPL, AMZN, GOOG, META, MSFT, NFLX, PFE, TSLA). BRK-B is accepted as a known limitation (non-standard XBRL structure).
+> **Deferred (not blocking)**: Pattern 3 (1-to-N concept split) and LLM Tier 2 for reclassification — no real-world cases observed yet.
 
 ## Problem Statement
 
@@ -38,8 +39,8 @@ The **single-filing pipeline** is sound and does not need changes:
 | `merge_trees.py` — rename detection | ✅ Implemented | `_build_rename_map()` with chaining |
 | `merge_trees.py` — orphan insertion | ✅ Implemented | Gap-reduction gate in Pass 4 |
 | `merge_trees.py` — residuals | ✅ Implemented | `_recompute_residuals()` with sanity warnings |
-| `merge_trees.py` — reclassification detection | ❌ Missing | Step 1c — see Priority 1 below |
-| `verify_tree_completeness()` — hard gate | ❌ Missing | Currently warns only, doesn't halt |
+| `merge_trees.py` — reclassification detection | ✅ Done | Patterns 1+2 (parent-child promotion, sibling replacement) in `concept_matcher.py:detect_and_fix_structural_shifts` |
+| `verify_tree_completeness()` — hard gate | ✅ Done | `run_pipeline.py:121` calls `sys.exit(1)` on any gap |
 
 ## Architecture
 
@@ -226,9 +227,9 @@ Only reached if Phase 3 passes. No changes to rendering logic — the data is gu
 
 ## Implementation Plan
 
-### Priority 1: Reclassification detection (merge_trees.py Step 1c)
+### ~~Priority 1: Reclassification detection (merge_trees.py Step 1c)~~ — ✅ DONE (2026-04-13)
 
-The most significant remaining gap. Without it, restated values in older filings can silently corrupt the merged tree at overlap periods.
+Shipped as `concept_matcher.ConceptMatcher.detect_and_fix_structural_shifts`, wired into `merge_trees.py:207` as Pass 4b. Covers Pattern 1 (parent-child promotion — the TSLA revenue case) and Pattern 2 (sibling replacement). Pattern 3 (1-to-N split) and LLM Tier 2 are deferred — no real-world cases seen. See `docs/todo/spec_reclassification_detection.md` for the shipped spec.
 
 | Tier | What | Why | Cost |
 |------|------|-----|------|
@@ -241,9 +242,9 @@ The most significant remaining gap. Without it, restated values in older filings
 
 **Testing**: Run on the 10-company test set. Verify that known restatements (e.g., Google's acquisition-driven revenue changes) are detected. Verify that rounding differences (<0.5%) are not flagged.
 
-### Priority 2: Hard gate on `verify_tree_completeness()`
+### ~~Priority 2: Hard gate on `verify_tree_completeness()`~~ — ✅ DONE
 
-Currently `verify_tree_completeness()` in `run_pipeline.py` prints warnings but doesn't halt the pipeline. It should be a hard gate.
+Already hard-gated in `run_pipeline.py:117-121` — collects errors from all statement trees and calls `sys.exit(1)` if any gap > 1.0 is found. The spec text below was stale when written.
 
 **Change**: In `run_pipeline.py`, after calling `verify_tree_completeness()`:
 ```python

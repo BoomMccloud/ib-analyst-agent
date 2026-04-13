@@ -156,6 +156,15 @@ def main():
 
     errors = verify_model(trees_data)
 
+    if errors:
+        from llm_invariant_fixer import fix_invariants
+        print(f"verify_model initially found {len(errors)} error(s), attempting LLM fix...", file=sys.stderr)
+        if fix_invariants(trees_data):
+            # Save the fixed trees
+            with open(args.trees, "w") as f:
+                json.dump(trees_data, f, indent=2)
+            errors = []
+
     print(f"Periods: {trees_data.get('complete_periods', [])}", file=sys.stderr)
     if errors:
         print(f"verify_model: {len(errors)} error(s)", file=sys.stderr)

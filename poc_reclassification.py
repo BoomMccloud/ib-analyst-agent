@@ -49,7 +49,7 @@ def detect_parent_child_renames(tree, periods):
         if not node.children:
             return
         for child in node.children:
-            if child.concept.startswith("__"):
+            if child.concept.startswith("__OTHER__"):
                 continue
             # Check: do parent and child share a value at any period?
             shared_periods = set(node.values.keys()) & set(child.values.keys())
@@ -114,7 +114,7 @@ def _replace_in_tree(root, old_node, new_node):
         if child is old_node:
             # Move any other children of old_node to new_node
             for oc in old_node.children:
-                if oc is not new_node and not oc.concept.startswith("__"):
+                if oc is not new_node and not oc.concept.startswith("__OTHER__"):
                     new_node.add_child(oc)
             root.children[i] = new_node
             return True

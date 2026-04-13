@@ -583,7 +583,7 @@ class TestCrossStatementChecks:
     def test_missing_role_gracefully_skipped(self):
         """A check referencing a missing role should be skipped, not error."""
         from xbrl_tree import CROSS_STATEMENT_CHECKS
-        from sheet_builder import _render_cross_checks
+        from sheets.renderers import _render_cross_checks
 
         # role_map missing some roles
         role_map = {

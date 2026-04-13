@@ -72,18 +72,9 @@ When detected, Node B is the successor.
 2. Transfer Node A's role to Node B.
 3. Replace Node A with Node B in the tree hierarchy (Node B adopts Node A's position and any non-residual children).
 
-#### Pattern 3: 1-to-N Concept Split
-Detection criteria (all must be true):
-1. Parent Node P (old) has values for older periods but missing values for newer periods.
-2. Parent Node P has multiple non-residual children (C1, C2...) that have values for newer periods.
-3. At an overlap period, the sum of the new children exactly matches the old parent: `abs(P.values[overlap] - sum(C.values[overlap])) < 1.0`.
-4. The shared value is non-zero.
+#### Pattern 3: 1-to-N Concept Split — DEFERRED
 
-When detected, the parent concept was successfully split into more granular reporting.
-**Fix:**
-1. Do not promote any single child.
-2. The Parent Node P is kept as an aggregate container.
-3. For newer periods where Parent P lacks values, automatically populate Parent P's value as the sum of its new children. This prevents massive `__OTHER__` residuals from spawning.
+> **Descoped per KISS evaluation**: No real-world case observed yet. Will add when a company exhibits this pattern. See parent spec for tracking.
 
 ### Where it fits in the merge pipeline
 
@@ -92,7 +83,7 @@ Pass 1: Collect all concepts+values
 Pass 2: Build rename maps (existing — handles simple renames)
 Pass 3: Fill values into base tree
 Pass 4: Orphan insertion with gap-reduction gate
->>> NEW: Pass 4b: Detect and fix structural shifts (Promotions, Splits) <<<
+>>> NEW: Pass 4b: Detect and fix structural shifts (Promotions, Replacements) <<<
 Pass 5: Recompute residuals
 ```
 
@@ -104,7 +95,13 @@ Pass 5: Recompute residuals
 
 Add `_detect_and_fix_structural_shifts(tree, periods)` called in `merge_filing_trees()` before `_recompute_residuals`.
 
-This function will recursively walk the tree and apply the fixes for the 3 structural patterns defined in the Design section. It should return a dictionary of applied fixes for logging (e.g., `{'promotions': 1, 'splits': 0}`).
+This function must use a **two-phase detect-then-fix** approach (as validated in the POC):
+1. **Scan phase**: Recursively walk the tree and collect all detected structural shifts into a list, without mutating the tree.
+2. **Fix phase**: Iterate over the collected detections and apply fixes.
+
+This avoids mutation-during-iteration bugs where fixing one node changes the tree structure and causes missed or duplicate detections downstream.
+
+The function should return a dictionary of applied fixes for logging (e.g., `{'promotions': 1, 'splits': 0}`).
 
 ---
 
@@ -119,7 +116,7 @@ If a company restates a concept (e.g., Google Revenue is reported as $100 in the
 |---------|---------------------|
 | Parent-Child Promotion | **YES** |
 | Sibling concept replacement | **YES** |
-| 1-to-N Concept split | **YES** |
+| 1-to-N Concept split | No (Deferred — no real case observed yet) |
 | Same concept, different value (restatement) | No (Deferred to LLM Phase) |
 
 ---
@@ -128,7 +125,7 @@ If a company restates a concept (e.g., Google Revenue is reported as $100 in the
 
 ### Unit tests
 
-Build synthetic trees testing the three handled structural patterns and ensure the resulting tree correctly merges values and prevents orphaned residuals.
+Build synthetic trees testing parent-child promotion and sibling replacement patterns and ensure the resulting tree correctly merges values and prevents orphaned residuals.
 
 ### Integration test: TSLA
 

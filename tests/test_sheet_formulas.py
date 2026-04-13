@@ -13,7 +13,7 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from sheet_builder import _build_weight_formula, dcol
+from sheets.formulas import _build_weight_formula, dcol
 
 
 # ---------------------------------------------------------------------------
@@ -63,7 +63,7 @@ class TestBuildWeightFormula:
 
 
 from xbrl_tree import TreeNode, reconcile_trees, find_node_by_role
-from sheet_builder import _render_sheet_body
+from sheets.renderers import _render_sheet_body
 
 
 # ---------------------------------------------------------------------------
@@ -207,13 +207,13 @@ class TestTwoPassRendering:
 
 class TestCFCashProof:
     def test_prev_period_middle(self):
-        from sheet_builder import prev_period
+        from sheets.formulas import prev_period
         assert prev_period("2023", ["2021", "2022", "2023", "2024"]) == "2022"
 
     def test_prev_period_first(self):
-        from sheet_builder import prev_period
+        from sheets.formulas import prev_period
         assert prev_period("2021", ["2021", "2022", "2023"]) is None
 
     def test_prev_period_last(self):
-        from sheet_builder import prev_period
+        from sheets.formulas import prev_period
         assert prev_period("2024", ["2021", "2022", "2023", "2024"]) == "2023"
