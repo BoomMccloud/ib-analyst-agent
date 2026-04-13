@@ -1,102 +1,215 @@
 {
   "NFLX": {
-    "status": "FAIL",
+    "status": "PASS",
     "stages": {
-      "fetch": "FAIL"
+      "fetch": "PASS",
+      "xbrl_tree": "4/4 OK",
+      "merge": "PASS",
+      "completeness": "PASS",
+      "checkpoint": "PASS",
+      "sheet": "PASS"
     },
     "warnings": [],
-    "errors": [
-      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
-    ]
+    "errors": [],
+    "num_filings": 4,
+    "sheet_url": "{\"company\": \"NETFLIX INC\", \"url\": \"https://docs.google.com/spreadsheets/d/1P-75mY7EqC26SYUN3ZZuxInQ2eT5ObzaHubvdih2v3M/edit\"}"
   },
   "AAPL": {
-    "status": "FAIL",
+    "status": "PASS",
     "stages": {
-      "fetch": "FAIL"
+      "fetch": "PASS",
+      "xbrl_tree": "5/5 OK",
+      "merge": "PASS",
+      "completeness": "PASS",
+      "checkpoint": "PASS",
+      "sheet": "PASS"
     },
-    "warnings": [],
-    "errors": [
-      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
-    ]
+    "warnings": [
+      "Large residual for _REVENUE_SEGMENTS period 2020-09-26: residual=274515, sibling_avg=0",
+      "Large residual for _REVENUE_SEGMENTS period 2021-09-25: residual=365817, sibling_avg=0",
+      "Large residual for _REVENUE_SEGMENTS period 2022-09-24: residual=394328, sibling_avg=0",
+      "Large residual for _REVENUE_SEGMENTS period 2023-09-30: residual=383285, sibling_avg=0"
+    ],
+    "errors": [],
+    "num_filings": 5,
+    "sheet_url": "{\"company\": \"Apple Inc.\", \"url\": \"https://docs.google.com/spreadsheets/d/1L-JE_iLccix6-89dstWH5zOLLBM0fGNudu36dE5UITw/edit\"}"
   },
   "MSFT": {
-    "status": "FAIL",
+    "status": "PASS",
     "stages": {
-      "fetch": "FAIL"
+      "fetch": "PASS",
+      "xbrl_tree": "3/5 OK",
+      "merge": "PASS",
+      "completeness": "PASS",
+      "checkpoint": "PASS",
+      "sheet": "PASS"
     },
-    "warnings": [],
-    "errors": [
-      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
-    ]
+    "warnings": [
+      "xbrl_tree failed for 2025-07-30: CACHE HIT: https://www.sec.gov/Archives/edgar/data/789019/000095017025100235/msft-20250630.htm\nCACHE HIT: https://www.sec.gov/Archives/edgar/data/789019/000095017025100235/msft-20250630.xsd\nERROR: Cou",
+      "xbrl_tree failed for 2024-07-30: CACHE HIT: https://www.sec.gov/Archives/edgar/data/789019/000095017024087843/msft-20240630.htm\nCACHE HIT: https://www.sec.gov/Archives/edgar/data/789019/000095017024087843/msft-20240630.xsd\nERROR: Cou",
+      "Large residual for us-gaap_CashCashEquivalentsAndShortTermInvestments period 2020-06-30: residual=122951, sibling_avg=68264",
+      "Large residual for us-gaap_CashCashEquivalentsAndShortTermInvestments period 2021-06-30: residual=116110, sibling_avg=65167",
+      "Large residual for us-gaap_CashCashEquivalentsAndShortTermInvestments period 2022-06-30: residual=90826, sibling_avg=52378",
+      "Large residual for us-gaap_CashCashEquivalentsAndShortTermInvestments period 2023-06-30: residual=76558, sibling_avg=55631",
+      "Large residual for us-gaap_Assets period 2020-06-30: residual=122951, sibling_avg=25480",
+      "Large residual for us-gaap_Assets period 2021-06-30: residual=116110, sibling_avg=31096",
+      "Large residual for us-gaap_Assets period 2022-06-30: residual=90826, sibling_avg=39145",
+      "Large residual for us-gaap_Assets period 2023-06-30: residual=76558, sibling_avg=47917"
+    ],
+    "errors": [],
+    "num_filings": 5,
+    "sheet_url": "{\"company\": \"MICROSOFT CORP\", \"url\": \"https://docs.google.com/spreadsheets/d/1oLkEh3nOXFSOaMWskMX8XdmMMEPdV4dKG1Hj78o_3S4/edit\"}"
   },
   "AMZN": {
-    "status": "FAIL",
+    "status": "PASS",
     "stages": {
-      "fetch": "FAIL"
+      "fetch": "PASS",
+      "xbrl_tree": "5/5 OK",
+      "merge": "PASS",
+      "completeness": "PASS",
+      "checkpoint": "PASS",
+      "sheet": "PASS"
     },
     "warnings": [],
-    "errors": [
-      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
-    ]
+    "errors": [],
+    "num_filings": 5,
+    "sheet_url": "{\"company\": \"AMAZON COM INC\", \"url\": \"https://docs.google.com/spreadsheets/d/11RVulNC7wyvkF_RjT_m7XgBdsaM2SDbWnAIHvPXwf3c/edit\"}"
   },
   "GOOG": {
-    "status": "FAIL",
+    "status": "PASS",
     "stages": {
-      "fetch": "FAIL"
+      "fetch": "PASS",
+      "xbrl_tree": "4/4 OK",
+      "merge": "PASS",
+      "completeness": "PASS",
+      "checkpoint": "PASS",
+      "sheet": "PASS"
     },
-    "warnings": [],
-    "errors": [
-      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
-    ]
+    "warnings": [
+      "Large residual for us-gaap_CashCashEquivalentsAndShortTermInvestments period 2021-12-31: residual=118704, sibling_avg=69824",
+      "Large residual for us-gaap_CashCashEquivalentsAndShortTermInvestments period 2022-12-31: residual=91883, sibling_avg=56881",
+      "Large residual for us-gaap_CashCashEquivalentsAndShortTermInvestments period 2023-12-31: residual=86868, sibling_avg=55458",
+      "Large residual for us-gaap_CashCashEquivalentsAndShortTermInvestments period 2024-12-31: residual=72191, sibling_avg=47828",
+      "Large residual for us-gaap_CashCashEquivalentsAndShortTermInvestments period 2025-12-31: residual=96135, sibling_avg=63422",
+      "Large residual for us-gaap_Assets period 2021-12-31: residual=118704, sibling_avg=30070",
+      "Large residual for us-gaap_Assets period 2022-12-31: residual=89799, sibling_avg=34433",
+      "Large residual for us-gaap_Assets period 2023-12-31: residual=86868, sibling_avg=39440",
+      "Large residual for us-gaap_Assets period 2024-12-31: residual=72191, sibling_avg=47258",
+      "Large residual for us-gaap_Assets period 2025-12-31: residual=96135, sibling_avg=62393",
+      "Large residual for us-gaap_NetCashProvidedByUsedInOperatingActivities period 2021-12-31: residual=12441, sibling_avg=9793"
+    ],
+    "errors": [],
+    "num_filings": 4,
+    "sheet_url": "{\"company\": \"Alphabet Inc.\", \"url\": \"https://docs.google.com/spreadsheets/d/15tl4q4RBGUotPSt6zzL1ZXJGKsEsmY3s4pHtae9dKjc/edit\"}"
   },
   "META": {
-    "status": "FAIL",
+    "status": "PASS",
     "stages": {
-      "fetch": "FAIL"
+      "fetch": "PASS",
+      "xbrl_tree": "2/2 OK",
+      "merge": "PASS",
+      "completeness": "PASS",
+      "checkpoint": "PASS",
+      "sheet": "PASS"
     },
     "warnings": [],
-    "errors": [
-      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
-    ]
+    "errors": [],
+    "num_filings": 2,
+    "sheet_url": "{\"company\": \"Meta Platforms, Inc.\", \"url\": \"https://docs.google.com/spreadsheets/d/1a-HUq3kQ5DHvBA5o1KJaC0bvABijO-hiX0hPW83GK_M/edit\"}"
   },
   "TSLA": {
-    "status": "FAIL",
+    "status": "PASS",
     "stages": {
-      "fetch": "FAIL"
+      "fetch": "PASS",
+      "xbrl_tree": "5/5 OK",
+      "merge": "PASS",
+      "completeness": "PASS",
+      "checkpoint": "PASS",
+      "sheet": "PASS"
     },
-    "warnings": [],
-    "errors": [
-      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
-    ]
+    "warnings": [
+      "Large residual for us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax period 2020-12-31: residual=31536, sibling_avg=0",
+      "Large residual for us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax period 2021-12-31: residual=53823, sibling_avg=0",
+      "Large residual for us-gaap_CostOfRevenue period 2020-12-31: residual=24906, sibling_avg=0",
+      "Large residual for us-gaap_CostOfRevenue period 2021-12-31: residual=40217, sibling_avg=0",
+      "Large residual for us-gaap_Assets period 2020-12-31: residual=8553, sibling_avg=4360",
+      "Large residual for us-gaap_Assets period 2021-12-31: residual=9708, sibling_avg=5242",
+      "Large residual for us-gaap_Assets period 2022-12-31: residual=9853, sibling_avg=7248",
+      "Large residual for us-gaap_Assets period 2023-12-31: residual=10427, sibling_avg=9619",
+      "Large residual for us-gaap_NetCashProvidedByUsedInInvestingActivities period 2021-12-31: residual=1254, sibling_avg=1102"
+    ],
+    "errors": [],
+    "num_filings": 5,
+    "sheet_url": "{\"company\": \"Tesla, Inc.\", \"url\": \"https://docs.google.com/spreadsheets/d/1nBf7ylLY5nI0cn_F65T7vrTSy4VJ5GjsyYpfBrEq-rg/edit\"}"
   },
   "JPM": {
-    "status": "FAIL",
+    "status": "PASS",
     "stages": {
-      "fetch": "FAIL"
+      "fetch": "PASS",
+      "xbrl_tree": "1/1 OK",
+      "merge": "SKIP (single filing)",
+      "completeness": "PASS",
+      "checkpoint": "PASS",
+      "sheet": "PASS"
     },
     "warnings": [],
-    "errors": [
-      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
-    ]
+    "errors": [],
+    "num_filings": 1,
+    "sheet_url": "{\"company\": \"JPMORGAN CHASE & CO\", \"url\": \"https://docs.google.com/spreadsheets/d/1g6sQ7XuUY6SqxsDlO-egHqlRZ2saRoBvWA3q9g_bRL8/edit\"}"
   },
   "BRK-B": {
     "status": "FAIL",
     "stages": {
-      "fetch": "FAIL"
+      "fetch": "PASS",
+      "xbrl_tree": "2/5 OK",
+      "merge": "PASS",
+      "completeness": "PASS",
+      "checkpoint": "FAIL"
     },
-    "warnings": [],
+    "warnings": [
+      "xbrl_tree failed for 2026-03-02: CACHE HIT: https://www.sec.gov/Archives/edgar/data/1067983/000119312526083899/brka-20251231.htm\nCACHE HIT: https://www.sec.gov/Archives/edgar/data/1067983/000119312526083899/brka-20251231.xsd\nERROR: C",
+      "xbrl_tree failed for 2025-02-24: CACHE HIT: https://www.sec.gov/Archives/edgar/data/1067983/000095017025025210/brka-20241231.htm\nCACHE HIT: https://www.sec.gov/Archives/edgar/data/1067983/000095017025025210/brka-20241231.xsd\nERROR: C",
+      "xbrl_tree failed for 2024-02-26: CACHE HIT: https://www.sec.gov/Archives/edgar/data/1067983/000095017024019719/brka-20231231.htm\nCACHE HIT: https://www.sec.gov/Archives/edgar/data/1067983/000095017024019719/brka-20231231.xsd\nERROR: C",
+      "Large residual for us-gaap_Revenues period 2020-12-31: residual=240301, sibling_avg=744",
+      "Large residual for us-gaap_Revenues period 2021-12-31: residual=270215, sibling_avg=855",
+      "Large residual for us-gaap_Revenues period 2022-12-31: residual=294575, sibling_avg=1073",
+      "Large residual for us-gaap_CostsAndExpenses period 2020-12-31: residual=227206, sibling_avg=371",
+      "Large residual for us-gaap_CostsAndExpenses period 2021-12-31: residual=239773, sibling_avg=379",
+      "Large residual for us-gaap_CostsAndExpenses period 2022-12-31: residual=262277, sibling_avg=396",
+      "Large residual for us-gaap_Assets period 2020-12-31: residual=432964, sibling_avg=27548",
+      "Large residual for us-gaap_Assets period 2021-12-31: residual=434449, sibling_avg=32771",
+      "Large residual for us-gaap_Assets period 2022-12-31: residual=444204, sibling_avg=31516",
+      "Large residual for brka_LiabilitiesIncludingDeferredIncomeTaxes period 2020-12-31: residual=422393, sibling_avg=0",
+      "Large residual for brka_LiabilitiesIncludingDeferredIncomeTaxes period 2021-12-31: residual=443854, sibling_avg=0",
+      "Large residual for brka_LiabilitiesIncludingDeferredIncomeTaxes period 2022-12-31: residual=467835, sibling_avg=0",
+      "Large residual for us-gaap_NetCashProvidedByUsedInFinancingActivities period 2020-12-31: residual=7909, sibling_avg=5251",
+      "Large residual for us-gaap_NetCashProvidedByUsedInFinancingActivities period 2022-12-31: residual=8767, sibling_avg=2086"
+    ],
     "errors": [
-      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
-    ]
+      "checkpoint failed: verify_model initially found 3 error(s), attempting LLM fix...\nAttempting to fix 3 invariant errors using LLM...\nLLM call failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011Ca1XMJQppb7DHGHYPpLbV'}\nLLM did not propose any fixes.\nPeriods: ['2020-12-31', '2021-12-31', '2022-12-31']\nverify_model: 3 error(s)\n \n"
+    ],
+    "num_filings": 5
   },
   "PFE": {
-    "status": "FAIL",
+    "status": "PASS",
     "stages": {
-      "fetch": "FAIL"
+      "fetch": "PASS",
+      "xbrl_tree": "5/5 OK",
+      "merge": "PASS",
+      "completeness": "PASS",
+      "checkpoint": "PASS",
+      "sheet": "PASS"
     },
-    "warnings": [],
-    "errors": [
-      "fetch failed: Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)\n"
-    ]
+    "warnings": [
+      "Large residual for us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest period 2020-12-31: residual=41650, sibling_avg=4328",
+      "Large residual for us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest period 2021-12-31: residual=81288, sibling_avg=8342",
+      "Large residual for us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest period 2022-12-31: residual=100332, sibling_avg=8200",
+      "Large residual for us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest period 2023-12-31: residual=59554, sibling_avg=7312",
+      "Large residual for us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest period 2024-12-31: residual=63627, sibling_avg=6950",
+      "Large residual for us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest period 2025-12-31: residual=62579, sibling_avg=6882"
+    ],
+    "errors": [],
+    "num_filings": 5,
+    "sheet_url": "{\"company\": \"PFIZER INC\", \"url\": \"https://docs.google.com/spreadsheets/d/1luz_Yd4xbahuxH-GnoPltSDUhNHwL2W8WVAY2H6_nls/edit\"}"
   }
 }

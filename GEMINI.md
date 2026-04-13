@@ -5,7 +5,7 @@ This project is an automated, tree-based pipeline designed to automate the creat
 ## Core Philosophy
 
 - **Python-First Computation**: All financial logic, modeling, and invariant checks happen in Python (`pymodel.py`). Google Sheets is strictly a display layer.
-- **Deterministic-First**: XBRL parsing, linkbase merging, CIK resolution, and file downloads are pure Python standard library operations. LLMs are reserved for tasks requiring judgment (e.g., fallback for non-XBRL filings, sibling grouping).
+- **Deterministic-First**: XBRL parsing, linkbase merging, CIK resolution, and file downloads are pure Python standard library operations. LLMs are reserved for tasks requiring judgment (e.g., semantic reconciliation of invariant failures, fallback for non-XBRL filings, sibling grouping).
 - **Three-Layer Merge Principle**: The system builds on a three-layer merge of XBRL linkbases: Calc layer (mathematical truth), Presentation layer (display order), and an "Other" layer (gap absorption).
 - **Validation-Centric**: No model is output to a spreadsheet until all accounting invariants (e.g., Assets = Liabilities + Equity) are verified against the parsed trees.
 - **Position over Names**: Financial statement structure is identified by tree position (e.g., BS_TA = Assets tree root), not by concept name matching.
@@ -56,3 +56,4 @@ python pymodel.py --trees trees.json --checkpoint
 - **Always use `run_pipeline.py`** to generate sheets. Running individual scripts bypasses the tree completeness gate and will produce sheets with broken formulas.
 - If a company uses unique financial terminology, rely on the XBRL structure and grouping logic rather than hardcoded names.
 - Always verify `gws` authentication before running Stage 4.
+fy `gws` authentication before running Stage 4.

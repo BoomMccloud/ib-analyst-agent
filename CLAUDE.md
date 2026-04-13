@@ -8,7 +8,7 @@ Each stage runs independently via CLI. Output JSON from one stage is the input t
 
 | Stage | Script(s) | What it does | LLM? |
 |-------|-----------|--------------|------|
-| 1 | `agent1_fetcher.py` | Resolves ticker → CIK via SEC EDGAR, fetches filing URLs | Managed Agent |
+| 1 | `agent1_fetcher.py` | Resolves ticker → CIK via SEC EDGAR, fetches filing URLs | No |
 | 2a | `extract_sections.py` | Downloads filing HTML, slices into section .txt files + iXBRL facts | No |
 | 2b | `xbrl_tree.py` | Parses iXBRL tags + calculation linkbase → tree with values | No |
 | 2c | `xbrl_group.py` | Tree → structured JSON. Optional LLM groups small siblings | Optional (Haiku) |
@@ -93,15 +93,16 @@ See `docs/impl_guide_phase1b.md` for full details.
 
 - `lookup_company.py` — Resolves ticker/name → CIK, determines domestic (10-K) vs foreign (20-F)
 - `fetch_10k.py` / `fetch_20f.py` — Fetches filing metadata from SEC EDGAR submissions API
+- `sec_utils.py` — Shared SEC EDGAR fetching, rate limiting, and compliance logic
+- `llm_utils.py` — Shared Anthropic model calling and parsing logic
+- `llm_invariant_fixer.py` — LLM-in-the-loop semantic reconciliation for fixing cross-statement invariants
 - `parse_xbrl_facts.py` — Standalone XBRL tag → model code mapper (Phase 1b prototype)
-- `sec_filings_agent.py` — Standalone Managed Agent for ad-hoc filing lookups
-- `run_agent.py` — Generic: embeds any .py file and runs it in a Managed Agent
-- `run_and_verify.py` — QA tool: runs `fetch_10k.py` locally then has a Managed Agent independently verify results
+- `sec_filings_agent.py` — Standalone agent script for ad-hoc filing lookups
 - `test_phase1_e2e.sh` — End-to-end test script for any ticker
 
 ## External Dependencies
 
-- **Anthropic API** (`ANTHROPIC_API_KEY`) — Managed Agents (beta) for Agent 1; optional Haiku for sibling grouping in Stage 2c; Sonnet for model spec in Stage 3
+- **Anthropic API** (`ANTHROPIC_API_KEY`) — Sonnet for semantic reconciliation (`llm_invariant_fixer.py`); optional Haiku for sibling grouping in Stage 2c; Sonnet for model spec in Stage 3
 - **SEC EDGAR** — company_tickers.json, submissions API, filing archives, iXBRL linkbases. Rate-limited to 8 req/s with backoff
 - **`gws` CLI** — Google Workspace CLI for Sheets API (must be pre-authenticated via OAuth)
 - **Models**: `claude-sonnet-4-6` for precision tasks, `claude-haiku-4-5-20251001` for grouping/large-text
@@ -112,5 +113,8 @@ See `docs/impl_guide_phase1b.md` for full details.
 - **Position over names**: Financial statement structure identified by tree position, not concept name matching. Works across all industries.
 - **No orchestration layer**: The pipeline is a manual convention — each script writes JSON that the next reads via CLI args. Each stage can be re-run independently.
 - **Two extraction paths**: XBRL (deterministic, 9/10 companies) and LLM legacy (fallback for non-XBRL filings).
+
+## Use podman, not docker.
+ filings).
 
 ## Use podman, not docker.

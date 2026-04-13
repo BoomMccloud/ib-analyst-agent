@@ -1396,7 +1396,98 @@
                           "2020-12-31": 31536.0
                         },
                         "is_leaf": false,
-                        "role": "IS_REVENUE"
+                        "role": "IS_REVENUE",
+                        "children": [
+                          {
+                            "concept": "tsla_AutomotiveSalesMember",
+                            "tag": "tsla:AutomotiveSalesMember",
+                            "name": "Automotive sales",
+                            "weight": 1.0,
+                            "values": {
+                              "2025-12-31": 65821.0,
+                              "2024-12-31": 72480.0,
+                              "2023-12-31": 78509.0,
+                              "2022-12-31": 67210.0
+                            },
+                            "is_leaf": true
+                          },
+                          {
+                            "concept": "tsla_AutomotiveRegulatoryCreditsMember",
+                            "tag": "tsla:AutomotiveRegulatoryCreditsMember",
+                            "name": "Automotive regulatory credits",
+                            "weight": 1.0,
+                            "values": {
+                              "2025-12-31": 1993.0,
+                              "2024-12-31": 2763.0,
+                              "2023-12-31": 1790.0,
+                              "2022-12-31": 1776.0
+                            },
+                            "is_leaf": true
+                          },
+                          {
+                            "concept": "tsla_AutomotiveLeasingMember",
+                            "tag": "tsla:AutomotiveLeasingMember",
+                            "name": "Automotive leasing",
+                            "weight": 1.0,
+                            "values": {
+                              "2025-12-31": 1712.0,
+                              "2024-12-31": 1827.0,
+                              "2023-12-31": 2120.0,
+                              "2022-12-31": 2476.0
+                            },
+                            "is_leaf": true
+                          },
+                          {
+                            "concept": "tsla_ServicesAndOtherMember",
+                            "tag": "tsla:ServicesAndOtherMember",
+                            "name": "Services and other",
+                            "weight": 1.0,
+                            "values": {
+                              "2025-12-31": 12530.0,
+                              "2024-12-31": 10534.0,
+                              "2023-12-31": 8319.0,
+                              "2022-12-31": 6091.0
+                            },
+                            "is_leaf": true
+                          },
+                          {
+                            "concept": "tsla_EnergyGenerationAndStorageSalesMember",
+                            "tag": "tsla:EnergyGenerationAndStorageSalesMember",
+                            "name": "Energy generation and storage sales",
+                            "weight": 1.0,
+                            "values": {
+                              "2025-12-31": 12270.0,
+                              "2024-12-31": 9564.0,
+                              "2023-12-31": 5515.0,
+                              "2022-12-31": 3376.0
+                            },
+                            "is_leaf": true
+                          },
+                          {
+                            "concept": "tsla_EnergyGenerationAndStorageLeasingMember",
+                            "tag": "tsla:EnergyGenerationAndStorageLeasingMember",
+                            "name": "Energy generation and storage leasing",
+                            "weight": 1.0,
+                            "values": {
+                              "2025-12-31": 501.0,
+                              "2024-12-31": 522.0,
+                              "2023-12-31": 520.0,
+                              "2022-12-31": 533.0
+                            },
+                            "is_leaf": true
+                          },
+                          {
+                            "concept": "__OTHER__us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+                            "tag": ":_OTHER__us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
+                            "name": "Other",
+                            "weight": 1.0,
+                            "values": {
+                              "2020-12-31": 31536.0,
+                              "2021-12-31": 53823.0
+                            },
+                            "is_leaf": true
+                          }
+                        ]
                       },
                       {
                         "concept": "us-gaap_CostOfRevenue",
@@ -1412,7 +1503,74 @@
                           "2020-12-31": 24906.0
                         },
                         "is_leaf": false,
-                        "role": "IS_COGS"
+                        "role": "IS_COGS",
+                        "children": [
+                          {
+                            "concept": "tsla_AutomotiveSalesMember",
+                            "tag": "tsla:AutomotiveSalesMember",
+                            "name": "Automotive sales",
+                            "weight": 1.0,
+                            "values": {
+                              "2025-12-31": 56267.0,
+                              "2024-12-31": 61870.0,
+                              "2023-12-31": 78509.0,
+                              "2022-12-31": 67210.0
+                            },
+                            "is_leaf": true
+                          },
+                          {
+                            "concept": "tsla_AutomotiveLeasingMember",
+                            "tag": "tsla:AutomotiveLeasingMember",
+                            "name": "Automotive leasing",
+                            "weight": 1.0,
+                            "values": {
+                              "2025-12-31": 898.0,
+                              "2024-12-31": 1003.0,
+                              "2023-12-31": 2120.0,
+                              "2022-12-31": 2476.0
+                            },
+                            "is_leaf": true
+                          },
+                          {
+                            "concept": "tsla_EnergyGenerationAndStorageMember",
+                            "tag": "tsla:EnergyGenerationAndStorageMember",
+                            "name": "Energy generation and storage",
+                            "weight": 1.0,
+                            "values": {
+                              "2025-12-31": 8969.0,
+                              "2024-12-31": 7446.0,
+                              "2023-12-31": 4894.0,
+                              "2022-12-31": 3621.0
+                            },
+                            "is_leaf": true
+                          },
+                          {
+                            "concept": "tsla_ServicesAndOtherMember",
+                            "tag": "tsla:ServicesAndOtherMember",
+                            "name": "Services and other",
+                            "weight": 1.0,
+                            "values": {
+                              "2025-12-31": 11599.0,
+                              "2024-12-31": 9921.0,
+                              "2023-12-31": 8319.0,
+                              "2022-12-31": 6091.0
+                            },
+                            "is_leaf": true
+                          },
+                          {
+                            "concept": "__OTHER__us-gaap_CostOfRevenue",
+                            "tag": ":_OTHER__us-gaap_CostOfRevenue",
+                            "name": "Other",
+                            "weight": 1.0,
+                            "values": {
+                              "2020-12-31": 24906.0,
+                              "2021-12-31": 40217.0,
+                              "2022-12-31": -18789.0,
+                              "2023-12-31": -14729.0
+                            },
+                            "is_leaf": true
+                          }
+                        ]
                       }
                     ]
                   },
@@ -1778,6 +1936,99 @@
     "role": "BS_TA",
     "children": [
       {
+        "concept": "us-gaap_AssetsCurrent",
+        "tag": "us-gaap:AssetsCurrent",
+        "name": "Assets Current",
+        "weight": 1.0,
+        "values": {
+          "2025-12-31": 69745.0,
+          "2024-12-31": 59258.0,
+          "2023-12-31": 50407.0,
+          "2022-12-31": 41588.0,
+          "2021-12-31": 27668.0,
+          "2020-12-31": 27234.0
+        },
+        "is_leaf": false,
+        "role": "BS_TCA",
+        "children": [
+          {
+            "concept": "us-gaap_CashAndCashEquivalentsAtCarryingValue",
+            "tag": "us-gaap:CashAndCashEquivalentsAtCarryingValue",
+            "name": "Cash And Cash Equivalents At Carrying Value",
+            "weight": 1.0,
+            "values": {
+              "2025-12-31": 17616.0,
+              "2024-12-31": 17037.0,
+              "2023-12-31": 17189.0,
+              "2022-12-31": 16924.0,
+              "2021-12-31": 18144.0,
+              "2020-12-31": 19901.0
+            },
+            "is_leaf": true,
+            "role": "BS_CASH"
+          },
+          {
+            "concept": "us-gaap_ShortTermInvestments",
+            "tag": "us-gaap:ShortTermInvestments",
+            "name": "Short Term Investments",
+            "weight": 1.0,
+            "values": {
+              "2025-12-31": 27546.0,
+              "2024-12-31": 20424.0,
+              "2023-12-31": 12696.0,
+              "2022-12-31": 5932.0,
+              "2021-12-31": 131.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_AccountsReceivableNetCurrent",
+            "tag": "us-gaap:AccountsReceivableNetCurrent",
+            "name": "Accounts Receivable",
+            "weight": 1.0,
+            "values": {
+              "2025-12-31": 4576.0,
+              "2024-12-31": 4418.0,
+              "2023-12-31": 3508.0,
+              "2022-12-31": 2952.0,
+              "2021-12-31": 1913.0,
+              "2020-12-31": 1886.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_InventoryNet",
+            "tag": "us-gaap:InventoryNet",
+            "name": "Inventory Net",
+            "weight": 1.0,
+            "values": {
+              "2025-12-31": 12392.0,
+              "2024-12-31": 12017.0,
+              "2023-12-31": 13626.0,
+              "2022-12-31": 12839.0,
+              "2021-12-31": 5757.0,
+              "2020-12-31": 4101.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PrepaidExpenseAndOtherAssetsCurrent",
+            "tag": "us-gaap:PrepaidExpenseAndOtherAssetsCurrent",
+            "name": "Prepaid Expense And Other Assets Current",
+            "weight": 1.0,
+            "values": {
+              "2025-12-31": 7615.0,
+              "2024-12-31": 5362.0,
+              "2023-12-31": 3388.0,
+              "2022-12-31": 2941.0,
+              "2021-12-31": 1723.0,
+              "2020-12-31": 1346.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
         "concept": "us-gaap_DeferredCostsLeasingNetNoncurrent",
         "tag": "us-gaap:DeferredCostsLeasingNetNoncurrent",
         "name": "Deferred Costs Leasing Net",
@@ -1871,12 +2122,40 @@
         "name": "Other",
         "weight": 1.0,
         "values": {
-          "2020-12-31": 36307.0,
-          "2021-12-31": 37833.0,
-          "2022-12-31": 51850.0,
-          "2023-12-31": 61265.0,
-          "2024-12-31": 68865.0,
-          "2025-12-31": 78158.0
+          "2020-12-31": 8553.0,
+          "2021-12-31": 9708.0,
+          "2022-12-31": 9853.0,
+          "2023-12-31": 10427.0,
+          "2024-12-31": 9213.0,
+          "2025-12-31": 8413.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_IntangibleAssetsNetExcludingGoodwill",
+        "tag": "us-gaap:IntangibleAssetsNetExcludingGoodwill",
+        "name": "Intangible Assets Net Excluding Goodwill",
+        "weight": 1.0,
+        "values": {
+          "2024-12-31": 150.0,
+          "2023-12-31": 178.0,
+          "2022-12-31": 215.0,
+          "2021-12-31": 257.0,
+          "2020-12-31": 313.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_Goodwill",
+        "tag": "us-gaap:Goodwill",
+        "name": "Goodwill",
+        "weight": 1.0,
+        "values": {
+          "2024-12-31": 244.0,
+          "2023-12-31": 253.0,
+          "2022-12-31": 194.0,
+          "2021-12-31": 200.0,
+          "2020-12-31": 207.0
         },
         "is_leaf": true
       }
@@ -1899,6 +2178,16 @@
           "values": {
             "2025-12-31": 40643.0,
             "2024-12-31": 35836.0
+          }
+        },
+        {
+          "concept": "__OTHER__us-gaap_Assets",
+          "name": "Other",
+          "tag": ":_OTHER__us-gaap_Assets",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 9607.0,
+            "2025-12-31": 8413.0
           }
         },
         {
@@ -1942,16 +2231,6 @@
           }
         },
         {
-          "concept": "__OTHER__us-gaap_Assets",
-          "name": "Other",
-          "tag": ":_OTHER__us-gaap_Assets",
-          "weight": 1.0,
-          "values": {
-            "2024-12-31": -1170.0,
-            "2025-12-31": -485.0
-          }
-        },
-        {
           "concept": "us-gaap_DeferredCostsLeasingNetNoncurrent",
           "name": "Deferred Costs Leasing Net",
           "tag": "us-gaap:DeferredCostsLeasingNetNoncurrent",
@@ -1971,8 +2250,8 @@
       "parent": "us-gaap_AssetsCurrent",
       "parent_name": "Assets Current",
       "parent_total": {
-        "2025-12-31": 78643.0,
-        "2024-12-31": 70035.0
+        "2025-12-31": 69745.0,
+        "2024-12-31": 59258.0
       },
       "siblings": [
         {
@@ -1986,23 +2265,13 @@
           }
         },
         {
-          "concept": "us-gaap_PrepaidExpenseAndOtherAssetsCurrent",
-          "name": "Prepaid Expense And Other Assets Current",
-          "tag": "us-gaap:PrepaidExpenseAndOtherAssetsCurrent",
-          "weight": 1.0,
-          "values": {
-            "2025-12-31": 17616.0,
-            "2024-12-31": 17037.0
-          }
-        },
-        {
           "concept": "us-gaap_CashAndCashEquivalentsAtCarryingValue",
           "name": "Cash And Cash Equivalents At Carrying Value",
           "tag": "us-gaap:CashAndCashEquivalentsAtCarryingValue",
           "weight": 1.0,
           "values": {
-            "2025-12-31": 16513.0,
-            "2024-12-31": 16139.0
+            "2025-12-31": 17616.0,
+            "2024-12-31": 17037.0
           }
         },
         {
@@ -2013,6 +2282,16 @@
           "values": {
             "2025-12-31": 12392.0,
             "2024-12-31": 12017.0
+          }
+        },
+        {
+          "concept": "us-gaap_PrepaidExpenseAndOtherAssetsCurrent",
+          "name": "Prepaid Expense And Other Assets Current",
+          "tag": "us-gaap:PrepaidExpenseAndOtherAssetsCurrent",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 7615.0,
+            "2024-12-31": 5362.0
           }
         },
         {

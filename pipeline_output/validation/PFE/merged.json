@@ -1716,61 +1716,6 @@
                 "is_leaf": false,
                 "children": [
                   {
-                    "concept": "us-gaap_Revenues",
-                    "tag": "us-gaap:Revenues",
-                    "name": "Revenues",
-                    "weight": 1.0,
-                    "values": {
-                      "2025-12-31": 62579.0,
-                      "2024-12-31": 63627.0,
-                      "2023-12-31": 58496.0,
-                      "2022-12-31": 100330.0,
-                      "2021-12-31": 81288.0,
-                      "2020-12-31": 41651.0
-                    },
-                    "is_leaf": false,
-                    "role": "IS_REVENUE",
-                    "children": [
-                      {
-                        "concept": "us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
-                        "tag": "us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax",
-                        "name": "Revenue From Contract With Customer Excluding Assessed Tax",
-                        "weight": 1.0,
-                        "values": {
-                          "2023-12-31": 50914.0,
-                          "2022-12-31": 91793.0,
-                          "2021-12-31": 81288.0,
-                          "2020-12-31": 41651.0
-                        },
-                        "is_leaf": true
-                      },
-                      {
-                        "concept": "us-gaap_RevenueFromCollaborativeArrangementExcludingRevenueFromContractWithCustomer",
-                        "tag": "us-gaap:RevenueFromCollaborativeArrangementExcludingRevenueFromContractWithCustomer",
-                        "name": "Revenue From Collaborative Arrangement Excluding Revenue From Contract With Customer",
-                        "weight": 1.0,
-                        "values": {
-                          "2025-12-31": 9266.0,
-                          "2024-12-31": 8388.0,
-                          "2023-12-31": 7582.0,
-                          "2022-12-31": 8537.0
-                        },
-                        "is_leaf": true
-                      },
-                      {
-                        "concept": "__OTHER__us-gaap_Revenues",
-                        "tag": ":_OTHER__us-gaap_Revenues",
-                        "name": "Other",
-                        "weight": 1.0,
-                        "values": {
-                          "2024-12-31": 55239.0,
-                          "2025-12-31": 53313.0
-                        },
-                        "is_leaf": true
-                      }
-                    ]
-                  },
-                  {
                     "concept": "us-gaap_CostOfGoodsAndServicesSold",
                     "tag": "us-gaap:CostOfGoodsAndServicesSold",
                     "name": "Cost Of Goods And Services Sold",
@@ -1811,7 +1756,7 @@
                       "2024-12-31": 10822.0,
                       "2023-12-31": 10679.0,
                       "2022-12-31": 11428.0,
-                      "2021-12-31": 13829.0,
+                      "2021-12-31": 10360.0,
                       "2020-12-31": 9393.0
                     },
                     "is_leaf": true
@@ -1869,7 +1814,7 @@
                     "values": {
                       "2025-12-31": -6724.0,
                       "2024-12-31": -4388.0,
-                      "2023-12-31": 835.0,
+                      "2023-12-31": -222.0,
                       "2022-12-31": -217.0,
                       "2021-12-31": 4878.0,
                       "2020-12-31": -1219.0
@@ -1892,10 +1837,12 @@
                     "name": "Other",
                     "weight": 1.0,
                     "values": {
-                      "2020-12-31": -1.0,
-                      "2021-12-31": 3469.0,
-                      "2022-12-31": 2.0,
-                      "2023-12-31": 1.0
+                      "2020-12-31": 41650.0,
+                      "2021-12-31": 81288.0,
+                      "2022-12-31": 100332.0,
+                      "2023-12-31": 59554.0,
+                      "2024-12-31": 63627.0,
+                      "2025-12-31": 62579.0
                     },
                     "is_leaf": true
                   }
@@ -2124,12 +2071,12 @@
         "name": "Assets Current",
         "weight": 1.0,
         "values": {
-          "2025-12-31": 33441.0,
-          "2024-12-31": 40614.0,
-          "2023-12-31": 36061.0,
-          "2022-12-31": 42746.0,
-          "2021-12-31": 52617.0,
-          "2020-12-31": 28872.0
+          "2025-12-31": 42953.0,
+          "2024-12-31": 50422.0,
+          "2023-12-31": 43397.0,
+          "2022-12-31": 51311.0,
+          "2021-12-31": 59732.0,
+          "2020-12-31": 35106.0
         },
         "is_leaf": false,
         "role": "BS_TCA",
@@ -2140,14 +2087,15 @@
             "name": "Cash And Cash Equivalents At Carrying Value",
             "weight": 1.0,
             "values": {
-              "2025-12-31": 1142.0,
-              "2024-12-31": 1043.0,
-              "2023-12-31": 2853.0,
-              "2022-12-31": 416.0,
-              "2021-12-31": 1944.0,
-              "2020-12-31": 1786.0
+              "2025-12-31": 1197.0,
+              "2024-12-31": 1107.0,
+              "2023-12-31": 2917.0,
+              "2022-12-31": 468.0,
+              "2021-12-31": 1983.0,
+              "2020-12-31": 1825.0
             },
-            "is_leaf": true
+            "is_leaf": true,
+            "role": "BS_CASH"
           },
           {
             "concept": "us-gaap_OtherShortTermInvestments",
@@ -2172,7 +2120,7 @@
             "values": {
               "2025-12-31": 11874.0,
               "2024-12-31": 11463.0,
-              "2023-12-31": 11177.0,
+              "2023-12-31": 11566.0,
               "2022-12-31": 10952.0,
               "2021-12-31": 11479.0,
               "2020-12-31": 7913.0
@@ -2185,15 +2133,14 @@
             "name": "Inventory Net",
             "weight": 1.0,
             "values": {
-              "2025-12-31": 1197.0,
-              "2024-12-31": 1107.0,
-              "2023-12-31": 2917.0,
-              "2022-12-31": 468.0,
-              "2021-12-31": 1983.0,
-              "2020-12-31": 1825.0
+              "2025-12-31": 10654.0,
+              "2024-12-31": 10851.0,
+              "2023-12-31": 10189.0,
+              "2022-12-31": 8981.0,
+              "2021-12-31": 9059.0,
+              "2020-12-31": 8020.0
             },
-            "is_leaf": true,
-            "role": "BS_CASH"
+            "is_leaf": true
           },
           {
             "concept": "pfe_OtherTaxAssetsCurrent",
@@ -2218,7 +2165,7 @@
             "values": {
               "2025-12-31": 2808.0,
               "2024-12-31": 4253.0,
-              "2023-12-31": 5299.0,
+              "2023-12-31": 4911.0,
               "2022-12-31": 5017.0,
               "2021-12-31": 3820.0,
               "2020-12-31": 3646.0
@@ -2232,6 +2179,7 @@
             "weight": 1.0,
             "values": {
               "2020-12-31": 1.0,
+              "2023-12-31": -1.0,
               "2025-12-31": -1.0
             },
             "is_leaf": true
@@ -2334,26 +2282,12 @@
         "name": "Other",
         "weight": 1.0,
         "values": {
-          "2020-12-31": 6195.0,
-          "2021-12-31": 7077.0,
-          "2022-12-31": 8515.0,
-          "2023-12-31": 7272.0,
-          "2024-12-31": 9527.0,
-          "2025-12-31": 9456.0
-        },
-        "is_leaf": true
-      },
-      {
-        "concept": "us-gaap_EquityMethodInvestments",
-        "tag": "us-gaap:EquityMethodInvestments",
-        "name": "Equity Method Investments",
-        "weight": 1.0,
-        "values": {
-          "2024-12-31": 217.0,
-          "2023-12-31": 11637.0,
-          "2022-12-31": 11033.0,
-          "2021-12-31": 16472.0,
-          "2020-12-31": 16856.0
+          "2020-12-31": 16817.0,
+          "2021-12-31": 16434.0,
+          "2022-12-31": 10983.0,
+          "2023-12-31": 11573.0,
+          "2024-12-31": -64.0,
+          "2025-12-31": -56.0
         },
         "is_leaf": true
       }
@@ -2409,16 +2343,6 @@
           }
         },
         {
-          "concept": "__OTHER__us-gaap_Assets",
-          "name": "Other",
-          "tag": ":_OTHER__us-gaap_Assets",
-          "weight": 1.0,
-          "values": {
-            "2024-12-31": 9744.0,
-            "2025-12-31": 9456.0
-          }
-        },
-        {
           "concept": "pfe_DeferredTaxAssetsNetAndOtherTaxAssetsNoncurrent",
           "name": "Deferred Tax Assets Net And Other Tax Assets",
           "tag": "pfe:DeferredTaxAssetsNetAndOtherTaxAssetsNoncurrent",
@@ -2437,6 +2361,16 @@
             "2025-12-31": 1621.0,
             "2024-12-31": 2228.0
           }
+        },
+        {
+          "concept": "__OTHER__us-gaap_Assets",
+          "name": "Other",
+          "tag": ":_OTHER__us-gaap_Assets",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": -64.0,
+            "2025-12-31": -56.0
+          }
         }
       ]
     },
@@ -2444,8 +2378,8 @@
       "parent": "us-gaap_AssetsCurrent",
       "parent_name": "Assets Current",
       "parent_total": {
-        "2025-12-31": 33441.0,
-        "2024-12-31": 40614.0
+        "2025-12-31": 42953.0,
+        "2024-12-31": 50422.0
       },
       "siblings": [
         {
@@ -2469,6 +2403,16 @@
           }
         },
         {
+          "concept": "us-gaap_InventoryNet",
+          "name": "Inventory Net",
+          "tag": "us-gaap:InventoryNet",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 10654.0,
+            "2024-12-31": 10851.0
+          }
+        },
+        {
           "concept": "pfe_OtherTaxAssetsCurrent",
           "name": "Other Tax Assets Current",
           "tag": "pfe:OtherTaxAssetsCurrent",
@@ -2489,23 +2433,13 @@
           }
         },
         {
-          "concept": "us-gaap_InventoryNet",
-          "name": "Inventory Net",
-          "tag": "us-gaap:InventoryNet",
-          "weight": 1.0,
-          "values": {
-            "2025-12-31": 1197.0,
-            "2024-12-31": 1107.0
-          }
-        },
-        {
           "concept": "us-gaap_CashAndCashEquivalentsAtCarryingValue",
           "name": "Cash And Cash Equivalents At Carrying Value",
           "tag": "us-gaap:CashAndCashEquivalentsAtCarryingValue",
           "weight": 1.0,
           "values": {
-            "2025-12-31": 1142.0,
-            "2024-12-31": 1043.0
+            "2025-12-31": 1197.0,
+            "2024-12-31": 1107.0
           }
         }
       ]
@@ -3317,7 +3251,7 @@
               "2025-12-31": -561.0,
               "2024-12-31": 854.0,
               "2023-12-31": 1169.0,
-              "2022-12-31": -592.0,
+              "2022-12-31": 591.0,
               "2021-12-31": 1125.0,
               "2020-12-31": 778.0
             },
@@ -3401,7 +3335,6 @@
             "weight": 1.0,
             "values": {
               "2020-12-31": -8.0,
-              "2022-12-31": -1183.0,
               "2023-12-31": -1.0,
               "2024-12-31": 1.0,
               "2025-12-31": -1.0

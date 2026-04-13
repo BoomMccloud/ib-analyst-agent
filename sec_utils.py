@@ -13,7 +13,7 @@ import urllib.request
 import hashlib
 from pathlib import Path
 
-_contact = os.environ.get("SEC_CONTACT_EMAIL", "boommccloud@gmail.com")
+_contact = os.environ.get("SEC_CONTACT_EMAIL", "boom.mccloud@gmail.com")
 HEADERS = {"User-Agent": f"SecFilingsAgent {_contact}"}
 REQUEST_INTERVAL = 1.0 / 8  # SEC rate limit
 

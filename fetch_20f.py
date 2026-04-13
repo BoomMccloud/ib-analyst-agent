@@ -7,21 +7,12 @@ Output: JSON to stdout
 
 import argparse
 import json
-import os
 import sys
-import time
-import urllib.request
-import urllib.error
-
-_contact = os.environ.get("SEC_CONTACT_EMAIL")
-if not _contact:
-    print("Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)", file=sys.stderr)
-    sys.exit(1)
-HEADERS = {"User-Agent": f"SecFilingsAgent {_contact}"}
-TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
-SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
 
 from sec_utils import fetch_url
+
+TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
+SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
 
 def fetch_json(url: str) -> dict:
     return json.loads(fetch_url(url).decode())

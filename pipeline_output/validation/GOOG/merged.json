@@ -1686,19 +1686,18 @@
               "2024-12-31": 15714.0,
               "2025-12-31": 16309.0,
               "2023-12-31": 12650.0,
-              "2022-12-31": 8105.0,
+              "2022-12-31": 10775.0,
               "2021-12-31": 8020.0
             },
             "is_leaf": true
           },
           {
-            "concept": "us-gaap_InventoryNet",
-            "tag": "us-gaap:InventoryNet",
-            "name": "Inventory Net",
+            "concept": "__OTHER__us-gaap_AssetsCurrent",
+            "tag": ":_OTHER__us-gaap_AssetsCurrent",
+            "name": "Other",
             "weight": 1.0,
             "values": {
-              "2021-12-31": 1170.0,
-              "2022-12-31": 2670.0
+              "2021-12-31": 1170.0
             },
             "is_leaf": true
           }
@@ -1783,7 +1782,7 @@
           "2024-12-31": 14874.0,
           "2025-12-31": 16245.0,
           "2023-12-31": 10051.0,
-          "2022-12-31": 6623.0,
+          "2022-12-31": 8707.0,
           "2021-12-31": 5361.0
         },
         "is_leaf": true
@@ -1795,7 +1794,7 @@
         "weight": 1.0,
         "values": {
           "2021-12-31": 118704.0,
-          "2022-12-31": 91883.0,
+          "2022-12-31": 89799.0,
           "2023-12-31": 86868.0,
           "2024-12-31": 72191.0,
           "2025-12-31": 96135.0
@@ -2062,7 +2061,7 @@
             "values": {
               "2024-12-31": 10883.0,
               "2025-12-31": 46547.0,
-              "2023-12-31": 13253.0,
+              "2023-12-31": 11870.0,
               "2022-12-31": 14701.0,
               "2021-12-31": 14817.0
             },
@@ -2104,33 +2103,20 @@
             "values": {
               "2024-12-31": 4694.0,
               "2025-12-31": 8449.0,
-              "2023-12-31": 1616.0,
+              "2023-12-31": 4395.0,
               "2022-12-31": 2247.0,
               "2021-12-31": 2205.0
             },
             "is_leaf": true
           },
           {
-            "concept": "us-gaap_ContractWithCustomerLiabilityNoncurrent",
-            "tag": "us-gaap:ContractWithCustomerLiabilityNoncurrent",
-            "name": "Contract With Customer Liability",
+            "concept": "__OTHER__us-gaap_Liabilities",
+            "tag": ":_OTHER__us-gaap_Liabilities",
+            "name": "Other",
             "weight": 1.0,
             "values": {
-              "2022-12-31": 599.0,
-              "2023-12-31": 911.0,
-              "2021-12-31": 535.0
-            },
-            "is_leaf": true
-          },
-          {
-            "concept": "us-gaap_DeferredIncomeTaxLiabilitiesNet",
-            "tag": "us-gaap:DeferredIncomeTaxLiabilitiesNet",
-            "name": "Deferred Income Tax Liabilities Net",
-            "weight": 1.0,
-            "values": {
-              "2022-12-31": 514.0,
-              "2023-12-31": 485.0,
-              "2021-12-31": 5257.0
+              "2021-12-31": 5792.0,
+              "2022-12-31": 1113.0
             },
             "is_leaf": true
           }
@@ -2487,7 +2473,7 @@
               "2024-12-31": -3419.0,
               "2025-12-31": -2108.0,
               "2023-12-31": -4330.0,
-              "2022-12-31": -1030.0,
+              "2022-12-31": -3483.0,
               "2021-12-31": 213.0
             },
             "is_leaf": true
@@ -2591,24 +2577,12 @@
             "is_leaf": true
           },
           {
-            "concept": "goog_AmortizationAndImpairmentOfIntangibleAssets",
-            "tag": "goog:AmortizationAndImpairmentOfIntangibleAssets",
-            "name": "Amortization And Impairment Of Intangible Assets",
-            "weight": 1.0,
-            "values": {
-              "2021-12-31": 886.0,
-              "2022-12-31": 641.0
-            },
-            "is_leaf": true
-          },
-          {
             "concept": "__OTHER__us-gaap_NetCashProvidedByUsedInOperatingActivities",
             "tag": ":_OTHER__us-gaap_NetCashProvidedByUsedInOperatingActivities",
             "name": "Other",
             "weight": 1.0,
             "values": {
-              "2021-12-31": 11555.0,
-              "2022-12-31": 1812.0
+              "2021-12-31": 12441.0
             },
             "is_leaf": true
           }

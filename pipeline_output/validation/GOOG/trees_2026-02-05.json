@@ -1483,6 +1483,58 @@
       }
     ]
   },
+  "IS_groupable": [
+    {
+      "parent": "us-gaap_CostsAndExpenses",
+      "parent_name": "Costs And Expenses",
+      "parent_total": {
+        "2024-12-31": 237628.0,
+        "2025-12-31": 273797.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_CostOfRevenue",
+          "name": "Cost Of Revenue",
+          "tag": "us-gaap:CostOfRevenue",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 146306.0,
+            "2025-12-31": 162535.0
+          }
+        },
+        {
+          "concept": "us-gaap_ResearchAndDevelopmentExpense",
+          "name": "Research And Development Expense",
+          "tag": "us-gaap:ResearchAndDevelopmentExpense",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 49326.0,
+            "2025-12-31": 61087.0
+          }
+        },
+        {
+          "concept": "us-gaap_SellingAndMarketingExpense",
+          "name": "Selling And Marketing Expense",
+          "tag": "us-gaap:SellingAndMarketingExpense",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 27808.0,
+            "2025-12-31": 28693.0
+          }
+        },
+        {
+          "concept": "us-gaap_GeneralAndAdministrativeExpense",
+          "name": "General And Administrative Expense",
+          "tag": "us-gaap:GeneralAndAdministrativeExpense",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 14188.0,
+            "2025-12-31": 21482.0
+          }
+        }
+      ]
+    }
+  ],
   "BS": {
     "concept": "us-gaap_Assets",
     "tag": "us-gaap:Assets",
@@ -1657,6 +1709,128 @@
       }
     ]
   },
+  "BS_groupable": [
+    {
+      "parent": "us-gaap_Assets",
+      "parent_name": "Assets",
+      "parent_total": {
+        "2024-12-31": 450256.0,
+        "2025-12-31": 595281.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
+          "name": "Property Plant And Equipment And Finance Lease Right Of Use Asset After Accumulated Depreciation And Amortization",
+          "tag": "us-gaap:PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 171036.0,
+            "2025-12-31": 246597.0
+          }
+        },
+        {
+          "concept": "__OTHER__us-gaap_Assets",
+          "name": "Other",
+          "tag": ":_OTHER__us-gaap_Assets",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 72191.0,
+            "2025-12-31": 96135.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherLongTermInvestments",
+          "name": "Other Long Term Investments",
+          "tag": "us-gaap:OtherLongTermInvestments",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 37982.0,
+            "2025-12-31": 68687.0
+          }
+        },
+        {
+          "concept": "us-gaap_Goodwill",
+          "name": "Goodwill",
+          "tag": "us-gaap:Goodwill",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 31885.0,
+            "2025-12-31": 33380.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherAssetsNoncurrent",
+          "name": "Other Assets",
+          "tag": "us-gaap:OtherAssetsNoncurrent",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 14874.0,
+            "2025-12-31": 16245.0
+          }
+        },
+        {
+          "concept": "us-gaap_OperatingLeaseRightOfUseAsset",
+          "name": "Operating Lease Right Of Use Asset",
+          "tag": "us-gaap:OperatingLeaseRightOfUseAsset",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 13588.0,
+            "2025-12-31": 15221.0
+          }
+        },
+        {
+          "concept": "us-gaap_DeferredIncomeTaxAssetsNet",
+          "name": "Deferred Income Tax Assets Net",
+          "tag": "us-gaap:DeferredIncomeTaxAssetsNet",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 17180.0,
+            "2025-12-31": 9113.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_CashCashEquivalentsAndShortTermInvestments",
+      "parent_name": "Cash Cash Equivalents And Short Term Investments",
+      "parent_total": {
+        "2024-12-31": 23466.0,
+        "2025-12-31": 30708.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_MarketableSecuritiesCurrent",
+          "name": "Marketable Securities Current",
+          "tag": "us-gaap:MarketableSecuritiesCurrent",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 72191.0,
+            "2025-12-31": 96135.0
+          }
+        },
+        {
+          "concept": "__OTHER__us-gaap_CashCashEquivalentsAndShortTermInvestments",
+          "name": "Other",
+          "tag": ":_OTHER__us-gaap_CashCashEquivalentsAndShortTermInvestments",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": -72191.0,
+            "2025-12-31": -96135.0
+          }
+        },
+        {
+          "concept": "us-gaap_CashAndCashEquivalentsAtCarryingValue",
+          "name": "Cash And Cash Equivalents At Carrying Value",
+          "tag": "us-gaap:CashAndCashEquivalentsAtCarryingValue",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 23466.0,
+            "2025-12-31": 30708.0
+          }
+        }
+      ]
+    }
+  ],
   "BS_LE": {
     "concept": "us-gaap_LiabilitiesAndStockholdersEquity",
     "tag": "us-gaap:LiabilitiesAndStockholdersEquity",
@@ -1864,6 +2038,168 @@
       }
     ]
   },
+  "BS_LE_groupable": [
+    {
+      "parent": "us-gaap_Liabilities",
+      "parent_name": "Liabilities",
+      "parent_total": {
+        "2024-12-31": 125172.0,
+        "2025-12-31": 180016.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_LongTermDebtNoncurrent",
+          "name": "Long Term Debt",
+          "tag": "us-gaap:LongTermDebtNoncurrent",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 10883.0,
+            "2025-12-31": 46547.0
+          }
+        },
+        {
+          "concept": "us-gaap_OperatingLeaseLiabilityNoncurrent",
+          "name": "Operating Lease Liability",
+          "tag": "us-gaap:OperatingLeaseLiabilityNoncurrent",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 11691.0,
+            "2025-12-31": 12744.0
+          }
+        },
+        {
+          "concept": "us-gaap_AccruedIncomeTaxesNoncurrent",
+          "name": "Accrued Income Taxes",
+          "tag": "us-gaap:AccruedIncomeTaxesNoncurrent",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 8782.0,
+            "2025-12-31": 9531.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherLiabilitiesNoncurrent",
+          "name": "Other Liabilities",
+          "tag": "us-gaap:OtherLiabilitiesNoncurrent",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 4694.0,
+            "2025-12-31": 8449.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_LiabilitiesCurrent",
+      "parent_name": "Liabilities Current",
+      "parent_total": {
+        "2024-12-31": 89122.0,
+        "2025-12-31": 102745.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_AccruedLiabilitiesCurrent",
+          "name": "Accrued Liabilities Current",
+          "tag": "us-gaap:AccruedLiabilitiesCurrent",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 51228.0,
+            "2025-12-31": 55557.0
+          }
+        },
+        {
+          "concept": "us-gaap_EmployeeRelatedLiabilitiesCurrent",
+          "name": "Employee Related Liabilities Current",
+          "tag": "us-gaap:EmployeeRelatedLiabilitiesCurrent",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 15069.0,
+            "2025-12-31": 17546.0
+          }
+        },
+        {
+          "concept": "goog_AccruedRevenueShare",
+          "name": "Accrued Revenue Share",
+          "tag": "goog:AccruedRevenueShare",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 9802.0,
+            "2025-12-31": 10864.0
+          }
+        },
+        {
+          "concept": "us-gaap_AccountsPayableCurrent",
+          "name": "Accounts Payable Current",
+          "tag": "us-gaap:AccountsPayableCurrent",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 7987.0,
+            "2025-12-31": 12200.0
+          }
+        },
+        {
+          "concept": "us-gaap_ContractWithCustomerLiabilityCurrent",
+          "name": "Contract With Customer Liability Current",
+          "tag": "us-gaap:ContractWithCustomerLiabilityCurrent",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 5036.0,
+            "2025-12-31": 6578.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_StockholdersEquity",
+      "parent_name": "Stockholders Equity",
+      "parent_total": {
+        "2024-12-31": 325084.0,
+        "2025-12-31": 415265.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_RetainedEarningsAccumulatedDeficit",
+          "name": "Retained Earnings Accumulated Deficit",
+          "tag": "us-gaap:RetainedEarningsAccumulatedDeficit",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 245084.0,
+            "2025-12-31": 324055.0
+          }
+        },
+        {
+          "concept": "us-gaap_CommonStocksIncludingAdditionalPaidInCapital",
+          "name": "Common Stocks Including Additional Paid In Capital",
+          "tag": "us-gaap:CommonStocksIncludingAdditionalPaidInCapital",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 84800.0,
+            "2025-12-31": 93126.0
+          }
+        },
+        {
+          "concept": "us-gaap_AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+          "name": "Accumulated Other Comprehensive Income Loss Net Of Tax",
+          "tag": "us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": -4800.0,
+            "2025-12-31": -1916.0
+          }
+        },
+        {
+          "concept": "us-gaap_ConvertiblePreferredStockNonredeemableOrRedeemableIssuerOptionValue",
+          "name": "Convertible Preferred Stock Nonredeemable Or Redeemable Issuer Option Value",
+          "tag": "us-gaap:ConvertiblePreferredStockNonredeemableOrRedeemableIssuerOptionValue",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 0.0,
+            "2025-12-31": 0.0
+          }
+        }
+      ]
+    }
+  ],
   "CF": {
     "concept": "us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
     "tag": "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
@@ -2219,6 +2555,298 @@
       }
     ]
   },
+  "CF_groupable": [
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInOperatingActivities",
+      "parent_name": "Net Cash Provided By Used In Operating Activities",
+      "parent_total": {
+        "2024-12-31": 125299.0,
+        "2025-12-31": 164713.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_NetIncomeLoss",
+          "name": "Net Income Loss",
+          "tag": "us-gaap:NetIncomeLoss",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 100118.0,
+            "2025-12-31": 132170.0
+          }
+        },
+        {
+          "concept": "us-gaap_ShareBasedCompensation",
+          "name": "Share Based Compensation",
+          "tag": "us-gaap:ShareBasedCompensation",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 22785.0,
+            "2025-12-31": 24953.0
+          }
+        },
+        {
+          "concept": "us-gaap_Depreciation",
+          "name": "Depreciation",
+          "tag": "us-gaap:Depreciation",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 15311.0,
+            "2025-12-31": 21136.0
+          }
+        },
+        {
+          "concept": "us-gaap_DebtAndEquitySecuritiesGainLoss",
+          "name": "Debt And Equity Securities Gain Loss",
+          "tag": "us-gaap:DebtAndEquitySecuritiesGainLoss",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 2671.0,
+            "2025-12-31": 24620.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInAccountsReceivable",
+          "name": "Increase Decrease In Accounts Receivable",
+          "tag": "us-gaap:IncreaseDecreaseInAccountsReceivable",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 5891.0,
+            "2025-12-31": 8779.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInAccruedLiabilities",
+          "name": "Increase Decrease In Accrued Liabilities",
+          "tag": "us-gaap:IncreaseDecreaseInAccruedLiabilities",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": -1161.0,
+            "2025-12-31": 12939.0
+          }
+        },
+        {
+          "concept": "us-gaap_DeferredIncomeTaxesAndTaxCredits",
+          "name": "Deferred Income Taxes And Tax Credits",
+          "tag": "us-gaap:DeferredIncomeTaxesAndTaxCredits",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": -5257.0,
+            "2025-12-31": 8348.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInOtherOperatingAssets",
+          "name": "Increase Decrease In Other Operating Assets",
+          "tag": "us-gaap:IncreaseDecreaseInOtherOperatingAssets",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 1397.0,
+            "2025-12-31": 4542.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInIncomeTaxes",
+          "name": "Increase Decrease In Income Taxes",
+          "tag": "us-gaap:IncreaseDecreaseInIncomeTaxes",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": -2418.0,
+            "2025-12-31": -3226.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherNoncashIncomeExpense",
+          "name": "Other Noncash Income Expense",
+          "tag": "us-gaap:OtherNoncashIncomeExpense",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": -3419.0,
+            "2025-12-31": -2108.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInContractWithCustomerLiability",
+          "name": "Increase Decrease In Contract With Customer Liability",
+          "tag": "us-gaap:IncreaseDecreaseInContractWithCustomerLiability",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 1043.0,
+            "2025-12-31": 2420.0
+          }
+        },
+        {
+          "concept": "goog_IncreaseDecreaseInAccruedRevenueShare",
+          "name": "Increase Decrease In Accrued Revenue Share",
+          "tag": "goog:IncreaseDecreaseInAccruedRevenueShare",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 1059.0,
+            "2025-12-31": 899.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInAccountsPayable",
+          "name": "Increase Decrease In Accounts Payable",
+          "tag": "us-gaap:IncreaseDecreaseInAccountsPayable",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 359.0,
+            "2025-12-31": 907.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+      "parent_name": "Net Cash Provided By Used In Investing Activities",
+      "parent_total": {
+        "2024-12-31": -45536.0,
+        "2025-12-31": -120291.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_PaymentsToAcquireMarketableSecurities",
+          "name": "Payments To Acquire Marketable Securities",
+          "tag": "us-gaap:PaymentsToAcquireMarketableSecurities",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 86679.0,
+            "2025-12-31": 103773.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromSaleAndMaturityOfMarketableSecurities",
+          "name": "Proceeds From Sale And Maturity Of Marketable Securities",
+          "tag": "us-gaap:ProceedsFromSaleAndMaturityOfMarketableSecurities",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 103428.0,
+            "2025-12-31": 83240.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment",
+          "name": "Payments To Acquire Property Plant And Equipment",
+          "tag": "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 52535.0,
+            "2025-12-31": 91447.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsToAcquireOtherInvestments",
+          "name": "Payments To Acquire Other Investments",
+          "tag": "us-gaap:PaymentsToAcquireOtherInvestments",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 5034.0,
+            "2025-12-31": 5716.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
+          "name": "Payments For Proceeds From Other Investing Activities",
+          "tag": "us-gaap:PaymentsForProceedsFromOtherInvestingActivities",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 2667.0,
+            "2025-12-31": 2370.0
+          }
+        },
+        {
+          "concept": "goog_AcquisitionsNetOfCashAcquiredAndPurchasesOfIntangibleAndOtherAssets",
+          "name": "Acquisitions Net Of Cash Acquired And Purchases Of Intangible And Other Assets",
+          "tag": "goog:AcquisitionsNetOfCashAcquiredAndPurchasesOfIntangibleAndOtherAssets",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 2931.0,
+            "2025-12-31": 1592.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromSaleAndMaturityOfOtherInvestments",
+          "name": "Proceeds From Sale And Maturity Of Other Investments",
+          "tag": "us-gaap:ProceedsFromSaleAndMaturityOfOtherInvestments",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 882.0,
+            "2025-12-31": 1367.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+      "parent_name": "Net Cash Provided By Used In Financing Activities",
+      "parent_total": {
+        "2024-12-31": -79733.0,
+        "2025-12-31": -37388.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_PaymentsForRepurchaseOfCommonStock",
+          "name": "Payments For Repurchase Of Common Stock",
+          "tag": "us-gaap:PaymentsForRepurchaseOfCommonStock",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 62222.0,
+            "2025-12-31": 45709.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromDebtNetOfIssuanceCosts",
+          "name": "Proceeds From Debt Net Of Issuance Costs",
+          "tag": "us-gaap:ProceedsFromDebtNetOfIssuanceCosts",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 13589.0,
+            "2025-12-31": 64564.0
+          }
+        },
+        {
+          "concept": "us-gaap_RepaymentsOfDebtAndCapitalLeaseObligations",
+          "name": "Repayments Of Debt And Capital Lease Obligations",
+          "tag": "us-gaap:RepaymentsOfDebtAndCapitalLeaseObligations",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 12701.0,
+            "2025-12-31": 32427.0
+          }
+        },
+        {
+          "concept": "goog_NetProceedsPaymentsRelatedToStockBasedAwardActivities",
+          "name": "Net Proceeds Payments Related To Stock Based Award Activities",
+          "tag": "goog:NetProceedsPaymentsRelatedToStockBasedAwardActivities",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 12190.0,
+            "2025-12-31": 14167.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsOfDividends",
+          "name": "Payments Of Dividends",
+          "tag": "us-gaap:PaymentsOfDividends",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 7363.0,
+            "2025-12-31": 10049.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromMinorityShareholders",
+          "name": "Proceeds From Minority Shareholders",
+          "tag": "us-gaap:ProceedsFromMinorityShareholders",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": 1154.0,
+            "2025-12-31": 400.0
+          }
+        }
+      ]
+    }
+  ],
   "revenue_segments": {
     "concept": "_REVENUE_SEGMENTS",
     "tag": ":REVENUE_SEGMENTS",

@@ -44,6 +44,11 @@ Evaluation updated 2026-04-13. Items are ordered by execution priority within ea
 **What:** Fail fast if `ANTHROPIC_API_KEY` or `gws` are missing from the environment.
 **Impact:** Prevents wasted time and confusing errors deep in a pipeline run.
 
+### 8. LLM Provider Adapter Pattern (Strategy Pattern)
+**What:** The pipeline is tightly coupled to the Anthropic SDK (`client.messages.create`). We need to abstract this into an `LLMProvider` interface with adapters for Anthropic, OpenAI, and Google (Gemini).
+**Impact:** Prevents the entire pipeline from failing if a single provider is down or out of credits. Allows users to configure their preferred model (e.g., `SEC_LLM_PROVIDER=openai`).
+**What to do:** Refactor `llm_utils.py` to use a Strategy Pattern. Define a standard interface that returns a parsed JSON dictionary, and implement `AnthropicAdapter`, `OpenAIAdapter`, etc. Control the active provider via an environment variable.
+
 ---
 
 ## P2 — Optimization & UX
@@ -74,6 +79,7 @@ Treat each filing as a separate "vintage" to correctly handle historical restate
 
 ## Completed
 
+*   **Refactor Fetch Scripts and Managed Agent**: Consolidated SEC EDGAR logic into `sec_utils.py` and refactored `agent1_fetcher.py` to run locally rather than using Anthropic Managed Agents, eliminating dependency and environment issues.
 *   **Fix Multi-Year Merge Validation Bugs**: Resolved TSLA revenue reclassification and structural gap bugs.
 *   **Semantic Reconciliation Layer (LLM-in-the-Loop)**: Implemented `llm_invariant_fixer.py` for self-healing semantic mismatches.
 *   **Hard gate on `verify_tree_completeness()`**: Pipeline now halts on tree gaps.

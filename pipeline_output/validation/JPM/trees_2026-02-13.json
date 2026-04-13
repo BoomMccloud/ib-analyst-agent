@@ -2679,6 +2679,178 @@
       }
     ]
   },
+  "IS_groupable": [
+    {
+      "parent": "us-gaap_NoninterestIncome",
+      "parent_name": "Noninterest Income",
+      "parent_total": {
+        "2025-12-31": 87004.0,
+        "2024-12-31": 84973.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_PrincipalTransactionsRevenue",
+          "name": "Principal Transactions Revenue",
+          "tag": "us-gaap:PrincipalTransactionsRevenue",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 27212.0,
+            "2024-12-31": 24787.0
+          }
+        },
+        {
+          "concept": "jpm_AssetManagementFees",
+          "name": "Asset Management Fees",
+          "tag": "jpm:AssetManagementFees",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 20327.0,
+            "2024-12-31": 17801.0
+          }
+        },
+        {
+          "concept": "us-gaap_NoninterestIncomeOther",
+          "name": "Noninterest Income Other",
+          "tag": "us-gaap:NoninterestIncomeOther",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 6174.0,
+            "2024-12-31": 12462.0
+          }
+        },
+        {
+          "concept": "us-gaap_InvestmentBankingRevenue",
+          "name": "Investment Banking Revenue",
+          "tag": "us-gaap:InvestmentBankingRevenue",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 9615.0,
+            "2024-12-31": 8910.0
+          }
+        },
+        {
+          "concept": "jpm_LendingAndDepositRelatedFees",
+          "name": "Lending And Deposit Related Fees",
+          "tag": "jpm:LendingAndDepositRelatedFees",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 9093.0,
+            "2024-12-31": 7606.0
+          }
+        },
+        {
+          "concept": "jpm_FeesAndCommissions1",
+          "name": "Fees And Commissions1",
+          "tag": "jpm:FeesAndCommissions1",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 8539.0,
+            "2024-12-31": 7530.0
+          }
+        },
+        {
+          "concept": "jpm_FeesAndCommissionsCreditAndDebitCards1",
+          "name": "Fees And Commissions Credit And Debit Cards1",
+          "tag": "jpm:FeesAndCommissionsCreditAndDebitCards1",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 4720.0,
+            "2024-12-31": 5497.0
+          }
+        },
+        {
+          "concept": "jpm_MortgageFeesAndRelatedIncome",
+          "name": "Mortgage Fees And Related Income",
+          "tag": "jpm:MortgageFeesAndRelatedIncome",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 1381.0,
+            "2024-12-31": 1401.0
+          }
+        },
+        {
+          "concept": "us-gaap_DebtSecuritiesAvailableForSaleRealizedGainLoss",
+          "name": "Debt Securities Available For Sale Realized Gain Loss",
+          "tag": "us-gaap:DebtSecuritiesAvailableForSaleRealizedGainLoss",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": -57.0,
+            "2024-12-31": -1021.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_NoninterestExpense",
+      "parent_name": "Noninterest Expense",
+      "parent_total": {
+        "2025-12-31": 95640.0,
+        "2024-12-31": 91797.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_LaborAndRelatedExpense",
+          "name": "Labor And Related Expense",
+          "tag": "us-gaap:LaborAndRelatedExpense",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 54487.0,
+            "2024-12-31": 51357.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProfessionalAndContractServicesExpense",
+          "name": "Professional And Contract Services Expense",
+          "tag": "us-gaap:ProfessionalAndContractServicesExpense",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 12356.0,
+            "2024-12-31": 11057.0
+          }
+        },
+        {
+          "concept": "us-gaap_CommunicationsAndInformationTechnology",
+          "name": "Communications And Information Technology",
+          "tag": "us-gaap:CommunicationsAndInformationTechnology",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 11029.0,
+            "2024-12-31": 9831.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherNoninterestExpense",
+          "name": "Other Noninterest Expense",
+          "tag": "us-gaap:OtherNoninterestExpense",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 6776.0,
+            "2024-12-31": 9552.0
+          }
+        },
+        {
+          "concept": "us-gaap_MarketingAndAdvertisingExpense",
+          "name": "Marketing And Advertising Expense",
+          "tag": "us-gaap:MarketingAndAdvertisingExpense",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 5531.0,
+            "2024-12-31": 4974.0
+          }
+        },
+        {
+          "concept": "us-gaap_OccupancyNet",
+          "name": "Occupancy Net",
+          "tag": "us-gaap:OccupancyNet",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 5461.0,
+            "2024-12-31": 5026.0
+          }
+        }
+      ]
+    }
+  ],
   "BS": {
     "concept": "us-gaap_Assets",
     "tag": "us-gaap:Assets",
@@ -2875,6 +3047,118 @@
       }
     ]
   },
+  "BS_groupable": [
+    {
+      "parent": "us-gaap_Assets",
+      "parent_name": "Assets",
+      "parent_total": {
+        "2025-12-31": 4424900.0,
+        "2024-12-31": 4002814.0
+      },
+      "siblings": [
+        {
+          "concept": "jpm_TradingAssets",
+          "name": "Trading Assets",
+          "tag": "jpm:TradingAssets",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 802873.0,
+            "2024-12-31": 637784.0
+          }
+        },
+        {
+          "concept": "us-gaap_InterestBearingDepositsInBanks",
+          "name": "Interest Bearing Deposits In Banks",
+          "tag": "us-gaap:InterestBearingDepositsInBanks",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 321596.0,
+            "2024-12-31": 445945.0
+          }
+        },
+        {
+          "concept": "us-gaap_FederalFundsSoldAndSecuritiesPurchasedUnderAgreementsToResell",
+          "name": "Federal Funds Sold And Securities Purchased Under Agreements To Resell",
+          "tag": "us-gaap:FederalFundsSoldAndSecuritiesPurchasedUnderAgreementsToResell",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 336426.0,
+            "2024-12-31": 295001.0
+          }
+        },
+        {
+          "concept": "us-gaap_SecuritiesBorrowed",
+          "name": "Securities Borrowed",
+          "tag": "us-gaap:SecuritiesBorrowed",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 286191.0,
+            "2024-12-31": 219546.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherAssets",
+          "name": "Other Assets",
+          "tag": "us-gaap:OtherAssets",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 198775.0,
+            "2024-12-31": 178197.0
+          }
+        },
+        {
+          "concept": "__OTHER__us-gaap_Assets",
+          "name": "Other",
+          "tag": ":_OTHER__us-gaap_Assets",
+          "weight": 1.0,
+          "values": {
+            "2024-12-31": -62465.0,
+            "2025-12-31": 163860.0
+          }
+        },
+        {
+          "concept": "jpm_AccruedInterestAndAccountsReceivable",
+          "name": "Accrued Interest And Accounts Receivable",
+          "tag": "jpm:AccruedInterestAndAccountsReceivable",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 111599.0,
+            "2024-12-31": 101223.0
+          }
+        },
+        {
+          "concept": "jpm_GoodwillServicingAssetsAtFairValueAndOtherIntangibleAssets",
+          "name": "Goodwill Servicing Assets At Fair Value And Other Intangible Assets",
+          "tag": "jpm:GoodwillServicingAssetsAtFairValueAndOtherIntangibleAssets",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 64458.0,
+            "2024-12-31": 64560.0
+          }
+        },
+        {
+          "concept": "jpm_PropertyPlantAndEquipmentAndOperatingLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
+          "name": "Property Plant And Equipment And Operating Lease Right Of Use Asset After Accumulated Depreciation And Amortization",
+          "tag": "jpm:PropertyPlantAndEquipmentAndOperatingLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 36244.0,
+            "2024-12-31": 32223.0
+          }
+        },
+        {
+          "concept": "us-gaap_CashAndDueFromBanks",
+          "name": "Cash And Due From Banks",
+          "tag": "us-gaap:CashAndDueFromBanks",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 21742.0,
+            "2024-12-31": 23372.0
+          }
+        }
+      ]
+    }
+  ],
   "BS_LE": {
     "concept": "us-gaap_LiabilitiesAndStockholdersEquity",
     "tag": "us-gaap:LiabilitiesAndStockholdersEquity",
@@ -3076,6 +3360,165 @@
       }
     ]
   },
+  "BS_LE_groupable": [
+    {
+      "parent": "us-gaap_Liabilities",
+      "parent_name": "Liabilities",
+      "parent_total": {
+        "2025-12-31": 4062462.0,
+        "2024-12-31": 3658056.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_Deposits",
+          "name": "Deposits",
+          "tag": "us-gaap:Deposits",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 2559320.0,
+            "2024-12-31": 2406032.0
+          }
+        },
+        {
+          "concept": "us-gaap_LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+          "name": "Long Term Debt And Capital Lease Obligations Including Current Maturities",
+          "tag": "us-gaap:LongTermDebtAndCapitalLeaseObligationsIncludingCurrentMaturities",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 435206.0,
+            "2024-12-31": 401418.0
+          }
+        },
+        {
+          "concept": "us-gaap_FederalFundsPurchasedAndSecuritiesSoldUnderAgreementsToRepurchase",
+          "name": "Federal Funds Purchased And Securities Sold Under Agreements To Repurchase",
+          "tag": "us-gaap:FederalFundsPurchasedAndSecuritiesSoldUnderAgreementsToRepurchase",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 442396.0,
+            "2024-12-31": 296835.0
+          }
+        },
+        {
+          "concept": "us-gaap_AccountsPayableAndAccruedLiabilitiesCurrentAndNoncurrent",
+          "name": "Accounts Payable And Accrued Liabilities Current And",
+          "tag": "us-gaap:AccountsPayableAndAccruedLiabilitiesCurrentAndNoncurrent",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 316794.0,
+            "2024-12-31": 280672.0
+          }
+        },
+        {
+          "concept": "us-gaap_TradingLiabilities",
+          "name": "Trading Liabilities",
+          "tag": "us-gaap:TradingLiabilities",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 216019.0,
+            "2024-12-31": 192883.0
+          }
+        },
+        {
+          "concept": "us-gaap_ShortTermBorrowings",
+          "name": "Short Term Borrowings",
+          "tag": "us-gaap:ShortTermBorrowings",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 64776.0,
+            "2024-12-31": 52893.0
+          }
+        },
+        {
+          "concept": "us-gaap_BeneficialInterest",
+          "name": "Beneficial Interest",
+          "tag": "us-gaap:BeneficialInterest",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 27951.0,
+            "2024-12-31": 27323.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherLiabilities",
+          "name": "Other Liabilities",
+          "tag": "us-gaap:OtherLiabilities",
+          "weight": 1.0,
+          "values": {}
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_StockholdersEquity",
+      "parent_name": "Stockholders Equity",
+      "parent_total": {
+        "2025-12-31": 362438.0,
+        "2024-12-31": 344758.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_RetainedEarningsAccumulatedDeficit",
+          "name": "Retained Earnings Accumulated Deficit",
+          "tag": "us-gaap:RetainedEarningsAccumulatedDeficit",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 416055.0,
+            "2024-12-31": 376166.0
+          }
+        },
+        {
+          "concept": "us-gaap_TreasuryStockCommonValue",
+          "name": "Treasury Stock Common Value",
+          "tag": "us-gaap:TreasuryStockCommonValue",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": 164591.0,
+            "2024-12-31": 134018.0
+          }
+        },
+        {
+          "concept": "us-gaap_AdditionalPaidInCapitalCommonStock",
+          "name": "Additional Paid In Capital Common Stock",
+          "tag": "us-gaap:AdditionalPaidInCapitalCommonStock",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 91114.0,
+            "2024-12-31": 90911.0
+          }
+        },
+        {
+          "concept": "us-gaap_PreferredStockIncludingAdditionalPaidInCapitalNetOfDiscount",
+          "name": "Preferred Stock Including Additional Paid In Capital Net Of Discount",
+          "tag": "us-gaap:PreferredStockIncludingAdditionalPaidInCapitalNetOfDiscount",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 20045.0,
+            "2024-12-31": 20050.0
+          }
+        },
+        {
+          "concept": "us-gaap_AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+          "name": "Accumulated Other Comprehensive Income Loss Net Of Tax",
+          "tag": "us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": -4290.0,
+            "2024-12-31": -12456.0
+          }
+        },
+        {
+          "concept": "us-gaap_CommonStockValue",
+          "name": "Common Stock Value",
+          "tag": "us-gaap:CommonStockValue",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 4105.0,
+            "2024-12-31": 4105.0
+          }
+        }
+      ]
+    }
+  ],
   "CF": {
     "concept": "us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
     "tag": "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
@@ -3572,5 +4015,425 @@
         "role": "CF_FX"
       }
     ]
-  }
+  },
+  "CF_groupable": [
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInOperatingActivities",
+      "parent_name": "Net Cash Provided By Used In Operating Activities",
+      "parent_total": {
+        "2025-12-31": -147782.0,
+        "2024-12-31": -42012.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_PaymentsForOriginationAndPurchasesOfLoansHeldForSale",
+          "name": "Payments For Origination And Purchases Of Loans Held For Sale",
+          "tag": "us-gaap:PaymentsForOriginationAndPurchasesOfLoansHeldForSale",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": 260772.0,
+            "2024-12-31": 212238.0
+          }
+        },
+        {
+          "concept": "jpm_ProceedsFromSalesSecuritizationsAndPaydownsOfLoansHeldForSale",
+          "name": "Proceeds From Sales Securitizations And Paydowns Of Loans Held For Sale",
+          "tag": "jpm:ProceedsFromSalesSecuritizationsAndPaydownsOfLoansHeldForSale",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 235232.0,
+            "2024-12-31": 205303.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInFinancialInstrumentsUsedInOperatingActivities",
+          "name": "Increase Decrease In Financial Instruments Used In Operating Activities",
+          "tag": "us-gaap:IncreaseDecreaseInFinancialInstrumentsUsedInOperatingActivities",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": 156461.0,
+            "2024-12-31": 95729.0
+          }
+        },
+        {
+          "concept": "us-gaap_NetIncomeLoss",
+          "name": "Net Income Loss",
+          "tag": "us-gaap:NetIncomeLoss",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 57048.0,
+            "2024-12-31": 58471.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInCashCollateralForBorrowedSecurities",
+          "name": "Increase Decrease In Cash Collateral For Borrowed Securities",
+          "tag": "us-gaap:IncreaseDecreaseInCashCollateralForBorrowedSecurities",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": 66648.0,
+            "2024-12-31": 18762.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInTradingLiabilities",
+          "name": "Increase Decrease In Trading Liabilities",
+          "tag": "us-gaap:IncreaseDecreaseInTradingLiabilities",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 23134.0,
+            "2024-12-31": 2276.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProvisionForLoanLeaseAndOtherLosses",
+          "name": "Provision For Loan Lease And Other Losses",
+          "tag": "us-gaap:ProvisionForLoanLeaseAndOtherLosses",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 14212.0,
+            "2024-12-31": 10678.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInPrepaidDeferredExpenseAndOtherAssets",
+          "name": "Increase Decrease In Prepaid Deferred Expense And Other Assets",
+          "tag": "us-gaap:IncreaseDecreaseInPrepaidDeferredExpenseAndOtherAssets",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": 12582.0,
+            "2024-12-31": 7650.0
+          }
+        },
+        {
+          "concept": "jpm_IncreaseDecreaseInAccruedInterestsAndAccountsReceivable",
+          "name": "Increase Decrease In Accrued Interests And Accounts Receivable",
+          "tag": "jpm:IncreaseDecreaseInAccruedInterestsAndAccountsReceivable",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": 11514.0,
+            "2024-12-31": -5735.0
+          }
+        },
+        {
+          "concept": "us-gaap_DepreciationAmortizationAndAccretionNet",
+          "name": "Depreciation Amortization And Accretion Net",
+          "tag": "us-gaap:DepreciationAmortizationAndAccretionNet",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 8821.0,
+            "2024-12-31": 7938.0
+          }
+        },
+        {
+          "concept": "jpm_EquitySecuritiesGainLossOnShareExchange",
+          "name": "Equity Securities Gain Loss On Share Exchange",
+          "tag": "jpm:EquitySecuritiesGainLossOnShareExchange",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 7990.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherOperatingActivitiesCashFlowStatement",
+          "name": "Other Operating Activities Cash Flow Statement",
+          "tag": "us-gaap:OtherOperatingActivitiesCashFlowStatement",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 9558.0,
+            "2024-12-31": 6160.0
+          }
+        },
+        {
+          "concept": "us-gaap_DeferredIncomeTaxExpenseBenefit",
+          "name": "Deferred Income Tax Expense Benefit",
+          "tag": "us-gaap:DeferredIncomeTaxExpenseBenefit",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 5611.0,
+            "2024-12-31": 2004.0
+          }
+        },
+        {
+          "concept": "jpm_IncreaseDecreaseInAccountsPayableAndOtherLiabilities",
+          "name": "Increase Decrease In Accounts Payable And Other Liabilities",
+          "tag": "jpm:IncreaseDecreaseInAccountsPayableAndOtherLiabilities",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 5270.0,
+            "2024-12-31": -90.0
+          }
+        },
+        {
+          "concept": "us-gaap_OtherNoncashIncomeExpense",
+          "name": "Other Noncash Income Expense",
+          "tag": "us-gaap:OtherNoncashIncomeExpense",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": -1309.0,
+            "2024-12-31": -1985.0
+          }
+        },
+        {
+          "concept": "us-gaap_BusinessCombinationBargainPurchaseGainRecognizedAmount",
+          "name": "Business Combination Bargain Purchase Gain Recognized Amount",
+          "tag": "us-gaap:BusinessCombinationBargainPurchaseGainRecognizedAmount",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 103.0
+          }
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+      "parent_name": "Net Cash Provided By Used In Investing Activities",
+      "parent_total": {
+        "2025-12-31": -265565.0,
+        "2024-12-31": -163403.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_PaymentsToAcquireAvailableForSaleSecuritiesDebt",
+          "name": "Payments To Acquire Available For Sale Securities Debt",
+          "tag": "us-gaap:PaymentsToAcquireAvailableForSaleSecuritiesDebt",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": 308772.0,
+            "2024-12-31": 352712.0
+          }
+        },
+        {
+          "concept": "jpm_ProceedsFromPaymentsForOtherLoansAndLeases",
+          "name": "Proceeds From Payments For Other Loans And Leases",
+          "tag": "jpm:ProceedsFromPaymentsForOtherLoansAndLeases",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": -188497.0,
+            "2024-12-31": -83176.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromSaleOfAvailableForSaleSecuritiesDebt",
+          "name": "Proceeds From Sale Of Available For Sale Securities Debt",
+          "tag": "us-gaap:ProceedsFromSaleOfAvailableForSaleSecuritiesDebt",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 141295.0,
+            "2024-12-31": 104625.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromMaturitiesPrepaymentsAndCallsOfHeldToMaturitySecurities",
+          "name": "Proceeds From Maturities Prepayments And Calls Of Held To Maturity Securities",
+          "tag": "us-gaap:ProceedsFromMaturitiesPrepaymentsAndCallsOfHeldToMaturitySecurities",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 54791.0,
+            "2024-12-31": 99363.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromSaleOfFinanceReceivables",
+          "name": "Proceeds From Sale Of Finance Receivables",
+          "tag": "us-gaap:ProceedsFromSaleOfFinanceReceivables",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 57565.0,
+            "2024-12-31": 57921.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",
+          "name": "Proceeds From Maturities Prepayments And Calls Of Available For Sale Securities",
+          "tag": "us-gaap:ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 37414.0,
+            "2024-12-31": 38499.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromPaymentsForFederalFundsSoldAndSecuritiesPurchasedUnderAgreementsToResellNet",
+          "name": "Proceeds From Payments For Federal Funds Sold And Securities Purchased Under Agreements To Resell Net",
+          "tag": "us-gaap:ProceedsFromPaymentsForFederalFundsSoldAndSecuritiesPurchasedUnderAgreementsToResellNet",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": -41264.0,
+            "2024-12-31": -18706.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
+          "name": "Payments For Proceeds From Other Investing Activities",
+          "tag": "us-gaap:PaymentsForProceedsFromOtherInvestingActivities",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": 12665.0,
+            "2024-12-31": 2146.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsToAcquireHeldToMaturitySecurities",
+          "name": "Payments To Acquire Held To Maturity Securities",
+          "tag": "us-gaap:PaymentsToAcquireHeldToMaturitySecurities",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": 5432.0,
+            "2024-12-31": 4709.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsToAcquireBusinessesNetOfCashAcquired",
+          "name": "Payments To Acquire Businesses Net Of Cash Acquired",
+          "tag": "us-gaap:PaymentsToAcquireBusinessesNetOfCashAcquired",
+          "weight": -1.0,
+          "values": {
+            "2024-12-31": 2362.0
+          }
+        },
+        {
+          "concept": "jpm_NetChangeInAdvancesToandInvestmentsInSubsidiaries",
+          "name": "Net Change In Advances Toand Investments In Subsidiaries",
+          "tag": "jpm:NetChangeInAdvancesToandInvestmentsInSubsidiaries",
+          "weight": 1.0,
+          "values": {}
+        }
+      ]
+    },
+    {
+      "parent": "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+      "parent_name": "Net Cash Provided By Used In Financing Activities",
+      "parent_total": {
+        "2025-12-31": 269533.0,
+        "2024-12-31": 63447.0
+      },
+      "siblings": [
+        {
+          "concept": "us-gaap_ProceedsFromIssuanceOfLongTermDebtAndCapitalSecuritiesNet",
+          "name": "Proceeds From Issuance Of Long Term Debt And Capital Securities Net",
+          "tag": "us-gaap:ProceedsFromIssuanceOfLongTermDebtAndCapitalSecuritiesNet",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 120761.0,
+            "2024-12-31": 109915.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInFederalFundsPurchasedAndSecuritiesSoldUnderAgreementsToRepurchaseNet",
+          "name": "Increase Decrease In Federal Funds Purchased And Securities Sold Under Agreements To Repurchase Net",
+          "tag": "us-gaap:IncreaseDecreaseInFederalFundsPurchasedAndSecuritiesSoldUnderAgreementsToRepurchaseNet",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 145535.0,
+            "2024-12-31": 80288.0
+          }
+        },
+        {
+          "concept": "us-gaap_RepaymentsOfLongTermDebtAndCapitalSecurities",
+          "name": "Repayments Of Long Term Debt And Capital Securities",
+          "tag": "us-gaap:RepaymentsOfLongTermDebtAndCapitalSecurities",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": 108100.0,
+            "2024-12-31": 96605.0
+          }
+        },
+        {
+          "concept": "us-gaap_IncreaseDecreaseInDeposits",
+          "name": "Increase Decrease In Deposits",
+          "tag": "us-gaap:IncreaseDecreaseInDeposits",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 153168.0,
+            "2024-12-31": 3299.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsForRepurchaseOfCommonStock",
+          "name": "Payments For Repurchase Of Common Stock",
+          "tag": "us-gaap:PaymentsForRepurchaseOfCommonStock",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": 31591.0,
+            "2024-12-31": 18830.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsOfDividends",
+          "name": "Payments Of Dividends",
+          "tag": "us-gaap:PaymentsOfDividends",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": 16625.0,
+            "2024-12-31": 14783.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromShortTermDebt",
+          "name": "Proceeds From Short Term Debt",
+          "tag": "us-gaap:ProceedsFromShortTermDebt",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 9422.0,
+            "2024-12-31": 7439.0
+          }
+        },
+        {
+          "concept": "us-gaap_PaymentsForRepurchaseOfRedeemablePreferredStock",
+          "name": "Payments For Repurchase Of Redeemable Preferred Stock",
+          "tag": "us-gaap:PaymentsForRepurchaseOfRedeemablePreferredStock",
+          "weight": -1.0,
+          "values": {
+            "2025-12-31": 3000.0,
+            "2024-12-31": 9850.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromIssuanceOfPreferredStockAndPreferenceStock",
+          "name": "Proceeds From Issuance Of Preferred Stock And Preference Stock",
+          "tag": "us-gaap:ProceedsFromIssuanceOfPreferredStockAndPreferenceStock",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": 3000.0,
+            "2024-12-31": 2500.0
+          }
+        },
+        {
+          "concept": "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
+          "name": "Proceeds From Payments For Other Financing Activities",
+          "tag": "us-gaap:ProceedsFromPaymentsForOtherFinancingActivities",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": -2415.0,
+            "2024-12-31": -1469.0
+          }
+        },
+        {
+          "concept": "jpm_IncreaseDecreaseInBeneficialInterestsIssuedByConsolidatedVariableInterestEntities",
+          "name": "Increase Decrease In Beneficial Interests Issued By Consolidated Variable Interest Entities",
+          "tag": "jpm:IncreaseDecreaseInBeneficialInterestsIssuedByConsolidatedVariableInterestEntities",
+          "weight": 1.0,
+          "values": {
+            "2025-12-31": -622.0,
+            "2024-12-31": 1543.0
+          }
+        },
+        {
+          "concept": "us-gaap_RepaymentsOfShortTermDebt",
+          "name": "Repayments Of Short Term Debt",
+          "tag": "us-gaap:RepaymentsOfShortTermDebt",
+          "weight": -1.0,
+          "values": {}
+        },
+        {
+          "concept": "jpm_NetBorrowingsFromSubsidiaries",
+          "name": "Net Borrowings From Subsidiaries",
+          "tag": "jpm:NetBorrowingsFromSubsidiaries",
+          "weight": 1.0,
+          "values": {}
+        }
+      ]
+    }
+  ]
 }

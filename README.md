@@ -111,7 +111,7 @@ Tested on 10 companies across 6 industries: 9/10 ALL PASS, 1 has a $401 rounding
 ## Setup & Requirements
 
 - **Python 3.10+**
-- **Anthropic API Key** (`ANTHROPIC_API_KEY`): Required for LLM-based filing discovery.
+- **Anthropic API Key** (`ANTHROPIC_API_KEY`): Required for LLM-in-the-loop semantic reconciliation (`llm_invariant_fixer.py`).
 - **`gws` CLI**: Required for exporting models to Google Sheets (must be pre-authenticated via OAuth).
 - **Podman**: Recommended for containerized execution (project preference over Docker).
 
@@ -154,3 +154,4 @@ python test_merge_layers.py
 - [Backlog](docs/backlog.md) — Project backlog and roadmap
 - [CLAUDE.md](CLAUDE.md) — Developer context: detailed pipeline stages, legacy paths, and architecture notes
 - [GEMINI.md](GEMINI.md) — Technical constraints and coding standards
+ [GEMINI.md](GEMINI.md) — Technical constraints and coding standards
