@@ -53,15 +53,15 @@ Evaluation updated 2026-04-13. Items are ordered by execution priority within ea
 
 ## P2 — Optimization & UX
 
-### 8. Batch `gws` subprocess calls in Stage 4
+### 9. Batch `gws` subprocess calls in Stage 4
 **What:** Use `gws_batch_update()` for data writes instead of one subprocess call per matched row.
 **Impact:** Significant performance improvement for large models.
 
-### 9. Centralize configuration
+### 10. Centralize configuration
 **What:** Move model names, rate limits, and thresholds to `config.py` with environment variable overrides.
 **Impact:** Simplifies maintenance and environment-specific tuning.
 
-### 10. Cache `company_tickers.json` and filing HTML
+### 11. Cache `company_tickers.json` and filing HTML
 **What:** Cache SEC metadata and large HTML filings locally with TTL.
 **Impact:** Reduces network dependency and speeds up re-runs during debugging.
 
@@ -69,10 +69,10 @@ Evaluation updated 2026-04-13. Items are ordered by execution priority within ea
 
 ## Architectural (Long-Term)
 
-### 11. Standardized Chart of Accounts (COA) Mapping
+### 12. Standardized Chart of Accounts (COA) Mapping
 Map bespoke XBRL nodes into standardized buckets (Revenue, COGS, etc.) to allow cross-company comparisons.
 
-### 12. Handle Restatements via "As-Reported" vs. "Latest-Available" Tracking
+### 13. Handle Restatements via "As-Reported" vs. "Latest-Available" Tracking
 Treat each filing as a separate "vintage" to correctly handle historical restatements without breaking tree integrity.
 
 ---
