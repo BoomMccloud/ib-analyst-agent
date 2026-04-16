@@ -1,0 +1,1631 @@
+{
+  "complete_periods": [
+    "2021-12-31",
+    "2022-12-31"
+  ],
+  "periods": [
+    "2019-12-31",
+    "2020-12-31",
+    "2021-03-31",
+    "2021-12-31",
+    "2022-06-30",
+    "2022-12-31"
+  ],
+  "cf_endc_values": {
+    "2021-12-31": 6055111.0,
+    "2020-12-31": 8238870.0,
+    "2019-12-31": 5043786.0,
+    "2022-12-31": 5170582.0
+  },
+  "unit_label": "$k",
+  "facts": {
+    "dei:EntityPublicFloat": {
+      "2022-06-30": 76550886077.0
+    },
+    "dei:EntityCommonStockSharesOutstanding": {
+      "2022-12-31": 445346776.0
+    },
+    "us-gaap:Revenues": {
+      "2022-12-31": 31615550.0,
+      "2021-12-31": 29697844.0,
+      "2020-12-31": 24996056.0
+    },
+    "us-gaap:CostOfRevenue": {
+      "2022-12-31": 19168285.0,
+      "2021-12-31": 17332683.0,
+      "2020-12-31": 15276319.0
+    },
+    "us-gaap:MarketingExpense": {
+      "2022-12-31": 2530502.0,
+      "2021-12-31": 2545146.0,
+      "2020-12-31": 2228362.0
+    },
+    "us-gaap:ResearchAndDevelopmentExpense": {
+      "2022-12-31": 2711041.0,
+      "2021-12-31": 2273885.0,
+      "2020-12-31": 1829600.0
+    },
+    "us-gaap:GeneralAndAdministrativeExpense": {
+      "2022-12-31": 1572891.0,
+      "2021-12-31": 1351621.0,
+      "2020-12-31": 1076486.0
+    },
+    "us-gaap:OperatingIncomeLoss": {
+      "2022-12-31": 5632831.0,
+      "2021-12-31": 6194509.0,
+      "2020-12-31": 4585289.0
+    },
+    "us-gaap:InterestExpense": {
+      "2022-12-31": 706212.0,
+      "2021-12-31": 765620.0,
+      "2020-12-31": 767499.0
+    },
+    "us-gaap:NonoperatingIncomeExpense": {
+      "2022-12-31": 337310.0,
+      "2021-12-31": 411214.0,
+      "2020-12-31": -618441.0
+    },
+    "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest": {
+      "2022-12-31": 5263929.0,
+      "2021-12-31": 5840103.0,
+      "2020-12-31": 3199349.0
+    },
+    "us-gaap:IncomeTaxExpenseBenefit": {
+      "2022-12-31": 772005.0,
+      "2021-12-31": 723875.0,
+      "2020-12-31": 437954.0
+    },
+    "us-gaap:NetIncomeLoss": {
+      "2022-12-31": 4491924.0,
+      "2021-12-31": 5116228.0,
+      "2020-12-31": 2761395.0
+    },
+    "us-gaap:EarningsPerShareBasic": {
+      "2022-12-31": 10.1,
+      "2021-12-31": 11.55,
+      "2020-12-31": 6.26
+    },
+    "us-gaap:EarningsPerShareDiluted": {
+      "2022-12-31": 9.95,
+      "2021-12-31": 11.24,
+      "2020-12-31": 6.08
+    },
+    "us-gaap:WeightedAverageNumberOfSharesOutstandingBasic": {
+      "2022-12-31": 444698.0,
+      "2021-12-31": 443155.0,
+      "2020-12-31": 440922.0
+    },
+    "us-gaap:WeightedAverageNumberOfDilutedSharesOutstanding": {
+      "2022-12-31": 451290.0,
+      "2021-12-31": 455372.0,
+      "2020-12-31": 454208.0
+    },
+    "us-gaap:OtherComprehensiveIncomeForeignCurrencyTransactionAndTranslationAdjustmentNetOfTaxPortionAttributableToParent": {
+      "2022-12-31": -176811.0,
+      "2021-12-31": -84893.0,
+      "2020-12-31": 67919.0
+    },
+    "us-gaap:ComprehensiveIncomeNetOfTax": {
+      "2022-12-31": 4315113.0,
+      "2021-12-31": 5031335.0,
+      "2020-12-31": 2829314.0
+    },
+    "nflx:AdditionstoStreamingContentAssets": {
+      "2022-12-31": 16839038.0,
+      "2021-12-31": 17702202.0,
+      "2020-12-31": 11779284.0
+    },
+    "nflx:ChangeInStreamingContentLiabilities": {
+      "2022-12-31": 179310.0,
+      "2021-12-31": 232898.0,
+      "2020-12-31": -757433.0
+    },
+    "nflx:CostofServicesAmortizationofStreamingContentAssets": {
+      "2022-12-31": 14026132.0,
+      "2021-12-31": 12230367.0,
+      "2020-12-31": 10806912.0
+    },
+    "us-gaap:DepreciationDepletionAndAmortization": {
+      "2022-12-31": 336682.0,
+      "2021-12-31": 208412.0,
+      "2020-12-31": 115710.0
+    },
+    "us-gaap:ShareBasedCompensation": {
+      "2022-12-31": 575452.0,
+      "2021-12-31": 403220.0,
+      "2020-12-31": 415180.0
+    },
+    "us-gaap:ForeignCurrencyTransactionGainLossBeforeTax": {
+      "2022-12-31": 353111.0,
+      "2021-12-31": 430661.0,
+      "2020-12-31": -533278.0
+    },
+    "us-gaap:OtherNoncashIncomeExpense": {
+      "2022-12-31": -533543.0,
+      "2021-12-31": -376777.0,
+      "2020-12-31": -293126.0
+    },
+    "nflx:DeferredIncomeTaxExpenseBenefitIncludingReclassifications": {
+      "2022-12-31": -166550.0,
+      "2021-12-31": 199548.0,
+      "2020-12-31": 70066.0
+    },
+    "us-gaap:IncreaseDecreaseInOtherCurrentAssets": {
+      "2022-12-31": 353834.0,
+      "2021-12-31": 369681.0,
+      "2020-12-31": 187623.0
+    },
+    "us-gaap:IncreaseDecreaseInAccountsPayable": {
+      "2022-12-31": -158543.0,
+      "2021-12-31": 145115.0,
+      "2020-12-31": -41605.0
+    },
+    "us-gaap:IncreaseDecreaseInAccruedLiabilities": {
+      "2022-12-31": -55513.0,
+      "2021-12-31": 180338.0,
+      "2020-12-31": 198183.0
+    },
+    "us-gaap:IncreaseDecreaseInContractWithCustomerLiability": {
+      "2022-12-31": 27356.0,
+      "2021-12-31": 91350.0,
+      "2020-12-31": 193247.0
+    },
+    "us-gaap:IncreaseDecreaseInOtherNoncurrentAssetsAndLiabilitiesNet": {
+      "2022-12-31": 217553.0,
+      "2021-12-31": 289099.0,
+      "2020-12-31": 194075.0
+    },
+    "us-gaap:NetCashProvidedByUsedInOperatingActivities": {
+      "2022-12-31": 2026257.0,
+      "2021-12-31": 392610.0,
+      "2020-12-31": 2427077.0
+    },
+    "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment": {
+      "2022-12-31": 407729.0,
+      "2021-12-31": 524585.0,
+      "2020-12-31": 497923.0
+    },
+    "us-gaap:PaymentsForProceedsFromOtherInvestingActivities": {
+      "2021-12-31": 26919.0,
+      "2020-12-31": 7431.0
+    },
+    "us-gaap:PaymentsToAcquireBusinessesNetOfCashAcquired": {
+      "2022-12-31": 757387.0,
+      "2021-12-31": 788349.0
+    },
+    "us-gaap:PaymentsToAcquireShortTermInvestments": {
+      "2022-12-31": 911276.0
+    },
+    "us-gaap:NetCashProvidedByUsedInInvestingActivities": {
+      "2022-12-31": -2076392.0,
+      "2021-12-31": -1339853.0,
+      "2020-12-31": -505354.0
+    },
+    "us-gaap:ProceedsFromIssuanceOfDebt": {
+      "2020-12-31": 1009464.0
+    },
+    "us-gaap:PaymentsOfDebtIssuanceCosts": {
+      "2020-12-31": 7559.0
+    },
+    "us-gaap:RepaymentsOfLongTermDebt": {
+      "2022-12-31": 700000.0,
+      "2021-12-31": 500000.0
+    },
+    "us-gaap:ProceedsFromStockOptionsExercised": {
+      "2022-12-31": 35746.0,
+      "2021-12-31": 174414.0,
+      "2020-12-31": 235406.0
+    },
+    "us-gaap:PaymentsForRepurchaseOfCommonStock": {
+      "2021-12-31": 600022.0
+    },
+    "us-gaap:ProceedsFromPaymentsForOtherFinancingActivities": {
+      "2021-12-31": -224168.0
+    },
+    "us-gaap:NetCashProvidedByUsedInFinancingActivities": {
+      "2022-12-31": -664254.0,
+      "2021-12-31": -1149776.0,
+      "2020-12-31": 1237311.0
+    },
+    "us-gaap:EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents": {
+      "2022-12-31": -170140.0,
+      "2021-12-31": -86740.0,
+      "2020-12-31": 36050.0
+    },
+    "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect": {
+      "2022-12-31": -884529.0,
+      "2021-12-31": -2183759.0,
+      "2020-12-31": 3195084.0
+    },
+    "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents": {
+      "2021-12-31": 6055111.0,
+      "2020-12-31": 8238870.0,
+      "2019-12-31": 5043786.0,
+      "2022-12-31": 5170582.0
+    },
+    "us-gaap:IncomeTaxesPaid": {
+      "2022-12-31": 811720.0,
+      "2021-12-31": 509265.0,
+      "2020-12-31": 291582.0
+    },
+    "us-gaap:InterestPaidNet": {
+      "2022-12-31": 701693.0,
+      "2021-12-31": 763432.0,
+      "2020-12-31": 762904.0
+    },
+    "us-gaap:CashAndCashEquivalentsAtCarryingValue": {
+      "2022-12-31": 5147176.0,
+      "2021-12-31": 6027804.0
+    },
+    "us-gaap:ShortTermInvestments": {
+      "2022-12-31": 911276.0
+    },
+    "us-gaap:OtherAssetsCurrent": {
+      "2022-12-31": 3208021.0,
+      "2021-12-31": 2042021.0
+    },
+    "us-gaap:AssetsCurrent": {
+      "2022-12-31": 9266473.0,
+      "2021-12-31": 8069825.0
+    },
+    "nflx:ContentAssetsNetNoncurrent": {
+      "2022-12-31": 32736713.0,
+      "2021-12-31": 30919539.0
+    },
+    "us-gaap:PropertyPlantAndEquipmentNet": {
+      "2022-12-31": 1398257.0,
+      "2021-12-31": 1323453.0
+    },
+    "us-gaap:OtherAssetsNoncurrent": {
+      "2022-12-31": 5193325.0,
+      "2021-12-31": 4271846.0
+    },
+    "us-gaap:Assets": {
+      "2022-12-31": 48594768.0,
+      "2021-12-31": 44584663.0
+    },
+    "nflx:ContentLiabilitiesCurrent": {
+      "2022-12-31": 4480150.0,
+      "2021-12-31": 4292967.0
+    },
+    "us-gaap:AccountsPayableCurrent": {
+      "2022-12-31": 671513.0,
+      "2021-12-31": 837483.0
+    },
+    "us-gaap:AccruedLiabilitiesCurrent": {
+      "2022-12-31": 1514650.0,
+      "2021-12-31": 1449351.0
+    },
+    "us-gaap:ContractWithCustomerLiabilityCurrent": {
+      "2022-12-31": 1264661.0,
+      "2021-12-31": 1209342.0
+    },
+    "us-gaap:ShortTermBorrowings": {
+      "2021-12-31": 699823.0
+    },
+    "us-gaap:LiabilitiesCurrent": {
+      "2022-12-31": 7930974.0,
+      "2021-12-31": 8488966.0
+    },
+    "nflx:ContentLiabilitiesNoncurrent": {
+      "2022-12-31": 3081277.0,
+      "2021-12-31": 3094213.0
+    },
+    "us-gaap:LongTermDebtNoncurrent": {
+      "2022-12-31": 14353076.0,
+      "2021-12-31": 14693072.0
+    },
+    "us-gaap:OtherLiabilitiesNoncurrent": {
+      "2022-12-31": 2452040.0,
+      "2021-12-31": 2459164.0
+    },
+    "us-gaap:Liabilities": {
+      "2022-12-31": 27817367.0,
+      "2021-12-31": 28735415.0
+    },
+    "us-gaap:PreferredStockParOrStatedValuePerShare": {
+      "2021-12-31": 0.001
+    },
+    "us-gaap:PreferredStockSharesAuthorized": {
+      "2021-12-31": 10000000.0
+    },
+    "us-gaap:CommonStockParOrStatedValuePerShare": {
+      "2022-12-31": 0.001
+    },
+    "us-gaap:CommonStockSharesAuthorized": {
+      "2022-12-31": 4990000000.0
+    },
+    "us-gaap:CommonStockSharesIssued": {
+      "2022-12-31": 445346776.0,
+      "2021-12-31": 443963107.0
+    },
+    "us-gaap:CommonStockValue": {
+      "2022-12-31": 4637601.0,
+      "2021-12-31": 4024561.0
+    },
+    "us-gaap:TreasuryStockCommonShares": {
+      "2022-12-31": 1564478.0
+    },
+    "us-gaap:TreasuryStockCommonValue": {
+      "2022-12-31": 824190.0,
+      "2021-12-31": 824190.0
+    },
+    "us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax": {
+      "2022-12-31": -217306.0,
+      "2021-12-31": -40495.0
+    },
+    "us-gaap:RetainedEarningsAccumulatedDeficit": {
+      "2022-12-31": 17181296.0,
+      "2021-12-31": 12689372.0
+    },
+    "us-gaap:StockholdersEquity": {
+      "2022-12-31": 20777401.0,
+      "2021-12-31": 15849248.0,
+      "2019-12-31": 7582157.0,
+      "2020-12-31": 11065240.0
+    },
+    "us-gaap:LiabilitiesAndStockholdersEquity": {
+      "2022-12-31": 48594768.0,
+      "2021-12-31": 44584663.0
+    },
+    "us-gaap:OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent": {
+      "2020-12-31": 67919.0,
+      "2021-12-31": -84893.0,
+      "2022-12-31": -176811.0
+    },
+    "us-gaap:StockIssuedDuringPeriodValueStockOptionsExercised": {
+      "2020-12-31": 238589.0,
+      "2021-12-31": 173643.0,
+      "2022-12-31": 37588.0
+    },
+    "us-gaap:AdjustmentsToAdditionalPaidInCapitalSharebasedCompensationRequisiteServicePeriodRecognitionValue": {
+      "2020-12-31": 415180.0,
+      "2021-12-31": 403220.0,
+      "2022-12-31": 575452.0
+    },
+    "us-gaap:TreasuryStockValueAcquiredCostMethod": {
+      "2021-12-31": 600022.0
+    },
+    "us-gaap:AdjustmentsRelatedToTaxWithholdingForShareBasedCompensation": {
+      "2021-12-31": 224168.0
+    },
+    "nflx:NumberofStreamingMembers": {
+      "2022-12-31": 231.0
+    },
+    "us-gaap:NumberOfCountriesInWhichEntityOperates": {
+      "2022-12-31": 190.0
+    },
+    "nflx:AverageProducedContentAssetAmortizationPercentage": {
+      "2022-12-31": 90.0
+    },
+    "us-gaap:AdvertisingExpense": {
+      "2022-12-31": 1586.0,
+      "2021-12-31": 1669.0,
+      "2020-12-31": 1447.0
+    },
+    "nflx:IncreaseDecreaseInContractWithCustomerLiabilityAndAcquisitionRelatedDeferredRevenue": {
+      "2021-12-31": 56.0
+    },
+    "us-gaap:IncrementalCommonSharesAttributableToShareBasedPaymentArrangements": {
+      "2022-12-31": 6592.0,
+      "2021-12-31": 12217.0,
+      "2020-12-31": 13286.0
+    },
+    "us-gaap:AntidilutiveSecuritiesExcludedFromComputationOfEarningsPerShareAmount": {
+      "2022-12-31": 6790.0,
+      "2021-12-31": 348.0,
+      "2020-12-31": 484.0
+    },
+    "us-gaap:CashCashEquivalentsAndShortTermInvestments": {
+      "2022-12-31": 6081858.0,
+      "2021-12-31": 6055111.0
+    },
+    "nflx:ContentAssetsNet": {
+      "2022-12-31": 32736713.0,
+      "2021-12-31": 30919539.0
+    },
+    "nflx:CostOfServicesDecreasedAmortizationFromTaxIncentives": {
+      "2022-12-31": 719.0
+    },
+    "us-gaap:PropertyPlantAndEquipmentGross": {
+      "2022-12-31": 2151998.0,
+      "2021-12-31": 1939759.0
+    },
+    "us-gaap:AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment": {
+      "2022-12-31": 753741.0,
+      "2021-12-31": 616306.0
+    },
+    "us-gaap:OperatingLeaseCost": {
+      "2022-12-31": 413664.0,
+      "2021-12-31": 389805.0,
+      "2020-12-31": 323905.0
+    },
+    "us-gaap:ShortTermLeaseCost": {
+      "2022-12-31": 194764.0,
+      "2021-12-31": 152765.0,
+      "2020-12-31": 116606.0
+    },
+    "us-gaap:LeaseCost": {
+      "2022-12-31": 608428.0,
+      "2021-12-31": 542570.0,
+      "2020-12-31": 440511.0
+    },
+    "nflx:OperatingCashFlowsFromOperatingLeases": {
+      "2022-12-31": 413034.0,
+      "2021-12-31": 349586.0,
+      "2020-12-31": 259559.0
+    },
+    "us-gaap:RightOfUseAssetObtainedInExchangeForOperatingLeaseLiability": {
+      "2022-12-31": 252393.0,
+      "2021-12-31": 764142.0,
+      "2020-12-31": 729942.0
+    },
+    "us-gaap:OperatingLeaseRightOfUseAsset": {
+      "2022-12-31": 2227122.0,
+      "2021-12-31": 2446573.0
+    },
+    "us-gaap:OperatingLeaseLiabilityCurrent": {
+      "2022-12-31": 355985.0,
+      "2021-12-31": 315189.0
+    },
+    "us-gaap:OperatingLeaseLiabilityNoncurrent": {
+      "2022-12-31": 2222503.0,
+      "2021-12-31": 2408486.0
+    },
+    "us-gaap:OperatingLeaseLiability": {
+      "2022-12-31": 2578488.0,
+      "2021-12-31": 2723675.0
+    },
+    "us-gaap:OperatingLeaseWeightedAverageDiscountRatePercent": {
+      "2022-12-31": 3.2,
+      "2021-12-31": 3.1
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueNextRollingTwelveMonths": {
+      "2022-12-31": 433167.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueInRollingYearTwo": {
+      "2022-12-31": 406293.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueInRollingYearThree": {
+      "2022-12-31": 377371.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueInRollingYearFour": {
+      "2022-12-31": 368496.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueInRollingYearFive": {
+      "2022-12-31": 310903.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDueAfterRollingYearFive": {
+      "2022-12-31": 1036327.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityPaymentsDue": {
+      "2022-12-31": 2932557.0
+    },
+    "us-gaap:LesseeOperatingLeaseLiabilityUndiscountedExcessAmount": {
+      "2022-12-31": 354069.0
+    },
+    "nflx:OperatingLeaseLiabilityLeasesNotCommenced": {
+      "2022-12-31": 419.0
+    },
+    "us-gaap:TradeReceivablesHeldForSaleAmount": {
+      "2022-12-31": 988898.0,
+      "2021-12-31": 804320.0
+    },
+    "us-gaap:PrepaidExpenseCurrent": {
+      "2022-12-31": 392735.0,
+      "2021-12-31": 323818.0
+    },
+    "us-gaap:OtherReceivablesNetCurrent": {
+      "2022-12-31": 1826388.0,
+      "2021-12-31": 913883.0
+    },
+    "us-gaap:IncomeTaxesReceivable": {
+      "2022-12-31": 598.0
+    },
+    "us-gaap:NotesPayable": {
+      "2022-12-31": 14353.0,
+      "2021-12-31": 15393.0
+    },
+    "us-gaap:DeferredFinanceCostsNet": {
+      "2022-12-31": 79.0,
+      "2021-12-31": 92.0
+    },
+    "us-gaap:DebtInstrumentFaceAmount": {
+      "2022-12-31": 14432.0,
+      "2021-12-31": 15485.0
+    },
+    "us-gaap:LongTermDebtFairValue": {
+      "2022-12-31": 14083.0,
+      "2021-12-31": 18030.0
+    },
+    "us-gaap:PurchaseObligation": {
+      "2022-12-31": 21831947.0,
+      "2021-12-31": 23161360.0
+    },
+    "us-gaap:UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount": {
+      "2022-12-31": 14.2,
+      "2021-12-31": 15.8
+    },
+    "us-gaap:PurchaseObligationDueInNextTwelveMonths": {
+      "2022-12-31": 10038483.0,
+      "2021-12-31": 10019306.0
+    },
+    "us-gaap:PurchaseObligationDueInSecondAndThirdYear": {
+      "2022-12-31": 9425551.0,
+      "2021-12-31": 9238315.0
+    },
+    "us-gaap:PurchaseObligationDueInFourthAndFifthYear": {
+      "2022-12-31": 2124307.0,
+      "2021-12-31": 3238977.0
+    },
+    "us-gaap:PurchaseObligationDueAfterFifthYear": {
+      "2022-12-31": 243606.0,
+      "2021-12-31": 664762.0
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardNumberOfSharesAvailableForGrant": {
+      "2019-12-31": 6111561.0,
+      "2020-12-31": 21702085.0,
+      "2021-12-31": 20145360.0,
+      "2022-12-31": 16454103.0
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingNumber": {
+      "2019-12-31": 20859326.0,
+      "2020-12-31": 18676810.0,
+      "2021-12-31": 17595851.0,
+      "2022-12-31": 19896861.0
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingWeightedAverageExercisePrice": {
+      "2019-12-31": 124.28,
+      "2020-12-31": 170.23,
+      "2021-12-31": 219.83,
+      "2022-12-31": 242.22
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardNumberOfAdditionalSharesAuthorized": {
+      "2020-12-31": 17500000.0
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriod": {
+      "2020-12-31": 1909476.0,
+      "2021-12-31": 1556725.0,
+      "2022-12-31": 3691257.0
+    },
+    "us-gaap:ShareBasedCompensationArrangementsByShareBasedPaymentAwardOptionsGrantsInPeriodWeightedAverageExercisePrice": {
+      "2020-12-31": 432.34,
+      "2021-12-31": 554.11,
+      "2022-12-31": 267.94
+    },
+    "us-gaap:StockIssuedDuringPeriodSharesStockOptionsExercised": {
+      "2020-12-31": 4088612.0,
+      "2021-12-31": 2632324.0,
+      "2022-12-31": 1383669.0
+    },
+    "us-gaap:ShareBasedCompensationArrangementsByShareBasedPaymentAwardOptionsExercisesInPeriodWeightedAverageExercisePrice": {
+      "2020-12-31": 58.35,
+      "2021-12-31": 65.97,
+      "2022-12-31": 27.19
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsExpirationsInPeriod": {
+      "2020-12-31": 3380.0,
+      "2021-12-31": 5360.0,
+      "2022-12-31": 6578.0
+    },
+    "us-gaap:ShareBasedCompensationArrangementsByShareBasedPaymentAwardOptionsExpirationsInPeriodWeightedAverageExercisePrice": {
+      "2020-12-31": 27.54,
+      "2021-12-31": 34.63,
+      "2022-12-31": 11.1
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsVestedAndExpectedToVestExercisableNumber": {
+      "2022-12-31": 19896861.0
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsVestedAndExpectedToVestExercisableWeightedAverageExercisePrice": {
+      "2022-12-31": 242.22
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsVestedAndExpectedToVestExercisableAggregateIntrinsicValue": {
+      "2022-12-31": 1951.0
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsExercisesInPeriodTotalIntrinsicValue": {
+      "2022-12-31": 346.0,
+      "2021-12-31": 1363.0,
+      "2020-12-31": 1596.0
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardFairValueAssumptionsExpectedVolatilityRateMinimum": {
+      "2022-12-31": 38.0,
+      "2021-12-31": 34.0,
+      "2020-12-31": 37.0
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardFairValueAssumptionsExpectedVolatilityRateMaximum": {
+      "2022-12-31": 52.0,
+      "2021-12-31": 41.0,
+      "2020-12-31": 45.0
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardFairValueAssumptionsRiskFreeInterestRateMinimum": {
+      "2022-12-31": 1.71,
+      "2021-12-31": 1.08,
+      "2020-12-31": 0.67
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardFairValueAssumptionsRiskFreeInterestRateMaximum": {
+      "2022-12-31": 3.79,
+      "2021-12-31": 1.62,
+      "2020-12-31": 1.71
+    },
+    "nflx:SharebasedCompensationArrangementbySharebasedPaymentAwardFairValueAssumptionsSuboptimalExerciseFactorMinimum": {
+      "2022-12-31": 4.71,
+      "2021-12-31": 3.81,
+      "2020-12-31": 3.34
+    },
+    "nflx:SharebasedCompensationArrangementbySharebasedPaymentAwardFairValueAssumptionsSuboptimalExerciseFactorMaximum": {
+      "2022-12-31": 4.82,
+      "2021-12-31": 3.98,
+      "2020-12-31": 3.67
+    },
+    "us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodWeightedAverageGrantDateFairValue": {
+      "2022-12-31": 155.88,
+      "2021-12-31": 259.01,
+      "2020-12-31": 217.42
+    },
+    "us-gaap:EmployeeServiceShareBasedCompensationTaxBenefitFromCompensationExpense": {
+      "2022-12-31": 127289.0,
+      "2021-12-31": 89642.0,
+      "2020-12-31": 91718.0
+    },
+    "us-gaap:StockRepurchaseProgramAuthorizedAmount1": {
+      "2021-03-31": 5.0
+    },
+    "us-gaap:StockRepurchaseProgramRemainingAuthorizedRepurchaseAmount1": {
+      "2022-12-31": 4.4
+    },
+    "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic": {
+      "2022-12-31": 4690442.0,
+      "2021-12-31": 5365547.0,
+      "2020-12-31": 2789064.0
+    },
+    "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign": {
+      "2022-12-31": 573487.0,
+      "2021-12-31": 474556.0,
+      "2020-12-31": 410285.0
+    },
+    "us-gaap:CurrentFederalTaxExpenseBenefit": {
+      "2022-12-31": 109910.0,
+      "2021-12-31": 57526.0,
+      "2020-12-31": 24221.0
+    },
+    "us-gaap:CurrentStateAndLocalTaxExpenseBenefit": {
+      "2022-12-31": 119795.0,
+      "2021-12-31": 109641.0,
+      "2020-12-31": 65821.0
+    },
+    "us-gaap:CurrentForeignTaxExpenseBenefit": {
+      "2022-12-31": 676827.0,
+      "2021-12-31": 357189.0,
+      "2020-12-31": 277846.0
+    },
+    "us-gaap:CurrentIncomeTaxExpenseBenefit": {
+      "2022-12-31": 906532.0,
+      "2021-12-31": 524356.0,
+      "2020-12-31": 367888.0
+    },
+    "us-gaap:DeferredFederalIncomeTaxExpenseBenefit": {
+      "2022-12-31": -52434.0,
+      "2021-12-31": 188937.0,
+      "2020-12-31": -57765.0
+    },
+    "us-gaap:DeferredStateAndLocalIncomeTaxExpenseBenefit": {
+      "2022-12-31": -30691.0,
+      "2021-12-31": -2700.0,
+      "2020-12-31": 164685.0
+    },
+    "us-gaap:DeferredForeignIncomeTaxExpenseBenefit": {
+      "2022-12-31": -51402.0,
+      "2021-12-31": 13282.0,
+      "2020-12-31": -36854.0
+    },
+    "us-gaap:DeferredIncomeTaxExpenseBenefit": {
+      "2022-12-31": -134527.0,
+      "2021-12-31": 199519.0,
+      "2020-12-31": 70066.0
+    },
+    "us-gaap:IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate": {
+      "2022-12-31": 1105428.0,
+      "2021-12-31": 1226422.0,
+      "2020-12-31": 671864.0
+    },
+    "us-gaap:IncomeTaxReconciliationStateAndLocalIncomeTaxes": {
+      "2022-12-31": 92084.0,
+      "2021-12-31": 111400.0,
+      "2020-12-31": 65808.0
+    },
+    "us-gaap:IncomeTaxReconciliationForeignIncomeTaxRateDifferential": {
+      "2022-12-31": 112628.0,
+      "2021-12-31": -23963.0,
+      "2020-12-31": 12212.0
+    },
+    "us-gaap:IncomeTaxReconciliationTaxCreditsResearch": {
+      "2022-12-31": 146615.0,
+      "2021-12-31": 82909.0,
+      "2020-12-31": 113882.0
+    },
+    "us-gaap:IncomeTaxReconciliationChangeInDeferredTaxAssetsValuationAllowance": {
+      "2020-12-31": 183283.0
+    },
+    "us-gaap:IncomeTaxReconciliationNondeductibleExpenseShareBasedCompensationCost": {
+      "2022-12-31": -75211.0,
+      "2021-12-31": -290899.0,
+      "2020-12-31": -339436.0
+    },
+    "us-gaap:EffectiveIncomeTaxRateReconciliationTaxCutsAndJobsActOf2017Amount": {
+      "2022-12-31": -368976.0,
+      "2021-12-31": -254763.0,
+      "2020-12-31": -87194.0
+    },
+    "nflx:EffectiveIncomeTaxReconciliationChangeinTaxReserves": {
+      "2022-12-31": 33836.0,
+      "2021-12-31": 26874.0,
+      "2020-12-31": 30351.0
+    },
+    "us-gaap:IncomeTaxReconciliationOtherAdjustments": {
+      "2022-12-31": 18831.0,
+      "2021-12-31": 11713.0,
+      "2020-12-31": 14948.0
+    },
+    "us-gaap:EffectiveIncomeTaxRateContinuingOperations": {
+      "2022-12-31": 15.0,
+      "2021-12-31": 12.0,
+      "2020-12-31": 14.0
+    },
+    "us-gaap:DeferredTaxAssetsTaxDeferredExpenseCompensationAndBenefitsShareBasedCompensationCost": {
+      "2022-12-31": 443456.0,
+      "2021-12-31": 351238.0
+    },
+    "us-gaap:DeferredTaxAssetsTaxCreditCarryforwardsResearch": {
+      "2022-12-31": 342589.0,
+      "2021-12-31": 484793.0
+    },
+    "us-gaap:DeferredTaxAssetsTaxCreditCarryforwardsForeign": {
+      "2022-12-31": 11899.0,
+      "2021-12-31": 2045.0
+    },
+    "us-gaap:DeferredTaxAssetsInProcessResearchAndDevelopment": {
+      "2022-12-31": 323998.0
+    },
+    "us-gaap:DeferredTaxAssetsTaxDeferredExpenseReservesAndAccruals": {
+      "2022-12-31": 119732.0,
+      "2021-12-31": 165214.0
+    },
+    "nflx:DeferredTaxAssetsLeasingArrangements": {
+      "2022-12-31": 551418.0,
+      "2021-12-31": 570830.0
+    },
+    "us-gaap:DeferredTaxAssetsOperatingLossCarryforwardsForeign": {
+      "2022-12-31": 20092.0,
+      "2021-12-31": 8043.0
+    },
+    "nflx:DeferredTaxAssetsUnrealizedGainLoss": {
+      "2022-12-31": -47283.0,
+      "2021-12-31": 13772.0
+    },
+    "us-gaap:DeferredTaxAssetsOther": {
+      "2022-12-31": 2234.0,
+      "2021-12-31": 5420.0
+    },
+    "us-gaap:DeferredTaxAssetsGross": {
+      "2022-12-31": 1768135.0,
+      "2021-12-31": 1601355.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesPropertyPlantAndEquipment": {
+      "2022-12-31": 456717.0,
+      "2021-12-31": 388115.0
+    },
+    "us-gaap:DeferredTaxLiabilitiesLeasingArrangements": {
+      "2022-12-31": 473928.0,
+      "2021-12-31": 506403.0
+    },
+    "nflx:DeferredTaxLiabilitiesAcquisitions": {
+      "2022-12-31": 232607.0,
+      "2021-12-31": 240334.0
+    },
+    "us-gaap:DeferredIncomeTaxLiabilities": {
+      "2022-12-31": 1163252.0,
+      "2021-12-31": 1134852.0
+    },
+    "us-gaap:DeferredTaxAssetsValuationAllowance": {
+      "2022-12-31": 343342.0,
+      "2021-12-31": 318408.0
+    },
+    "us-gaap:DeferredTaxAssetsNet": {
+      "2022-12-31": 261541.0,
+      "2021-12-31": 148095.0
+    },
+    "us-gaap:UnrecognizedTaxBenefits": {
+      "2022-12-31": 226977.0,
+      "2021-12-31": 202557.0,
+      "2020-12-31": 140124.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsThatWouldImpactEffectiveTaxRate": {
+      "2022-12-31": 155.0,
+      "2021-12-31": 136.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsIncreasesResultingFromPriorPeriodTaxPositions": {
+      "2021-12-31": 27116.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsIncreasesResultingFromCurrentPeriodTaxPositions": {
+      "2021-12-31": 35317.0,
+      "2022-12-31": 26865.0
+    },
+    "us-gaap:UnrecognizedTaxBenefitsDecreasesResultingFromPriorPeriodTaxPositions": {
+      "2022-12-31": 2445.0
+    },
+    "us-gaap:DefinedContributionPlanMaximumAnnualContributionsPerEmployeePercent": {
+      "2022-12-31": 80.0
+    },
+    "us-gaap:DefinedContributionPlanEmployerDiscretionaryContributionAmount": {
+      "2022-12-31": 102.0,
+      "2021-12-31": 85.0,
+      "2020-12-31": 69.0
+    },
+    "us-gaap:MultiemployerPlanPensionInsignificantEmployerContributionCost": {
+      "2022-12-31": 224170.0,
+      "2021-12-31": 194286.0,
+      "2020-12-31": 130382.0
+    }
+  },
+  "IS": {
+    "concept": "us-gaap_NetIncomeLoss",
+    "tag": "us-gaap:NetIncomeLoss",
+    "name": "Net Income Loss",
+    "weight": 1.0,
+    "values": {
+      "2022-12-31": 4491924.0,
+      "2021-12-31": 5116228.0
+    },
+    "is_leaf": false,
+    "role": "INC_NET",
+    "children": [
+      {
+        "concept": "us-gaap_IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+        "tag": "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+        "name": "Income Loss From Continuing Operations Before Income Taxes Extraordinary Items Noncontrolling Interest",
+        "weight": 1.0,
+        "values": {
+          "2022-12-31": 5263929.0,
+          "2021-12-31": 5840103.0
+        },
+        "is_leaf": false,
+        "children": [
+          {
+            "concept": "us-gaap_OperatingIncomeLoss",
+            "tag": "us-gaap:OperatingIncomeLoss",
+            "name": "Operating Income Loss",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 5632831.0,
+              "2021-12-31": 6194509.0
+            },
+            "is_leaf": false,
+            "children": [
+              {
+                "concept": "us-gaap_Revenues",
+                "tag": "us-gaap:Revenues",
+                "name": "Revenues",
+                "weight": 1.0,
+                "values": {
+                  "2022-12-31": 31615550.0,
+                  "2021-12-31": 29697844.0
+                },
+                "is_leaf": true,
+                "role": "IS_REVENUE"
+              },
+              {
+                "concept": "us-gaap_CostOfRevenue",
+                "tag": "us-gaap:CostOfRevenue",
+                "name": "Cost Of Revenue",
+                "weight": -1.0,
+                "values": {
+                  "2022-12-31": 19168285.0,
+                  "2021-12-31": 17332683.0
+                },
+                "is_leaf": true,
+                "role": "IS_COGS"
+              },
+              {
+                "concept": "us-gaap_MarketingExpense",
+                "tag": "us-gaap:MarketingExpense",
+                "name": "Marketing Expense",
+                "weight": -1.0,
+                "values": {
+                  "2022-12-31": 2530502.0,
+                  "2021-12-31": 2545146.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_ResearchAndDevelopmentExpense",
+                "tag": "us-gaap:ResearchAndDevelopmentExpense",
+                "name": "Research And Development Expense",
+                "weight": -1.0,
+                "values": {
+                  "2022-12-31": 2711041.0,
+                  "2021-12-31": 2273885.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_GeneralAndAdministrativeExpense",
+                "tag": "us-gaap:GeneralAndAdministrativeExpense",
+                "name": "General And Administrative Expense",
+                "weight": -1.0,
+                "values": {
+                  "2022-12-31": 1572891.0,
+                  "2021-12-31": 1351621.0
+                },
+                "is_leaf": true
+              }
+            ]
+          },
+          {
+            "concept": "us-gaap_InterestExpense",
+            "tag": "us-gaap:InterestExpense",
+            "name": "Interest Expense",
+            "weight": -1.0,
+            "values": {
+              "2022-12-31": 706212.0,
+              "2021-12-31": 765620.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_NonoperatingIncomeExpense",
+            "tag": "us-gaap:NonoperatingIncomeExpense",
+            "name": "Nonoperating Income Expense",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 337310.0,
+              "2021-12-31": 411214.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_IncomeTaxExpenseBenefit",
+        "tag": "us-gaap:IncomeTaxExpenseBenefit",
+        "name": "Income Tax Expense Benefit",
+        "weight": -1.0,
+        "values": {
+          "2022-12-31": 772005.0,
+          "2021-12-31": 723875.0
+        },
+        "is_leaf": true
+      }
+    ]
+  },
+  "BS": {
+    "concept": "us-gaap_Assets",
+    "tag": "us-gaap:Assets",
+    "name": "Assets",
+    "weight": 1.0,
+    "values": {
+      "2022-12-31": 48594768.0,
+      "2021-12-31": 44584663.0
+    },
+    "is_leaf": false,
+    "role": "BS_TA",
+    "children": [
+      {
+        "concept": "us-gaap_AssetsCurrent",
+        "tag": "us-gaap:AssetsCurrent",
+        "name": "Assets Current",
+        "weight": 1.0,
+        "values": {
+          "2022-12-31": 9289879.0,
+          "2021-12-31": 8097132.0
+        },
+        "is_leaf": false,
+        "role": "BS_TCA",
+        "children": [
+          {
+            "concept": "us-gaap_CashAndCashEquivalentsAtCarryingValue",
+            "tag": "us-gaap:CashAndCashEquivalentsAtCarryingValue",
+            "name": "Cash And Cash Equivalents At Carrying Value",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 5170582.0,
+              "2021-12-31": 6055111.0
+            },
+            "is_leaf": true,
+            "role": "BS_CASH"
+          },
+          {
+            "concept": "us-gaap_ShortTermInvestments",
+            "tag": "us-gaap:ShortTermInvestments",
+            "name": "Short Term Investments",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 911276.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_OtherAssetsCurrent",
+            "tag": "us-gaap:OtherAssetsCurrent",
+            "name": "Other Assets Current",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 3208021.0,
+              "2021-12-31": 2042021.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "nflx_ContentAssetsNetNoncurrent",
+        "tag": "nflx:ContentAssetsNetNoncurrent",
+        "name": "Content Assets Net",
+        "weight": 1.0,
+        "values": {
+          "2022-12-31": 32736713.0,
+          "2021-12-31": 30919539.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_PropertyPlantAndEquipmentNet",
+        "tag": "us-gaap:PropertyPlantAndEquipmentNet",
+        "name": "Property Plant And Equipment Net",
+        "weight": 1.0,
+        "values": {
+          "2022-12-31": 1398257.0,
+          "2021-12-31": 1323453.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_OtherAssetsNoncurrent",
+        "tag": "us-gaap:OtherAssetsNoncurrent",
+        "name": "Other Assets",
+        "weight": 1.0,
+        "values": {
+          "2022-12-31": 5193325.0,
+          "2021-12-31": 4271846.0
+        },
+        "is_leaf": true
+      },
+      {
+        "concept": "__OTHER__us-gaap_Assets",
+        "tag": ":_OTHER__us-gaap_Assets",
+        "name": "Other",
+        "weight": 1.0,
+        "values": {
+          "2021-12-31": -27307.0,
+          "2022-12-31": -23406.0
+        },
+        "is_leaf": true
+      }
+    ]
+  },
+  "BS_LE": {
+    "concept": "us-gaap_LiabilitiesAndStockholdersEquity",
+    "tag": "us-gaap:LiabilitiesAndStockholdersEquity",
+    "name": "Liabilities And Stockholders Equity",
+    "weight": 1.0,
+    "values": {
+      "2022-12-31": 48594768.0,
+      "2021-12-31": 44584663.0
+    },
+    "is_leaf": false,
+    "role": "BS_TLE",
+    "children": [
+      {
+        "concept": "us-gaap_Liabilities",
+        "tag": "us-gaap:Liabilities",
+        "name": "Liabilities",
+        "weight": 1.0,
+        "values": {
+          "2022-12-31": 27817367.0,
+          "2021-12-31": 28735415.0
+        },
+        "is_leaf": false,
+        "role": "BS_TL",
+        "children": [
+          {
+            "concept": "us-gaap_LiabilitiesCurrent",
+            "tag": "us-gaap:LiabilitiesCurrent",
+            "name": "Liabilities Current",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 7930974.0,
+              "2021-12-31": 8488966.0
+            },
+            "is_leaf": false,
+            "role": "BS_TCL",
+            "children": [
+              {
+                "concept": "nflx_ContentLiabilitiesCurrent",
+                "tag": "nflx:ContentLiabilitiesCurrent",
+                "name": "Content Liabilities Current",
+                "weight": 1.0,
+                "values": {
+                  "2022-12-31": 4480150.0,
+                  "2021-12-31": 4292967.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_AccountsPayableCurrent",
+                "tag": "us-gaap:AccountsPayableCurrent",
+                "name": "Accounts Payable Current",
+                "weight": 1.0,
+                "values": {
+                  "2022-12-31": 671513.0,
+                  "2021-12-31": 837483.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_AccruedLiabilitiesCurrent",
+                "tag": "us-gaap:AccruedLiabilitiesCurrent",
+                "name": "Accrued Liabilities Current",
+                "weight": 1.0,
+                "values": {
+                  "2022-12-31": 1514650.0,
+                  "2021-12-31": 1449351.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_ContractWithCustomerLiabilityCurrent",
+                "tag": "us-gaap:ContractWithCustomerLiabilityCurrent",
+                "name": "Contract With Customer Liability Current",
+                "weight": 1.0,
+                "values": {
+                  "2022-12-31": 1264661.0,
+                  "2021-12-31": 1209342.0
+                },
+                "is_leaf": true
+              },
+              {
+                "concept": "us-gaap_ShortTermBorrowings",
+                "tag": "us-gaap:ShortTermBorrowings",
+                "name": "Short Term Borrowings",
+                "weight": 1.0,
+                "values": {
+                  "2021-12-31": 699823.0
+                },
+                "is_leaf": true
+              }
+            ]
+          },
+          {
+            "concept": "nflx_ContentLiabilitiesNoncurrent",
+            "tag": "nflx:ContentLiabilitiesNoncurrent",
+            "name": "Content Liabilities",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 3081277.0,
+              "2021-12-31": 3094213.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_LongTermDebtNoncurrent",
+            "tag": "us-gaap:LongTermDebtNoncurrent",
+            "name": "Long Term Debt",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 14353076.0,
+              "2021-12-31": 14693072.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_OtherLiabilitiesNoncurrent",
+            "tag": "us-gaap:OtherLiabilitiesNoncurrent",
+            "name": "Other Liabilities",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 2452040.0,
+              "2021-12-31": 2459164.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_CommitmentsAndContingencies",
+        "tag": "us-gaap:CommitmentsAndContingencies",
+        "name": "Commitments And Contingencies",
+        "weight": 1.0,
+        "values": {},
+        "is_leaf": true
+      },
+      {
+        "concept": "us-gaap_StockholdersEquity",
+        "tag": "us-gaap:StockholdersEquity",
+        "name": "Stockholders Equity",
+        "weight": 1.0,
+        "values": {
+          "2022-12-31": 20777401.0,
+          "2021-12-31": 15849248.0
+        },
+        "is_leaf": false,
+        "role": "BS_TE",
+        "children": [
+          {
+            "concept": "us-gaap_PreferredStockValue",
+            "tag": "us-gaap:PreferredStockValue",
+            "name": "Preferred Stock Value",
+            "weight": 1.0,
+            "values": {},
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_CommonStockValue",
+            "tag": "us-gaap:CommonStockValue",
+            "name": "Common Stock Value",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 4637601.0,
+              "2021-12-31": 4024561.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_TreasuryStockCommonValue",
+            "tag": "us-gaap:TreasuryStockCommonValue",
+            "name": "Treasury Stock Common Value",
+            "weight": -1.0,
+            "values": {
+              "2022-12-31": 824190.0,
+              "2021-12-31": 824190.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+            "tag": "us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+            "name": "Accumulated Other Comprehensive Income Loss Net Of Tax",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": -217306.0,
+              "2021-12-31": -40495.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_RetainedEarningsAccumulatedDeficit",
+            "tag": "us-gaap:RetainedEarningsAccumulatedDeficit",
+            "name": "Retained Earnings Accumulated Deficit",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 17181296.0,
+              "2021-12-31": 12689372.0
+            },
+            "is_leaf": true
+          }
+        ]
+      }
+    ]
+  },
+  "CF": {
+    "concept": "us-gaap_CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
+    "tag": "us-gaap:CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
+    "name": "Cash Cash Equivalents Restricted Cash And Restricted Cash Equivalents Period Increase Decrease Including Exchange Rate Effect",
+    "weight": 1.0,
+    "values": {
+      "2022-12-31": -884529.0,
+      "2021-12-31": -2183759.0
+    },
+    "is_leaf": false,
+    "role": "CF_NETCH",
+    "children": [
+      {
+        "concept": "us-gaap_NetCashProvidedByUsedInOperatingActivities",
+        "tag": "us-gaap:NetCashProvidedByUsedInOperatingActivities",
+        "name": "Net Cash Provided By Used In Operating Activities",
+        "weight": 1.0,
+        "values": {
+          "2022-12-31": 2026257.0,
+          "2021-12-31": 392610.0
+        },
+        "is_leaf": false,
+        "role": "CF_OPCF",
+        "children": [
+          {
+            "concept": "us-gaap_NetIncomeLoss",
+            "tag": "us-gaap:NetIncomeLoss",
+            "name": "Net Income Loss",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 4491924.0,
+              "2021-12-31": 5116228.0
+            },
+            "is_leaf": true,
+            "role": "INC_NET_CF"
+          },
+          {
+            "concept": "nflx_AdditionstoStreamingContentAssets",
+            "tag": "nflx:AdditionstoStreamingContentAssets",
+            "name": "Additionsto Streaming Content Assets",
+            "weight": -1.0,
+            "values": {
+              "2022-12-31": 16839038.0,
+              "2021-12-31": 17702202.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "nflx_ChangeInStreamingContentLiabilities",
+            "tag": "nflx:ChangeInStreamingContentLiabilities",
+            "name": "Change In Streaming Content Liabilities",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 179310.0,
+              "2021-12-31": 232898.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "nflx_CostofServicesAmortizationofStreamingContentAssets",
+            "tag": "nflx:CostofServicesAmortizationofStreamingContentAssets",
+            "name": "Costof Services Amortizationof Streaming Content Assets",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 14026132.0,
+              "2021-12-31": 12230367.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_DepreciationDepletionAndAmortization",
+            "tag": "us-gaap:DepreciationDepletionAndAmortization",
+            "name": "Depreciation Depletion And Amortization",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 336682.0,
+              "2021-12-31": 208412.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ShareBasedCompensation",
+            "tag": "us-gaap:ShareBasedCompensation",
+            "name": "Share Based Compensation",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 575452.0,
+              "2021-12-31": 403220.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ForeignCurrencyTransactionGainLossBeforeTax",
+            "tag": "us-gaap:ForeignCurrencyTransactionGainLossBeforeTax",
+            "name": "Foreign Currency Transaction Gain Loss Before Tax",
+            "weight": -1.0,
+            "values": {
+              "2022-12-31": 353111.0,
+              "2021-12-31": 430661.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_OtherNoncashIncomeExpense",
+            "tag": "us-gaap:OtherNoncashIncomeExpense",
+            "name": "Other Noncash Income Expense",
+            "weight": -1.0,
+            "values": {
+              "2022-12-31": -533543.0,
+              "2021-12-31": -376777.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "nflx_DeferredIncomeTaxExpenseBenefitIncludingReclassifications",
+            "tag": "nflx:DeferredIncomeTaxExpenseBenefitIncludingReclassifications",
+            "name": "Deferred Income Tax Expense Benefit Including Reclassifications",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": -166550.0,
+              "2021-12-31": 199548.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInOtherCurrentAssets",
+            "tag": "us-gaap:IncreaseDecreaseInOtherCurrentAssets",
+            "name": "Increase Decrease In Other Current Assets",
+            "weight": -1.0,
+            "values": {
+              "2022-12-31": 353834.0,
+              "2021-12-31": 369681.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInAccountsPayable",
+            "tag": "us-gaap:IncreaseDecreaseInAccountsPayable",
+            "name": "Increase Decrease In Accounts Payable",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": -158543.0,
+              "2021-12-31": 145115.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInAccruedLiabilities",
+            "tag": "us-gaap:IncreaseDecreaseInAccruedLiabilities",
+            "name": "Increase Decrease In Accrued Liabilities",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": -55513.0,
+              "2021-12-31": 180338.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInContractWithCustomerLiability",
+            "tag": "us-gaap:IncreaseDecreaseInContractWithCustomerLiability",
+            "name": "Increase Decrease In Contract With Customer Liability",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 27356.0,
+              "2021-12-31": 91350.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_IncreaseDecreaseInOtherNoncurrentAssetsAndLiabilitiesNet",
+            "tag": "us-gaap:IncreaseDecreaseInOtherNoncurrentAssetsAndLiabilitiesNet",
+            "name": "Increase Decrease In Other  Assets And Liabilities Net",
+            "weight": -1.0,
+            "values": {
+              "2022-12-31": 217553.0,
+              "2021-12-31": 289099.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_NetCashProvidedByUsedInInvestingActivities",
+        "tag": "us-gaap:NetCashProvidedByUsedInInvestingActivities",
+        "name": "Net Cash Provided By Used In Investing Activities",
+        "weight": 1.0,
+        "values": {
+          "2022-12-31": -2076392.0,
+          "2021-12-31": -1339853.0
+        },
+        "is_leaf": false,
+        "role": "CF_INVCF",
+        "children": [
+          {
+            "concept": "us-gaap_PaymentsToAcquirePropertyPlantAndEquipment",
+            "tag": "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment",
+            "name": "Payments To Acquire Property Plant And Equipment",
+            "weight": -1.0,
+            "values": {
+              "2022-12-31": 407729.0,
+              "2021-12-31": 524585.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsForProceedsFromOtherInvestingActivities",
+            "tag": "us-gaap:PaymentsForProceedsFromOtherInvestingActivities",
+            "name": "Payments For Proceeds From Other Investing Activities",
+            "weight": -1.0,
+            "values": {
+              "2021-12-31": 26919.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsToAcquireBusinessesNetOfCashAcquired",
+            "tag": "us-gaap:PaymentsToAcquireBusinessesNetOfCashAcquired",
+            "name": "Payments To Acquire Businesses Net Of Cash Acquired",
+            "weight": -1.0,
+            "values": {
+              "2022-12-31": 757387.0,
+              "2021-12-31": 788349.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsToAcquireShortTermInvestments",
+            "tag": "us-gaap:PaymentsToAcquireShortTermInvestments",
+            "name": "Payments To Acquire Short Term Investments",
+            "weight": -1.0,
+            "values": {
+              "2022-12-31": 911276.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_NetCashProvidedByUsedInFinancingActivities",
+        "tag": "us-gaap:NetCashProvidedByUsedInFinancingActivities",
+        "name": "Net Cash Provided By Used In Financing Activities",
+        "weight": 1.0,
+        "values": {
+          "2022-12-31": -664254.0,
+          "2021-12-31": -1149776.0
+        },
+        "is_leaf": false,
+        "role": "CF_FINCF",
+        "children": [
+          {
+            "concept": "us-gaap_ProceedsFromIssuanceOfDebt",
+            "tag": "us-gaap:ProceedsFromIssuanceOfDebt",
+            "name": "Proceeds From Issuance Of Debt",
+            "weight": 1.0,
+            "values": {},
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsOfDebtIssuanceCosts",
+            "tag": "us-gaap:PaymentsOfDebtIssuanceCosts",
+            "name": "Payments Of Debt Issuance Costs",
+            "weight": -1.0,
+            "values": {},
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_RepaymentsOfLongTermDebt",
+            "tag": "us-gaap:RepaymentsOfLongTermDebt",
+            "name": "Repayments Of Long Term Debt",
+            "weight": -1.0,
+            "values": {
+              "2022-12-31": 700000.0,
+              "2021-12-31": 500000.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ProceedsFromStockOptionsExercised",
+            "tag": "us-gaap:ProceedsFromStockOptionsExercised",
+            "name": "Proceeds From Stock Options Exercised",
+            "weight": 1.0,
+            "values": {
+              "2022-12-31": 35746.0,
+              "2021-12-31": 174414.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_PaymentsForRepurchaseOfCommonStock",
+            "tag": "us-gaap:PaymentsForRepurchaseOfCommonStock",
+            "name": "Payments For Repurchase Of Common Stock",
+            "weight": -1.0,
+            "values": {
+              "2021-12-31": 600022.0
+            },
+            "is_leaf": true
+          },
+          {
+            "concept": "us-gaap_ProceedsFromPaymentsForOtherFinancingActivities",
+            "tag": "us-gaap:ProceedsFromPaymentsForOtherFinancingActivities",
+            "name": "Proceeds From Payments For Other Financing Activities",
+            "weight": 1.0,
+            "values": {
+              "2021-12-31": -224168.0
+            },
+            "is_leaf": true
+          }
+        ]
+      },
+      {
+        "concept": "us-gaap_EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+        "tag": "us-gaap:EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+        "name": "Effect Of Exchange Rate On Cash Cash Equivalents Restricted Cash And Restricted Cash Equivalents",
+        "weight": 1.0,
+        "values": {
+          "2022-12-31": -170140.0,
+          "2021-12-31": -86740.0
+        },
+        "is_leaf": true,
+        "role": "CF_FX"
+      }
+    ]
+  }
+}

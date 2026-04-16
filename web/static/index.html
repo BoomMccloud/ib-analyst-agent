@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEC Modeler</title>
+<style>
+  /* Windows 95 Theme */
+  @font-face {
+    font-family: 'MS Sans Serif';
+    src: local('MS Sans Serif'), local('Tahoma');
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'MS Sans Serif', Tahoma, Geneva, sans-serif;
+    font-size: 24px;
+    -webkit-font-smoothing: none;
+  }
+  
+  body { 
+    background-color: #008080; /* Classic Win95 Teal desktop */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    color: #000; 
+  }
+  
+  .hidden { display: none !important; }
+
+  /* Window Container */
+  .window {
+    background-color: #c0c0c0;
+    border: 4px solid;
+    border-top-color: #dfdfdf;
+    border-left-color: #dfdfdf;
+    border-right-color: #000000;
+    border-bottom-color: #000000;
+    width: 900px;
+    max-width: 95%;
+    box-shadow: 2px 2px 0 #000;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Title Bar */
+  .title-bar {
+    background: linear-gradient(90deg, #000080, #1084d0);
+    padding: 6px 4px 6px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .title-bar-text {
+    color: white;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 26px;
+  }
+  .title-bar-controls { display: flex; gap: 4px; }
+  .title-bar-controls button {
+    min-width: 32px;
+    min-height: 28px;
+    padding: 0 4px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 18px;
+  }
+
+  /* Interactive Buttons */
+  button, .btn {
+    background-color: #c0c0c0;
+    border: 3px solid;
+    border-top-color: #dfdfdf;
+    border-left-color: #dfdfdf;
+    border-right-color: #000000;
+    border-bottom-color: #000000;
+    padding: 10px 22px;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    font-size: 24px;
+  }
+  button:active, .btn:active {
+    border-top-color: #000000;
+    border-left-color: #000000;
+    border-right-color: #dfdfdf;
+    border-bottom-color: #dfdfdf;
+    padding: 11px 21px 9px 23px; /* Shift text slightly when pressed */
+  }
+
+  .window-body { padding: 24px; }
+
+  /* Inputs */
+  input[type="text"] {
+    background: #fff;
+    border: 3px solid;
+    border-top-color: #808080;
+    border-left-color: #808080;
+    border-right-color: #dfdfdf;
+    border-bottom-color: #dfdfdf;
+    padding: 10px;
+    width: 100%;
+    outline: none;
+    font-size: 24px;
+  }
+  /* Focus dotted outline like early GUIs */
+  input[type="text"]:focus, button:focus {
+    outline: 2px dotted #000;
+    outline-offset: -6px;
+  }
+
+  /* Sunken panels & Lists */
+  .sunken-panel {
+    background: #fff;
+    border: 3px solid;
+    border-top-color: #808080;
+    border-left-color: #808080;
+    border-right-color: #dfdfdf;
+    border-bottom-color: #dfdfdf;
+  }
+
+  /* Search Results */
+  #results { margin-top: 8px; max-height: 320px; overflow-y: auto; }
+  .result-row { padding: 8px 14px; cursor: pointer; display: flex; }
+  .result-row:hover { background: #000080; color: #fff; }
+  .result-row:hover .result-name { color: #fff; }
+  .result-ticker { font-weight: bold; width: 130px; }
+  .result-name { color: #444; }
+
+  /* Typography & Grouping */
+  p { margin-bottom: 18px; }
+  fieldset {
+    border: 3px solid;
+    border-top-color: #dfdfdf; border-left-color: #dfdfdf;
+    border-right-color: #808080; border-bottom-color: #808080;
+    padding: 18px; margin-top: 18px;
+  }
+  legend { padding: 0 8px; color: #000; font-size: 24px; }
+
+  /* MS-DOS Log style for terminal */
+  #log {
+    background: #000; color: #c0c0c0;
+    font-family: 'Fixedsys', 'Courier New', monospace; font-size: 22px;
+    height: 240px; overflow-y: auto; padding: 10px;
+  }
+  #log div { font-family: inherit; font-size: 22px; margin-bottom: 4px; }
+
+  /* Specific view layouts */
+  .flex-row { display: flex; align-items: center; gap: 24px; margin-bottom: 20px; }
+  .icon-large { font-size: 64px; line-height: 1; text-shadow: 2px 2px 0 #fff; }
+  #error-msg { background: #fff; padding: 16px; flex-grow: 1; word-wrap: break-word; font-size: 24px; }
+
+</style>
+</head>
+<body>
+
+<div class="window">
+  <!-- Classic Title Bar -->
+  <div class="title-bar">
+    <div class="title-bar-text">
+      <span>📈</span> SEC Financial Modeler
+    </div>
+    <div class="title-bar-controls">
+      <button aria-label="Minimize">_</button>
+      <button aria-label="Maximize">◻</button>
+      <button aria-label="Close">X</button>
+    </div>
+  </div>
+  
+  <div class="window-body">
+    
+    <!-- Search View -->
+    <div id="search-view">
+      <p>Type a ticker or company name to begin modeling:</p>
+      <input id="search-input" type="text" placeholder="e.g., AAPL" autocomplete="off">
+      <div id="results" class="sunken-panel hidden"></div>
+    </div>
+
+    <!-- Running View -->
+    <div id="running-view" class="hidden">
+      <div class="flex-row">
+        <div class="icon-large">⏳</div>
+        <div>
+          <div id="running-company" style="font-weight: bold; font-size: 28px; margin-bottom: 8px;"></div>
+          <div id="running-stage" style="color: #000080;"></div>
+        </div>
+      </div>
+      <fieldset>
+        <legend>MS-DOS Prompt</legend>
+        <div id="log" class="sunken-panel"></div>
+      </fieldset>
+    </div>
+
+    <!-- Done View -->
+    <div id="done-view" class="hidden">
+      <div class="flex-row">
+        <div class="icon-large">📊</div>
+        <div>
+          <div id="done-company" style="font-weight: bold; font-size: 28px; margin-bottom: 8px;"></div>
+          <div style="color: #008000;">Operation completed successfully.</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 16px; justify-content: flex-end; margin-top: 28px;">
+        <a id="sheet-link" href="#" target="_blank" class="btn">Open Spreadsheet</a>
+        <button id="run-another">Run Another</button>
+      </div>
+    </div>
+
+    <!-- Error View -->
+    <div id="error-view" class="hidden">
+      <div class="flex-row">
+        <div class="icon-large">❌</div>
+        <div id="error-msg" class="sunken-panel"></div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+        <button id="run-another-error">OK</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const $ = (sel) => document.querySelector(sel);
+let pollTimer = null;
+let currentJobId = null;
+let selectedTicker = null;
+
+function showView(id) {
+  ["search-view", "running-view", "done-view", "error-view"].forEach(v => {
+    $(`#${v}`).classList.toggle("hidden", v !== id);
+  });
+}
+
+function resetToSearch() {
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  currentJobId = null;
+  selectedTicker = null;
+  $("#search-input").value = "";
+  $("#results").innerHTML = "";
+  $("#results").classList.add("hidden");
+  showView("search-view");
+}
+
+// --- Search ---
+let debounce = null;
+$("#search-input").addEventListener("input", (e) => {
+  clearTimeout(debounce);
+  const q = e.target.value.trim();
+  if (q.length < 2) { $("#results").classList.add("hidden"); return; }
+  debounce = setTimeout(async () => {
+    const resp = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+    const results = await resp.json();
+    const el = $("#results");
+    el.innerHTML = "";
+    if (results.length === 0) { el.classList.add("hidden"); return; }
+    results.forEach(r => {
+      const row = document.createElement("div");
+      row.className = "result-row";
+      row.innerHTML = `<span class="result-ticker">${r.ticker}</span><span class="result-name">— ${r.name}</span>`;
+      row.addEventListener("click", () => startJob(r.ticker));
+      el.appendChild(row);
+    });
+    el.classList.remove("hidden");
+  }, 250);
+});
+
+// --- Start Job ---
+async function startJob(ticker) {
+  selectedTicker = ticker;
+  const resp = await fetch("/api/jobs", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ticker, years: 5}),
+  });
+  if (resp.status === 409) {
+    alert("Another job is already running. Please wait.");
+    return;
+  }
+  const data = await resp.json();
+  currentJobId = data.job_id;
+  showView("running-view");
+  $("#running-company").textContent = ticker;
+  pollTimer = setInterval(pollJob, 2000);
+}
+
+// --- Poll Job ---
+async function pollJob() {
+  if (!currentJobId) return;
+  const resp = await fetch(`/api/jobs/${currentJobId}`);
+  if (!resp.ok) return;
+  const job = await resp.json();
+
+  $("#running-stage").textContent = job.stage ? `Status: ${job.stage}` : "Status: Starting...";
+
+  const logEl = $("#log");
+  if (job.log && job.log.length > 0) {
+    logEl.innerHTML = job.log.slice(-10).map(l => `<div>C:\\SEC>${esc(l)}</div>`).join("");
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  if (job.status === "done") {
+    clearInterval(pollTimer);
+    pollTimer = null;
+    $("#done-company").textContent = `Model ready for ${selectedTicker}`;
+    $("#sheet-link").href = job.sheet_url;
+    showView("done-view");
+  } else if (job.status === "error") {
+    clearInterval(pollTimer);
+    pollTimer = null;
+    $("#error-msg").textContent = job.error || "Unknown error occurred.";
+    showView("error-view");
+  }
+}
+
+function esc(s) {
+  const d = document.createElement("div");
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+$("#run-another").addEventListener("click", resetToSearch);
+$("#run-another-error").addEventListener("click", resetToSearch);
+</script>
+</body>
+</html>

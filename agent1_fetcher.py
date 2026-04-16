@@ -23,18 +23,24 @@ from lookup_company import lookup_by_ticker, lookup_by_name, get_filer_info
 from fetch_10k import fetch_10k_filings
 from fetch_20f import fetch_20f_filings
 
+
 def run(query: str, years: int) -> dict:
     print(f"Looking up: {query}", file=sys.stderr)
     result = lookup_by_ticker(query)
     if result:
-        print(f"  Found by ticker: {result['company']} (CIK: {result['cik']})", file=sys.stderr)
+        print(
+            f"  Found by ticker: {result['company']} (CIK: {result['cik']})",
+            file=sys.stderr,
+        )
     else:
         print(f"  Not found as ticker, searching by name...", file=sys.stderr)
         result = lookup_by_name(query)
         if not result:
-            print(f"Error: Could not find '{query}' on SEC EDGAR", file=sys.stderr)
-            sys.exit(1)
-        print(f"  Found by name: {result['company']} (CIK: {result['cik']})", file=sys.stderr)
+            raise RuntimeError(f"Could not find '{query}' on SEC EDGAR")
+        print(
+            f"  Found by name: {result['company']} (CIK: {result['cik']})",
+            file=sys.stderr,
+        )
 
     print(f"  Fetching filer info...", file=sys.stderr)
     filer_info = get_filer_info(result["cik"])
@@ -42,9 +48,13 @@ def run(query: str, years: int) -> dict:
     filing_type = filer_info["filing_type"]
     cik = result["cik"]
     company_name = filer_info["name"] or result["company"]
-    ticker = result["ticker"] or (filer_info["tickers"][0] if filer_info["tickers"] else "")
+    ticker = result["ticker"] or (
+        filer_info["tickers"][0] if filer_info["tickers"] else ""
+    )
 
-    print(f"  Result: {filer_info['filer_type']} filer ({filing_type})", file=sys.stderr)
+    print(
+        f"  Result: {filer_info['filer_type']} filer ({filing_type})", file=sys.stderr
+    )
 
     if filing_type == "10-K":
         filings = fetch_10k_filings(cik, years)
@@ -63,14 +73,20 @@ def run(query: str, years: int) -> dict:
         "filings": filings,
     }
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Agent 1: Fetch SEC filing URLs locally")
+    parser = argparse.ArgumentParser(
+        description="Agent 1: Fetch SEC filing URLs locally"
+    )
     parser.add_argument("query", help="Company name or stock ticker")
-    parser.add_argument("--years", type=int, default=5, help="Number of years (default: 5)")
+    parser.add_argument(
+        "--years", type=int, default=5, help="Number of years (default: 5)"
+    )
     args = parser.parse_args()
 
     result = run(args.query, args.years)
     print(json.dumps(result, indent=2))
+
 
 if __name__ == "__main__":
     main()

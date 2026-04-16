@@ -29,8 +29,13 @@ import urllib.error
 
 _contact = os.environ.get("SEC_CONTACT_EMAIL")
 if not _contact:
-    print("Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)", file=sys.stderr)
-    sys.exit(1)
+    # Fallback for local/demo use. SEC EDGAR requires a real contact email in production.
+    _contact = "demo@example.com"
+    print(
+        f"Warning: SEC_CONTACT_EMAIL not set, using fallback '{_contact}'. "
+        "Set it for production use.",
+        file=sys.stderr,
+    )
 HEADERS = {"User-Agent": f"SecFilingsAgent {_contact}"}
 TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
@@ -98,9 +103,10 @@ def lookup_by_name(query: str) -> dict | None:
         display = src["display_names"][0] if src["display_names"] else ""
         # Extract ticker from display name like "Apple Inc.  (AAPL)  (CIK ...)"
         import re
-        ticker_match = re.search(r'\(([A-Z]{1,5})\)', display)
+
+        ticker_match = re.search(r"\(([A-Z]{1,5})\)", display)
         ticker = ticker_match.group(1) if ticker_match else ""
-        company_name = re.split(r'\s+\(', display)[0].strip()
+        company_name = re.split(r"\s+\(", display)[0].strip()
         return {
             "cik": cik,
             "ticker": ticker,
@@ -141,6 +147,46 @@ def get_filer_info(cik: str) -> dict:
     }
 
 
+_ticker_cache: dict | None = None
+
+
+def _get_ticker_cache() -> dict:
+    """Fetch and cache SEC company_tickers.json. First call pays ~1s HTTP round-trip."""
+    global _ticker_cache
+    if _ticker_cache is None:
+        _ticker_cache = fetch_json(TICKERS_URL)
+    return _ticker_cache
+
+
+def search_tickers(query: str, limit: int = 10) -> list[dict]:
+    """Case-insensitive substring search across SEC company tickers and names.
+
+    Returns list of {ticker, name, cik} dicts, ranked with exact ticker
+    matches first, then substring matches by name.
+    """
+    data = _get_ticker_cache()
+    q = query.strip().upper()
+    if not q:
+        return []
+
+    exact_matches = []
+    name_matches = []
+
+    for entry in data.values():
+        ticker = entry["ticker"]
+        title = entry["title"]
+        cik = str(entry["cik_str"]).zfill(10)
+
+        if ticker.upper() == q:
+            exact_matches.append({"ticker": ticker, "name": title, "cik": cik})
+        elif q in ticker.upper() or q in title.upper():
+            name_matches.append({"ticker": ticker, "name": title, "cik": cik})
+
+    # Exact matches first, then name matches (capped at limit)
+    results = exact_matches + name_matches
+    return results[:limit]
+
+
 def main():
     parser = argparse.ArgumentParser(description="Look up company on SEC EDGAR")
     parser.add_argument("query", help="Company name or stock ticker")
@@ -152,7 +198,10 @@ def main():
     # Step 1: Try ticker lookup first (fast, exact match)
     result = lookup_by_ticker(query)
     if result:
-        print(f"  Found by ticker: {result['company']} (CIK: {result['cik']})", file=sys.stderr)
+        print(
+            f"  Found by ticker: {result['company']} (CIK: {result['cik']})",
+            file=sys.stderr,
+        )
     else:
         # Step 2: Try name search
         print(f"  Not found as ticker, searching by name...", file=sys.stderr)
@@ -160,7 +209,10 @@ def main():
         if not result:
             print(f"Error: Could not find '{query}' on SEC EDGAR", file=sys.stderr)
             sys.exit(1)
-        print(f"  Found by name: {result['company']} (CIK: {result['cik']})", file=sys.stderr)
+        print(
+            f"  Found by name: {result['company']} (CIK: {result['cik']})",
+            file=sys.stderr,
+        )
 
     # Step 3: Get filer type from submissions metadata
     print(f"  Fetching filer info...", file=sys.stderr)
@@ -168,7 +220,8 @@ def main():
 
     output = {
         "company": filer_info["name"] or result["company"],
-        "ticker": result["ticker"] or (filer_info["tickers"][0] if filer_info["tickers"] else ""),
+        "ticker": result["ticker"]
+        or (filer_info["tickers"][0] if filer_info["tickers"] else ""),
         "cik": result["cik"],
         "filer_type": filer_info["filer_type"],
         "filing_type": filer_info["filing_type"],
@@ -176,7 +229,10 @@ def main():
         "country": filer_info["country"],
     }
 
-    print(f"  Result: {output['filer_type']} filer ({output['filing_type']})", file=sys.stderr)
+    print(
+        f"  Result: {output['filer_type']} filer ({output['filing_type']})",
+        file=sys.stderr,
+    )
     print(json.dumps(output, indent=2))
 
 

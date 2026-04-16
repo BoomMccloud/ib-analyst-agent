@@ -1,55 +1,68 @@
-# Spec Verification Report
+# Spec Verification Report (Round 2)
 
-**Spec**: `sec-agent/make_demo.md`
-**Verified**: 2026-04-13
-**Overall Status**: ⚠️ WARNINGS (no blockers — plan is implementable as written, with two clarifications)
+**Spec**: `sec-agent/docs/todo/make_demo.md`
+**Verified**: 2026-04-13 (post-edits)
+**Overall Status**: ❌ ONE BLOCKING ISSUE + 1 minor naming nit
 
----
-
-## Summary
-
-- **Files**: 6 verified, 1 duplicate-location issue
-- **Methods/Functions**: 5 verified, 1 to-be-created (correctly identified by spec)
-- **Libraries**: 0 verified (no manifest), 1 note
-- **Data Models**: N/A
-- **Naming**: Consistent with codebase
+Round 1 warnings (WARN-001 duplicate, WARN-002 fetch source, WARN-003 manifest) are all resolved or addressed. New verification of the "Internal flow" section turned up one real bug.
 
 ---
 
 ## Blocking Issues
 
-**None.** Every claim the spec makes about existing code is accurate, and every "to be created" item is correctly flagged.
+### [ISSUE-001] `agent1_fetcher.run()` calls `sys.exit(1)` on lookup failure — will wedge the demo
+
+**Spec says** (line 143, 152): *"`agent1_fetcher.run(query, years) -> dict` already exists (line 26) — use it as-is, no refactor needed."* and the internal flow calls it directly.
+
+**Reality** (`agent1_fetcher.py:34-36`):
+```python
+result = lookup_by_name(query)
+if not result:
+    print(f"Error: Could not find '{query}' on SEC EDGAR", file=sys.stderr)
+    sys.exit(1)
+```
+
+**Why this is blocking, not minor:** `sys.exit(1)` raises `SystemExit`, which inherits from `BaseException`, **not** `Exception`. The web layer's worker uses `except Exception` (line 77 of the skeleton):
+
+```python
+def _worker(job_id, ticker, years):
+    try:
+        result = run_pipeline(ticker, years, on_progress=_update)
+        ...
+    except Exception as e:                    # <-- does NOT catch SystemExit
+        ...
+```
+
+If a user searches for a typo or a ticker SEC doesn't recognize, `agent1_fetcher.run()` calls `sys.exit(1)` → `SystemExit` propagates past the `except Exception` → the worker thread dies silently → `_state["status"]` stays `"running"` forever → the UI polls indefinitely → next `start_job` returns 409 because status is still `"running"` → **the entire demo is wedged until you ctrl-C the server.**
+
+This is exactly the "stuck running" failure mode the plan claims to be immune to ("Bulletproof termination" on line 115).
+
+**Fix options** (in order of preference):
+
+1. **Refactor `agent1_fetcher.run()`** to raise instead of exit. Two-line change at line 34-36:
+   ```python
+   if not result:
+       raise RuntimeError(f"Could not find '{query}' on SEC EDGAR")
+   ```
+   The script's CLI `main()` (line 66) is unaffected because it doesn't catch — `RuntimeError` will propagate, Python prints traceback, exit code is non-zero. Same UX from the CLI.
+
+2. **Wrap the call in `run_pipeline`** with `try/except SystemExit` and re-raise as `RuntimeError`. Works but is a hack — the right answer is to fix `agent1_fetcher.run()`.
+
+3. **Change the worker to `except BaseException`.** Catches SystemExit but also catches `KeyboardInterrupt` — bad, breaks ctrl-C cleanup of the worker thread.
+
+**Recommendation:** Option 1, and add to the plan that `agent1_fetcher.py:34-36` needs a `sys.exit → raise RuntimeError` flip (same treatment the plan already prescribes for `pymodel.py`).
 
 ---
 
 ## Warnings
 
-### [WARN-001] Spec exists in two locations
+### [WARN-001] Module name typo in Internal flow
 
-The same file lives at:
-- `sec-agent/make_demo.md` ← the one being actively edited
-- `sec-agent/docs/todo/make_demo.md` ← stale duplicate
+**Spec says** (line 153): *"call `xbrl_tree.build_statement_trees(html, base_url)`"*
 
-**Recommendation**: Decide on a canonical location (likely `docs/todo/`, matching `spec_architecture_refactor.md` and `forecast-module.md`) and delete the other. Otherwise future edits will drift.
+**Reality**: After the architecture refactor, the function lives at `xbrl/__init__.py:36`, so the import path is `xbrl.build_statement_trees`, not `xbrl_tree.build_statement_trees`. (`xbrl_tree.py` is now a thin facade — it may re-export, but the canonical path matches what step 2 of the same section says: *"`xbrl.*`, `sheets.write_sheets`, ..."*.)
 
-### [WARN-002] `company_tickers.json` is HTTP-fetched, not a local file
-
-**Spec says** (line 129–130): *"Loads `company_tickers.json` once, caches in module global."*
-
-**Reality**: `lookup_company.py:74` calls `fetch_json(TICKERS_URL)` — i.e., it pulls from `https://www.sec.gov/files/company_tickers.json` over the network on every call. There is no local copy of `company_tickers.json` in the repo or `.cache/` (the `.cache/` directory contains opaque `.bin` HTTP-response blobs, not a file with that name).
-
-**Implication**: The "module-global cache" pattern is still the right design, but the spec should be explicit that the *first* `search_tickers` call will trigger an SEC EDGAR HTTP request (rate-limited, ~125ms minimum). Subsequent calls hit the in-memory cache.
-
-**Recommendation**: Add one line to the `search_tickers` bullet:
-> *"First call fetches from SEC EDGAR via `fetch_json(TICKERS_URL)`; subsequent calls use the module-global cache."*
-
-### [WARN-003] No dependency manifest in the project
-
-The project has **no** `requirements.txt`, `pyproject.toml`, or `setup.py` (verified across the repo root and `sec-agent/`). Dependencies are managed ad-hoc.
-
-**Implication**: The spec's `pip install fastapi uvicorn[standard]` instruction will work, but there's no manifest to record the new dependencies in. The "Dependencies" section just says "Document in README" — that's consistent with how the rest of the project handles deps, so this is more an FYI than an issue.
-
-**Recommendation**: No change needed unless you want this demo to be the forcing function for adding a `requirements.txt`. Otherwise, the README note is sufficient.
+**Fix**: One-character edit in line 153, `xbrl_tree.` → `xbrl.`.
 
 ---
 
@@ -57,27 +70,22 @@ The project has **no** `requirements.txt`, `pyproject.toml`, or `setup.py` (veri
 
 | Category | Reference | Status |
 |---|---|---|
-| File | `sec-agent/run_pipeline.py` | ✅ Exists, is fully subprocess-driven (`subprocess.run` shelling to `agent1_fetcher.py`, `xbrl_tree.py`, `merge_trees.py`, `sheet_builder.py`) — matches spec's description exactly |
-| File | `sec-agent/lookup_company.py` | ✅ Exists |
-| File | `sec-agent/sheets/__init__.py` | ✅ Exists (post-refactor package) |
-| File | `sec-agent/xbrl/` package | ✅ Exists with `linkbase.py`, `tree.py`, `reconcile.py`, `segments.py` |
-| File | `sec-agent/merge_trees.py` | ✅ Exists |
-| File | `sec-agent/pymodel.py` | ✅ Exists |
-| Function | `sheets.write_sheets(trees, company)` | ✅ Exists at `sheets/__init__.py:11`, **returns `(sid, url)` at line 169** — exactly the signature the spec relies on. WARN-002 in earlier draft is resolved. |
-| Function | `lookup_company.lookup_by_ticker` | ✅ Exists at `lookup_company.py:72` (the existing function the spec promises to leave untouched) |
-| Function | `lookup_company.search_tickers` | ⚪ **Does not exist** — correctly identified by spec as needing creation |
-| Function | `merge_trees.merge_filing_trees(tree_files)` | ✅ Exists at `merge_trees.py:131` (available for in-process call from the rewritten `run_pipeline`) |
-| Directory | `sec-agent/web/` | ⚪ Does not exist — correctly identified as new |
-| Symbol | `TICKERS_URL` constant in `lookup_company.py:35` | ✅ Available for `search_tickers` to reuse |
-| Architecture | xbrl/ and sheets/ refactor packages | ✅ Done — the spec's "Decision: in-process vs subprocess" rationale is grounded in real, existing import surfaces |
+| Function | `agent1_fetcher.run(query, years) -> dict` at line 26 | ✅ Exists. Returns `{company, ticker, cik, filer_type, filing_type, state_of_incorporation, country, filing_count, filings}` — superset of the spec's claimed shape. |
+| Function | `xbrl.build_statement_trees(html, base_url)` at `xbrl/__init__.py:36` | ✅ Exists, signature matches |
+| Function | `merge_trees.merge_filing_trees(tree_files)` at `merge_trees.py:131` | ✅ Exists |
+| Function | `pymodel.verify_model(trees: dict) -> list[tuple]` at `pymodel.py:8` | ✅ Exists, signature matches |
+| Function | `pymodel.main()` calls `sys.exit(1)` at line 173 | ✅ Confirmed — spec correctly identifies this as needing extraction |
+| Function | `pymodel.main()` imports `llm_invariant_fixer.fix_invariants` at line 160 | ✅ Confirmed |
+| Function | `sheets.write_sheets(trees, company)` returns `(sid, url)` at `sheets/__init__.py:169` | ✅ Confirmed |
+| Function | `lookup_company.lookup_by_ticker` at line 72 | ✅ Exists |
+| File | `lookup_company.py:33` env var hard-fail | ✅ Confirmed (acceptable per spec) |
+| File | `lookup_company.py:162` `sys.exit(1)` | ✅ Confirmed in `main()`, not import-time |
+| File | Spec location `sec-agent/docs/todo/make_demo.md` | ✅ Now canonical (root duplicate gone) |
 
 ---
 
 ## Recommendations
 
-1. **No blockers.** The plan is implementable as written. Proceed with build order step 1.
-2. **Apply WARN-001**: Pick one location for `make_demo.md` and delete the other before they drift.
-3. **Apply WARN-002**: Add the one-line clarification to the `search_tickers` bullet that the first call fetches from SEC EDGAR. Avoids a "why is the first search slow?" surprise during the demo.
-4. **WARN-003 is optional** — no action needed unless you want this to be the moment you finally add a `requirements.txt`.
-
-The strongest verification signal: the spec's most load-bearing claim — that `sheets.write_sheets()` returns `(sid, url)` after the refactor — is **confirmed exactly**. The "verify signature" step in the build order (step 2) can be checked off without writing any code.
+1. **Fix ISSUE-001 before starting build step 3.** Add a one-liner to the `run_pipeline.py` rewrite section: *"`agent1_fetcher.py:34-36` — replace `sys.exit(1)` with `raise RuntimeError(...)` (same treatment as `pymodel.main()`). Without this, the demo wedges on any misspelled ticker because `SystemExit` escapes the worker's `except Exception`."*
+2. **Apply WARN-001** — `xbrl_tree.` → `xbrl.` in line 153.
+3. Everything else verified clean. The plan is implementable as soon as ISSUE-001 is acknowledged.

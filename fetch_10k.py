@@ -17,8 +17,13 @@ import argparse
 
 _contact = os.environ.get("SEC_CONTACT_EMAIL")
 if not _contact:
-    print("Error: SEC_CONTACT_EMAIL environment variable must be set (SEC EDGAR requires a real contact email)", file=sys.stderr)
-    sys.exit(1)
+    # Fallback for local/demo use. SEC EDGAR requires a real contact email in production.
+    _contact = "demo@example.com"
+    print(
+        f"Warning: SEC_CONTACT_EMAIL not set, using fallback '{_contact}'. "
+        "Set it for production use.",
+        file=sys.stderr,
+    )
 HEADERS = {"User-Agent": f"SecFilingsAgent {_contact}"}
 TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"

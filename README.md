@@ -85,7 +85,7 @@ Tested on 10 companies across 6 industries: 9/10 ALL PASS, 1 has a $401 rounding
 *   `merge_trees.py`: Merges multiple filing trees into one with full historical data across periods.
 
 ### Supporting Utilities
-*   `lookup_company.py`: Maps tickers or company names to SEC Central Index Keys (CIK).
+*   `lookup_company.py`: Maps tickers or company names to SEC Central Index Keys (CIK). Includes `search_tickers()` for substring search.
 *   `fetch_10k.py` / `fetch_20f.py`: Targeted scripts for fetching filing metadata from the SEC API.
 *   `parse_xbrl_facts.py`: iXBRL tag extraction from filing HTML.
 *   `sec_utils.py`: SEC-compliant HTTP fetching with rate limiting (0.15s intervals) and caching.
@@ -108,12 +108,17 @@ Tested on 10 companies across 6 industries: 9/10 ALL PASS, 1 has a $401 rounding
 *   `tests/test_model_historical.py`: Historical model computation tests.
 *   `tests/test_model_historical_legacy.py`: Historical model tests for legacy (non-XBRL) filings.
 
+### Web Demo
+*   `web/app.py`: FastAPI backend — serves static UI, proxies search + pipeline jobs.
+*   `web/static/index.html`: Single-page vanilla JS frontend (search → run → done).
+
 ## Setup & Requirements
 
 - **Python 3.10+**
 - **Anthropic API Key** (`ANTHROPIC_API_KEY`): Required for LLM-in-the-loop semantic reconciliation (`llm_invariant_fixer.py`).
 - **`gws` CLI**: Required for exporting models to Google Sheets (must be pre-authenticated via OAuth).
 - **Podman**: Recommended for containerized execution (project preference over Docker).
+- **FastAPI + Uvicorn**: Required for the demo website (`pip install fastapi uvicorn[standard]`).
 
 ### External Dependencies
 
@@ -139,6 +144,28 @@ python -m pytest tests/ -v
 # Three-layer merge tests (synthetic + 10 real companies)
 python test_merge_layers.py
 ```
+
+## Demo Website
+
+A local-only browser UI wrapping the full pipeline. Single user, one job at a time.
+
+```bash
+cd sec-agent
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+export SEC_CONTACT_EMAIL="you@example.com"   # optional — falls back to demo@example.com
+gws auth login                                # ensure Sheets OAuth is fresh
+uvicorn web.app:app --reload
+# then open http://localhost:8000
+```
+
+**Flow:** Type a ticker → select from matches → pipeline runs → Google Sheet link appears.
+
+**Pre-flight checklist:**
+- Dependencies installed via `pip install -r requirements.txt` (bs4, anthropic, fastapi, uvicorn, etc.)
+- `SEC_CONTACT_EMAIL` env var set — recommended for SEC EDGAR compliance, but not required (fallback `demo@example.com` is used if unset)
+- `gws` CLI authenticated and token not expired (otherwise sheet generation fails inside `sheets.write_sheets`)
+- Run from `sec-agent/` directory (`outdir="./pipeline_output"` is cwd-relative)
 
 ## Architecture Notes
 

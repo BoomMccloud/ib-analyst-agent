@@ -2,7 +2,12 @@ import argparse
 import json
 import sys
 
-from xbrl_tree import TreeNode, find_node_by_role, build_statement_trees, reconcile_trees
+from xbrl_tree import (
+    TreeNode,
+    find_node_by_role,
+    build_statement_trees,
+    reconcile_trees,
+)
 
 
 def verify_model(trees: dict) -> list[tuple]:
@@ -29,7 +34,9 @@ def verify_model(trees: dict) -> list[tuple]:
     bs_te = find_node_by_role(trees["BS_LE"], "BS_TE") if trees.get("BS_LE") else None
     bs_cash = find_node_by_role(trees["BS"], "BS_CASH") if trees.get("BS") else None
     inc_net_is = find_node_by_role(trees["IS"], "INC_NET") if trees.get("IS") else None
-    inc_net_cf = find_node_by_role(trees["CF"], "INC_NET_CF") if trees.get("CF") else None
+    inc_net_cf = (
+        find_node_by_role(trees["CF"], "INC_NET_CF") if trees.get("CF") else None
+    )
 
     is_da = find_node_by_role(trees["IS"], "IS_DA") if trees.get("IS") else None
     cf_da = find_node_by_role(trees["CF"], "CF_DA") if trees.get("CF") else None
@@ -67,15 +74,15 @@ def verify_model(trees: dict) -> list[tuple]:
     for p in periods:
         # 1. BS Balance: TA == TL + TE
         if bs_ta and bs_tl and bs_te:
-            check("BS Balance (TA-TL-TE)", p,
-                  fv(bs_ta, p) - fv(bs_tl, p) - fv(bs_te, p))
+            check(
+                "BS Balance (TA-TL-TE)", p, fv(bs_ta, p) - fv(bs_tl, p) - fv(bs_te, p)
+            )
 
         # 2. Cash Link: CF_ENDC == BS_CASH
         if bs_cash and cf_endc_values:
             cf_endc = cf_endc_values.get(p, 0)
             if cf_endc != 0:
-                check("Cash (CF_ENDC - BS_CASH)", p,
-                      cf_endc - fv(bs_cash, p))
+                check("Cash (CF_ENDC - BS_CASH)", p, cf_endc - fv(bs_cash, p))
 
         # 3. NI Link: INC_NET (IS) == INC_NET (CF)
         if inc_net_is and inc_net_cf:
@@ -106,8 +113,11 @@ def verify_model(trees: dict) -> list[tuple]:
                 begc_val = fv(cf_begc, p)
                 bs_cash_prev = fv(bs_cash, prev_p)
                 if begc_val != 0 and bs_cash_prev != 0:
-                    check("Cash Begin (CF_BEGC - BS_CASH[t-1])", p,
-                          begc_val - bs_cash_prev)
+                    check(
+                        "Cash Begin (CF_BEGC - BS_CASH[t-1])",
+                        p,
+                        begc_val - bs_cash_prev,
+                    )
 
     # Check 7: Segment sums
     is_rev = find_node_by_role(trees["IS"], "IS_REVENUE") if trees.get("IS") else None
@@ -119,13 +129,15 @@ def verify_model(trees: dict) -> list[tuple]:
     return errors
 
 
-def _verify_segment_sums(node: TreeNode, periods: list[str],
-                          errors: list, label_prefix: str = "Segments"):
+def _verify_segment_sums(
+    node: TreeNode, periods: list[str], errors: list, label_prefix: str = "Segments"
+):
     """Recursively verify that children sum to parent at every level.
 
     Uses fv() (formula values) for children, so the check reflects what
     =SUM(children) would actually produce in the sheet.
     """
+
     def _fv(n, period):
         """Formula value: what =SUM(children) would produce."""
         if not n.children:
@@ -144,35 +156,66 @@ def _verify_segment_sums(node: TreeNode, periods: list[str],
         _verify_segment_sums(child, periods, errors, label_prefix=label_prefix)
 
 
+class CheckpointResult:
+    """Structured result from cross-statement invariant verification."""
+
+    def __init__(self, passed: bool, errors: list[tuple], periods: list[str]):
+        self.passed = passed
+        self.errors = errors
+        self.periods = periods
+
+    @property
+    def first_error(self) -> str | None:
+        if self.errors:
+            name, period, delta = self.errors[0]
+            return f"{name} for {period} (gap=${delta:,.0f})"
+        return None
+
+
+def run_checkpoint(trees_data: dict) -> CheckpointResult:
+    """Run cross-statement invariant checks with LLM fix attempt.
+
+    Unlike main(), this does NOT call sys.exit. Returns a structured result.
+    Safe to call from the demo's worker thread.
+    """
+    errors = verify_model(trees_data)
+
+    if errors:
+        from llm_invariant_fixer import fix_invariants
+
+        print(
+            f"verify_model initially found {len(errors)} error(s), attempting LLM fix...",
+            file=sys.stderr,
+        )
+        if fix_invariants(trees_data):
+            errors = verify_model(trees_data)
+
+    periods = trees_data.get("complete_periods", [])
+    return CheckpointResult(passed=len(errors) == 0, errors=errors, periods=periods)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Verify financial model invariants")
     parser.add_argument("--trees", required=True, help="Path to reconciled trees JSON")
-    parser.add_argument("--checkpoint", action="store_true",
-                        help="Run verification and exit (no output)")
+    parser.add_argument(
+        "--checkpoint",
+        action="store_true",
+        help="Run verification and exit (no output)",
+    )
     args = parser.parse_args()
 
     with open(args.trees) as f:
         trees_data = json.load(f)
 
-    errors = verify_model(trees_data)
+    result = run_checkpoint(trees_data)
 
-    if errors:
-        from llm_invariant_fixer import fix_invariants
-        print(f"verify_model initially found {len(errors)} error(s), attempting LLM fix...", file=sys.stderr)
-        if fix_invariants(trees_data):
-            # Save the fixed trees
-            with open(args.trees, "w") as f:
-                json.dump(trees_data, f, indent=2)
-            errors = []
-
-    print(f"Periods: {trees_data.get('complete_periods', [])}", file=sys.stderr)
-    if errors:
-        print(f"verify_model: {len(errors)} error(s)", file=sys.stderr)
-        for name, period, delta in errors:
+    if result.errors:
+        print(f"verify_model: {len(result.errors)} error(s)", file=sys.stderr)
+        for name, period, delta in result.errors:
             print(f"  {name}: {period} = {delta:,.0f}", file=sys.stderr)
         sys.exit(1)
     else:
-        n = len(trees_data.get("complete_periods", []))
+        n = len(result.periods)
         print(f"verify_model: ALL PASS ({n} periods)", file=sys.stderr)
 
 

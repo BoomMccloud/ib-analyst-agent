@@ -5,39 +5,121 @@ Orchestrates the full flow from ticker to Google Sheet.
 Defaults to 5 years of historical data and 5 years of forecasts.
 
 Usage: python run_pipeline.py AAPL
+       from run_pipeline import run_pipeline; run_pipeline("AAPL")
 """
 
 import argparse
 import json
-import os
-import subprocess
 import sys
 from pathlib import Path
 
-def run_command(cmd, input_data=None, capture_output=True):
-    """Run a shell command and return stdout."""
-    print(f"Running: {' '.join(cmd)}")
-    result = subprocess.run(
-        cmd,
-        input=input_data,
-        capture_output=capture_output,
-        text=True
-    )
-    if result.returncode != 0:
-        print(f"Error running {' '.join(cmd)}:\n{result.stderr}", file=sys.stderr)
-        sys.exit(result.returncode)
-    return result.stdout
+from agent1_fetcher import run as fetch_filings
+from sec_utils import fetch_url
+from xbrl import build_statement_trees
+from merge_trees import merge_filing_trees
+from pymodel import run_checkpoint
+from sheets import write_sheets
 
-def try_command(cmd, **kwargs):
-    """Run a command, returning (stdout, True) on success or (stderr, False) on failure.
-    Unlike run_command(), does NOT sys.exit on failure.
+
+def run_pipeline(query, years=5, outdir="./pipeline_output", on_progress=None):
+    """Run the full SEC modeling pipeline in-process.
+
+    Args:
+        query: Company ticker or name (e.g. "AAPL", "Apple Inc.")
+        years: Number of years of filings to process (default 5)
+        outdir: Directory for intermediate JSON outputs
+        on_progress: Optional callback(stage: str, msg: str) called at each stage boundary
+
+    Returns:
+        dict with keys: sheet_url (str), company_name (str)
+
+    Raises:
+        RuntimeError on any failure (no sys.exit).
     """
-    print(f"Running: {' '.join(cmd)}")
-    result = subprocess.run(cmd, capture_output=True, text=True, **kwargs)
-    if result.returncode != 0:
-        print(f"Command failed: {result.stderr}", file=sys.stderr)
-        return result.stderr, False
-    return result.stdout, True
+    if on_progress is None:
+        on_progress = lambda stage, msg: None
+
+    out_dir = Path(outdir)
+    out_dir.mkdir(exist_ok=True)
+
+    # Stage 1: Fetch filings
+    on_progress("fetching", f"Looking up {query}...")
+    filings_data = fetch_filings(query, years)
+    filings = filings_data.get("filings", [])
+    if not filings:
+        raise RuntimeError(f"No filings found for {query}")
+
+    company_name = filings_data.get("company", query)
+    on_progress("fetching", f"Found {len(filings)} filings for {company_name}")
+
+    # Stage 2: Build XBRL trees for each filing
+    tree_files = []
+    for i, filing in enumerate(filings):
+        url = filing.get("url")
+        date = filing.get("filing_date", f"filing_{i}")
+        if not url:
+            continue
+
+        on_progress(
+            "building_trees", f"Processing filing {i + 1}/{len(filings)} ({date})"
+        )
+        html = fetch_url(url).decode("utf-8", errors="replace")
+        base_url = url.rsplit("/", 1)[0] + "/"
+
+        result = build_statement_trees(html, base_url)
+        if result is None:
+            on_progress("building_trees", f"  No XBRL linkbase for {date}, skipping")
+            continue
+
+        tree_file = out_dir / f"trees_{date}.json"
+        out = {}
+        for key in ["complete_periods", "periods", "cf_endc_values", "unit_label"]:
+            if key in result:
+                out[key] = result[key]
+        out["facts"] = result.get("facts", {})
+        for stmt in ["IS", "BS", "BS_LE", "CF"]:
+            tree = result.get(stmt)
+            if tree:
+                out[stmt] = tree.to_dict()
+        rev_seg = result.get("revenue_segments")
+        if rev_seg:
+            out["revenue_segments"] = rev_seg.to_dict()
+
+        with open(tree_file, "w") as f:
+            json.dump(out, f, indent=2)
+        tree_files.append(str(tree_file))
+        on_progress("building_trees", f"  Tree saved for {date}")
+
+    if not tree_files:
+        raise RuntimeError(f"No XBRL trees built for {query}")
+
+    # Stage 3: Merge trees
+    if len(tree_files) > 1:
+        on_progress("merging", f"Merging {len(tree_files)} filings")
+        merged = merge_filing_trees(tree_files)
+    else:
+        on_progress("merging", "Single filing, no merge needed")
+        with open(tree_files[0]) as f:
+            merged = json.load(f)
+
+    merged_file = str(out_dir / "merged.json")
+    with open(merged_file, "w") as f:
+        json.dump(merged, f, indent=2)
+
+    # Stage 4: Verify invariants (checkpoint)
+    on_progress("checkpoint", "Running cross-statement invariant checks")
+    result = run_checkpoint(merged)
+    if not result.passed:
+        raise RuntimeError(f"verify_model: {result.first_error}")
+    on_progress("checkpoint", f"ALL PASS ({len(result.periods)} periods)")
+
+    # Stage 5: Write Google Sheet
+    on_progress("writing_sheet", f"Creating Google Sheet for {company_name}")
+    sid, url = write_sheets(merged, company_name)
+    on_progress("done", f"Sheet ready: {url}")
+
+    return {"sheet_url": url, "company_name": company_name}
+
 
 def main():
     parser = argparse.ArgumentParser(description="Full SEC Modeling Pipeline")
@@ -46,95 +128,18 @@ def main():
     parser.add_argument("--outdir", default="./pipeline_output")
     args = parser.parse_args()
 
-    out_dir = Path(args.outdir)
-    out_dir.mkdir(exist_ok=True)
-
-    # Stage 1: Fetch filings
-    print(f"=== STAGE 1: Fetching {args.years} years of filings for {args.query} ===")
-    filings_json = run_command([sys.executable, "agent1_fetcher.py", args.query,
-                                 "--years", str(args.years)])
     try:
-        filings_data = json.loads(filings_json)
-    except json.JSONDecodeError:
-        print("Error: Could not parse output from agent1_fetcher.py", file=sys.stderr)
+        result = run_pipeline(
+            args.query,
+            args.years,
+            args.outdir,
+            on_progress=lambda stage, msg: print(f"[{stage}] {msg}"),
+        )
+        print(f"\nDone! Sheet: {result['sheet_url']}")
+    except RuntimeError as e:
+        print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
 
-    filings = filings_data.get("filings", [])
-    if not filings:
-        print(f"No filings found for {args.query}")
-        sys.exit(1)
-
-    company_name = filings_data.get("company_name", args.query)
-    print(f"Processing {len(filings)} filings for {company_name}...")
-
-    # Stage 2: Process each filing
-    tree_files = []        # Phase 2 path outputs
-
-    for i, filing in enumerate(filings):
-        url = filing.get("url")
-        date = filing.get("filing_date", f"filing_{i}")
-        if not url:
-            continue
-
-        print(f"\n=== STAGE 2: Processing filing {i+1}/{len(filings)} ({date}) ===")
-
-        # Tree path: xbrl_tree.py
-        tree_file = out_dir / f"trees_{date}.json"
-        _, ok = try_command([sys.executable, "xbrl_tree.py", "--url", url,
-                              "-o", str(tree_file)])
-
-        if ok and tree_file.exists():
-            tree_files.append(str(tree_file))
-            print(f"  XBRL tree extraction succeeded for {date}")
-        else:
-            print(f"  XBRL tree extraction failed for {date}")
-
-    # Stage 3: Merge all filings into one tree
-    if tree_files:
-        if len(tree_files) > 1:
-            print(f"\n=== STAGE 3a: Merging {len(tree_files)} filings ===")
-            merged_file = str(out_dir / "merged.json")
-            run_command([sys.executable, "merge_trees.py"] + tree_files +
-                        ["-o", merged_file])
-        else:
-            print(f"\n=== STAGE 3a: Single filing, no merge needed ===")
-            merged_file = tree_files[0]
-
-        # Stage 3b: Verify tree completeness on merged output
-        print(f"\n=== STAGE 3b: Verifying model ===")
-        import json as _json
-        from xbrl_tree import verify_tree_completeness, TreeNode
-        with open(merged_file) as _f:
-            _trees = _json.load(_f)
-        for stmt in ["IS", "BS", "BS_LE", "CF"]:
-            if stmt in _trees and isinstance(_trees[stmt], dict):
-                _trees[stmt] = TreeNode.from_dict(_trees[stmt])
-        _periods = _trees.get("complete_periods", [])
-        _all_errors = []
-        for stmt in ["IS", "BS", "BS_LE", "CF"]:
-            if _trees.get(stmt):
-                _all_errors.extend(verify_tree_completeness(_trees[stmt], _periods))
-        if _all_errors:
-            print(f"  FAIL: {len(_all_errors)} tree completeness gap(s) found:", file=sys.stderr)
-            for concept, period, gap in _all_errors:
-                print(f"    {concept[:50]:50s} {period} gap={gap:>10,.0f}", file=sys.stderr)
-            sys.exit(1)
-        else:
-            print(f"  Tree completeness: ALL PASS")
-
-        # Stage 3c: Cross-statement invariant checkpoint on merged file
-        run_command([sys.executable, "pymodel.py", "--trees", merged_file, "--checkpoint"])
-
-        # Stage 4: Write Google Sheet from merged tree
-        print(f"\n=== STAGE 4: Writing Google Sheet ===")
-        run_command([sys.executable, "sheet_builder.py", "--trees", merged_file,
-                      "--company", company_name])
-
-        print(f"\n=== STAGE 5: Forecasting (Phase 4 - Coming Soon) ===")
-        print(f"Forecasting logic to be implemented in Phase 4.")
-    else:
-        print("No filings were successfully processed.", file=sys.stderr)
-        sys.exit(1)
 
 if __name__ == "__main__":
     main()
