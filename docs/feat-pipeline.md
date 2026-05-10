@@ -2,281 +2,444 @@
 
 ## 1. Architecture Overview
 
-The pipeline converts SEC 10-K filings into fully-linked Google Sheets with formula-based financial statements. It is **deterministic-first**: XBRL parsing, tree construction, and sheet rendering are pure Python. LLMs are only used for tasks requiring judgment (filing fetcher agent, optional sibling grouping).
+The pipeline converts SEC 10-K / 20-F filings into a fully-linked Google Sheet
+with formula-based financial statements. It is **deterministic-first**: ticker
+lookup, filing fetch, XBRL parsing, tree merging, and sheet rendering are pure
+Python. The LLM is only invoked as a *fallback repair step* if soft
+cross-statement invariants fail after deterministic reconciliation
+(see §5).
+
+The full flow is orchestrated by `run_pipeline.py` and runs in five stages,
+each producing JSON that the next stage consumes.
+
+```
+ticker ──▶ Stage 1: fetch ──▶ filings[]
+              │
+              ├──▶ Stage 2: build trees (per filing)  ──▶ trees_<date>.json
+              │                                              │
+              ├──▶ Stage 3: merge across filings  ◀──────────┘
+              │             ──▶ merged.json
+              │
+              ├──▶ Stage 4: verify invariants (+ optional LLM fix)
+              │
+              └──▶ Stage 5: write Google Sheet  ──▶ {sheet_id, sheet_url}
+```
 
 ### Core Principle: Three-Layer Merge
 
-The sheet rendering is built on a three-layer merge of XBRL linkbases:
+Each per-filing tree is built from a three-layer merge of XBRL linkbases:
 
-1. **Calc layer** (mathematical truth): Parent-child tree with signed weights (+1/-1). Defines `=SUM(children * weight)` formulas. Source: `_cal.xml`.
-2. **Presentation layer** (display order): Sibling ordering matching the 10-K layout (Revenue first, Net Income last). Source: `_pre.xml`.
-3. **"Other" layer** (gap absorption): For any parent where `SUM(children) != declared_value`, an "Other" row absorbs the residual. This guarantees every formula equals its declared XBRL value by construction.
+1. **Calc layer** (mathematical truth): parent–child tree with signed weights
+   (+1 / −1). Defines `=SUM(children * weight)` formulas. Source: `_cal.xml`.
+2. **Presentation layer** (display order): sibling ordering matching the
+   10-K layout (Revenue first, Net Income last). Source: `_pre.xml`.
+3. **"Other" layer** (gap absorption): for any parent where
+   `SUM(children) ≠ declared_value`, an `__OTHER__` residual row absorbs the
+   gap. This guarantees every formula in the sheet equals its declared XBRL
+   value by construction.
 
-This means cross-statement invariants (BS Balance, Cash Link, NI Link) hold in the sheet because every parent's formula produces the exact XBRL-declared number.
+Cross-statement invariants (BS Balance, Cash Link, NI Link, …) therefore
+hold in the sheet because every parent's formula reproduces the exact
+XBRL-declared number.
 
 ### Cash Flow: Mixed Duration + Instant Facts
 
 The CF statement uniquely combines two XBRL context types:
-- **Duration facts** (flows): OPCF, INVCF, FINCF, FX, Net Change in Cash — these are in the calc tree.
-- **Instant facts** (balances): Beginning Cash, Ending Cash — these are NOT in the calc tree.
+- **Duration facts** (flows): OPCF, INVCF, FINCF, FX, Net Change in Cash —
+  these are in the calc tree.
+- **Instant facts** (balances): Beginning Cash, Ending Cash — these are NOT
+  in the calc tree.
 
 The pipeline handles this by:
-- Deriving the ending cash concept from the CF root concept (strips `PeriodIncreaseDecrease...` suffix to find the balance version)
-- Rendering Beginning Cash as a hard value (prior period's ending balance from XBRL instant facts)
-- Rendering Ending Cash as a formula: `=Beginning Cash + Net Change`
-- Net Change is already a formula from the calc tree: `=OPCF + INVCF + FINCF + FX`
+- Deriving the ending-cash concept from the CF root (strips the
+  `PeriodIncreaseDecrease...` suffix to find the balance version), with
+  fallbacks for variants like `...IncludingDisposalGroupAndDiscontinuedOperations`.
+- Rendering Beginning Cash as a hard value (the prior period's ending balance).
+- Rendering Ending Cash as a formula: `=Beginning Cash + Net Change`.
+- Net Change is itself a calc-tree formula: `=OPCF + INVCF + FINCF + FX`.
 
 ---
 
-## 2. File Roles
+## 2. File Layout
 
-### Pipeline Scripts
+The codebase is organised as packages, not flat scripts. Each package
+exposes a clean public surface used by `run_pipeline.py`.
+
+### Pipeline driver
 
 | File | Role | LLM? |
 |------|------|------|
-| `agent1_fetcher.py` | Resolves ticker -> CIK, fetches filing URLs from SEC EDGAR | Managed Agent |
-| `xbrl_tree.py` | Parses iXBRL facts + calc/pre linkbases -> reconciled trees with roles | No |
-| `pymodel.py` | Verifies 5 cross-statement invariants on reconciled trees | No |
-| `sheet_builder.py` | Renders trees to Google Sheets with formulas and cross-statement checks | No |
-| `run_pipeline.py` | Orchestrates full pipeline: fetch -> extract -> verify -> sheet | No |
+| `run_pipeline.py` | End-to-end orchestrator (`run_pipeline(query, years, outdir)`) | No |
+| `config.py` | Env vars (`LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL`) and `validate_environment()` | — |
 
-### Supporting Utilities
+### `fetch/` — SEC EDGAR access
 
 | File | Role |
 |------|------|
-| `lookup_company.py` | Ticker/name -> CIK resolution |
-| `fetch_10k.py` / `fetch_20f.py` | SEC EDGAR submissions API for filing metadata |
-| `parse_xbrl_facts.py` | iXBRL tag extraction from filing HTML |
-| `sec_utils.py` | HTTP fetching with rate limiting and caching |
-| `gws_utils.py` | Google Sheets API wrapper (`gws` CLI) |
-| `llm_utils.py` | Anthropic API wrapper |
+| `agent.py` | `run(query, years)` — entrypoint: lookup → filer info → fetch URLs |
+| `lookup.py` | Ticker / name → CIK; determines domestic (10-K) vs foreign (20-F) |
+| `ten_k.py` / `twenty_f.py` | Filing metadata via the SEC submissions API |
+| `http.py` | Shared HTTP fetch with rate limiting and SEC compliance headers |
 
-### Deleted Files (legacy)
+### `xbrl/` — iXBRL extraction & per-filing tree construction
 
-All legacy code from the old 40-code / flat-dict architecture has been removed:
-`agent4_spreadsheet.py`, `create_template.py`, `template_row_map.json`, `diagnose_model.py`, `build_model_sheet.py`, `legacy_pymodel.py`, `extract_sections.py`, `structure_financials.py`, `agent3_modeler.py`, `financial_utils.py`, `xbrl_group.py`, `patch_sheet_builder.py`, `patch_xbrl_tree.py`.
+Public entrypoint: `build_statement_trees(html, base_url)` in `xbrl/__init__.py`.
+
+| File | Role |
+|------|------|
+| `facts.py` | iXBRL tag parser (`build_xbrl_facts_dict`, `build_segment_facts_dict`) |
+| `linkbase.py` | Fetch + parse `_cal.xml`, `_pre.xml`, `_lab.xml` linkbases; classify statement roles |
+| `tree.py` | `TreeNode`, `build_tree`, `build_presentation_index`, cascade layout helpers |
+| `reconcile.py` | Position tagging, BS_CASH override, calc/pres merge, D&A/SBC tagging, `CROSS_STATEMENT_CHECKS` |
+| `segments.py` | Revenue segment extraction and attachment via XBRL dimensions |
+| `cli.py` | Standalone CLI: `python -m xbrl.cli --url <filing_url> -o trees.json` (debugging only) |
+
+### `merge/` — Multi-filing consolidation
+
+| File | Role |
+|------|------|
+| `trees.py` | `merge_filing_trees(tree_files)` — newest-first union into one tree |
+| `concepts.py` | `ConceptMatcher` / `ConceptMap` — cross-filing concept alignment via value-matching |
+
+### `model/` — Invariant verification
+
+| File | Role |
+|------|------|
+| `verify.py` | `verify_model()`, `run_checkpoint()` → `CheckpointResult` |
+| `llm_fixer.py` | Soft-invariant repair via LLM (move_role / change_weight ops) |
+
+### `sheets/` — Google Sheets rendering
+
+Public entrypoint: `write_sheets(trees, company)` in `sheets/__init__.py`.
+
+| File | Role |
+|------|------|
+| `builder.py` | CLI shim (use `run_pipeline.py` instead — see "Running" below) |
+| `renderers.py` | Per-tab body / segments / cash-proof / summary rendering |
+| `formulas.py` | Column helpers (`dcol`), weight-aware `=SUM(...)` builders |
+| `layouts.py` | Cascade vs. totals-at-bottom layouts |
+| `formatting.py` | `_build_format_requests()` for fonts, borders, number formats |
+| `api.py` | `gws_create()`, `gws_share()` (driver boundary for web/app) |
+| `gws.py` | Subprocess wrapper around the `gws` CLI (`gws_write`, `gws_batch_update`) |
+
+### `llm/` — OpenAI-compatible chat client
+
+| File | Role |
+|------|------|
+| `client.py` | `get_llm_client()`, `call_llm()` — Chat Completions wrapper with JSON parsing and code-fence stripping |
+
+`llm/client.py` defaults to **Groq** (`https://api.groq.com/openai/v1`) with
+`llama-3.1-70b-versatile`. Override with `LLM_BASE_URL`, `LLM_API_KEY`,
+`LLM_MODEL`. It is consumed only by `model/llm_fixer.py`.
 
 ---
 
-## 3. Data Pipeline
+## 3. Running the Pipeline
 
-### Stage 1: Fetch Filings
+**Always use `run_pipeline.py` to generate sheets.** Invoking
+`xbrl/cli.py`, `model/verify.py`, or `sheets/builder.py` directly bypasses
+the cross-statement reconciliation that `run_pipeline.py` enforces between
+stages, and will produce sheets with broken formulas.
 
-**Script:** `agent1_fetcher.py`
-**Input:** Ticker (e.g., `AAPL`) + `--years N`
-**Output:** JSON with filing URLs and company metadata
+```bash
+# Full pipeline (preferred)
+python run_pipeline.py AAPL                 # default: 5 years
+python run_pipeline.py "Alibaba" --years 3
+python run_pipeline.py NFLX --outdir ./tmp  # custom intermediate dir
 
-### Stage 2: Build Reconciled Trees
+# Per-stage debugging only
+python -m xbrl.cli --url <filing_url> -o trees.json
+python -m model.verify --trees merged.json --checkpoint
+python -m merge.trees trees_*.json -o merged.json
+```
 
-**Script:** `xbrl_tree.py`
-**Input:** Filing URL (e.g., `--url https://...nflx-20251231.htm`)
-**Output:** JSON with `IS`, `BS`, `BS_LE`, `CF` trees + `complete_periods` + `cf_endc_values`
+`run_pipeline()` is also importable for in-process use (e.g. from `web/app.py`):
 
-This stage performs 9 reconciliation steps (`reconcile_trees()`):
+```python
+from run_pipeline import run_pipeline
+result = run_pipeline("AAPL", years=5, on_progress=lambda stage, msg: ...)
+# {"sheet_url": "...", "sheet_id": "...", "company_name": "Apple Inc."}
+```
+
+It raises `RuntimeError` on failure (no `sys.exit`) and writes intermediate
+JSON to `outdir` (default `./pipeline_output/`): `trees_<date>.json` per
+filing and `merged.json` for the consolidated tree.
+
+---
+
+## 4. Data Pipeline (per stage)
+
+### Stage 1 — Fetch filings
+
+**Entrypoint:** `fetch.agent.run(query, years)`
+**Output:** dict with `company`, `ticker`, `cik`, `filer_type`,
+`filing_type` (`10-K` or `20-F`), and `filings: [{filing_date, url, ...}]`.
+
+Deterministic — no LLM. Resolves ticker or name to a CIK via
+`fetch.lookup`, decides 10-K vs 20-F from `filer_info`, then queries the
+SEC submissions API through `fetch.ten_k` or `fetch.twenty_f`.
+
+### Stage 2 — Build per-filing reconciled tree
+
+**Entrypoint:** `xbrl.build_statement_trees(html, base_url)`
+**Output:** dict with `IS`, `BS`, `BS_LE`, `CF`, `revenue_segments`,
+`facts`, `complete_periods`, `cf_endc_values`, `lab_labels`, `unit_label`.
+
+For each filing URL, `run_pipeline.py` downloads the iXBRL HTML and calls
+`build_statement_trees`, which performs:
+
+1. **Parse iXBRL facts** (`xbrl.facts.build_xbrl_facts_dict`) — every
+   `<ix:nonFraction>` tag with its period/context.
+2. **Fetch + parse `_cal.xml`** (`xbrl.linkbase.parse_calc_linkbase`) —
+   parent/child relationships with weights, grouped by role.
+3. **Classify statement roles** (`classify_roles`) — IS / BS / CF.
+4. **Pick the best root for each statement** — e.g. for IS prefer a root
+   containing `NetIncomeLoss`; for BS prefer one ending in `Assets`.
+5. **Hydrate trees** (`build_tree`) using the facts dict.
+6. **Build presentation index** from `_pre.xml`
+   (`parse_pre_linkbase` → `build_presentation_index`).
+7. **Run `reconcile_trees()`** (see below).
+8. **Attach segments** (`xbrl.segments`) using `_lab.xml` labels and
+   dimensional segment facts; build `revenue_segments` tree if available.
+
+`reconcile_trees()` performs the in-place reconciliation steps:
 
 | Step | What it does |
 |------|-------------|
-| A | Tag BS positions (BS_TA, BS_TL, BS_TE, BS_TCA, BS_TCL, BS_CASH) by tree position |
-| B | Tag CF positions (CF_NETCH, CF_OPCF, CF_INVCF, CF_FINCF, CF_FX, INC_NET_CF) by concept pattern |
-| C | Tag IS Net Income (INC_NET) by value-matching against CF's authoritative NI |
-| D | Tag IS Revenue and COGS (IS_REVENUE, IS_COGS) by BFS keyword search |
-| E | Override BS_CASH with CF_ENDC values (cross-statement link) |
-| F | Filter to complete periods (only periods with data in all 4 statement trees) |
-| G | **Three-layer merge**: reorder by presentation, insert "Other" rows for gaps |
-| H | Tag D&A and SBC nodes (IS_DA/CF_DA, IS_SBC/CF_SBC) by time-series value matching |
+| Tag BS positions | BS_TA, BS_TL, BS_TE, BS_TCA, BS_TCL, BS_CASH by tree position |
+| Tag CF positions | CF_NETCH, CF_OPCF, CF_INVCF, CF_FINCF, CF_FX, INC_NET_CF, CF_BEGC by concept pattern |
+| Tag IS positions | INC_NET by value-matching the CF authoritative NI; IS_REVENUE / IS_COGS by BFS keyword search |
+| Tag IS semantic | D&A and SBC nodes via time-series value matching |
+| Override BS_CASH | Replace BS_CASH values with CF_ENDC (cross-statement link) |
+| Filter complete periods | Keep only periods present in IS + BS + BS_LE + CF |
+| Three-layer merge | For each statement: reorder children by presentation order, insert `__OTHER__` rows for any parent whose children don't sum to its declared value |
+| Tag D&A / SBC nodes | Cross-statement role tags `IS_DA` / `CF_DA`, `IS_SBC` / `CF_SBC` |
 
 **Key design decisions:**
-- **Position over names**: BS structure identified by tree position (root=TA, last L&E child=TE), not concept name matching. Works across all industries.
-- **Presentation ordering via BS4**: The `_pre.xml` is parsed with BeautifulSoup to properly resolve locator labels to concept names and flatten the tree hierarchy into a global display order.
-- **CF_ENDC derivation**: The ending cash tag is derived from the CF root concept by stripping the `PeriodIncreaseDecrease` suffix. Falls back to common tags. This handles companies like TSLA that use `...IncludingDisposalGroupAndDiscontinuedOperations`.
-- **"Other" rows**: Bottom-up insertion. For each branch node, `Other = declared_value - SUM(children * weight)`. Can be positive (missing items) or negative (overshoot). 96% of parent nodes need no Other row.
+- **Position over names**: BS structure identified by tree position
+  (root = TA, last L&E child = TE), not concept-name matching. Works
+  across industries.
+- **Presentation ordering via BeautifulSoup**: `_pre.xml` is parsed to
+  resolve locator labels to concept names and flatten the tree hierarchy
+  into a global display order.
+- **CF_ENDC derivation**: ending-cash tag derived by stripping
+  `PeriodIncreaseDecrease` from the CF root concept, with fallbacks for
+  e.g. `...IncludingDisposalGroupAndDiscontinuedOperations`.
+- **`__OTHER__` rows**: bottom-up insertion. For each branch node,
+  `Other = declared_value − SUM(children * weight)`. Can be positive
+  (missing items) or negative (overshoot).
 
-### Stage 3: Verify Invariants
+### Stage 3 — Merge filings
 
-**Script:** `pymodel.py --trees trees.json --checkpoint`
-**Input:** Reconciled trees JSON
-**Output:** Pass/fail with error details
+**Entrypoint:** `merge.trees.merge_filing_trees(tree_files)`
+**Output:** A single consolidated tree dict (same shape as a per-filing
+tree) with `complete_periods` covering all years across all filings.
 
-Checks 5 cross-statement invariants:
+If only one filing is found, this stage is skipped and the per-filing
+tree is used directly.
+
+The merge takes filings in newest-first order and:
+
+1. Uses the newest filing's tree as the **structural skeleton**.
+2. Builds a `ConceptMap` (`merge.concepts.ConceptMatcher.align_statement`)
+   that detects renamed concepts across adjacent filings by matching
+   values across overlapping periods.
+3. Fills values into the base tree by concept (`merge_values_by_concept`).
+4. Detects **orphan concepts** (present in older filings but absent from
+   the base tree) and only adds them under their parent if doing so
+   *reduces* the children-vs-parent gap and never widens it for any
+   period.
+5. Detects and patches **structural reclassifications**
+   (`detect_and_fix_structural_shifts`) where a line item moved between
+   parents across filings.
+6. Recomputes `__OTHER__` residuals so every parent still satisfies
+   `SUM(children) == declared_value`.
+
+### Stage 4 — Verify invariants (with optional LLM repair)
+
+**Entrypoint:** `model.verify.run_checkpoint(merged) → CheckpointResult`
+
+`verify_model()` runs **7 cross-statement checks**, all using `fv()` —
+formula values, i.e. *what the sheet's `=SUM(...)` would produce* — so
+the verification reflects what users will see, not just declared XBRL
+values:
 
 | # | Invariant | What it catches |
-|---|-----------|----------------|
-| 1 | BS_TA == BS_TL + BS_TE | Balance sheet doesn't balance |
-| 2 | CF_ENDC == BS_CASH | Cash flow ending cash != balance sheet cash |
-| 3 | CF_BEGC[t] == BS_CASH[t-1] | Beginning cash != prior period ending cash |
-| 4 | INC_NET (IS) == INC_NET (CF) | Net income mismatch across statements |
-| 5 | Segment Sums | Child segments must sum exactly to parent |
-| 6 | IS_DA == CF_DA | D&A mismatch (using role tags) |
-| 7 | IS_SBC == CF_SBC | SBC mismatch (using role tags) |
+|---|-----------|-----------------|
+| 1 | `BS_TA == BS_TL + BS_TE` | Balance sheet doesn't balance |
+| 2 | `CF_ENDC == BS_CASH` | Cash flow ending cash ≠ balance sheet cash |
+| 3 | `INC_NET (IS) == INC_NET (CF)` | Net income mismatch across statements |
+| 4 | `IS_DA == CF_DA` | D&A mismatch (role-tag based) |
+| 5 | `IS_SBC == CF_SBC` | SBC mismatch (role-tag based) |
+| 6 | `CF_BEGC[t] == BS_CASH[t-1]` | Beginning cash ≠ prior period's ending cash |
+| 7 | Segment sums (recursive) | Children must sum to parent for IS Revenue and IS COGS at every level |
 
-These are **real checks** — they compare independently computed values that must agree. They cannot be enforced by construction because they cross statement boundaries.
+Tolerance is `abs(delta) > 1.0` (one currency unit).
 
-### Stage 4: Write Google Sheet
+#### Soft vs. hard invariants
 
-**Script:** `sheet_builder.py --trees trees.json --company "Company Name"`
-**Input:** Reconciled trees JSON + company name
-**Output:** Google Sheet URL (JSON to stdout)
+`run_checkpoint()` distinguishes soft from hard failures:
 
-Creates a 4-tab Google Sheet:
+- **Soft** (NI Link, D&A Link, SBC Link): semantic role-mapping mistakes.
+  These can plausibly be fixed by re-tagging — e.g. moving `INC_NET` to a
+  different IS node. `run_checkpoint` calls `model.llm_fixer.fix_invariants`
+  to attempt repair via `move_role` / `change_weight` ops, then re-runs
+  `verify_model`.
+- **Hard** (BS Balance, Cash Link, Cash Begin, Segment Sums): math or
+  parser bugs. Role-shuffling can't repair these and would risk masking
+  them, so the LLM fixer is **skipped**.
+
+If any errors remain after repair, `run_pipeline.py` raises `RuntimeError`
+and the pipeline halts before writing a sheet.
+
+### Stage 5 — Write Google Sheet
+
+**Entrypoint:** `sheets.write_sheets(trees, company) → (sheet_id, sheet_url)`
+
+Creates a 4-tab Google Sheet via the `gws` CLI:
 
 | Tab | Content |
 |-----|---------|
-| IS | Income Statement with cascade rendering (Revenue first, NI last) |
-| BS | Balance Sheet: Assets section + Liabilities & Equity section |
-| CF | Cash Flows: calc tree + Beginning Cash (hard) + Net Change (ref) + Ending Cash (formula) |
-| Summary | Key metrics + 5 cross-statement check formulas (should all be 0) |
+| IS | Optional revenue segments header, then the IS body in cascade layout (Revenue first, NI last). When segments are present, the IS Revenue row references the segment total. |
+| BS | Assets section + Liabilities & Equity section, totals at bottom |
+| CF | Calc tree + cash-proof block: Beginning Cash (hard), Net Change (formula reference to CF_NETCH), Ending Cash (`=Begin + NetChange`) |
+| Summary | Cross-statement check formulas referencing cells across tabs via `global_role_map`; should all evaluate to 0 |
 
 **Formula construction:**
-- Leaf nodes: hard values from XBRL facts
-- Branch nodes: `=SUM(children * weight)` using `_build_weight_formula()`
-- Other rows: hard values (the residual gap)
-- Cross-statement checks: formulas referencing cells across tabs via `global_role_map`
-- Ending Cash: `=Beginning Cash + Net Change` (formula, not hardcoded)
+- Leaf nodes: hard values from XBRL facts.
+- Branch nodes: `=SUM(children * weight)` via `_build_weight_formula()`.
+- `__OTHER__` rows: hard values (the residual gap).
+- Cross-statement checks: declarative entries in
+  `xbrl.reconcile.CROSS_STATEMENT_CHECKS`, rendered by
+  `sheets.renderers._write_summary_tab`. Checks with missing roles (e.g.
+  D&A for companies without a separate D&A line) are silently skipped.
+- Ending Cash: `=Beginning + Net Change` — formula, not hardcoded.
+- Column layout: narrow gutters (cols A, B, D), wide label column (C),
+  100px-wide data columns (E onwards).
 
-### Stage 5: Forecasting (Future)
-
-Not yet implemented. Will add LLM-driven forecast drivers applied to the historical baseline.
-
----
-
-## 4. Invariant Architecture
-
-### What Changed from the Original Spec
-
-The original spec proposed 13 invariants split into "tautological" (enforced by construction in `pymodel.py`) and "real" (cross-statement checks). The implementation evolved:
-
-**Original approach (flat-dict model):** `pymodel.py` owned financial math via `set_category()`, `set_is_cascade()`, `set_bs_totals()`, etc. Tautological invariants were enforced by these APIs.
-
-**Current approach (tree-based model):** The XBRL calc tree IS the mathematical model. Parent-child relationships with signed weights define the formulas. `pymodel.py` doesn't compute anything — it only verifies cross-statement links. The "tautological" invariants are now enforced by the tree structure + "Other" row mechanism:
-
-| Original Invariant | How it's enforced now |
-|-------------------|----------------------|
-| flex + catch_all == subtotal | Tree: `=SUM(children * weight)` + Other row = declared value |
-| TCA + TNCA == TA | Tree: TA node's children include TCA and TNCA |
-| OPCF + INVCF + FINCF + FX == NETCH | Tree: CF root's children are OPCF, INVCF, FINCF, FX |
-| BEGC + NETCH == ENDC | Sheet formula: Ending Cash `=Beginning Cash + Net Change` |
-| Revenue - COGS == GP | Tree: GP node's children are Revenue(+1) and COGS(-1) |
-
-The 7 real cross-statement checks remain in `verify_model()`.
-
-### Declarative Cross-Statement Checks
-
-Cross-statement checks are defined declaratively in `xbrl_tree.py`:
-
-```python
-CROSS_STATEMENT_CHECKS = [
-    {"name": "BS Balance (TA-TL-TE)", "roles": ["BS_TA", "BS_TL", "BS_TE"],
-     "formula": "={BS_TA}-{BS_TL}-{BS_TE}"},
-    {"name": "Cash Link (CF_ENDC-BS_CASH)", "roles": ["CF_ENDC", "BS_CASH"],
-     "formula": "={left}-{right}"},
-    {"name": "NI Link (IS-CF)", "roles": ["INC_NET", "INC_NET_CF"],
-     "formula": "={left}-{right}"},
-    {"name": "D&A Link (IS-CF)", "roles": ["IS_DA", "CF_DA"],
-     "formula": "={left}-{right}"},
-    {"name": "SBC Link (IS-CF)", "roles": ["IS_SBC", "CF_SBC"],
-     "formula": "={left}-{right}"},
-]
-```
-
-`sheet_builder.py` renders these into the Summary tab. Checks with missing roles (e.g., D&A for companies without a separate D&A line) are silently skipped.
+`sheets.api.gws_share(sheet_id, email, role)` is re-exported by
+`run_pipeline` and called by `web/app.py` to share the resulting sheet
+with the user.
 
 ---
 
-## 5. Testing
+## 5. LLM Usage
 
-### Test Files
+**The LLM is invoked from exactly one place: `model/llm_fixer.py`,
+during invariant verification.** Stages 1, 2, 3, and 5 are fully
+deterministic.
+
+Flow:
+1. `verify_model()` finds errors.
+2. If *all* errors are soft (NI / D&A / SBC links), `run_checkpoint`
+   imports `fix_invariants`, which:
+   - Prunes each tree into a compact JSON representation
+     (`_prune_tree_for_llm`).
+   - Builds a prompt with the tree context, the failed invariants, and
+     the affected periods, then calls `call_llm` (`llm.client`).
+   - Expects a JSON list of operations: `{op: "move_role", role, new_concept}`
+     or `{op: "change_weight", parent_concept, child_concept, weight}`.
+   - Applies operations to the trees in-place.
+3. `verify_model()` re-runs; if still failing, the pipeline halts.
+
+The LLM cannot edit values, add nodes, or change statement structure —
+only re-tag roles or flip child weights. This bounds the blast radius of
+LLM hallucinations.
+
+If `LLM_API_KEY` is missing, `validate_environment()` warns and
+invariant repair is unavailable; everything else still runs.
+
+---
+
+## 6. Testing
+
+### Test files
+
+Unit and integration tests live under `tests/`:
 
 | File | What it tests |
-|------|-------------|
-| `tests/test_dual_linkbase.py` | 28 tests: presentation parsing, cascade layout, IS tagging, orphan supplementation, tree completeness, cross-statement checks, pipeline gate |
-| `tests/test_model_historical.py` | `verify_model()` on reconciled trees using synthetic tree fixtures |
-| `tests/test_offline_e2e.py` | End-to-end pipeline from cached filings |
-| `tests/test_sheet_formulas.py` | `_build_weight_formula()` and `dcol()` helpers |
+|------|---------------|
+| `tests/test_dual_linkbase.py` | Presentation parsing, cascade layout, IS tagging, orphan supplementation, tree completeness, `CROSS_STATEMENT_CHECKS` |
+| `tests/test_model_historical.py` | `verify_model()` on synthetic tree fixtures |
+| `tests/test_offline_e2e.py` | End-to-end pipeline on cached filings |
+| `tests/test_merge_pipeline.py` | Multi-filing merge end-to-end |
+| `tests/test_merge_layers.py` | Three-layer merge algorithm (synthetic + real fixtures) |
+| `tests/test_reclassification.py` | Structural-shift detection in `merge.concepts` |
 | `tests/test_da_sbc_tagging.py` | D&A and SBC cross-statement tagging |
-| `test_merge_layers.py` | 11 tests: three-layer merge algorithm (9 synthetic + 2 real-world covering all companies) |
-| `test_alignment.py` | Validates calc vs presentation linkbase alignment across all cached companies |
+| `tests/test_bs_cash_fix.py` | BS_CASH override semantics |
+| `tests/test_pymodel_units.py` | Unit handling (millions vs thousands, etc.) |
+| `tests/test_sheet_formulas.py` | `_build_weight_formula()`, `dcol()` |
+| `tests/test_share_sheet*.py` | `gws_share()` integration & unit tests |
+| `tests/test_demo_website.py` | `web/app.py` smoke tests |
 
-### Test Fixtures
+### Test fixtures
 
-10 company fixtures in `tests/fixtures/sec_filings/`: AAPL, AMZN, BRK-B, GOOG, JPM, META, MSFT, NFLX, PFE, TSLA. Each has cached filing HTML, `_cal.xml`, `_pre.xml`, and pre-built `trees.json`.
+10 company fixtures under `tests/fixtures/sec_filings/`: AAPL, AMZN,
+BRK-B, GOOG, JPM, META, MSFT, NFLX, PFE, TSLA. Each has cached filing
+HTML, `_cal.xml`, `_pre.xml`, and pre-built `trees.json`.
 
-### Running Tests
+### Running tests
 
 ```bash
-# All unit tests
-python -m pytest tests/test_dual_linkbase.py -v
-
-# Three-layer merge tests (synthetic + 10 real companies)
-python test_merge_layers.py
-
-# Full pipeline (generates Google Sheet)
-python run_pipeline.py AAPL
+python -m pytest tests/ -v                         # all tests
+python -m pytest tests/test_dual_linkbase.py -v    # one file
+python run_pipeline.py AAPL                        # live end-to-end
 ```
 
 ---
 
-## 6. Tested Companies & Known Edge Cases
+## 7. Tested Companies & Known Edge Cases
 
-### Scorecard (as of 2026-04-11)
+### Scorecard summary
 
-| Company | Industry | BS Balance | NI Link | Cash Proof | Other Rows | Notes |
-|---------|----------|-----------|---------|------------|------------|-------|
-| NFLX | Streaming | 0 | 0 | 0 | IS: 0, BS: 0 | Clean pass |
-| AAPL | Tech HW | 0 | 0 | 0 | 0 | Clean pass, no Other rows needed |
-| XOM | Oil & Gas | 0 | 0 | 0 | 0 | D&A tagged, oil-specific line items |
-| JPM | Banking | 0 | 0 | 0 | BS: 1 | Bank-style IS (net interest income) |
-| TSLA | Auto/EV | 0 | 0 | 0 | BS: 1 | Cash Link shows restricted cash diff (~$900) |
-| GE | Conglomerate | 0 | 104* | no BEGC** | IS: 2 | *Discontinued ops; **only 2 instant dates |
-| AMZN | E-commerce | 0 | 0 | 0 | IS: 2, BS: 1 | |
-| GOOG | Tech | 0 | 0 | 0 | IS: 2, BS: 2 | |
-| META | Social | 0 | 0 | 0 | IS: 2, BS: 1 | |
-| PFE | Pharma | -213K*** | — | — | Multiple | ***Pre-existing BS root selection issue |
+Tested on 10 companies across 6 industries. **9 / 10 ALL PASS**; PFE has
+a small (~$401) rounding error from BS root selection.
 
-### Known Edge Cases
+### Known edge cases
 
-1. **MSFT**: Uses XBRL Calculation 1.1 (`calculation-1.1.xsd`) instead of traditional `_cal.xml`. Our regex-based `fetch_cal_linkbase` can't find it. Requires parser update.
-2. **GE**: NI Link mismatch because IS reports "Income from Continuing Operations" while CF reports "ProfitLoss" (includes discontinued operations). Real data difference, not a bug.
-3. **TSLA**: Cash Link shows ~$900 difference because BS_CASH = `CashAndCashEquivalentsAtCarryingValue` (excludes restricted cash) while CF_ENDC = `...IncludingDisposalGroupAndDiscontinuedOperations` (includes restricted cash).
-4. **Dimensional data**: Companies like AAPL report Products/Services revenue split via XBRL dimensions (`ProductOrServiceAxis`), not separate concepts. Our pipeline shows only the total — dimensional breakdowns are a future enhancement.
+1. **MSFT** — uses XBRL Calculation 1.1 (`calculation-1.1.xsd`) instead
+   of traditional `_cal.xml`. The current regex-based `fetch_cal_linkbase`
+   doesn't match it. Requires a parser update (Phase 5 below).
+2. **GE** — NI Link gap because IS reports "Income from Continuing
+   Operations" while CF reports `ProfitLoss` (includes discontinued
+   operations). Real data difference, not a bug.
+3. **TSLA** — Cash Link shows ~$900 difference because `BS_CASH` uses
+   `CashAndCashEquivalentsAtCarryingValue` (excludes restricted cash)
+   while `CF_ENDC` uses
+   `...IncludingDisposalGroupAndDiscontinuedOperations` (includes it).
+4. **Dimensional data** — companies like AAPL report Products / Services
+   revenue split via XBRL dimensions (`ProductOrServiceAxis`), not as
+   separate concepts. The revenue-segment tree handles the common cases;
+   uncommon dimension axes are a future enhancement.
 
 ---
 
-## 7. Execution Phases
+## 8. Roadmap
 
-### Phase 1: XBRL Tree Engine (COMPLETE)
+### Done
 
-Deterministic extraction from iXBRL + calculation linkbase. Position-based tagging. 7 cross-statement invariants. Tested on 10 companies.
+- **Phase 1** — XBRL tree engine: deterministic extraction from iXBRL +
+  calc linkbase, position-based tagging, cross-statement invariants.
+- **Phase 1b** — Dual-linkbase + three-layer merge: presentation parsing,
+  cascade rendering, `__OTHER__` rows, declarative cross-statement checks.
+- **Phase 2** — Decoupled sheet builder: `sheets/` package extracted from
+  the verification module. Weight-aware formulas, summary tab.
+- **Phase 3** — Dynamic sheet formulas: all subtotals are `=SUM()`,
+  cross-sheet references via `global_role_map`, formula-derived Ending
+  Cash, formula-based check rows.
+- **Phase 3b** — Multi-filing merge with concept alignment, orphan
+  insertion, structural-shift repair.
+- **Phase 4a** — LLM-in-the-loop soft-invariant repair
+  (`model/llm_fixer.py`).
 
-### Phase 1b: Dual Linkbase + Three-Layer Merge (COMPLETE)
+### Future
 
-Presentation linkbase parsing (BS4-based), cascade rendering for IS (Revenue first), "Other" rows for calc linkbase gaps, declarative cross-statement checks, tree completeness verification.
-
-### Phase 2: Decoupled Sheet Builder (COMPLETE)
-
-`sheet_builder.py` extracted from `pymodel.py`. Renders trees to Google Sheets with weight-aware formulas. Summary tab with cross-statement check formulas. Cash proof section with formula-derived Ending Cash.
-
-### Phase 3: Dynamic Sheet Formulas (CURRENT)
-
-All subtotals are `=SUM()` formulas. Cross-sheet references via `global_role_map`. Ending Cash = `=Beginning + Net Change`. Check rows are formula-based.
-
-Remaining work:
-- SUMIF references to raw filing data (historical cells)
-- Forecast driver formulas (depends on Phase 4)
-
-### Phase 4: Forecast Layer (FUTURE)
-
-- LLM reads MD&A + historical baseline -> `forecast_spec.json` (business drivers only, no math)
-- `pymodel.py` applies drivers to compute forward periods
-- `sheet_builder.py` renders forecast columns with driver formulas
-- Inline assertions after each forecast step for immediate failure localization
-
-### Phase 5: XBRL Calculation 1.1 Support (FUTURE)
-
-Support for the new XBRL calculation linkbase format used by MSFT and other companies filing with the updated spec.
-.
-ization
-
-### Phase 5: XBRL Calculation 1.1 Support (FUTURE)
-
-Support for the new XBRL calculation linkbase format used by MSFT and other companies filing with the updated spec.
-.
+- **Forecast layer** — LLM reads MD&A + historical baseline →
+  `forecast_spec.json` (business drivers only, no math); `model/`
+  applies drivers to compute forward periods; `sheets/` renders forecast
+  columns with driver formulas; inline assertions after each step for
+  immediate failure localisation.
+- **XBRL Calculation 1.1 support** — handle the new linkbase format used
+  by MSFT and other recent filers.
+- **Richer dimensional segments** — full multi-axis breakdowns
+  (geography × product, etc.) beyond the current revenue-segment tree.
