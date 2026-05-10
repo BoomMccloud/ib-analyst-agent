@@ -23,51 +23,12 @@ import argparse
 import json
 import os
 import sys
-import time
 import urllib.request
-import urllib.error
+from fetch.http import fetch_url
 
-_contact = os.environ.get("SEC_CONTACT_EMAIL")
-if not _contact:
-    # Fallback for local/demo use. SEC EDGAR requires a real contact email in production.
-    _contact = "demo@example.com"
-    print(
-        f"Warning: SEC_CONTACT_EMAIL not set, using fallback '{_contact}'. "
-        "Set it for production use.",
-        file=sys.stderr,
-    )
-HEADERS = {"User-Agent": f"SecFilingsAgent {_contact}"}
 TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
 SEARCH_URL = "https://efts.sec.gov/LATEST/search-index?q=%22{query}%22&forms=10-K,20-F&dateRange=custom&startdt=2020-01-01&enddt=2026-12-31"
-
-REQUEST_INTERVAL = 1.0 / 8
-_last_request_time = 0.0
-
-
-def _throttle():
-    global _last_request_time
-    now = time.monotonic()
-    elapsed = now - _last_request_time
-    if elapsed < REQUEST_INTERVAL:
-        time.sleep(REQUEST_INTERVAL - elapsed)
-    _last_request_time = time.monotonic()
-
-
-def fetch_url(url: str, retries: int = 5) -> bytes:
-    for attempt in range(retries):
-        _throttle()
-        try:
-            req = urllib.request.Request(url, headers=HEADERS)
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                return resp.read()
-        except urllib.error.HTTPError as e:
-            if e.code == 429 and attempt < retries - 1:
-                wait = 10 * (attempt + 1)
-                print(f"  Rate limited, waiting {wait}s...", file=sys.stderr)
-                time.sleep(wait)
-            else:
-                raise
 
 
 def fetch_json(url: str) -> dict:

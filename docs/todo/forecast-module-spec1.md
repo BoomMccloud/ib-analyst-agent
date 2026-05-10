@@ -77,7 +77,7 @@ Build a generic, driver-based revenue forecasting module that works for any comp
 - No OpEx forecasting (revenue only)
 - No multi-scenario support (single forecast)
 - No BS/CF forecasting
-- No new dependencies beyond existing (anthropic, beautifulsoup4, json)
+- No new dependencies beyond existing (openai, beautifulsoup4, json)
 - No hardcoded company-specific logic
 - No modification to existing tree structure or sheet tabs (IS, BS, CF, Summary)
 
@@ -152,7 +152,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Create `content_extractor.py` with `extract_sections(html: str) -> dict`
   - Ensure HTML is decoded to string (handling raw bytes from fetch_url if necessary).
   - Phase 1 (Map): Parse filing HTML using BeautifulSoup. Extract all internal anchor links (e.g. `href="#id"`) and their associated text. If missing, collect block-level tags with "Item" or "Note" and an `id`. Create a JSON mapping array of `[{"id": "...", "text": "..."}]`.
-  - Phase 2 (Route): Send the JSON map to the LLM (Claude 3.5 Sonnet) using `anthropic.Anthropic()` and `call_llm`. Prompt it to return `start_id` and `end_id` for both the MD&A section and Notes to Financial Statements.
+  - Phase 2 (Route): Send the JSON map to the LLM using the OpenAI-compatible `call_llm()` helper from `llm/client.py`. Prompt it to return `start_id` and `end_id` for both the MD&A section and Notes to Financial Statements.
   - Phase 3 (Slice): Use BeautifulSoup to locate `start_id` and iterate over next siblings until `end_id` is reached. Extract the text, strip out `<style>` and `<script>` tags.
   - Return structured output: `{"mda": "...", "notes": "..."}`
   - Handle both 10-K and 20-F filing formats (LLM handles semantic variation).
@@ -223,14 +223,14 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
 
   **What to do**:
   - Create `propose_drivers(mda_text: str, revenue_segments: dict, historical_values: dict) -> list[Driver]` function
-  - Initialize the Anthropic client: `from anthropic import Anthropic; client = Anthropic()`
+  - Initialize the LLM client: `from llm.client import get_llm_client; client = get_llm_client()`
   - Construct LLM prompt that includes: MD&A text, revenue segment tree structure, historical revenue values per segment
   - Prompt instructs LLM to identify growth driver for each segment and output as structured JSON
   - Driver types constrained to the registry: `growth_rate`, `market_share`, `units_price`
   - Each driver must include: driver_type, components (key-value pairs with numeric values), description, source (MD&A quote)
   - Parse LLM response into `Driver` dataclass instances
   - Handle LLM errors: retry once, fallback to historical CAGR on failure
-  - Use `claude-sonnet-4-6` model (precision task)
+  - Use `llama-3.1-70b-versatile` model (precision task)
   - Use existing `llm_utils.py` for API calls (`call_llm(client, model, prompt)`)
 
   **Must NOT do**:

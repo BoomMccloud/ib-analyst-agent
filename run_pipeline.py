@@ -13,6 +13,7 @@ import json
 import sys
 from pathlib import Path
 
+from config import ConfigError, validate_environment
 from fetch.agent import run as fetch_filings
 from fetch.http import fetch_url
 from xbrl import build_statement_trees
@@ -128,6 +129,13 @@ def main():
     parser.add_argument("--years", type=int, default=5)
     parser.add_argument("--outdir", default="./pipeline_output")
     args = parser.parse_args()
+
+    try:
+        for warning in validate_environment(require_gws=True):
+            print(f"Warning: {warning}", file=sys.stderr)
+    except ConfigError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
 
     try:
         result = run_pipeline(

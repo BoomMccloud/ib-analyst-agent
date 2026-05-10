@@ -1,4 +1,5 @@
 import re
+import sys
 import threading
 import uuid
 import traceback
@@ -7,8 +8,19 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 
+from config import ConfigError, validate_environment
 from run_pipeline import run_pipeline, gws_share
 from fetch.lookup import search_tickers
+
+# Fail fast at import time so a misconfigured server crashes on startup, not
+# when the first user clicks "run." Uvicorn surfaces the traceback in the
+# launcher logs.
+try:
+    for _w in validate_environment(require_gws=True):
+        print(f"Warning: {_w}", file=sys.stderr)
+except ConfigError as _e:
+    print(f"Error: {_e}", file=sys.stderr)
+    raise
 
 _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 

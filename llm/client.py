@@ -10,26 +10,21 @@ Backend is any OpenAI-compatible Chat Completions endpoint, selected via env:
 """
 
 import json
-import os
 import re
 import sys
 
 from openai import OpenAI
 
-
-DEFAULT_BASE_URL = "https://api.groq.com/openai/v1"
-DEFAULT_MODEL = "llama-3.1-70b-versatile"
+from config import llm_api_key, llm_base_url, llm_model
 
 
 def get_llm_client() -> OpenAI:
     """Build an OpenAI-compatible client from env."""
-    base_url = os.environ.get("LLM_BASE_URL", DEFAULT_BASE_URL)
-    api_key = os.environ.get("LLM_API_KEY", "")
-    return OpenAI(base_url=base_url, api_key=api_key or "EMPTY")
+    return OpenAI(base_url=llm_base_url(), api_key=llm_api_key() or "EMPTY")
 
 
 def get_llm_model() -> str:
-    return os.environ.get("LLM_MODEL", DEFAULT_MODEL)
+    return llm_model()
 
 
 def strip_code_fences(text: str) -> str:

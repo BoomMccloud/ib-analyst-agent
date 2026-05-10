@@ -13,9 +13,10 @@ import urllib.request
 import hashlib
 from pathlib import Path
 
-_contact = os.environ.get("SEC_CONTACT_EMAIL", "boom.mccloud@gmail.com")
-HEADERS = {"User-Agent": f"SecFilingsAgent {_contact}"}
-REQUEST_INTERVAL = 1.0 / 8  # SEC rate limit
+from config import SEC_REQUEST_INTERVAL, sec_offline_mode, sec_record_fixtures, sec_user_agent
+
+HEADERS = {"User-Agent": sec_user_agent()}
+REQUEST_INTERVAL = SEC_REQUEST_INTERVAL
 
 _last_request_time = 0.0
 
@@ -42,8 +43,8 @@ def fetch_url(url: str, headers: dict | None = None, retries: int = 5) -> bytes:
         ValueError: If offline mode is on and URL is not cached.
         urllib.error.HTTPError: On non-retryable HTTP errors.
     """
-    offline_mode = os.environ.get("SEC_OFFLINE_MODE") == "1"
-    record_mode = os.environ.get("SEC_RECORD_FIXTURES") == "1"
+    offline_mode = sec_offline_mode()
+    record_mode = sec_record_fixtures()
     url_hash = hashlib.md5(url.encode('utf-8')).hexdigest()
     
     # 1. Check local cache

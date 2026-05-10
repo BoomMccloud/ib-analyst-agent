@@ -75,7 +75,7 @@ Build a generic, driver-based revenue forecasting module that works for any comp
 - No OpEx forecasting (revenue only)
 - No multi-scenario support (single forecast)
 - No BS/CF forecasting
-- No new dependencies beyond existing (anthropic, beautifulsoup4, json)
+- No new dependencies beyond existing (openai, beautifulsoup4, json)
 - No hardcoded company-specific logic
 - No modification to existing tree structure or sheet tabs (IS, BS, CF, Summary)
 
@@ -296,7 +296,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   - Each driver must include: driver_type, components (key-value pairs with numeric values), description, source (MD&A quote)
   - Parse LLM response into `Driver` dataclass instances
   - Handle LLM errors: retry once, fallback to historical CAGR on failure
-  - Use `claude-sonnet-4-6` model (precision task)
+  - Use `llama-3.1-70b-versatile` model (precision task)
   - Use existing `llm_utils.py` for API calls
 
   **Must NOT do**:
@@ -333,7 +333,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   ```
   Scenario: LLM proposes valid drivers for a real company
     Tool: Bash (python)
-    Preconditions: ANTHROPIC_API_KEY set, MD&A text and segment data available
+    Preconditions: LLM_API_KEY set, MD&A text and segment data available
     Steps:
       1. python -c "
   from forecast_engine import propose_drivers
@@ -722,7 +722,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
   ```
   Scenario: Full pipeline runs with Stage 5
     Tool: Bash (python)
-    Preconditions: ANTHROPIC_API_KEY set, gws authenticated
+    Preconditions: LLM_API_KEY set, gws authenticated
     Steps:
       1. python run_pipeline.py AAPL 2>&1 | tee .sisyphus/evidence/task-8-pipeline-output.txt
       2. Assert exit code 0
@@ -783,7 +783,7 @@ Wave FINAL (After ALL tasks — 4 parallel reviews, then user okay):
 
   **Acceptance Criteria**:
   - [ ] All e2e tests pass: `python -m pytest tests/test_forecast_e2e.py -v`
-  - [ ] Tests run without ANTHROPIC_API_KEY (all LLM calls mocked)
+  - [ ] Tests run without LLM_API_KEY (all LLM calls mocked)
   - [ ] Tests run without gws authentication
   - [ ] Edge cases covered: no segments, single segment, many segments
 

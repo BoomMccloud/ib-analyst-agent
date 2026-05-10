@@ -28,32 +28,7 @@ python -m model.verify --trees trees.json --checkpoint    # check invariants
 # Do NOT run sheets/builder.py directly — use run_pipeline.py
 ```
 
-### Legacy paths (for reference)
-
-```bash
-# Stage 1: Get filing URLs
-python agent1_fetcher.py AAPL --years 5 > filings.json
-
-# Stage 2 (XBRL path — recommended):
-python xbrl_group.py --url <filing_url> -o structured.json          # with LLM grouping
-python xbrl_group.py --url <filing_url> --no-llm -o structured.json # fully deterministic
-python xbrl_group.py --url <filing_url> --print                     # inspect tree
-
-# Stage 2 (Legacy LLM path — fallback):
-python extract_sections.py <filing_url> --output-dir ./sections
-python structure_financials.py ./sections -o structured.json
-
-# Checkpoint (verify invariants):
-python pymodel.py --financials structured.json --checkpoint
-
-# Stage 3: Build model spec
-python agent3_modeler.py --structured structured.json --company "Apple Inc." -o model.json
-
-# Stage 4: Compute model + write Google Sheet
-python pymodel.py --financials structured.json --company "Apple Inc."
-```
-
-## XBRL-Based Extraction (Phase 1b)
+## XBRL-Based Extraction
 
 The XBRL path (`xbrl/` package) replaces the LLM-based extraction for financial statements. It parses:
 
@@ -69,9 +44,7 @@ Key design decisions:
 
 Tested on 10 companies across 6 industries: 9/10 ALL PASS, 1 has a $401 rounding error.
 
-See `docs/impl_guide_phase1b.md` for full details.
-
-## Tautological API (Phase 1)
+## Tautological API
 
 `model/verify.py` exposes enforce-by-construction helpers:
 - `set_category()` — catch-all = subtotal - sum(flex), always
@@ -94,24 +67,21 @@ See `docs/impl_guide_phase1b.md` for full details.
 - `fetch/http.py` — Shared SEC EDGAR fetching, rate limiting, and compliance logic
 - `llm/client.py` — OpenAI-compatible Chat Completions wrapper (Groq default)
 - `model/llm_fixer.py` — LLM-in-the-loop semantic reconciliation for fixing cross-statement invariants
-- `xbrl/facts_legacy.py` — Standalone XBRL tag → model code mapper (Phase 1b prototype)
-- `test_phase1_e2e.sh` — End-to-end test script for any ticker
+- `xbrl/facts.py` — iXBRL tag parser. Extracts every `<ix:nonFraction>` value with its period/context. Called by `build_statement_trees()` to build the facts dict that the calc-linkbase tree is hydrated against.
 
 ## External Dependencies
 
 - **LLM API** (`LLM_API_KEY`, OpenAI-compatible) — used by `model/llm_fixer.py` only when invariants fail. Defaults to Groq.
 - **SEC EDGAR** — company_tickers.json, submissions API, filing archives, iXBRL linkbases. Rate-limited to 8 req/s with backoff
 - **`gws` CLI** — Google Workspace CLI for Sheets API (must be pre-authenticated via OAuth)
-- **Models**: `claude-sonnet-4-6` for precision tasks, `claude-haiku-4-5-20251001` for grouping/large-text
+- **Models**: `llama-3.1-70b-versatile` (default via Groq). Configurable via `LLM_MODEL` env var.
 
 ## Architecture Notes
 
-- **Deterministic-first**: XBRL parsing, CIK resolution, and file downloads are pure Python stdlib. LLMs only handle tasks requiring judgment (sibling grouping, model specs).
+- **Deterministic-first**: XBRL parsing, CIK resolution, and file downloads are pure Python stdlib. LLMs only handle tasks requiring judgment (semantic invariant repair).
 - **Position over names**: Financial statement structure identified by tree position, not concept name matching. Works across all industries.
+- **Three-layer merge**: Trees are built from three XBRL linkbases — Calc (mathematical truth: parent = Σ children with signed weights), Presentation (display order), and an "Other" gap-absorption layer for facts not covered by calc relationships.
+- **Validation-centric**: No model is written to a sheet until `verify_model()` passes. Mathematical invariants halt the pipeline; semantic mismatches are routed to `model/llm_fixer.py`.
 - **No orchestration layer**: The pipeline is a manual convention — each script writes JSON that the next reads via CLI args. Each stage can be re-run independently.
-- **Two extraction paths**: XBRL (deterministic, 9/10 companies) and LLM legacy (fallback for non-XBRL filings).
-
-## Use podman, not docker.
- filings).
 
 ## Use podman, not docker.

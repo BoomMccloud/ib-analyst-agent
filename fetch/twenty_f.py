@@ -1,26 +1,15 @@
 """
 Deterministic SEC EDGAR 20-F fetcher for foreign private issuers.
 
-Usage: python fetch_20f.py BABA [--count 5]
+Usage: python -m fetch.twenty_f BABA [--count 5]
 Output: JSON to stdout
 """
 
 import argparse
 import json
-import os
 import sys
 
 from fetch.http import fetch_url
-
-_contact = os.environ.get("SEC_CONTACT_EMAIL")
-if not _contact:
-    # Fallback for local/demo use. SEC EDGAR requires a real contact email in production.
-    _contact = "demo@example.com"
-    print(
-        f"Warning: SEC_CONTACT_EMAIL not set, using fallback '{_contact}'. "
-        "Set it for production use.",
-        file=sys.stderr,
-    )
 
 TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"

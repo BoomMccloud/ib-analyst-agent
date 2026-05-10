@@ -22,7 +22,7 @@ from .segments import (
     _find_best_decomposition, _detect_segments_for_node, _attach_segment_children,
 )
 
-from .facts_legacy import build_xbrl_facts_dict, build_segment_facts_dict
+from .facts import build_xbrl_facts_dict, build_segment_facts_dict
 
 __all__ = [
     "TreeNode",

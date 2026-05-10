@@ -1,34 +1,17 @@
 """
 Deterministic SEC EDGAR 10-K fetcher.
-Uses only stdlib so it runs in any Python environment without pip install.
 
-Usage: python fetch_10k.py AAPL [--count 5]
+Usage: python -m fetch.ten_k AAPL [--count 5]
 Output: JSON to stdout
 """
 
-import json
-import os
-import sys
-import time
-import urllib.request
-import urllib.error
 import argparse
-
-
-_contact = os.environ.get("SEC_CONTACT_EMAIL")
-if not _contact:
-    # Fallback for local/demo use. SEC EDGAR requires a real contact email in production.
-    _contact = "demo@example.com"
-    print(
-        f"Warning: SEC_CONTACT_EMAIL not set, using fallback '{_contact}'. "
-        "Set it for production use.",
-        file=sys.stderr,
-    )
-HEADERS = {"User-Agent": f"SecFilingsAgent {_contact}"}
-TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
-SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
+import json
 
 from fetch.http import fetch_url
+
+TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
+SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
 
 def fetch_json(url: str) -> dict:
     return json.loads(fetch_url(url).decode())

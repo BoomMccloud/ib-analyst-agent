@@ -25,10 +25,11 @@ Each stage runs independently via CLI. Output JSON from one stage is the input t
 
 | Stage | Module | What it does | LLM? |
 |-------|--------|--------------|------|
-| **1. Fetch Filings** | `fetch/agent.py` | Resolves ticker → CIK via SEC EDGAR, fetches filing URLs | Managed Agent |
+| **1. Fetch Filings** | `fetch/agent.py` | Resolves ticker → CIK via SEC EDGAR, fetches filing URLs | No |
 | **2. Build Trees** | `xbrl/` package (CLI: `xbrl/cli.py`) | Parses iXBRL tags + calculation linkbase → tree with values | No |
-| **3. Verify Invariants** | `model/verify.py` | Checks 5 cross-statement links against the parsed trees | No |
-| **4. Write Google Sheet** | `sheets/` package (CLI: `sheets/builder.py`) | Renders trees into a multi-tab Google Sheet with `=SUM()` and cross-sheet formulas | No |
+| **3. Merge Filings** | `merge/trees.py` | Merges multiple filings into one tree with full historical periods | No |
+| **4. Verify Invariants** | `model/verify.py` | Checks 5 cross-statement links against the parsed trees | Fallback only |
+| **5. Write Google Sheet** | `sheets/` package (CLI: `sheets/builder.py`) | Renders trees into a multi-tab Google Sheet with `=SUM()` and cross-sheet formulas | No |
 | **Orchestrator** | `run_pipeline.py` | Runs all stages sequentially with completeness gates | — |
 
 > **IMPORTANT:** Always use `run_pipeline.py` to generate sheets. Running individual scripts bypasses the tree completeness gate and will produce sheets with broken formulas.
@@ -60,7 +61,7 @@ Tested on 10 companies across 6 industries: 9/10 ALL PASS, 1 has a $401 rounding
 
 ## Tautological API
 
-`pymodel.py` exposes enforce-by-construction helpers:
+`model/verify.py` exposes enforce-by-construction helpers:
 - `set_category()` — catch-all = subtotal - sum(flex), always
 - `set_is_cascade()` — GP, OPINC, EBT, INC_NET computed from inputs
 - `set_bs_totals()` — TA = TCA + TNCA, TL = TCL + TNCL
@@ -80,30 +81,31 @@ Top-level layout:
 
 ```
 run_pipeline.py        — main orchestrator (only script at root)
+config.py              — centralized env-var config + startup validation
 fetch/                 — SEC discovery + HTTP
-  agent.py             — Stage 1 ticker → filings (was agent1_fetcher.py)
-  lookup.py            — ticker/name → CIK (was lookup_company.py)
-  ten_k.py             — 10-K filing list (was fetch_10k.py)
-  twenty_f.py          — 20-F filing list (was fetch_20f.py)
-  http.py              — SEC-compliant fetch with rate limiting (was sec_utils.py)
+  agent.py             — Stage 1: ticker → filings
+  lookup.py            — ticker/name → CIK resolution
+  ten_k.py             — 10-K filing list
+  twenty_f.py          — 20-F filing list (foreign private issuers)
+  http.py              — SEC-compliant fetch with rate limiting + .cache/
 xbrl/                  — Stage 2: XBRL parsing engine
-  __init__.py          — package exports + build_statement_trees(), reconcile_trees()
+  __init__.py          — exports build_statement_trees(), reconcile_trees()
   tree.py, linkbase.py, reconcile.py, segments.py
-  facts_legacy.py      — iXBRL fact mapper for non-calc-linkbase filings (was parse_xbrl_facts.py)
-  cli.py               — `python -m xbrl.cli ...` (was xbrl_tree.py)
+  facts.py             — iXBRL fact mapper: parses ix:nonFraction tags into period-keyed values
+  cli.py               — debugging CLI: `python -m xbrl.cli ...`
 merge/                 — Stage 3: cross-filing merge
-  trees.py             — merge_filing_trees()           (was merge_trees.py)
-  concepts.py          — concept matcher                (was concept_matcher.py)
+  trees.py             — merge_filing_trees()
+  concepts.py          — value-based concept alignment across filings
 model/                 — Stage 4: invariants + LLM repair
-  verify.py            — `verify_model()`, run_checkpoint()  (was pymodel.py)
-  llm_fixer.py         — LLM-in-loop reconciliation     (was llm_invariant_fixer.py)
+  verify.py            — verify_model(), run_checkpoint()
+  llm_fixer.py         — LLM-in-loop semantic reconciliation
 sheets/                — Stage 5: Google Sheets renderer
   __init__.py          — write_sheets()
   api.py, renderers.py, formatting.py, layouts.py, formulas.py
-  builder.py           — `python -m sheets.builder ...` (was sheet_builder.py)
-  gws.py               — gws CLI wrappers                (was gws_utils.py)
+  builder.py           — debugging CLI: `python -m sheets.builder ...`
+  gws.py               — gws CLI wrappers
 llm/                   — LLM client (OpenAI-compatible)
-  client.py            — call_llm(), get_llm_client()    (was llm_utils.py)
+  client.py            — call_llm(), get_llm_client()
 web/                   — FastAPI demo
 tests/                 — test suite
 scripts/               — dev tooling
@@ -123,7 +125,6 @@ scripts/               — dev tooling
 *   `tests/test_sheet_formulas.py`: Google Sheets formula generation tests.
 *   `tests/test_da_sbc_tagging.py`: D&A and SBC tag identification tests.
 *   `tests/test_model_historical.py`: Historical model computation tests.
-*   `tests/test_model_historical_legacy.py`: Historical model tests for legacy (non-XBRL) filings.
 
 ### Web Demo
 *   `web/app.py`: FastAPI backend — serves static UI, proxies search + pipeline jobs.
@@ -132,7 +133,7 @@ scripts/               — dev tooling
 ## Setup & Requirements
 
 - **Python 3.10+**
-- **LLM API Key** (`LLM_API_KEY`): An OpenAI-compatible endpoint, used only for LLM-in-the-loop semantic reconciliation (`llm_invariant_fixer.py`). Defaults to Groq (`LLM_BASE_URL`, `LLM_MODEL`). Skip if you don't need invariant repair.
+- **LLM API Key** (`LLM_API_KEY`): An OpenAI-compatible endpoint, used only for LLM-in-the-loop semantic reconciliation (`model/llm_fixer.py`). Defaults to Groq (`LLM_BASE_URL`, `LLM_MODEL`). Skip if you don't need invariant repair.
 - **`gws` CLI**: Required for exporting models to Google Sheets (must be pre-authenticated via OAuth).
 - **Podman**: Recommended for containerized execution (project preference over Docker).
 - **FastAPI + Uvicorn**: Required for the demo website (`pip install fastapi uvicorn[standard]`).
@@ -140,7 +141,7 @@ scripts/               — dev tooling
 ### External Dependencies
 
 - **SEC EDGAR**: company_tickers.json, submissions API, filing archives, iXBRL linkbases. Rate-limited to 8 req/s with backoff.
-- **Models**: `claude-sonnet-4-6` for precision tasks, `claude-haiku-4-5-20251001` for grouping/large-text.
+- **Models**: `llama-3.1-70b-versatile` (default via Groq). Configurable via `LLM_MODEL` env var for any OpenAI-compatible provider.
 
 ## Usage
 
@@ -170,7 +171,7 @@ A local-only browser UI wrapping the full pipeline. Single user, one job at a ti
 cd sec-agent
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-export SEC_CONTACT_EMAIL="you@example.com"   # optional — falls back to demo@example.com
+export SEC_CONTACT_EMAIL="you@example.com"   # required by SEC EDGAR — see config.py
 gws auth login                                # ensure Sheets OAuth is fresh
 uvicorn web.app:app --reload
 # then open http://localhost:8000
@@ -179,8 +180,8 @@ uvicorn web.app:app --reload
 **Flow:** Type a ticker → select from matches → pipeline runs → Google Sheet link appears.
 
 **Pre-flight checklist:**
-- Dependencies installed via `pip install -r requirements.txt` (bs4, anthropic, fastapi, uvicorn, etc.)
-- `SEC_CONTACT_EMAIL` env var set — recommended for SEC EDGAR compliance, but not required (fallback `demo@example.com` is used if unset)
+- Dependencies installed via `pip install -r requirements.txt` (bs4, openai, fastapi, uvicorn, etc.)
+- `SEC_CONTACT_EMAIL` env var set to a real address — required by SEC EDGAR; missing/placeholder values fail fast at startup
 - `gws` CLI authenticated and token not expired (otherwise sheet generation fails inside `sheets.write_sheets`)
 - Run from `sec-agent/` directory (`outdir="./pipeline_output"` is cwd-relative)
 
@@ -251,16 +252,13 @@ Edit `.env`. Defaults are Groq; OpenAI / Together / Ollama all use the same Open
 
 ## Architecture Notes
 
-- **Deterministic-first**: XBRL parsing, CIK resolution, and file downloads are pure Python stdlib. LLMs only handle tasks requiring judgment (sibling grouping, model specs).
+- **Deterministic-first**: XBRL parsing, CIK resolution, and file downloads are pure Python stdlib. LLMs only handle semantic invariant repair when math-by-construction can't fix a mismatch.
 - **Position over names**: Financial statement structure identified by tree position, not concept name matching. Works across all industries.
+- **Validation-centric**: No model is written to a sheet until `verify_model()` passes. Mathematical invariants halt the pipeline; semantic mismatches are routed to `model/llm_fixer.py`.
 - **No orchestration layer**: The pipeline is a manual convention — each script writes JSON that the next reads via CLI args. Each stage can be re-run independently.
-- **Two extraction paths**: XBRL (deterministic, 9/10 companies) and LLM legacy (fallback for non-XBRL filings).
 
 ## Documentation
 
 - [XBRL Linkbases](docs/xbrl_linkbases.md) — Deep dive into calc and presentation linkbase parsing
-- [Pipeline Phase 3F](docs/pipeline_phase3f_combined_presentation_calc.md) — Combined presentation + calc merge design
-- [Backlog](docs/backlog.md) — Project backlog and roadmap
-- [CLAUDE.md](CLAUDE.md) — Developer context: detailed pipeline stages, legacy paths, and architecture notes
-- [GEMINI.md](GEMINI.md) — Technical constraints and coding standards
- [GEMINI.md](GEMINI.md) — Technical constraints and coding standards
+- [Backlog](docs/todo/backlog.md) — Project backlog and roadmap
+- [CLAUDE.md](CLAUDE.md) — Developer context: pipeline stages, utility modules, architecture notes
