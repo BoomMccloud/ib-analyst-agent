@@ -18,7 +18,7 @@ def _run_gws(*args) -> dict:
     result = subprocess.run(["gws", *args], capture_output=True, text=True, timeout=30)
     if result.returncode != 0:
         print(f"gws error: {result.stderr[:300]}", file=sys.stderr)
-        raise RuntimeError("gws failed")
+        raise RuntimeError(f"gws failed: {result.stderr.strip()[:300]}")
     return json.loads(result.stdout) if result.stdout.strip() else {}
 
 

@@ -211,6 +211,15 @@
           <div style="color: #008000;">Operation completed successfully.</div>
         </div>
       </div>
+      <fieldset style="margin-top: 20px;">
+        <legend>Share Spreadsheet</legend>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <input id="share-email" type="text" placeholder="name@example.com"
+                 autocomplete="off" style="flex:1;">
+          <button id="share-btn">Share</button>
+        </div>
+        <div id="share-status" style="margin-top:10px; min-height:1.2em;"></div>
+      </fieldset>
       <div style="display: flex; gap: 16px; justify-content: flex-end; margin-top: 28px;">
         <a id="sheet-link" href="#" target="_blank" class="btn">Open Spreadsheet</a>
         <button id="run-another">Run Another</button>
@@ -250,6 +259,8 @@ function resetToSearch() {
   $("#search-input").value = "";
   $("#results").innerHTML = "";
   $("#results").classList.add("hidden");
+  $("#share-email").value = "";
+  $("#share-status").textContent = "";
   showView("search-view");
 }
 
@@ -332,6 +343,37 @@ function esc(s) {
 
 $("#run-another").addEventListener("click", resetToSearch);
 $("#run-another-error").addEventListener("click", resetToSearch);
+
+// --- Share Sheet ---
+$("#share-btn").addEventListener("click", async () => {
+  const email = $("#share-email").value.trim();
+  const status = $("#share-status");
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    status.style.color = "#a00";
+    status.textContent = "Enter a valid email address.";
+    return;
+  }
+  $("#share-btn").disabled = true;
+  status.style.color = "#000";
+  status.textContent = "Sharing…";
+  try {
+    const resp = await fetch("/api/share", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({job_id: currentJobId, email}),
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok) throw new Error(data.detail || `HTTP ${resp.status}`);
+    status.style.color = "#008000";
+    status.textContent = `Shared with ${email}`;
+    $("#share-email").value = "";
+  } catch (e) {
+    status.style.color = "#a00";
+    status.textContent = String(e.message || e);
+  } finally {
+    $("#share-btn").disabled = false;
+  }
+});
 </script>
 </body>
 </html>

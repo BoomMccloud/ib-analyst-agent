@@ -19,6 +19,7 @@ from xbrl import build_statement_trees
 from merge.trees import merge_filing_trees
 from model.verify import run_checkpoint
 from sheets import write_sheets
+from sheets.api import gws_share  # re-exported for web/app.py (driver boundary)
 
 
 def run_pipeline(query, years=5, outdir="./pipeline_output", on_progress=None):
@@ -31,7 +32,7 @@ def run_pipeline(query, years=5, outdir="./pipeline_output", on_progress=None):
         on_progress: Optional callback(stage: str, msg: str) called at each stage boundary
 
     Returns:
-        dict with keys: sheet_url (str), company_name (str)
+        dict with keys: sheet_url (str), sheet_id (str), company_name (str)
 
     Raises:
         RuntimeError on any failure (no sys.exit).
@@ -118,7 +119,7 @@ def run_pipeline(query, years=5, outdir="./pipeline_output", on_progress=None):
     sid, url = write_sheets(merged, company_name)
     on_progress("done", f"Sheet ready: {url}")
 
-    return {"sheet_url": url, "company_name": company_name}
+    return {"sheet_url": url, "sheet_id": sid, "company_name": company_name}
 
 
 def main():

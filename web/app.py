@@ -1,3 +1,4 @@
+import re
 import threading
 import uuid
 import traceback
@@ -6,8 +7,10 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 
-from run_pipeline import run_pipeline
+from run_pipeline import run_pipeline, gws_share
 from fetch.lookup import search_tickers
+
+_EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
 app = FastAPI()
 
@@ -21,6 +24,7 @@ _state = {
     "stage": "",
     "log": [],
     "sheet_url": None,
+    "sheet_id": None,
     "error": None,
 }
 
@@ -36,7 +40,11 @@ def _worker(job_id, ticker, years):
         result = run_pipeline(ticker, years, on_progress=_update)
         with _lock:
             if _state["id"] == job_id:
-                _state.update(status="done", sheet_url=result["sheet_url"])
+                _state.update(
+                    status="done",
+                    sheet_url=result["sheet_url"],
+                    sheet_id=result.get("sheet_id"),
+                )
     except Exception as e:
         with _lock:
             if _state["id"] == job_id:
@@ -65,6 +73,7 @@ def start_job(body: dict):
             stage="starting",
             log=[],
             sheet_url=None,
+            sheet_id=None,
             error=None,
         )
     threading.Thread(target=_worker, args=(jid, ticker, years), daemon=True).start()
@@ -77,6 +86,27 @@ def get_job(jid: str):
         if _state["id"] != jid:
             raise HTTPException(404)
         return dict(_state)
+
+
+@app.post("/api/share")
+def share(body: dict):
+    jid = body.get("job_id")
+    email = (body.get("email") or "").strip()
+    if not _EMAIL_RE.match(email):
+        raise HTTPException(400, "invalid email")
+    with _lock:
+        if _state["id"] != jid:
+            raise HTTPException(404, "job not found")
+        if _state["status"] != "done":
+            raise HTTPException(409, "job not finished")
+        sid = _state["sheet_id"]
+    # Release lock BEFORE the subprocess call — gws takes seconds and
+    # holding the lock would block /api/jobs/{jid} polling for that whole time.
+    try:
+        gws_share(sid, email)
+    except RuntimeError as e:
+        raise HTTPException(502, f"share failed: {e}")
+    return {"ok": True, "email": email}
 
 
 # Static mount must come AFTER API routes — a mount at "/" otherwise
