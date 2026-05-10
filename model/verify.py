@@ -172,23 +172,44 @@ class CheckpointResult:
         return None
 
 
+# Errors the LLM fixer can plausibly resolve via its move_role / change_weight
+# patches. Anything else (BS Balance, Cash links, segment sums) is a math /
+# parser bug that role-shuffling can't repair — and trying risks masking it.
+_SOFT_INVARIANT_NAMES = ("NI Link", "D&A Link", "SBC Link")
+
+
+def is_soft_invariant(error_name: str) -> bool:
+    return any(s in error_name for s in _SOFT_INVARIANT_NAMES)
+
+
 def run_checkpoint(trees_data: dict) -> CheckpointResult:
     """Run cross-statement invariant checks with LLM fix attempt.
 
     Unlike main(), this does NOT call sys.exit. Returns a structured result.
     Safe to call from the demo's worker thread.
+
+    Hard invariants (BS balance, cash links, segment sums) skip the LLM —
+    only soft invariants (semantic role mappings) are routed to the fixer.
     """
     errors = verify_model(trees_data)
 
-    if errors:
+    if errors and all(is_soft_invariant(name) for name, _, _ in errors):
         from model.llm_fixer import fix_invariants
 
         print(
-            f"verify_model initially found {len(errors)} error(s), attempting LLM fix...",
+            f"verify_model found {len(errors)} soft error(s), attempting LLM fix...",
             file=sys.stderr,
         )
         if fix_invariants(trees_data):
             errors = verify_model(trees_data)
+    elif errors:
+        hard = [name for name, _, _ in errors if not is_soft_invariant(name)]
+        print(
+            f"verify_model found {len(errors)} error(s) including hard invariant "
+            f"failures ({', '.join(sorted(set(hard)))}); skipping LLM fixer "
+            "(role patches can't repair math/parser bugs).",
+            file=sys.stderr,
+        )
 
     periods = trees_data.get("complete_periods", [])
     return CheckpointResult(passed=len(errors) == 0, errors=errors, periods=periods)

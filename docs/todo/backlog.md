@@ -20,11 +20,6 @@ Evaluation updated 2026-04-13. Items are ordered by execution priority within ea
 **Impact:** Essential for making the Google Sheet a complete valuation tool.
 **What to do:** Build `content_extractor.py`, `forecast_engine.py`, and `forecast_sheet.py`. (Prior spec drafts in `docs/todo/forecast-module*.md` were deleted as stale; rewrite a fresh spec when resuming.)
 
-### 6. Soft Invariants vs. Hard Invariants
-**What:** Bifurcate the invariant set in `model/verify.py`. Today `run_checkpoint()` blindly invokes `model/llm_fixer.py` on *any* failure, including pure-math invariants like `BS_TA == BS_TL + BS_TE` and `CF_ENDC == BS_CASH` — the LLM can't fix those, so we waste a call and risk papering over a real parser bug.
-**Impact:** Math errors halt the pipeline (clear signal of upstream bug); semantic errors (IS↔CF NI/D&A/SBC role mismatches) route to the LLM fixer.
-**What to do:** Tag each check in `model/verify.py` as `hard` or `soft`. In `run_checkpoint()`, only call `fix_invariants` when all remaining errors are soft.
-
 ### 8. LLM Provider Adapter Pattern (Strategy Pattern)
 **What:** The pipeline is currently coupled to a single OpenAI-compatible provider via `llm/client.py`. We should abstract this into an `LLMProvider` interface with adapters for Anthropic, OpenAI, and Google (Gemini).
 **Impact:** Prevents the entire pipeline from failing if a single provider is down or out of credits. Allows users to configure their preferred model (e.g., `SEC_LLM_PROVIDER=openai`).
@@ -52,6 +47,7 @@ Treat each filing as a separate "vintage" to correctly handle historical restate
 
 ## Completed
 
+*   **P1 #6 — Soft vs. Hard Invariants** (2026-05-10): Added `is_soft_invariant()` helper and `_SOFT_INVARIANT_NAMES = ("NI Link", "D&A Link", "SBC Link")` to `model/verify.py`. `run_checkpoint()` now invokes `model/llm_fixer.py` only when *every* current error is soft; if any hard error (BS Balance, Cash Link, Cash Begin, segment sums) is present, it skips the LLM call and surfaces the failure immediately. Saves an LLM round-trip on parser bugs and removes the masking risk where role-moving incidentally hides math errors.
 *   **Repo cleanup pass 2 — gitignore/docs hygiene (2026-05-10)**:
     *   Untracked `pipeline_output/` (was tracked despite gitignore — ~16 stale dev JSONs) and `.sisyphus/` (AI-tool scratch); added `.sisyphus/` to `.gitignore`.
     *   Moved shipped specs to `docs/done/`: `make_demo*.md`, `spec_share_sheet*.md` (3 files), `spec_architecture_refactor.md` (marked Status: Done).
