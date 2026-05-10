@@ -12,7 +12,7 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xbrl_tree import TreeNode, reconcile_trees, find_node_by_role
+from xbrl import TreeNode, reconcile_trees, find_node_by_role
 
 
 # ---------------------------------------------------------------------------

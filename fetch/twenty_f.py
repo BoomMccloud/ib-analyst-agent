@@ -10,7 +10,7 @@ import json
 import os
 import sys
 
-from sec_utils import fetch_url
+from fetch.http import fetch_url
 
 _contact = os.environ.get("SEC_CONTACT_EMAIL")
 if not _contact:

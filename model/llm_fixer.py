@@ -1,11 +1,10 @@
 import logging
 import json
 import sys
-from anthropic import Anthropic
 
-from llm_utils import call_llm
-from xbrl_tree import TreeNode, find_node_by_role
-from pymodel import verify_model
+from llm.client import call_llm, get_llm_client, get_llm_model
+from xbrl import TreeNode, find_node_by_role
+from model.verify import verify_model
 
 logger = logging.getLogger(__name__)
 
@@ -76,10 +75,9 @@ Return ONLY a JSON array of operations, like:
   {{"op": "move_role", "statement": "IS", "role": "INC_NET", "new_concept": "us-gaap_ProfitLoss"}}
 ]
 """
-    client = Anthropic()
-    # Call Sonnet as it is a complex reasoning task
+    client = get_llm_client()
     try:
-        response = call_llm(client, "claude-3-5-sonnet-20241022", prompt, max_tokens=2048)
+        response = call_llm(client, get_llm_model(), prompt, max_tokens=2048)
         if isinstance(response, list):
             return response
         elif isinstance(response, dict) and "fixes" in response:

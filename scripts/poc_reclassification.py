@@ -32,9 +32,9 @@ import json
 import glob
 import sys
 import os
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xbrl_tree import TreeNode, find_node_by_role, reconcile_trees
+from xbrl import TreeNode, find_node_by_role, reconcile_trees
 
 
 def detect_parent_child_renames(tree, periods):

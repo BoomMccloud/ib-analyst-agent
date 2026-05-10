@@ -2,7 +2,7 @@ import argparse
 import json
 import sys
 
-from xbrl_tree import (
+from xbrl import (
     TreeNode,
     find_node_by_role,
     build_statement_trees,
@@ -181,7 +181,7 @@ def run_checkpoint(trees_data: dict) -> CheckpointResult:
     errors = verify_model(trees_data)
 
     if errors:
-        from llm_invariant_fixer import fix_invariants
+        from model.llm_fixer import fix_invariants
 
         print(
             f"verify_model initially found {len(errors)} error(s), attempting LLM fix...",

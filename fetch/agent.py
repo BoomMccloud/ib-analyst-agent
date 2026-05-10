@@ -19,9 +19,9 @@ import argparse
 import json
 import sys
 
-from lookup_company import lookup_by_ticker, lookup_by_name, get_filer_info
-from fetch_10k import fetch_10k_filings
-from fetch_20f import fetch_20f_filings
+from fetch.lookup import lookup_by_ticker, lookup_by_name, get_filer_info
+from fetch.ten_k import fetch_10k_filings
+from fetch.twenty_f import fetch_20f_filings
 
 
 def run(query: str, years: int) -> dict:

@@ -1,12 +1,38 @@
 import sys
-from .tree import TreeNode, build_tree, find_roots, _filter_to_complete_periods, build_presentation_index
-from .linkbase import fetch_cal_linkbase, fetch_pre_linkbase, fetch_lab_linkbase, parse_calc_linkbase, parse_pre_linkbase, parse_lab_linkbase, classify_roles
-from .reconcile import _tag_bs_positions, _tag_cf_positions, _tag_is_positions, _tag_is_semantic, _override_bs_cash, merge_calc_pres, _tag_da_sbc_nodes
-from .segments import _attach_is_segments, _build_revenue_segment_tree
+# Re-export every public + private symbol that the legacy `xbrl_tree.py` exposed,
+# so existing call sites can keep `from xbrl import X` for any X.
+from .tree import (
+    TreeNode, build_tree, find_roots, find_node_by_role, find_groupable_siblings,
+    build_presentation_index, sort_by_presentation, cascade_layout, print_tree,
+    _filter_to_complete_periods, _find_parent, _concept_to_tag, _clean_name,
+    _supplement_orphan_facts, _supplement_orphan_facts_all,
+)
+from .linkbase import (
+    fetch_cal_linkbase, fetch_pre_linkbase, fetch_lab_linkbase,
+    parse_calc_linkbase, parse_pre_linkbase, parse_lab_linkbase,
+    classify_roles, get_label, STATEMENT_ROLE_PATTERNS,
+)
+from .reconcile import (
+    _tag_bs_positions, _tag_cf_positions, _tag_is_positions, _tag_is_semantic,
+    _override_bs_cash, merge_calc_pres, _tag_da_sbc_nodes, _find_by_keywords,
+    _find_leaf_by_timeseries, verify_tree_completeness, CROSS_STATEMENT_CHECKS,
+)
+from .segments import (
+    _attach_is_segments, _build_revenue_segment_tree,
+    _find_best_decomposition, _detect_segments_for_node, _attach_segment_children,
+)
 
-from parse_xbrl_facts import build_xbrl_facts_dict, build_segment_facts_dict
+from .facts_legacy import build_xbrl_facts_dict, build_segment_facts_dict
 
-__all__ = ["TreeNode", "reconcile_trees", "build_statement_trees"]
+__all__ = [
+    "TreeNode",
+    "find_node_by_role",
+    "find_groupable_siblings",
+    "verify_tree_completeness",
+    "CROSS_STATEMENT_CHECKS",
+    "reconcile_trees",
+    "build_statement_trees",
+]
 
 def reconcile_trees(trees: dict, pres_index: dict | None = None) -> dict:
     facts = trees.get("facts", {})

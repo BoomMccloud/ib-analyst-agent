@@ -15,7 +15,7 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xbrl_tree import TreeNode, find_node_by_role
+from xbrl import TreeNode, find_node_by_role
 
 
 # ---------------------------------------------------------------------------
@@ -52,7 +52,7 @@ class TestPresentationLinkbase:
 
     def test_parse_pre_linkbase_returns_concept_position_map(self):
         """parse_pre_linkbase(xml) returns a dict mapping concept -> position."""
-        from xbrl_tree import parse_pre_linkbase
+        from xbrl import parse_pre_linkbase
 
         # Minimal presentation linkbase XML with ordered presentationArc elements
         xml = """<?xml version="1.0"?>
@@ -71,7 +71,7 @@ class TestPresentationLinkbase:
 
     def test_sort_by_presentation_reorders_children(self):
         """sort_by_presentation reorders children according to pres_index."""
-        from xbrl_tree import sort_by_presentation
+        from xbrl import sort_by_presentation
 
         tree = _make_parent("us-gaap_NetIncomeLoss", [
             _make_leaf("us-gaap_CostOfGoodsAndServicesSold", weight=-1.0,
@@ -97,7 +97,7 @@ class TestPresentationLinkbase:
 
     def test_children_not_in_pres_index_sort_to_end(self):
         """Children missing from pres_index should appear after indexed ones."""
-        from xbrl_tree import sort_by_presentation
+        from xbrl import sort_by_presentation
 
         tree = _make_parent("root", [
             _make_leaf("unknown_item", values={"2024": 50}),
@@ -160,7 +160,7 @@ class TestCascadeLayout:
 
     def test_cascade_puts_revenue_first_ni_last(self):
         """In cascade (post-order) layout, Revenue is first data row, NI is last."""
-        from xbrl_tree import cascade_layout
+        from xbrl import cascade_layout
 
         tree = self._build_bottom_up_is()
         rows = cascade_layout(tree)
@@ -174,7 +174,7 @@ class TestCascadeLayout:
 
     def test_cascade_subtotals_after_children(self):
         """Each subtotal appears AFTER its children (post-order)."""
-        from xbrl_tree import cascade_layout
+        from xbrl import cascade_layout
 
         tree = self._build_bottom_up_is()
         rows = cascade_layout(tree)
@@ -228,7 +228,7 @@ class TestTagIsPositionsNoValueOverwrite:
     def test_nflx_pattern_root_is_ni_keeps_values(self):
         """When IS root IS Net Income (NFLX pattern), root gets INC_NET
         and its .values dict is NOT replaced."""
-        from xbrl_tree import _tag_is_positions
+        from xbrl import _tag_is_positions
 
         # NFLX pattern: IS root = NI, same values as CF NI
         original_values = {"2022": 4491_804, "2023": 5407_990, "2024": 8002_923}
@@ -250,7 +250,7 @@ class TestTagIsPositionsNoValueOverwrite:
 
     def test_child_match_does_not_overwrite_values(self):
         """When IS child matches CF NI, child gets INC_NET but .values stays intact."""
-        from xbrl_tree import _tag_is_positions
+        from xbrl import _tag_is_positions
 
         child_values = {"2022": 200, "2023": 220, "2024": 240}
         ni_child = _make_leaf("us-gaap_NetIncomeLoss", values=dict(child_values))
@@ -275,7 +275,7 @@ class TestTagIsPositionsNoValueOverwrite:
         Bug: EBT was 12,722,552 but got overwritten to 10,981,201 because
         _tag_is_positions replaced .values dict on a parent node.
         """
-        from xbrl_tree import _tag_is_positions
+        from xbrl import _tag_is_positions
 
         ebt_values = {"2024": 12_722_552}
         ni_values = {"2024": 10_981_201}
@@ -307,7 +307,7 @@ class TestSemanticBFSTagging:
 
     def test_finds_revenue_regardless_of_depth(self):
         """IS_REVENUE is found by keyword even when Revenue is 3 levels deep."""
-        from xbrl_tree import _tag_is_semantic
+        from xbrl import _tag_is_semantic
 
         # Revenue buried 3 levels deep
         revenue = _make_leaf("us-gaap_RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -324,7 +324,7 @@ class TestSemanticBFSTagging:
 
     def test_shallowest_match_wins(self):
         """When multiple nodes match 'revenue', shallowest one wins."""
-        from xbrl_tree import _tag_is_semantic
+        from xbrl import _tag_is_semantic
 
         # Two nodes with "Revenue" in name at different depths
         deep_rev = _make_leaf("us-gaap_ProductRevenue", values={"2024": 400})
@@ -340,7 +340,7 @@ class TestSemanticBFSTagging:
 
     def test_bank_without_cogs_skips_gracefully(self):
         """Banks have no COGS concept. _tag_is_semantic should not error."""
-        from xbrl_tree import _tag_is_semantic
+        from xbrl import _tag_is_semantic
 
         # Bank IS: Revenue -> OpEx -> NI (no COGS)
         interest_income = _make_leaf("us-gaap_InterestIncomeExpenseNet",
@@ -367,7 +367,7 @@ class TestOrphanFactSupplementation:
 
     def test_orphan_closes_gap_gets_inserted(self):
         """An orphan fact that exactly closes a parent-children gap is inserted."""
-        from xbrl_tree import _supplement_orphan_facts
+        from xbrl import _supplement_orphan_facts
 
         # Parent = 1000, children sum to 800 -> gap of 200
         child1 = _make_leaf("us-gaap_ProductRevenue", values={"2024": 500})
@@ -390,7 +390,7 @@ class TestOrphanFactSupplementation:
 
     def test_orphan_overshooting_gap_rejected(self):
         """An orphan that would overshoot the gap is NOT inserted."""
-        from xbrl_tree import _supplement_orphan_facts
+        from xbrl import _supplement_orphan_facts
 
         child1 = _make_leaf("us-gaap_ProductRevenue", values={"2024": 500})
         parent = _make_parent("us-gaap_Revenue", [child1],
@@ -409,7 +409,7 @@ class TestOrphanFactSupplementation:
 
     def test_already_used_tags_not_reinserted(self):
         """Tags already used in the tree should not be inserted again."""
-        from xbrl_tree import _supplement_orphan_facts
+        from xbrl import _supplement_orphan_facts
 
         child1 = _make_leaf("us-gaap_ProductRevenue", values={"2024": 500})
         parent = _make_parent("us-gaap_Revenue", [child1],
@@ -428,7 +428,7 @@ class TestOrphanFactSupplementation:
 
     def test_no_value_mutation_on_existing_nodes(self):
         """Supplementation must never change .values on existing nodes."""
-        from xbrl_tree import _supplement_orphan_facts
+        from xbrl import _supplement_orphan_facts
 
         original_parent_values = {"2024": 1000}
         original_child_values = {"2024": 500}
@@ -448,7 +448,7 @@ class TestOrphanFactSupplementation:
 
     def test_bottom_up_processing_fixes_children_first(self):
         """Orphan supplementation processes children before parents."""
-        from xbrl_tree import _supplement_orphan_facts
+        from xbrl import _supplement_orphan_facts
 
         # Grandchild level: gap at child level
         gc1 = _make_leaf("us-gaap_ProductRevenue", values={"2024": 300})
@@ -479,7 +479,7 @@ class TestTreeCompletenessVerification:
 
     def test_balanced_tree_no_errors(self):
         """Tree where children sum matches declared value -> no errors."""
-        from xbrl_tree import verify_tree_completeness
+        from xbrl import verify_tree_completeness
 
         tree = _make_parent("us-gaap_Revenue", [
             _make_leaf("us-gaap_ProductRevenue", values={"2024": 600}),
@@ -491,7 +491,7 @@ class TestTreeCompletenessVerification:
 
     def test_imbalanced_tree_returns_gap_info(self):
         """Tree where children don't sum to declared -> errors with gap."""
-        from xbrl_tree import verify_tree_completeness
+        from xbrl import verify_tree_completeness
 
         tree = _make_parent("us-gaap_Revenue", [
             _make_leaf("us-gaap_ProductRevenue", values={"2024": 600}),
@@ -503,7 +503,7 @@ class TestTreeCompletenessVerification:
 
     def test_rounding_within_tolerance_no_errors(self):
         """Small rounding differences within tolerance -> no errors."""
-        from xbrl_tree import verify_tree_completeness
+        from xbrl import verify_tree_completeness
 
         tree = _make_parent("us-gaap_Revenue", [
             _make_leaf("us-gaap_ProductRevenue", values={"2024": 600}),
@@ -515,7 +515,7 @@ class TestTreeCompletenessVerification:
 
     def test_leaf_nodes_skipped(self):
         """Leaf nodes (no children) should be skipped -- nothing to verify."""
-        from xbrl_tree import verify_tree_completeness
+        from xbrl import verify_tree_completeness
 
         leaf = _make_leaf("us-gaap_Revenue", values={"2024": 1000})
         errors = verify_tree_completeness(leaf, ["2024"])
@@ -523,7 +523,7 @@ class TestTreeCompletenessVerification:
 
     def test_negative_weight_child_subtracted(self):
         """Children with weight=-1 are subtracted in completeness check."""
-        from xbrl_tree import verify_tree_completeness
+        from xbrl import verify_tree_completeness
 
         tree = _make_parent("us-gaap_GrossProfit", [
             _make_leaf("us-gaap_Revenue", values={"2024": 1000}),
@@ -544,7 +544,7 @@ class TestCrossStatementChecks:
 
     def test_all_roles_present_generates_formulas(self):
         """When all required roles are present, cross-statement formulas are generated."""
-        from xbrl_tree import CROSS_STATEMENT_CHECKS
+        from xbrl import CROSS_STATEMENT_CHECKS
 
         assert isinstance(CROSS_STATEMENT_CHECKS, (list, tuple, dict)), \
             "CROSS_STATEMENT_CHECKS must be a list/tuple/dict of check definitions"
@@ -582,7 +582,7 @@ class TestCrossStatementChecks:
 
     def test_missing_role_gracefully_skipped(self):
         """A check referencing a missing role should be skipped, not error."""
-        from xbrl_tree import CROSS_STATEMENT_CHECKS
+        from xbrl import CROSS_STATEMENT_CHECKS
         from sheets.renderers import _render_cross_checks
 
         # role_map missing some roles
@@ -598,7 +598,7 @@ class TestCrossStatementChecks:
 
     def test_no_tautological_computed_aliases(self):
         """No check should reference *_COMPUTED_* aliases (tautological)."""
-        from xbrl_tree import CROSS_STATEMENT_CHECKS
+        from xbrl import CROSS_STATEMENT_CHECKS
 
         checks = (CROSS_STATEMENT_CHECKS if isinstance(CROSS_STATEMENT_CHECKS, (list, tuple))
                   else list(CROSS_STATEMENT_CHECKS.values()))
@@ -618,7 +618,7 @@ class TestPipelineGate:
 
     def test_tree_completeness_failure_blocks_sheet(self):
         """When verify_tree_completeness returns errors, pipeline gate blocks."""
-        from xbrl_tree import verify_tree_completeness
+        from xbrl import verify_tree_completeness
 
         # Imbalanced tree
         tree = _make_parent("us-gaap_Revenue", [
@@ -632,7 +632,7 @@ class TestPipelineGate:
 
     def test_verify_model_failure_blocks_sheet(self):
         """When verify_model returns errors, sheet write should be blocked."""
-        from pymodel import verify_model
+        from model.verify import verify_model
 
         # Build trees with BS imbalance
         p = "2024"
@@ -669,8 +669,8 @@ class TestPipelineGate:
 
     def test_both_pass_allows_sheet_write(self):
         """When both verifications pass, sheet write should proceed."""
-        from xbrl_tree import verify_tree_completeness
-        from pymodel import verify_model
+        from xbrl import verify_tree_completeness
+        from model.verify import verify_model
 
         p = "2024"
         # Balanced tree

@@ -11,7 +11,7 @@ def main():
     with open(args.trees) as f:
         raw_trees = json.load(f)
     
-    from xbrl_tree import TreeNode
+    from xbrl import TreeNode
     trees = {}
     for k, v in raw_trees.items():
         if k in ("IS", "BS", "BS_LE", "CF") and isinstance(v, dict):

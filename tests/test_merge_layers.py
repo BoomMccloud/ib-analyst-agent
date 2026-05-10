@@ -27,9 +27,9 @@ All cross-statement invariants hold because they compare declared values.
 
 import sys
 import os
-sys.path.insert(0, os.path.dirname(__file__))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xbrl_tree import TreeNode, verify_tree_completeness
+from xbrl import TreeNode, verify_tree_completeness
 
 
 # ---------------------------------------------------------------------------

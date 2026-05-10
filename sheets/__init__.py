@@ -1,5 +1,5 @@
-from xbrl_tree import TreeNode
-from gws_utils import gws_batch_update
+from xbrl import TreeNode
+from sheets.gws import gws_batch_update
 from sheets.api import gws_create
 from sheets.formulas import dcol
 from sheets.renderers import (
@@ -28,7 +28,7 @@ def write_sheets(trees: dict, company: str) -> tuple[str, str]:
         seg_types = []
         seg_total_row_num = None
         if rev_seg:
-            from xbrl_tree import TreeNode
+            from xbrl import TreeNode
             if isinstance(rev_seg, dict):
                 rev_seg = TreeNode.from_dict(rev_seg)
             seg_rows, seg_types, seg_total_row_num = _render_revenue_segments(

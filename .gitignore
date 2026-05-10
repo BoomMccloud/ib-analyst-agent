@@ -205,3 +205,9 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Pre-authed gws OAuth tokens (mounted into container at runtime)
+gws-config/
+
+# Pipeline run outputs (per-ticker JSON, regenerated)
+pipeline_output/

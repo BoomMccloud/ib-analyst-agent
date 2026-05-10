@@ -18,7 +18,7 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xbrl_tree import TreeNode, _tag_bs_positions, find_node_by_role
+from xbrl import TreeNode, _tag_bs_positions, find_node_by_role
 
 
 # ---------------------------------------------------------------------------
@@ -180,7 +180,7 @@ class TestUnifiedKeywordSearchDFSAll:
 
     def test_dfs_all_match_leaf_only(self):
         """Only leaves whose .name contains ALL keywords should match."""
-        from xbrl_tree import _find_by_keywords
+        from xbrl import _find_by_keywords
 
         # Build a tree with various leaves
         leaf_da = _make_leaf("us-gaap_DepreciationAndAmortization",
@@ -210,7 +210,7 @@ class TestUnifiedKeywordSearchDFSAll:
 
     def test_dfs_all_match_rejects_partial(self):
         """A leaf with only ONE of two keywords should NOT match in mode='all'."""
-        from xbrl_tree import _find_by_keywords
+        from xbrl import _find_by_keywords
 
         leaf = _make_leaf("us-gaap_Depreciation", values={"2024": 50})
         root = _make_parent("us-gaap_Root", [leaf], values={"2024": 50})
@@ -228,7 +228,7 @@ class TestUnifiedKeywordSearchDFSAll:
 
     def test_dfs_all_match_skips_non_leaf(self):
         """Non-leaf nodes should be skipped when leaf_only=True."""
-        from xbrl_tree import _find_by_keywords
+        from xbrl import _find_by_keywords
 
         # Parent has both keywords in name but is not a leaf
         inner_leaf = _make_leaf("us-gaap_SomeChild", values={"2024": 10})
@@ -262,7 +262,7 @@ class TestUnifiedKeywordSearchBFSAny:
 
     def test_bfs_any_match_returns_shallowest(self):
         """BFS should return the shallowest node matching any keyword."""
-        from xbrl_tree import _find_by_keywords
+        from xbrl import _find_by_keywords
 
         # Deep node matches
         deep_match = _make_leaf("us-gaap_CostOfRevenue", values={"2024": 400})
@@ -292,7 +292,7 @@ class TestUnifiedKeywordSearchBFSAny:
 
     def test_bfs_any_match_single_keyword_suffices(self):
         """In mode='any', a single keyword match is sufficient."""
-        from xbrl_tree import _find_by_keywords
+        from xbrl import _find_by_keywords
 
         leaf = _make_leaf("us-gaap_RevenueFromContractWithCustomer",
                           values={"2024": 1000})
@@ -313,7 +313,7 @@ class TestUnifiedKeywordSearchBFSAny:
 
     def test_bfs_any_match_includes_non_leaf(self):
         """With leaf_only=False, non-leaf nodes should also be matchable."""
-        from xbrl_tree import _find_by_keywords
+        from xbrl import _find_by_keywords
 
         inner = _make_leaf("us-gaap_SomeChild", values={"2024": 10})
         non_leaf = _make_parent("us-gaap_Revenue", [inner],
@@ -343,7 +343,7 @@ class TestFindByKeywordsUnitTests:
 
     def test_ut1_no_match_returns_none(self):
         """UT-1: Single leaf with no matching keywords returns None."""
-        from xbrl_tree import _find_by_keywords
+        from xbrl import _find_by_keywords
 
         leaf = _make_leaf("us-gaap_Revenue", values={"2024": 100})
         result = _find_by_keywords(leaf, ["cash"], mode="all", search="dfs",
@@ -353,7 +353,7 @@ class TestFindByKeywordsUnitTests:
     def test_ut2_field_concept_vs_name(self):
         """UT-2: field='concept' searches raw concept; field='name' searches cleaned name.
         'us-gaap' appears in .concept but not in .name."""
-        from xbrl_tree import _find_by_keywords
+        from xbrl import _find_by_keywords
 
         leaf = _make_leaf("us-gaap_CostOfGoodsSold", values={"2024": 100})
         root = _make_parent("us-gaap_Root", [leaf], values={"2024": 100})

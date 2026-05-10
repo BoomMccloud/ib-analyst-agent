@@ -6,28 +6,26 @@ Multi-stage pipeline that fetches SEC filings, extracts financials via XBRL, bui
 
 Each stage runs independently via CLI. Output JSON from one stage is the input to the next.
 
-| Stage | Script(s) | What it does | LLM? |
-|-------|-----------|--------------|------|
-| 1 | `agent1_fetcher.py` | Resolves ticker → CIK via SEC EDGAR, fetches filing URLs | No |
-| 2a | `extract_sections.py` | Downloads filing HTML, slices into section .txt files + iXBRL facts | No |
-| 2b | `xbrl_tree.py` | Parses iXBRL tags + calculation linkbase → tree with values | No |
-| 2c | `xbrl_group.py` | Tree → structured JSON. Optional LLM groups small siblings | Optional (Haiku) |
-| 2b-legacy | `structure_financials.py` | LLM structures sections into JSON (fallback for non-XBRL) | Sonnet + Haiku |
-| 3 | `agent3_modeler.py` | Builds bottom-up financial model spec | Sonnet |
-| 4 | `pymodel.py` | Computes 3-statement model, writes to Google Sheets | No |
+| Stage | Module | What it does | LLM? |
+|-------|--------|--------------|------|
+| 1 | `fetch/agent.py` | Resolves ticker → CIK via SEC EDGAR, fetches filing URLs | No |
+| 2 | `xbrl/` package (CLI: `xbrl/cli.py`) | Parses iXBRL tags + calculation linkbase → tree with values | No |
+| 3 | `merge/trees.py` | Merges multiple filings into one tree with full historical periods | No |
+| 4 | `model/verify.py` | Cross-statement invariant checks. Falls back to `model/llm_fixer.py` if errors. | Optional |
+| 5 | `sheets/` package (CLI: `sheets/builder.py`) | Renders trees into a multi-tab Google Sheet | No |
 
 ## Running the Pipeline
 
-**IMPORTANT: Always use `run_pipeline.py` to generate sheets.** Running `xbrl_tree.py`, `pymodel.py`, and `sheet_builder.py` individually bypasses the tree completeness gate and will produce sheets with broken formulas. The pipeline gate checks that every parent's `=SUM(children)` matches its declared XBRL value before writing the sheet.
+**IMPORTANT: Always use `run_pipeline.py` to generate sheets.** Running `xbrl/cli.py`, `model/verify.py`, and `sheets/builder.py` individually bypasses the tree completeness gate and will produce sheets with broken formulas. The pipeline gate checks that every parent's `=SUM(children)` matches its declared XBRL value before writing the sheet.
 
 ```bash
 # Full pipeline (preferred — includes all gates):
 python run_pipeline.py AAPL
 
-# Individual scripts (for debugging ONLY, not for sheet generation):
-python xbrl_tree.py --url <filing_url> -o trees.json      # inspect tree
-python pymodel.py --trees trees.json --checkpoint          # check invariants
-# Do NOT run sheet_builder.py directly — use run_pipeline.py
+# Individual modules (for debugging ONLY, not for sheet generation):
+python -m xbrl.cli --url <filing_url> -o trees.json      # inspect tree
+python -m model.verify --trees trees.json --checkpoint    # check invariants
+# Do NOT run sheets/builder.py directly — use run_pipeline.py
 ```
 
 ### Legacy paths (for reference)
@@ -57,7 +55,7 @@ python pymodel.py --financials structured.json --company "Apple Inc."
 
 ## XBRL-Based Extraction (Phase 1b)
 
-The XBRL path (`xbrl_tree.py` + `xbrl_group.py`) replaces the LLM-based extraction for financial statements. It parses:
+The XBRL path (`xbrl/` package) replaces the LLM-based extraction for financial statements. It parses:
 
 1. **iXBRL tags** (`<ix:nonFraction>`) — every number in the filing, with exact values
 2. **Calculation linkbase** (`_cal.xml`) — parent/child relationships with weights (+1/-1)
@@ -75,7 +73,7 @@ See `docs/impl_guide_phase1b.md` for full details.
 
 ## Tautological API (Phase 1)
 
-`pymodel.py` exposes enforce-by-construction helpers:
+`model/verify.py` exposes enforce-by-construction helpers:
 - `set_category()` — catch-all = subtotal - sum(flex), always
 - `set_is_cascade()` — GP, OPINC, EBT, INC_NET computed from inputs
 - `set_bs_totals()` — TA = TCA + TNCA, TL = TCL + TNCL
@@ -89,20 +87,19 @@ See `docs/impl_guide_phase1b.md` for full details.
 4. D&A (IS) == D&A (CF)
 5. SBC (IS) == SBC (CF)
 
-## Utility Scripts
+## Utility modules
 
-- `lookup_company.py` — Resolves ticker/name → CIK, determines domestic (10-K) vs foreign (20-F)
-- `fetch_10k.py` / `fetch_20f.py` — Fetches filing metadata from SEC EDGAR submissions API
-- `sec_utils.py` — Shared SEC EDGAR fetching, rate limiting, and compliance logic
-- `llm_utils.py` — Shared Anthropic model calling and parsing logic
-- `llm_invariant_fixer.py` — LLM-in-the-loop semantic reconciliation for fixing cross-statement invariants
-- `parse_xbrl_facts.py` — Standalone XBRL tag → model code mapper (Phase 1b prototype)
-- `sec_filings_agent.py` — Standalone agent script for ad-hoc filing lookups
+- `fetch/lookup.py` — Resolves ticker/name → CIK, determines domestic (10-K) vs foreign (20-F)
+- `fetch/ten_k.py` / `fetch/twenty_f.py` — Fetches filing metadata from SEC EDGAR submissions API
+- `fetch/http.py` — Shared SEC EDGAR fetching, rate limiting, and compliance logic
+- `llm/client.py` — OpenAI-compatible Chat Completions wrapper (Groq default)
+- `model/llm_fixer.py` — LLM-in-the-loop semantic reconciliation for fixing cross-statement invariants
+- `xbrl/facts_legacy.py` — Standalone XBRL tag → model code mapper (Phase 1b prototype)
 - `test_phase1_e2e.sh` — End-to-end test script for any ticker
 
 ## External Dependencies
 
-- **Anthropic API** (`ANTHROPIC_API_KEY`) — Sonnet for semantic reconciliation (`llm_invariant_fixer.py`); optional Haiku for sibling grouping in Stage 2c; Sonnet for model spec in Stage 3
+- **LLM API** (`LLM_API_KEY`, OpenAI-compatible) — used by `model/llm_fixer.py` only when invariants fail. Defaults to Groq.
 - **SEC EDGAR** — company_tickers.json, submissions API, filing archives, iXBRL linkbases. Rate-limited to 8 req/s with backoff
 - **`gws` CLI** — Google Workspace CLI for Sheets API (must be pre-authenticated via OAuth)
 - **Models**: `claude-sonnet-4-6` for precision tasks, `claude-haiku-4-5-20251001` for grouping/large-text

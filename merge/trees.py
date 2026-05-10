@@ -10,8 +10,8 @@ Strategy: union of all line items across all filings.
 import json
 import logging
 import sys
-from xbrl_tree import TreeNode
-from concept_matcher import ConceptMatcher, ConceptMap
+from xbrl import TreeNode
+from merge.concepts import ConceptMatcher, ConceptMap
 
 logger = logging.getLogger(__name__)
 

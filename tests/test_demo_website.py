@@ -33,7 +33,7 @@ os.environ.setdefault("SEC_CONTACT_EMAIL", "test@example.com")
 @pytest.fixture
 def fake_ticker_cache(monkeypatch):
     """Inject a deterministic ticker cache so tests don't hit SEC EDGAR."""
-    import lookup_company
+    from fetch import lookup as lookup_company
 
     fake = {
         "0": {"cik_str": 320193, "ticker": "AAPL", "title": "Apple Inc."},
@@ -48,7 +48,7 @@ def fake_ticker_cache(monkeypatch):
 
 
 def test_search_tickers_exact_ticker_ranked_first(fake_ticker_cache):
-    from lookup_company import search_tickers
+    from fetch.lookup import search_tickers
 
     results = search_tickers("AAPL")
     assert len(results) >= 1
@@ -59,7 +59,7 @@ def test_search_tickers_exact_ticker_ranked_first(fake_ticker_cache):
 
 
 def test_search_tickers_returns_required_shape(fake_ticker_cache):
-    from lookup_company import search_tickers
+    from fetch.lookup import search_tickers
 
     results = search_tickers("apple")
     assert results, "expected at least one match for 'apple'"
@@ -70,14 +70,14 @@ def test_search_tickers_returns_required_shape(fake_ticker_cache):
 
 
 def test_search_tickers_case_insensitive_substring_on_name(fake_ticker_cache):
-    from lookup_company import search_tickers
+    from fetch.lookup import search_tickers
 
     tickers = {r["ticker"] for r in search_tickers("micro")}
     assert "MSFT" in tickers
 
 
 def test_search_tickers_substring_on_ticker(fake_ticker_cache):
-    from lookup_company import search_tickers
+    from fetch.lookup import search_tickers
 
     tickers = {r["ticker"] for r in search_tickers("APL")}
     # Both AAPL and APLE contain "APL"
@@ -86,7 +86,7 @@ def test_search_tickers_substring_on_ticker(fake_ticker_cache):
 
 
 def test_search_tickers_limit(fake_ticker_cache):
-    from lookup_company import search_tickers
+    from fetch.lookup import search_tickers
 
     # 'inc' substring matches several entries; ensure limit caps the result.
     results = search_tickers("inc", limit=2)
@@ -94,7 +94,7 @@ def test_search_tickers_limit(fake_ticker_cache):
 
 
 def test_search_tickers_empty_query_returns_empty(fake_ticker_cache):
-    from lookup_company import search_tickers
+    from fetch.lookup import search_tickers
 
     assert search_tickers("") == []
     assert search_tickers("   ") == []
@@ -109,7 +109,7 @@ def test_agent1_fetcher_bad_ticker_raises_runtime_error(monkeypatch):
     """Spec: replace sys.exit(1) with RuntimeError so the web worker's
     `except Exception` actually catches it (SystemExit inherits BaseException
     and would otherwise wedge the demo on a misspelled ticker)."""
-    import agent1_fetcher
+    from fetch import agent as agent1_fetcher
 
     monkeypatch.setattr(agent1_fetcher, "lookup_by_ticker", lambda q: None)
     monkeypatch.setattr(agent1_fetcher, "lookup_by_name", lambda q: None)
@@ -124,7 +124,7 @@ def test_agent1_fetcher_bad_ticker_raises_runtime_error(monkeypatch):
 
 
 def test_run_checkpoint_returns_structured_result_when_passing():
-    from pymodel import run_checkpoint, CheckpointResult
+    from model.verify import run_checkpoint, CheckpointResult
 
     # Minimal trees_data with no errors → verify_model returns []
     trees_data = {"complete_periods": [], "trees": {}}
@@ -335,15 +335,15 @@ def test_app_py_driver_boundary():
     forbidden = [
         "xbrl",
         "sheets",
-        "merge_trees",
-        "concept_matcher",
-        "pymodel",
-        "parse_xbrl_facts",
-        "gws_utils",
-        "sec_utils",
-        "llm_utils",
-        "llm_invariant_fixer",
-        "agent1_fetcher",
+        "merge.trees",
+        "merge.concepts",
+        "model.verify",
+        "model.llm_fixer",
+        "llm.client",
+        "fetch.http",
+        "fetch.agent",
+        "fetch.ten_k",
+        "fetch.twenty_f",
     ]
     for mod in forbidden:
         assert f"import {mod}" not in src, f"web/app.py must not import {mod}"

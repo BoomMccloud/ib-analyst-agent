@@ -18,7 +18,7 @@ import argparse
 import json
 import sys
 
-from sec_utils import fetch_url
+from fetch.http import fetch_url
 from xbrl import *
 from xbrl.tree import TreeNode, _concept_to_tag, _clean_name, build_tree, find_roots, find_groupable_siblings, build_presentation_index, sort_by_presentation, cascade_layout, print_tree, find_node_by_role, _find_parent, _supplement_orphan_facts, _supplement_orphan_facts_all, _filter_to_complete_periods
 from xbrl.linkbase import fetch_cal_linkbase, fetch_pre_linkbase, fetch_lab_linkbase, parse_lab_linkbase, get_label, parse_pre_linkbase, parse_calc_linkbase, classify_roles, STATEMENT_ROLE_PATTERNS

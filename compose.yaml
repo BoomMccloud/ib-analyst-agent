@@ -1,0 +1,33 @@
+services:
+  sec-agent:
+    build:
+      context: .
+      dockerfile: Containerfile
+    image: sec-agent:latest
+    container_name: sec-agent
+    env_file:
+      - .env
+    volumes:
+      # Pre-authed gws OAuth tokens. Run `gws auth login` once on the host
+      # (see README "Deploy on a VPS") to populate this directory.
+      - ./gws-config:/root/.config/gws:Z
+    networks:
+      - web
+    restart: unless-stopped
+    expose:
+      - "8000"
+
+  cloudflared:
+    image: docker.io/cloudflare/cloudflared:latest
+    container_name: cloudflared
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    env_file:
+      - .env
+    networks:
+      - web
+    restart: unless-stopped
+    depends_on:
+      - sec-agent
+
+networks:
+  web:

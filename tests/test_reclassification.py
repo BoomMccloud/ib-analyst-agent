@@ -22,8 +22,8 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xbrl_tree import TreeNode
-from concept_matcher import ConceptMatcher
+from xbrl import TreeNode
+from merge.concepts import ConceptMatcher
 
 def _detect_and_fix_structural_shifts(tree, periods):
     return ConceptMatcher().detect_and_fix_structural_shifts(tree, periods)
@@ -426,8 +426,8 @@ class TestTSLAReMerge:
     def test_tsla_no_is_revenue_errors_after_merge(self):
         """After merging TSLA filings with reclassification detection,
         there should be no IS Revenue errors in verify_model output."""
-        from merge_trees import merge_filing_trees
-        from pymodel import verify_model
+        from merge.trees import merge_filing_trees
+        from model.verify import verify_model
 
         tree_files = sorted(glob.glob(os.path.join(TSLA_DIR, "trees_*.json")))
         # merge_filing_trees expects newest first
@@ -442,8 +442,8 @@ class TestTSLAReMerge:
     def test_tsla_ni_link_errors_under_threshold(self):
         """After merging TSLA filings, NI Link errors should be < 150
         (NCI noise), not the 96K caused by reclassification."""
-        from merge_trees import merge_filing_trees
-        from pymodel import verify_model
+        from merge.trees import merge_filing_trees
+        from model.verify import verify_model
 
         tree_files = sorted(glob.glob(os.path.join(TSLA_DIR, "trees_*.json")))
         tree_files = list(reversed(tree_files))

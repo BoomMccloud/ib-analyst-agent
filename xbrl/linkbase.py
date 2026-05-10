@@ -1,6 +1,6 @@
 import re
 from collections import defaultdict
-from sec_utils import fetch_url
+from fetch.http import fetch_url
 
 def fetch_cal_linkbase(html: str, base_url: str) -> str | None:
     schema_pat = re.compile(r'schemaRef[^>]*href="([^"]+)"', re.IGNORECASE)

@@ -7,7 +7,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 
 from run_pipeline import run_pipeline
-from lookup_company import search_tickers
+from fetch.lookup import search_tickers
 
 app = FastAPI()
 

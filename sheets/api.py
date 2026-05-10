@@ -1,5 +1,5 @@
 import json
-from gws_utils import _run_gws
+from sheets.gws import _run_gws
 
 def gws_create(title, sheet_names):
     sheets = [{"properties": {"title": s}} for s in sheet_names]

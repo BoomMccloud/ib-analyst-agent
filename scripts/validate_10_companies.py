@@ -86,7 +86,7 @@ def validate_ticker(ticker, out_dir):
         results["stages"]["merge"] = "SKIP (single filing)"
 
     # Stage 3b: Tree completeness
-    from xbrl_tree import verify_tree_completeness, TreeNode
+    from xbrl import verify_tree_completeness, TreeNode
     with open(merged_file) as f:
         trees = json.load(f)
     for stmt in ["IS", "BS", "BS_LE", "CF"]:

@@ -1,6 +1,10 @@
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import json
-from xbrl_tree import TreeNode
-from sheet_builder import _cascade_layout
+from xbrl import TreeNode
+from sheets.layouts import _cascade_layout
 
 with open("pipeline_output/validation/NFLX/trees_2026-01-23.json") as f:
     trees_data = json.load(f)

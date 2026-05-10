@@ -13,11 +13,11 @@ import json
 import sys
 from pathlib import Path
 
-from agent1_fetcher import run as fetch_filings
-from sec_utils import fetch_url
+from fetch.agent import run as fetch_filings
+from fetch.http import fetch_url
 from xbrl import build_statement_trees
-from merge_trees import merge_filing_trees
-from pymodel import run_checkpoint
+from merge.trees import merge_filing_trees
+from model.verify import run_checkpoint
 from sheets import write_sheets
 
 

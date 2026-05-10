@@ -62,7 +62,7 @@ class TestBuildWeightFormula:
         assert result == "=E4+E5-E7"
 
 
-from xbrl_tree import TreeNode, reconcile_trees, find_node_by_role
+from xbrl import TreeNode, reconcile_trees, find_node_by_role
 from sheets.renderers import _render_sheet_body
 
 

@@ -18,8 +18,8 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xbrl_tree import TreeNode, find_node_by_role
-from pymodel import verify_model, _verify_segment_sums
+from xbrl import TreeNode, find_node_by_role
+from model.verify import verify_model, _verify_segment_sums
 
 
 # ---------------------------------------------------------------------------
@@ -313,7 +313,7 @@ class TestPipelineCallsMerge:
         Then verify that run_pipeline.py actually calls merge_trees —
         if it doesn't, this test documents the gap.
         """
-        from merge_trees import merge_filing_trees
+        from merge.trees import merge_filing_trees
 
         # Filing 1 (newest): periods 2023, 2024
         tree1 = {
@@ -458,7 +458,7 @@ class TestResidualSanityLogging:
         → residual = 700, sibling_avg = 150
         → 700 > 150 → WARNING expected
         """
-        from merge_trees import _recompute_residuals
+        from merge.trees import _recompute_residuals
 
         parent = _make_parent("us-gaap_Revenue", [
             _make_leaf("us-gaap_ProductRev", values={"2024": 200}),
@@ -497,7 +497,7 @@ class TestResidualSanityLogging:
         → residual = 10, sibling_avg = 150
         → 10 < 150 → no warning
         """
-        from merge_trees import _recompute_residuals
+        from merge.trees import _recompute_residuals
 
         parent = _make_parent("us-gaap_Revenue", [
             _make_leaf("us-gaap_ProductRev", values={"2024": 200}),

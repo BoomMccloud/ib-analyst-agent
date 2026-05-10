@@ -1,0 +1,33 @@
+.git
+.gitignore
+.env
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.cache
+.ruff_cache
+.mypy_cache
+
+# Pipeline outputs and local fixtures — not needed in image
+pipeline_output/
+test.json
+spec_sheet.json
+*.log
+
+# Tests + dev scripts
+tests/
+test_*.py
+test_*.sh
+scripts/
+
+# Deployment metadata (mounted at runtime, not baked in)
+gws-config/
+Caddyfile
+compose.yaml
+.env.example
+.containerignore
+
+# Docs
+docs/
+*.md

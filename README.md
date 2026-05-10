@@ -23,12 +23,12 @@ The sheet rendering is built on a three-layer merge of XBRL linkbases:
 
 Each stage runs independently via CLI. Output JSON from one stage is the input to the next.
 
-| Stage | Script(s) | What it does | LLM? |
-|-------|-----------|--------------|------|
-| **1. Fetch Filings** | `agent1_fetcher.py` | Resolves ticker → CIK via SEC EDGAR, fetches filing URLs | Managed Agent |
-| **2. Build Trees** | `xbrl_tree.py` | Parses iXBRL tags + calculation linkbase → tree with values | No |
-| **3. Verify Invariants** | `pymodel.py` | Checks 5 cross-statement links against the parsed trees | No |
-| **4. Write Google Sheet** | `sheet_builder.py` | Renders trees into a multi-tab Google Sheet with `=SUM()` and cross-sheet formulas | No |
+| Stage | Module | What it does | LLM? |
+|-------|--------|--------------|------|
+| **1. Fetch Filings** | `fetch/agent.py` | Resolves ticker → CIK via SEC EDGAR, fetches filing URLs | Managed Agent |
+| **2. Build Trees** | `xbrl/` package (CLI: `xbrl/cli.py`) | Parses iXBRL tags + calculation linkbase → tree with values | No |
+| **3. Verify Invariants** | `model/verify.py` | Checks 5 cross-statement links against the parsed trees | No |
+| **4. Write Google Sheet** | `sheets/` package (CLI: `sheets/builder.py`) | Renders trees into a multi-tab Google Sheet with `=SUM()` and cross-sheet formulas | No |
 | **Orchestrator** | `run_pipeline.py` | Runs all stages sequentially with completeness gates | — |
 
 > **IMPORTANT:** Always use `run_pipeline.py` to generate sheets. Running individual scripts bypasses the tree completeness gate and will produce sheets with broken formulas.
@@ -37,10 +37,10 @@ Each stage runs independently via CLI. Output JSON from one stage is the input t
 
 ```bash
 # Inspect tree structure
-python xbrl_tree.py --url <filing_url> -o trees.json
+python -m xbrl.cli --url <filing_url> -o trees.json
 
 # Check invariants without writing sheet
-python pymodel.py --trees trees.json --checkpoint
+python -m model.verify --trees trees.json --checkpoint
 ```
 
 ## XBRL-Based Extraction
@@ -76,31 +76,48 @@ Tested on 10 companies across 6 industries: 9/10 ALL PASS, 1 has a $401 rounding
 
 ## File Reference
 
-### Pipeline Scripts
-*   `agent1_fetcher.py`: Entry point for Stage 1. Handles ticker resolution and filing discovery.
-*   `xbrl_tree.py`: The deterministic extraction engine. Builds structural trees from iXBRL facts and linkbases.
-*   `pymodel.py`: Verifier for cross-statement checks and accounting invariants.
-*   `sheet_builder.py`: Converts trees to 4-tab Google Sheets (IS, BS, CF, Summary) via `gws` CLI.
-*   `run_pipeline.py`: Orchestrates the full pipeline with completeness gates.
-*   `merge_trees.py`: Merges multiple filing trees into one with full historical data across periods.
+Top-level layout:
 
-### Supporting Utilities
-*   `lookup_company.py`: Maps tickers or company names to SEC Central Index Keys (CIK). Includes `search_tickers()` for substring search.
-*   `fetch_10k.py` / `fetch_20f.py`: Targeted scripts for fetching filing metadata from the SEC API.
-*   `parse_xbrl_facts.py`: iXBRL tag extraction from filing HTML.
-*   `sec_utils.py`: SEC-compliant HTTP fetching with rate limiting (0.15s intervals) and caching.
-*   `llm_utils.py`: Shared utilities for calling Anthropic models.
-*   `gws_utils.py`: Helpers for interacting with Google Sheets via the `gws` command-line tool.
+```
+run_pipeline.py        — main orchestrator (only script at root)
+fetch/                 — SEC discovery + HTTP
+  agent.py             — Stage 1 ticker → filings (was agent1_fetcher.py)
+  lookup.py            — ticker/name → CIK (was lookup_company.py)
+  ten_k.py             — 10-K filing list (was fetch_10k.py)
+  twenty_f.py          — 20-F filing list (was fetch_20f.py)
+  http.py              — SEC-compliant fetch with rate limiting (was sec_utils.py)
+xbrl/                  — Stage 2: XBRL parsing engine
+  __init__.py          — package exports + build_statement_trees(), reconcile_trees()
+  tree.py, linkbase.py, reconcile.py, segments.py
+  facts_legacy.py      — iXBRL fact mapper for non-calc-linkbase filings (was parse_xbrl_facts.py)
+  cli.py               — `python -m xbrl.cli ...` (was xbrl_tree.py)
+merge/                 — Stage 3: cross-filing merge
+  trees.py             — merge_filing_trees()           (was merge_trees.py)
+  concepts.py          — concept matcher                (was concept_matcher.py)
+model/                 — Stage 4: invariants + LLM repair
+  verify.py            — `verify_model()`, run_checkpoint()  (was pymodel.py)
+  llm_fixer.py         — LLM-in-loop reconciliation     (was llm_invariant_fixer.py)
+sheets/                — Stage 5: Google Sheets renderer
+  __init__.py          — write_sheets()
+  api.py, renderers.py, formatting.py, layouts.py, formulas.py
+  builder.py           — `python -m sheets.builder ...` (was sheet_builder.py)
+  gws.py               — gws CLI wrappers                (was gws_utils.py)
+llm/                   — LLM client (OpenAI-compatible)
+  client.py            — call_llm(), get_llm_client()    (was llm_utils.py)
+web/                   — FastAPI demo
+tests/                 — test suite
+scripts/               — dev tooling
+```
 
 ### Analysis & Debugging
-*   `compare_views.py`: Compares calc and presentation linkbase views for a filing.
-*   `test_alignment.py`: Validates alignment between calc linkbase structure and iXBRL facts.
-*   `test_cascade.py`: Tests cascade layout rendering for income statement trees.
-*   `test_merge_layers.py`: Three-layer merge tests (synthetic + 10 real companies).
+*   `scripts/compare_views.py`: Compares calc and presentation linkbase views for a filing.
+*   `scripts/test_alignment.py`: Validates alignment between calc linkbase structure and iXBRL facts.
+*   `scripts/test_cascade.py`: Tests cascade layout rendering for income statement trees.
 *   `scripts/download_test_fixtures.py`: Downloads test fixture data for local testing.
 
 ### Test Suite
 *   `tests/test_dual_linkbase.py`: Dual linkbase parsing unit tests.
+*   `tests/test_merge_layers.py`: Three-layer merge tests (synthetic + 10 real companies).
 *   `tests/test_merge_pipeline.py`: Multi-tree merge pipeline tests.
 *   `tests/test_offline_e2e.py`: Offline end-to-end pipeline tests.
 *   `tests/test_sheet_formulas.py`: Google Sheets formula generation tests.
@@ -115,7 +132,7 @@ Tested on 10 companies across 6 industries: 9/10 ALL PASS, 1 has a $401 rounding
 ## Setup & Requirements
 
 - **Python 3.10+**
-- **Anthropic API Key** (`ANTHROPIC_API_KEY`): Required for LLM-in-the-loop semantic reconciliation (`llm_invariant_fixer.py`).
+- **LLM API Key** (`LLM_API_KEY`): An OpenAI-compatible endpoint, used only for LLM-in-the-loop semantic reconciliation (`llm_invariant_fixer.py`). Defaults to Groq (`LLM_BASE_URL`, `LLM_MODEL`). Skip if you don't need invariant repair.
 - **`gws` CLI**: Required for exporting models to Google Sheets (must be pre-authenticated via OAuth).
 - **Podman**: Recommended for containerized execution (project preference over Docker).
 - **FastAPI + Uvicorn**: Required for the demo website (`pip install fastapi uvicorn[standard]`).
@@ -142,7 +159,7 @@ python run_pipeline.py AAPL
 python -m pytest tests/ -v
 
 # Three-layer merge tests (synthetic + 10 real companies)
-python test_merge_layers.py
+python tests/test_merge_layers.py
 ```
 
 ## Demo Website
@@ -166,6 +183,71 @@ uvicorn web.app:app --reload
 - `SEC_CONTACT_EMAIL` env var set — recommended for SEC EDGAR compliance, but not required (fallback `demo@example.com` is used if unset)
 - `gws` CLI authenticated and token not expired (otherwise sheet generation fails inside `sheets.write_sheets`)
 - Run from `sec-agent/` directory (`outdir="./pipeline_output"` is cwd-relative)
+
+## Deploy on a VPS (podman + Cloudflare Tunnel)
+
+The repo ships a two-container stack: the FastAPI app and a Cloudflare Tunnel connector. The tunnel makes an outbound connection to Cloudflare's edge, so:
+
+- **No public IP needed** — works fine if the VPS IP changes.
+- **No inbound ports open** — only outbound 443 to Cloudflare.
+- **TLS is terminated by Cloudflare** — no Caddy / Let's Encrypt setup required.
+
+### Prerequisites
+- A VPS with `podman` and `podman-compose` (Debian/Ubuntu: `sudo apt install podman podman-compose`).
+- A domain managed by Cloudflare DNS (free plan is fine).
+- A Groq API key (free tier) from console.groq.com — or any other OpenAI-compatible endpoint.
+
+### One-time Cloudflare setup
+
+1. Open the **Cloudflare Zero Trust dashboard** → `https://one.dash.cloudflare.com/` (free plan).
+2. **Networks → Tunnels → Create a tunnel** → connector type `Cloudflared` → name it `sec-agent`.
+3. Copy the **tunnel token** (the long `eyJhIj...` string after `--token` on the install page). You won't run those install commands; the token goes into `.env`.
+4. Click **Next** and add a Public Hostname:
+   - Subdomain: `demo` (or any)
+   - Domain: your domain
+   - Type: `HTTP`
+   - URL: `sec-agent:8000`  *(the container name, not localhost)*
+5. **Save tunnel.** Cloudflare auto-creates the DNS CNAME for you.
+
+### One-time VPS setup
+
+```bash
+# 1. Clone on the VPS
+git clone <repo-url> sec-agent && cd sec-agent
+
+# 2. Configure environment
+cp .env.example .env
+$EDITOR .env   # set CLOUDFLARE_TUNNEL_TOKEN, LLM_API_KEY, SEC_CONTACT_EMAIL
+
+# 3. Build the image (step 4 needs it)
+podman-compose build
+
+# 4. Pre-authenticate gws (interactive, one-time)
+mkdir -p gws-config
+podman run --rm -it -v ./gws-config:/root/.config/gws:Z \
+  sec-agent:latest gws auth login
+# Open the printed URL in any browser, paste the code back.
+
+# 5. Bring up the stack
+podman-compose up -d
+podman logs -f cloudflared    # confirm "Registered tunnel connection"
+```
+
+Visit `https://demo.your-domain.com/`. The tunnel connects in seconds and Cloudflare's edge cert is already valid — no waiting for Let's Encrypt.
+
+### Auto-restart on reboot
+
+```bash
+podman generate systemd --new --files --name sec-agent
+podman generate systemd --new --files --name caddy
+mkdir -p ~/.config/systemd/user && mv container-*.service ~/.config/systemd/user/
+systemctl --user enable --now container-sec-agent.service container-caddy.service
+loginctl enable-linger $USER
+```
+
+### Switching LLM provider
+
+Edit `.env`. Defaults are Groq; OpenAI / Together / Ollama all use the same OpenAI-compatible Chat Completions API — only `LLM_BASE_URL`, `LLM_API_KEY`, and `LLM_MODEL` change. The LLM is invoked rarely (only when `verify_model()` finds an invariant mismatch), so cost is minimal.
 
 ## Architecture Notes
 

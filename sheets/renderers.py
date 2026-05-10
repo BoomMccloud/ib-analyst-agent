@@ -1,5 +1,5 @@
-from xbrl_tree import CROSS_STATEMENT_CHECKS, TreeNode, find_node_by_role
-from gws_utils import gws_write
+from xbrl import CROSS_STATEMENT_CHECKS, TreeNode, find_node_by_role
+from sheets.gws import gws_write
 from sheets.formulas import dcol, _build_weight_formula, _cell_ref
 from sheets.layouts import _cascade_layout, _totals_at_bottom_layout
 

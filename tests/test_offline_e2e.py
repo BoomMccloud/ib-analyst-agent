@@ -17,23 +17,23 @@ def setup_offline_mode():
 def test_pipeline_invariants(ticker, tmp_path):
     # 1. Fetch URL (Offline)
     res = subprocess.run(
-        [sys.executable, "fetch_10k.py", ticker, "--count", "1"],
+        [sys.executable, "-m", "fetch.ten_k", ticker, "--count", "1"],
         capture_output=True, text=True, check=True
     )
     data = json.loads(res.stdout)
     url = data["filings"][0]["url"]
-    
+
     # 2. Build Trees
     trees_json = tmp_path / "trees.json"
     res = subprocess.run(
-        [sys.executable, "xbrl_tree.py", "--url", url, "-o", str(trees_json)],
+        [sys.executable, "-m", "xbrl.cli", "--url", url, "-o", str(trees_json)],
         capture_output=True, text=True
     )
-    assert res.returncode == 0, f"xbrl_tree.py failed for {ticker}:\n{res.stderr}\n{res.stdout}"
-    
+    assert res.returncode == 0, f"xbrl.cli failed for {ticker}:\n{res.stderr}\n{res.stdout}"
+
     # 3. Verify Invariants
     res = subprocess.run(
-        [sys.executable, "pymodel.py", "--trees", str(trees_json), "--checkpoint"],
+        [sys.executable, "-m", "model.verify", "--trees", str(trees_json), "--checkpoint"],
         capture_output=True, text=True
     )
     assert res.returncode == 0, f"Invariants failed for {ticker}:\n{res.stderr}\n{res.stdout}"

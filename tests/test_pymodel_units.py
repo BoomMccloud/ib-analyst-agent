@@ -13,9 +13,9 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from xbrl_tree import TreeNode, find_node_by_role
-from pymodel import verify_model, _verify_segment_sums
-from merge_trees import _recompute_residuals
+from xbrl import TreeNode, find_node_by_role
+from model.verify import verify_model, _verify_segment_sums
+from merge.trees import _recompute_residuals
 
 
 # ---------------------------------------------------------------------------
@@ -200,7 +200,7 @@ class TestResidualWarningMultiplePeriods:
         # 2023: residual=10, sibling_avg=100 → 10 < 100 → no warning
         # 2024: residual=400, sibling_avg=100 → 400 > 100 → warning
 
-        logger = logging.getLogger("merge_trees")
+        logger = logging.getLogger("merge.trees")
 
         with _capture_logs(logger) as records:
             _recompute_residuals(parent, ["2023", "2024"])

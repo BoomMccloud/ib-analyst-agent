@@ -28,7 +28,7 @@ HEADERS = {"User-Agent": f"SecFilingsAgent {_contact}"}
 TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
 
-from sec_utils import fetch_url
+from fetch.http import fetch_url
 
 def fetch_json(url: str) -> dict:
     return json.loads(fetch_url(url).decode())
