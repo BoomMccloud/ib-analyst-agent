@@ -18,12 +18,12 @@ Evaluation updated 2026-04-13. Items are ordered by execution priority within ea
 ### 5. Revenue Forecasting Module (Stage 5)
 **What:** Implement 5-year revenue forecasting based on MD&A text analysis and segment growth drivers.
 **Impact:** Essential for making the Google Sheet a complete valuation tool.
-**What to do:** Build `content_extractor.py`, `forecast_engine.py`, and `forecast_sheet.py` as defined in `docs/todo/forecast-module.md`.
+**What to do:** Build `content_extractor.py`, `forecast_engine.py`, and `forecast_sheet.py`. (Prior spec drafts in `docs/todo/forecast-module*.md` were deleted as stale; rewrite a fresh spec when resuming.)
 
 ### 6. Soft Invariants vs. Hard Invariants
-**What:** Structurally distinguish between mathematical truths (`BS Balance`) and semantic mapping failures (`NI Link`).
-**Impact:** Ensures mathematical errors halt the pipeline while semantic errors are routed to the self-healing LLM fixer.
-**What to do:** Update `pymodel.py` to bifurcate error handling based on invariant type.
+**What:** Bifurcate the invariant set in `model/verify.py`. Today `run_checkpoint()` blindly invokes `model/llm_fixer.py` on *any* failure, including pure-math invariants like `BS_TA == BS_TL + BS_TE` and `CF_ENDC == BS_CASH` — the LLM can't fix those, so we waste a call and risk papering over a real parser bug.
+**Impact:** Math errors halt the pipeline (clear signal of upstream bug); semantic errors (IS↔CF NI/D&A/SBC role mismatches) route to the LLM fixer.
+**What to do:** Tag each check in `model/verify.py` as `hard` or `soft`. In `run_checkpoint()`, only call `fix_invariants` when all remaining errors are soft.
 
 ### 8. LLM Provider Adapter Pattern (Strategy Pattern)
 **What:** The pipeline is currently coupled to a single OpenAI-compatible provider via `llm/client.py`. We should abstract this into an `LLMProvider` interface with adapters for Anthropic, OpenAI, and Google (Gemini).
@@ -37,10 +37,6 @@ Evaluation updated 2026-04-13. Items are ordered by execution priority within ea
 ### 9. Batch `gws` subprocess calls in Stage 4
 **What:** Use `gws_batch_update()` for data writes instead of one subprocess call per matched row.
 **Impact:** Significant performance improvement for large models.
-
-### 11. Cache `company_tickers.json` and filing HTML
-**What:** Cache SEC metadata and large HTML filings locally with TTL.
-**Impact:** Reduces network dependency and speeds up re-runs during debugging.
 
 ---
 
@@ -56,6 +52,11 @@ Treat each filing as a separate "vintage" to correctly handle historical restate
 
 ## Completed
 
+*   **Repo cleanup pass 2 — gitignore/docs hygiene (2026-05-10)**:
+    *   Untracked `pipeline_output/` (was tracked despite gitignore — ~16 stale dev JSONs) and `.sisyphus/` (AI-tool scratch); added `.sisyphus/` to `.gitignore`.
+    *   Moved shipped specs to `docs/done/`: `make_demo*.md`, `spec_share_sheet*.md` (3 files), `spec_architecture_refactor.md` (marked Status: Done).
+    *   Deleted `docs/todo/forecast-module.md` and `forecast-module-spec1.md` — stale drafts that referenced deleted scripts (`sec_utils.py`, `llm_utils.py`, `pymodel.py`).
+*   **P2 #11 — Cache `company_tickers.json` and filing HTML**: `fetch/http.py` already caches every SEC fetch to `.cache/<md5>.bin`, including `company_tickers.json` (verified: 796 KB on disk after first run). Cache hits are reported on stderr. (2026-05-10)
 *   **Repo cleanup for external sharing (2026-05-10)**:
     *   `fetch/lookup.py` — already imported from `fetch.http`; removed last unused `HEADERS` import.
     *   Renamed `xbrl/facts_legacy.py` → `xbrl/facts.py` (it's core, not legacy — used by `build_statement_trees()`).
