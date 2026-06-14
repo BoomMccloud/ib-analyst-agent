@@ -10,6 +10,27 @@ CROSS_STATEMENT_CHECKS = [
     {"name": "SBC Link (IS-CF)", "roles": ["IS_SBC", "CF_SBC"], "formula": "={left}-{right}"},
 ]
 
+def _find_cash_node(node: TreeNode) -> TreeNode | None:
+    # DFS for the first descendant whose bare concept starts with
+    # "cashandcashequivalent". Recursing past the immediate children handles
+    # filers (e.g. GOOG) where Cash sits under an aggregator like
+    # CashCashEquivalentsAndShortTermInvestments — tagging the aggregator as
+    # BS_CASH and overriding it to CF_ENDC would force a phantom __OTHER__
+    # equal to the marketable-securities sibling.
+    for child in node.children:
+        bare = child.concept
+        if ':' in bare:
+            bare = bare.split(':', 1)[1]
+        elif '_' in bare:
+            bare = bare.split('_', 1)[1]
+        if bare.lower().startswith("cashandcashequivalent"):
+            return child
+        found = _find_cash_node(child)
+        if found is not None:
+            return found
+    return None
+
+
 def _tag_bs_positions(assets_tree: TreeNode | None, liab_eq_tree: TreeNode | None):
     if assets_tree and assets_tree.values:
         assets_tree.role = "BS_TA"
@@ -17,19 +38,10 @@ def _tag_bs_positions(assets_tree: TreeNode | None, liab_eq_tree: TreeNode | Non
         for child in assets_tree.children:
             if child.children and not child.is_leaf:
                 child.role = "BS_TCA"
-                cash_node = None
-                for grandchild in child.children:
-                    bare = grandchild.concept
-                    if ':' in bare:
-                        bare = bare.split(':', 1)[1]
-                    elif '_' in bare:
-                        bare = bare.split('_', 1)[1]
-                    if bare.lower().startswith("cashandcashequivalent"):
-                        cash_node = grandchild
-                        break
+                cash_node = _find_cash_node(child)
                 if cash_node is None and child.children:
                     cash_node = child.children[0]
-                    print(f"WARNING: No CashAndCashEquivalent* concept found in TCA children, falling back to position 0 ({cash_node.concept})", file=sys.stderr)
+                    print(f"WARNING: No CashAndCashEquivalent* concept found in TCA subtree, falling back to position 0 ({cash_node.concept})", file=sys.stderr)
                 if cash_node:
                     cash_node.role = "BS_CASH"
                 found_tca = True

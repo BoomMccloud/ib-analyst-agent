@@ -108,6 +108,67 @@ def _attach_is_segments(trees: dict, seg_facts: dict, lab_labels: dict):
             print(f"  Segments: {role_label} → {len(leaf_members)} segments", file=sys.stderr)
             _attach_segment_children(node, leaf_members, member_values, lab_labels, periods)
 
+def find_decomposition_with_gap(members_data: dict, total_values: dict, periods: list[str]) -> tuple[list[str], dict | None]:
+    """Finds best subset of members that decomposes the total.
+    First tries to find an exact sum (within 0.5).
+    If that fails, tries to use all active members, and if their sum covers
+    between 80% and 105% of total, returns them with gap-absorption values.
+    """
+    # 1. Try exact sum
+    exact_leaves = _find_best_decomposition(members_data, total_values, periods)
+    if exact_leaves:
+        return exact_leaves, None
+        
+    # 2. Relaxed sum (use all members with values)
+    member_names = list(members_data.keys())
+    if not member_names or not total_values:
+        return [], None
+        
+    active_members = [m for m in member_names if any(members_data[m].get(p, 0) != 0 for p in periods)]
+    if len(active_members) < 2:
+        return [], None
+        
+    valid_relaxed = True
+    gap_values = {}
+    for p in periods:
+        t = total_values.get(p, 0)
+        if t == 0:
+            continue
+        s = sum(members_data[m].get(p, 0) for m in active_members)
+        ratio = s / t
+        if not (0.80 <= ratio <= 1.05):
+            valid_relaxed = False
+            break
+        gap_values[p] = t - s
+        
+    if valid_relaxed:
+        return active_members, gap_values
+        
+    return [], None
+
+def choose_best_candidate_programmatic(candidates: list[dict]) -> dict | None:
+    if not candidates:
+        return None
+    # Priority:
+    # 1. Nested
+    # 2. ProductOrServiceAxis
+    # 3. StatementBusinessSegmentsAxis
+    # 4. StatementGeographicalAxis
+    # 5. Any other candidate
+    for c in candidates:
+        if c["type"] == "nested":
+            return c
+    for c in candidates:
+        if c.get("dim") == "srt:ProductOrServiceAxis":
+            return c
+    for c in candidates:
+        if c.get("dim") == "us-gaap:StatementBusinessSegmentsAxis":
+            return c
+    for c in candidates:
+        if c.get("dim") == "srt:StatementGeographicalAxis":
+            return c
+    return candidates[0]
+
 def _build_revenue_segment_tree(trees: dict, seg_facts: dict, multi_seg_facts: dict, lab_labels: dict) -> TreeNode | None:
     is_tree = trees.get("IS")
     if not is_tree:
@@ -136,116 +197,156 @@ def _build_revenue_segment_tree(trees: dict, seg_facts: dict, multi_seg_facts: d
     if not total_values:
         return None
 
-    biz_dim = "us-gaap:StatementBusinessSegmentsAxis"
-    prod_dim = "srt:ProductOrServiceAxis"
+    target_dims = [
+        "srt:ProductOrServiceAxis",
+        "us-gaap:StatementBusinessSegmentsAxis",
+        "srt:StatementGeographicalAxis",
+    ]
 
-    biz_members = None
-    biz_tag = None
+    candidates = []
+
+    # 1. Scan single-axis decompositions
     for tag in rev_tags:
         tag_segs = seg_facts.get(tag, {})
-        members = tag_segs.get(biz_dim)
-        if not members:
-            continue
-        member_sum = {}
-        for m_vals in members.values():
-            for p, v in m_vals.items():
-                if p in period_set:
-                    member_sum[p] = member_sum.get(p, 0) + v
-        all_close = all(
-            abs(member_sum.get(p, 0) - total_values.get(p, 0)) / max(abs(total_values[p]), 1) < 0.01
-            for p in periods if total_values.get(p, 0) != 0
-        )
-        if all_close and len(members) >= 2:
-            biz_members = members
-            biz_tag = tag
-            break
+        for dim in target_dims:
+            if dim in tag_segs:
+                members = tag_segs[dim]
+                leaves, gap_values = find_decomposition_with_gap(members, total_values, periods)
+                if leaves and len(leaves) >= 2:
+                    candidates.append({
+                        "type": "single",
+                        "tag": tag,
+                        "dim": dim,
+                        "id": f"{tag} | {dim}",
+                        "leaves": leaves,
+                        "gap_values": gap_values
+                    })
 
-    if not biz_members:
-        prod_members = None
-        for tag in rev_tags:
-            tag_segs = seg_facts.get(tag, {})
-            members = tag_segs.get(prod_dim)
-            if not members or len(members) < 2:
-                continue
-            leaves = _find_best_decomposition(members, total_values, periods)
-            if leaves and len(leaves) >= 2:
-                prod_members = {m: members[m] for m in leaves}
-                break
+    # 2. Scan multi-dimensional nested decompositions
+    for tag in rev_tags:
+        tag_multi = multi_seg_facts.get(tag, {})
+        for dim_tuple, member_mappings in tag_multi.items():
+            if len(dim_tuple) == 2:
+                dim0, dim1 = dim_tuple
+                if dim0 not in target_dims or dim1 not in target_dims:
+                    continue
+                level1_members = seg_facts.get(tag, {}).get(dim0, {})
+                if not level1_members:
+                    continue
+                level1_leaves, l1_gap_values = find_decomposition_with_gap(level1_members, total_values, periods)
+                if level1_leaves:
+                    nested_leaves = {}
+                    nested_gap_values = {}
+                    nested_member_values = {}
+                    for l1_m in level1_leaves:
+                        l2_members = {}
+                        for member_tuple, vals in member_mappings.items():
+                            if l1_m in member_tuple:
+                                l2_m = member_tuple[1] if member_tuple[0] == l1_m else member_tuple[0]
+                                l2_members[l2_m] = vals
+                        
+                        l1_m_values = level1_members[l1_m]
+                        l2_leaves, l2_gap_values = find_decomposition_with_gap(l2_members, l1_m_values, periods)
+                        if l2_leaves:
+                            nested_leaves[l1_m] = l2_leaves
+                            nested_gap_values[l1_m] = l2_gap_values
+                            nested_member_values[l1_m] = {m: l2_members[m] for m in l2_leaves}
+                        else:
+                            nested_leaves[l1_m] = []
+                            
+                    candidates.append({
+                        "type": "nested",
+                        "tag": tag,
+                        "dim0": dim0,
+                        "dim1": dim1,
+                        "id": f"nested_{tag}_{dim0}_by_{dim1}",
+                        "level1_leaves": level1_leaves,
+                        "nested_leaves": nested_leaves,
+                        "nested_gap_values": nested_gap_values,
+                        "nested_member_values": nested_member_values,
+                        "l1_gap_values": l1_gap_values,
+                        "level1_members": level1_members
+                    })
 
-        if not prod_members:
-            return None
-
-        root = TreeNode("_REVENUE_SEGMENTS", weight=1.0)
-        root.name = "Revenue Segments"
-        root.values = dict(total_values)
-        root.is_leaf = False
-        for member, vals in sorted(prod_members.items(), key=lambda x: -sum(abs(v) for v in x[1].values())):
-            child = TreeNode(member.replace(':', '_', 1), weight=1.0)
-            child.name = get_label(member, lab_labels)
-            child.values = {p: v for p, v in vals.items() if p in period_set}
-            child.is_leaf = True
-            root.add_child(child)
-        print(f"  Revenue segments: {len(root.children)} products (ProductOrServiceAxis)", file=sys.stderr)
-        return root
+    best = choose_best_candidate_programmatic(candidates)
+    if not best:
+        return None
 
     root = TreeNode("_REVENUE_SEGMENTS", weight=1.0)
     root.name = "Revenue Segments"
     root.values = dict(total_values)
     root.is_leaf = False
 
-    prod_biz_dims = tuple(sorted([prod_dim, biz_dim]))
-    multi_2d = {}
-    for tag in rev_tags:
-        tag_multi = multi_seg_facts.get(tag, {})
-        if prod_biz_dims in tag_multi:
-            multi_2d = tag_multi[prod_biz_dims]
-            break
-
-    dim_order = list(prod_biz_dims)
-    prod_idx = dim_order.index(prod_dim)
-    biz_idx = dim_order.index(biz_dim)
-
-    seg_sum = {p: 0.0 for p in periods}
-    for seg_member, seg_vals in sorted(biz_members.items(), key=lambda x: -sum(abs(v) for v in x[1].values())):
-        seg_node = TreeNode(seg_member.replace(':', '_', 1), weight=1.0)
-        seg_node.name = get_label(seg_member, lab_labels)
-        seg_node.values = {p: v for p, v in seg_vals.items() if p in period_set}
-
-        for p in periods:
-            seg_sum[p] += seg_node.values.get(p, 0)
-
-        inner_members = {}
-        for member_tuple, vals in multi_2d.items():
-            if member_tuple[biz_idx] == seg_member:
-                prod_member = member_tuple[prod_idx]
-                inner_members[prod_member] = {p: v for p, v in vals.items() if p in period_set}
-
-        if inner_members:
-            leaves = _find_best_decomposition(inner_members, seg_node.values, periods)
-            if leaves:
-                for leaf_member in leaves:
-                    child = TreeNode(leaf_member.replace(':', '_', 1), weight=1.0)
-                    child.name = get_label(leaf_member, lab_labels)
-                    child.values = dict(inner_members[leaf_member])
+    if best["type"] == "single":
+        tag = best["tag"]
+        dim = best["dim"]
+        leaves = best["leaves"]
+        gap_values = best["gap_values"]
+        members = seg_facts[tag][dim]
+        
+        for member in sorted(leaves, key=lambda m: -sum(abs(v) for v in members[m].values())):
+            child = TreeNode(member.replace(':', '_', 1), weight=1.0)
+            child.name = get_label(member, lab_labels)
+            child.values = {p: v for p, v in members[member].items() if p in period_set}
+            child.is_leaf = True
+            root.add_child(child)
+            
+        if gap_values:
+            gap_node = TreeNode("_REVENUE_SEGMENTS_RESIDUAL", weight=1.0)
+            gap_node.name = "Corporate & Other (Residual)"
+            gap_node.values = {p: v for p, v in gap_values.items() if p in period_set}
+            gap_node.is_leaf = True
+            root.add_child(gap_node)
+            
+        print(f"  Revenue segments (Pipeline): selected single axis {dim} (Tag: {tag}) with {len(leaves)} segments" + (" and residual" if gap_values else ""), file=sys.stderr)
+        
+    else:  # nested
+        tag = best["tag"]
+        dim0 = best["dim0"]
+        dim1 = best["dim1"]
+        level1_leaves = best["level1_leaves"]
+        nested_leaves = best["nested_leaves"]
+        nested_gap_values = best["nested_gap_values"]
+        nested_member_values = best["nested_member_values"]
+        l1_gap_values = best["l1_gap_values"]
+        level1_members = best["level1_members"]
+        
+        for l1_m in sorted(level1_leaves, key=lambda m: -sum(abs(v) for v in level1_members[m].values())):
+            l1_node = TreeNode(l1_m.replace(':', '_', 1), weight=1.0)
+            l1_node.name = get_label(l1_m, lab_labels)
+            l1_node.values = {p: v for p, v in level1_members[l1_m].items() if p in period_set}
+            
+            l2_leaves = nested_leaves[l1_m]
+            if l2_leaves:
+                l1_node.is_leaf = False
+                l2_vals = nested_member_values[l1_m]
+                for l2_m in sorted(l2_leaves, key=lambda m: -sum(abs(v) for v in l2_vals[m].values())):
+                    child = TreeNode(l2_m.replace(':', '_', 1), weight=1.0)
+                    child.name = get_label(l2_m, lab_labels)
+                    child.values = {p: v for p, v in l2_vals[l2_m].items() if p in period_set}
                     child.is_leaf = True
-                    seg_node.add_child(child)
-                print(f"  Revenue segments: {seg_node.name} → {len(leaves)} products", file=sys.stderr)
+                    l1_node.add_child(child)
+                
+                l2_gap = nested_gap_values[l1_m]
+                if l2_gap:
+                    gap_node = TreeNode(f"{l1_m.replace(':', '_', 1)}_RESIDUAL", weight=1.0)
+                    gap_node.name = "Corporate & Other (Residual)"
+                    gap_node.values = {p: v for p, v in l2_gap.items() if p in period_set}
+                    gap_node.is_leaf = True
+                    l1_node.add_child(gap_node)
             else:
-                seg_node.is_leaf = True
-        else:
-            seg_node.is_leaf = True
-        root.add_child(seg_node)
-
-    for p in periods:
-        gap = total_values.get(p, 0) - seg_sum.get(p, 0)
-        if abs(gap) > 0.5:
-            elim_node = TreeNode("_ELIMINATIONS", weight=1.0)
-            elim_node.name = "Hedging & Eliminations"
-            elim_node.values = {p: total_values.get(p, 0) - seg_sum.get(p, 0) for p in periods}
-            elim_node.is_leaf = True
-            root.add_child(elim_node)
-            print(f"  Revenue segments: added Hedging & Eliminations", file=sys.stderr)
-            break
+                l1_node.is_leaf = True
+                
+            root.add_child(l1_node)
+            
+        if l1_gap_values:
+            gap_node = TreeNode("_REVENUE_SEGMENTS_RESIDUAL", weight=1.0)
+            gap_node.name = "Corporate & Other (Residual)"
+            gap_node.values = {p: v for p, v in l1_gap_values.items() if p in period_set}
+            gap_node.is_leaf = True
+            root.add_child(gap_node)
+            
+        print(f"  Revenue segments (Pipeline): selected 2-level nested axes {dim0} by {dim1} (Tag: {tag}) with {len(level1_leaves)} L1 segments", file=sys.stderr)
 
     if len(root.children) >= 2:
         return root

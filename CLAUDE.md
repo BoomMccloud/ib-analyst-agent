@@ -44,6 +44,16 @@ Key design decisions:
 
 Tested on 10 companies across 6 industries: 9/10 ALL PASS, 1 has a $401 rounding error.
 
+### Revenue Segmentation & Decomposition
+- **Filing Pagination & De-duplication**: Supports scanning SEC's paginated historical submissions (e.g. `submissions-001.json`) and de-duplicates by accession number in `ten_k.py` and `twenty_f.py` to ensure a clean 5-year retrieval for high-volume issuers.
+- **Relaxed Sum (Gap-Aware) Matching**: Allows segment decompositions covering between 80% and 105% of the total revenue, absorbing the difference into a `Corporate & Other (Residual)` segment.
+- **Prioritized Axis Selection**: Scans Product (`srt:ProductOrServiceAxis`), Business (`us-gaap:StatementBusinessSegmentsAxis`), and Geographic (`srt:StatementGeographicalAxis`) dimensions. Axis selection order is:
+  1. 2-Level Nested Decompositions (e.g. Business by Product)
+  2. Product & Service Axis
+  3. Business Segments Axis
+  4. Geographical Axis
+- **Spreadsheet Integration**: Segment hierarchies are output as dynamic `TreeNode` structures. The spreadsheet builder renders them as parent-child nodes using Excel-style `=SUM` formulas linked directly to the main income statement.
+
 ## Tautological API
 
 `model/verify.py` exposes enforce-by-construction helpers:

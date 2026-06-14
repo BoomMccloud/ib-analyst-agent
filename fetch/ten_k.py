@@ -28,37 +28,59 @@ def ticker_to_cik(ticker: str) -> tuple[str, str]:
 
 
 def fetch_10k_filings(cik: str, count: int) -> list[dict]:
-    """Fetch the most recent `count` 10-K filings for a given CIK."""
+    """Fetch the most recent `count` 10-K filings for a given CIK, handling pagination."""
     url = SUBMISSIONS_URL.format(cik=cik)
     data = fetch_json(url)
 
     recent = data["filings"]["recent"]
-    forms = recent["form"]
-    dates = recent["filingDate"]
-    periods = recent["reportDate"]
-    accessions = recent["accessionNumber"]
-    primary_docs = recent["primaryDocument"]
+    seen_accessions = set()
+    def extract_from_flat_dict(flat_dict, list_dest):
+        forms = flat_dict.get("form", [])
+        dates = flat_dict.get("filingDate", [])
+        periods = flat_dict.get("reportDate", [])
+        accessions = flat_dict.get("accessionNumber", [])
+        primary_docs = flat_dict.get("primaryDocument", [])
+        
+        for i, form in enumerate(forms):
+            if form in ("10-K", "10-K405"):
+                acc = accessions[i]
+                if acc in seen_accessions:
+                    continue
+                seen_accessions.add(acc)
+                accession_no_dashes = acc.replace("-", "")
+                cik_num = cik.lstrip("0")
+                link = (
+                    f"https://www.sec.gov/Archives/edgar/data/{cik_num}/"
+                    f"{accession_no_dashes}/{primary_docs[i]}"
+                )
+                list_dest.append({
+                    "form": form,
+                    "filing_date": dates[i],
+                    "period_of_report": periods[i],
+                    "accession_number": acc,
+                    "primary_document": primary_docs[i],
+                    "url": link,
+                })
+                if len(list_dest) >= count:
+                    return True
+        return False
 
     filings = []
-    for i, form in enumerate(forms):
-        if form in ("10-K", "10-K405"):
-            accession_no_dashes = accessions[i].replace("-", "")
-            cik_num = cik.lstrip("0")
-            link = (
-                f"https://www.sec.gov/Archives/edgar/data/{cik_num}/"
-                f"{accession_no_dashes}/{primary_docs[i]}"
-            )
-            filings.append({
-                "form": form,
-                "filing_date": dates[i],
-                "period_of_report": periods[i],
-                "accession_number": accessions[i],
-                "primary_document": primary_docs[i],
-                "url": link,
-            })
-            if len(filings) >= count:
-                break
-
+    # 1. Try extracting from recent
+    if extract_from_flat_dict(recent, filings):
+        return filings
+        
+    # 2. If we need more, check files
+    files = data["filings"].get("files", [])
+    files_sorted = sorted(files, key=lambda x: x.get("filingTo", ""), reverse=True)
+    
+    for f_info in files_sorted:
+        f_name = f_info["name"]
+        f_url = f"https://data.sec.gov/submissions/{f_name}"
+        f_data = fetch_json(f_url)
+        if extract_from_flat_dict(f_data, filings):
+            break
+            
     return filings
 
 

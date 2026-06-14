@@ -6,6 +6,7 @@ from .tree import (
     build_presentation_index, sort_by_presentation, cascade_layout, print_tree,
     _filter_to_complete_periods, _find_parent, _concept_to_tag, _clean_name,
     _supplement_orphan_facts, _supplement_orphan_facts_all,
+    _fill_empty_leaves_from_segments,
 )
 from .linkbase import (
     fetch_cal_linkbase, fetch_pre_linkbase, fetch_lab_linkbase,
@@ -22,7 +23,7 @@ from .segments import (
     _find_best_decomposition, _detect_segments_for_node, _attach_segment_children,
 )
 
-from .facts import build_xbrl_facts_dict, build_segment_facts_dict
+from .facts import build_xbrl_facts_dict, build_segment_facts_dict, build_segment_aggregated_facts
 
 __all__ = [
     "TreeNode",
@@ -106,6 +107,16 @@ def build_statement_trees(html: str, base_url: str) -> dict:
     for tag_vals in facts.values():
         all_periods.update(tag_vals.keys())
     result["periods"] = sorted(all_periods)
+
+    # Fill cal-linkbase leaves whose values exist only on a single dimensional
+    # axis (e.g. TSLA's "Operating lease vehicles" / "Solar energy systems"
+    # reported on PropertyPlantAndEquipmentByType members). Gated by parent
+    # gap-closure so revenue/COGS segment crosstabs don't double-count.
+    seg_agg = build_segment_aggregated_facts(html, facts)
+    if seg_agg:
+        for stmt in ["IS", "BS", "BS_LE", "CF"]:
+            if result.get(stmt):
+                _fill_empty_leaves_from_segments(result[stmt], seg_agg)
 
     reconcile_trees(result, pres_index)
 

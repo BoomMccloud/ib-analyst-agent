@@ -219,6 +219,59 @@ def _supplement_orphan_facts(parent: 'TreeNode', orphan_facts: dict, used_tags: 
             parent.add_child(new_node)
             used_tags.add(concept)
 
+def _fill_empty_leaves_from_segments(tree: 'TreeNode', seg_agg: dict) -> int:
+    # Hydrate cal-linkbase leaves that have no primary facts using the
+    # single-axis segment-aggregated dict. Gated by a parent gap-closure
+    # check: filling must reduce the parent gap for at least one period and
+    # never widen it for any period. Returns count of filled nodes.
+    if not seg_agg:
+        return 0
+
+    filled = 0
+    parent_stack: list['TreeNode'] = []
+
+    def _walk(node: 'TreeNode'):
+        nonlocal filled
+        parent_stack.append(node)
+        for child in list(node.children):
+            _walk(child)
+        parent_stack.pop()
+
+        if node.children or not node.tag:
+            return
+        if any(v != 0 for v in (node.values or {}).values()):
+            return
+        candidate = seg_agg.get(node.tag)
+        if not candidate or not any(v != 0 for v in candidate.values()):
+            return
+        if not parent_stack:
+            return
+        parent = parent_stack[-1]
+        if not parent.values:
+            return
+
+        helps = False
+        for period, parent_val in parent.values.items():
+            if parent_val == 0:
+                continue
+            real_kids = [c for c in parent.children if not c.concept.startswith("__OTHER__")]
+            cur_sum = sum(c.values.get(period, 0) * c.weight for c in real_kids)
+            cur_gap = abs(parent_val - cur_sum)
+            new_sum = cur_sum + candidate.get(period, 0) * node.weight
+            new_gap = abs(parent_val - new_sum)
+            if new_gap > cur_gap + 0.5:
+                return  # widening — reject
+            if new_gap < cur_gap - 0.5:
+                helps = True
+
+        if helps:
+            node.values = dict(candidate)
+            filled += 1
+
+    _walk(tree)
+    return filled
+
+
 def _supplement_orphan_facts_all(trees: dict) -> None:
     facts = trees.get("facts", {})
     if not facts:

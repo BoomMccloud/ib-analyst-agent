@@ -118,13 +118,7 @@ scripts/               — dev tooling
 *   `scripts/download_test_fixtures.py`: Downloads test fixture data for local testing.
 
 ### Test Suite
-*   `tests/test_dual_linkbase.py`: Dual linkbase parsing unit tests.
-*   `tests/test_merge_layers.py`: Three-layer merge tests (synthetic + 10 real companies).
-*   `tests/test_merge_pipeline.py`: Multi-tree merge pipeline tests.
-*   `tests/test_offline_e2e.py`: Offline end-to-end pipeline tests.
-*   `tests/test_sheet_formulas.py`: Google Sheets formula generation tests.
-*   `tests/test_da_sbc_tagging.py`: D&A and SBC tag identification tests.
-*   `tests/test_model_historical.py`: Historical model computation tests.
+*   [test_offline_e2e.py](file:///Users/jasonbxu/Documents/GitHub/misc/sec-agent/tests/test_offline_e2e.py): Offline end-to-end pipeline tests.
 
 ### Web Demo
 *   `web/app.py`: FastAPI backend — serves static UI, proxies search + pipeline jobs.
@@ -156,11 +150,7 @@ python run_pipeline.py AAPL
 ### Run the Tests
 
 ```bash
-# All unit tests
-python -m pytest tests/ -v
-
-# Three-layer merge tests (synthetic + 10 real companies)
-python tests/test_merge_layers.py
+SEC_OFFLINE_MODE=1 pytest -v
 ```
 
 ## Demo Website

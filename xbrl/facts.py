@@ -188,6 +188,46 @@ def build_xbrl_facts_dict(html: str) -> tuple[dict, str]:
     return facts, unit_label
 
 
+def build_segment_aggregated_facts(html: str, primary_facts: dict) -> dict:
+    # Sum single-axis dimensional facts per tag/period, for tags that have NO
+    # primary (non-segment) value. Some filers (e.g. TSLA) report BS line items
+    # like "Operating lease vehicles, net" only on PropertyPlantAndEquipmentByType
+    # axis members; the primary-only facts dict misses them, leaving cal-linkbase
+    # leaves empty and producing huge __OTHER__ residuals at Assets root.
+    #
+    # Returns: {tag: {period: aggregated_value}}.
+    #
+    # Multi-dim facts are skipped — those typically represent crosstabs (e.g.
+    # geography x product) where summing once would mis-aggregate.
+    contexts = extract_xbrl_contexts(html)
+    raw_facts = extract_xbrl_facts(html)
+
+    # tag -> dim -> period -> {member: value}
+    by_tag_dim: dict = {}
+    for fact in raw_facts:
+        ctx = contexts.get(fact["context"])
+        if not ctx or not ctx["has_segment"]:
+            continue
+        segments = ctx.get("segments", {})
+        if len(segments) != 1:
+            continue
+        tag = fact["tag"]
+        if tag in primary_facts and primary_facts[tag]:
+            continue
+        dim, member = next(iter(segments.items()))
+        period = ctx["period"]
+        by_tag_dim.setdefault(tag, {}).setdefault(dim, {}).setdefault(period, {})[member] = fact["value"]
+
+    aggregated: dict = {}
+    for tag, dims in by_tag_dim.items():
+        if len(dims) != 1:
+            # Reported on multiple axes — ambiguous which to aggregate.
+            continue
+        period_members = next(iter(dims.values()))
+        aggregated[tag] = {p: sum(m.values()) for p, m in period_members.items()}
+    return aggregated
+
+
 def build_segment_facts_dict(html: str) -> tuple[dict, dict]:
     """Extract segment-dimensioned XBRL facts from HTML.
 
